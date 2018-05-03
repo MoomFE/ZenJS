@@ -1,8 +1,14 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "dist"
+    },
+    {
+      "path": "src"
+    }
   ],
   "settings": {
     "editor.tabSize": 2,
@@ -10,8 +16,12 @@
     "files.exclude": {
       "**/ZenJS.code-workspace": true,
       "**/package-lock.json": true,
+      "**/node_modules": true,
       "**/LICENSE": true,
-      "**/.gitignore": true
+      "**/README.md": true,
+      "**/.gitignore": true,
+      "**/.vscode": true,
+      "**/.babelrc": true
     }
   }
 }

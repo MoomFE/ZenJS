@@ -1,4 +1,5 @@
 const resolve = require('rollup-plugin-node-resolve');
+const replace = require('rollup-plugin-replace');
 const babel = require('rollup-plugin-babel');
 const { title, version, author } = require('../package.json');
 
@@ -23,6 +24,9 @@ export default {
     resolve(),
     babel({
       exclude: 'node_modules/**'
+    }),
+    replace({
+      '__VERSION__': version
     })
   ]
 }
