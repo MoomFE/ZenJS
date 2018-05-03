@@ -29,6 +29,17 @@ describe( 'ZenJS', () => {
         div2.$deleteData('Data').$hasData('Data').should.equal( false );
         div2.$data('Data','div2').$deleteData().$hasData().should.equal( false );
       });
+
     });
+
+    [ window, document ].forEach(( root, index ) => {
+
+      describe( `${ index ? 'document' : 'window' }.$data`, () => {
+
+      });
+
+    });
+    
+
   });
 });
