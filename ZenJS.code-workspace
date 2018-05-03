@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+  ],
+  "settings": {
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+    "files.exclude": {
+      "**/ZenJS.code-workspace": true,
+      "**/package-lock.json": true,
+      "**/LICENSE": true,
+      "**/.gitignore": true
+    }
+  }
+}

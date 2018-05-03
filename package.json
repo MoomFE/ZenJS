@@ -18,7 +18,7 @@
     "url": ""
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-preset-env": "^1.6.1",
     "rollup": "^0.58.2",
     "rollup-plugin-babel": "^3.0.4",
