@@ -1,4 +1,5 @@
-import { $_Define, $_DefineSet, $_DefineValue } from '../../fn/define'
+import { ElementProto } from '../../var/index';
+import { $_DefineValue } from '../../fn/define';
 
 const injectionArr = [ window, document, ElementProto ];
 

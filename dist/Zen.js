@@ -13,7 +13,7 @@
   var Zen = window.Zen = Object.create(null);
 
   var Element = window.Element;
-  var ElementProto$1 = Element.prototype;
+  var ElementProto = Element.prototype;
 
   var Array = window.Array;
   var isArray = Array.isArray;

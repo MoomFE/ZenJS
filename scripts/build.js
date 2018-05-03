@@ -15,7 +15,7 @@ const banner =
 export default {
   input: 'src/index.js',
   output: {
-    file: 'dist/index.js',
+    file: 'dist/Zen.js',
     format: 'umd',
     banner,
     name: 'Zen'
