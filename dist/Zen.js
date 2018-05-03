@@ -57,6 +57,19 @@
     $_Define(obj, name, { value: value }, options);
   }
 
+  /**
+   * 判断传入对象是否是空对象
+   * @param {Object} obj 需要判断的对象
+   */
+  function isEmptyObject(obj) {
+
+    for (var a in obj) {
+      return false;
+    }
+
+    return true;
+  }
+
   var injectionArr = [window, document, ElementProto];
 
   /**
@@ -92,10 +105,18 @@
    * @returns {Boolean}
    */
   $_DefineValue(injectionArr, '$hasData', function (name) {
-    if (name == null) {
-      return !!this[this];
+    var Data = $_GetDatas(this);
+
+    if (isEmptyObject(Data)) {
+      return false;
     }
-    return get(this).hasOwnProperty(name);
+
+    // 未传入数据名称, 则认为是判断是否有存过数据
+    if (name == null) {
+      return true;
+    }
+
+    return Data.hasOwnProperty(name);
   });
 
   /**
@@ -103,8 +124,14 @@
    * @param {String} name 需要删除的数据名称
    * @returns {Object}
    */
-  $_DefineValue(injectionArr, '$deleteData', function () {
-    var Data = get(this);
+  $_DefineValue(injectionArr, '$deleteData', function (names) {
+
+    if (names == null) {
+      this[this] = {};
+      return this;
+    }
+
+    var Data = $_GetDatas(this);
 
     names.split(' ').forEach(function (name) {
       delete Data[name];

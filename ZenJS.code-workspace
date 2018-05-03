@@ -21,7 +21,10 @@
       "**/README.md": true,
       "**/.gitignore": true,
       "**/.vscode": true,
-      "**/.babelrc": true
+      "**/.babelrc": true,
+
+      "**/test/mocha.css": true,
+      "**/test/mocha.js": true
     }
   }
 }

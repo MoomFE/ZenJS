@@ -1,5 +1,6 @@
 import { ElementProto } from '../../var/index';
 import { $_DefineValue } from '../../fn/define';
+import isEmptyObject from'../../fn/isEmptyObject'
 
 const injectionArr = [ window, document, ElementProto ];
 
@@ -40,10 +41,18 @@ $_DefineValue( injectionArr, '$data', function( name, value ){
  * @returns {Boolean}
  */
 $_DefineValue( injectionArr, '$hasData', function( name ){
-  if( name == null ){
-    return !!this[ this ];
+  const Data = $_GetDatas( this );
+
+  if( isEmptyObject( Data ) ){
+    return false;
   }
-  return get( this ).hasOwnProperty( name );
+
+  // 未传入数据名称, 则认为是判断是否有存过数据
+  if( name == null ){
+    return true;
+  }
+
+  return Data.hasOwnProperty( name );
 });
 
 /**
@@ -51,8 +60,14 @@ $_DefineValue( injectionArr, '$hasData', function( name ){
  * @param {String} name 需要删除的数据名称
  * @returns {Object}
  */
-$_DefineValue( injectionArr, '$deleteData', function(){
-  const Data = get( this );
+$_DefineValue( injectionArr, '$deleteData', function( names ){
+
+  if( names == null ){
+    this[ this ] = {};
+    return this;
+  }
+
+  const Data = $_GetDatas( this );
 
   names.split(' ').forEach( name => {
     delete Data[ name ];
