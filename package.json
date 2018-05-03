@@ -15,7 +15,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/MoomFE/ZenJS"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
