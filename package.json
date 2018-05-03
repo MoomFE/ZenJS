@@ -4,8 +4,7 @@
   "description": "ZenJS is a superset of the JavaScript prototype object.",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/rollup --config scripts/build.js",
-    "test": "node_modules/.bin/mocha"
+    "build": "node_modules/.bin/rollup --config scripts/build.js"
   },
   "keywords": [
     "zen",
