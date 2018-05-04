@@ -1,7 +1,6 @@
 export const Zen = window.Zen = Object.create( null );
 
-export const Element = window.Element;
-export const ElementProto = Element.prototype;
+export const { Element, Array } = window;
 
-export const Array = window.Array;
-export const isArray = Array.isArray;
+export const { prototype: ElementProto } = Element;
+export const { isArray } = Array;

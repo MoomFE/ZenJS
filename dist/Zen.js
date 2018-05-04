@@ -12,10 +12,10 @@
 
   var Zen = window.Zen = Object.create(null);
 
-  var Element = window.Element;
+  var _window = window,
+      Element = _window.Element,
+      Array = _window.Array;
   var ElementProto = Element.prototype;
-
-  var Array = window.Array;
   var isArray = Array.isArray;
 
   var defineProperty = Object.defineProperty,
@@ -73,7 +73,7 @@
   var injectionArr = [window, document, ElementProto];
 
   /**
-   * 获取存储在元素上的整个数据集, 如数据集不存在则创建.
+   * 获取存储在元素上的整个数据集, 如数据集不存在则创建
    * @param {Element} elem 
    * @returns {Object}
    */
@@ -83,8 +83,8 @@
   }
 
   /**
-   * 将数据读取或存储, 如 name 为 null, 则返回整个数据集.
-   * @param {String} name 需要读取或存储的数据名称
+   * 将数据读取或存储
+   * @param {String} name 需要读取或存储的数据名称, 如果未传入 name, 则返回整个数据集
    * @param {Object} value 存储的数据
    * @returns {Object}
    */
@@ -100,8 +100,8 @@
   });
 
   /**
-   * 传入数据名称, 判断当前对象下是否存储了这个数据.
-   * @param {String} name 需要判断的数据名称
+   * 传入数据名称, 判断当前对象下是否存储了这个数据
+   * @param {String} name 需要判断的数据名称, 如果未传入 name, 则是判断是否存有数据
    * @returns {Boolean}
    */
   $_DefineValue(injectionArr, '$hasData', function (name) {
@@ -111,7 +111,6 @@
       return false;
     }
 
-    // 未传入数据名称, 则认为是判断是否有存过数据
     if (name == null) {
       return true;
     }
@@ -121,7 +120,7 @@
 
   /**
    * 传入数据名称, 删除当前对象下存储的相应名称的数据
-   * @param {String} name 需要删除的数据名称
+   * @param {String} name 需要删除的数据名称, 多个可使用空格分隔, 如果未传入 names, 则视为删除全部数据
    * @returns {Object}
    */
   $_DefineValue(injectionArr, '$deleteData', function (names) {

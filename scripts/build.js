@@ -28,5 +28,6 @@ export default {
     replace({
       '__VERSION__': version
     })
-  ]
+  ],
+  context: 'this'
 }

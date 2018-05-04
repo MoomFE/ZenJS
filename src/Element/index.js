@@ -1,1 +1,1 @@
-import './prototype/data';
+import './prototype/index';
