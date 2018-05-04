@@ -9,7 +9,7 @@ function isEqual( first, second ){
 
 describe( 'ZenJS', () => {
 
-  describe( '[ injection ].$data', () => {
+  describe( '[ window, document, Element.prototype ].$data', () => {
 
     describe( 'Element.prototype.$data', () => {
 

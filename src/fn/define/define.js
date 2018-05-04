@@ -14,12 +14,12 @@ const defineProperty = Object.defineProperty,
  * @param {Object} options 属性选项
  * @param {Object} options2 属性选项2
  */
-export default function $_Define( obj, name, options, options2 ){
+export default function define( obj, name, options, options2 ){
 
   if( isArray( obj ) ){
     
     obj.forEach( obj => {
-      $_Define( obj, name, options, options2 );
+      define( obj, name, options, options2 );
     });
 
     return;

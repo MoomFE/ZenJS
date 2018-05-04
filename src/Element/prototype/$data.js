@@ -1,8 +1,7 @@
-import { ElementProto } from '../../var/index';
-import defineValue from '../../fn/define/defineValue';
-import isEmptyObject from'../../fn/isEmptyObject'
+import winDocEle from '../../var/winDocEle';
 
-const injectionArr = [ window, document, ElementProto ];
+import defineValue from '../../fn/define/defineValue';
+import isEmptyObject from'../../fn/isEmptyObject';
 
 /**
  * 获取存储在元素上的整个数据集, 如数据集不存在则创建
@@ -21,18 +20,24 @@ function $_GetDatas( elem ){
  * 将数据读取或存储
  * @param {String} name 需要读取或存储的数据名称, 如果未传入 name, 则返回整个数据集
  * @param {Object} value 存储的数据
+ * @param {Boolean} weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
  * @returns {Object}
  */
-defineValue( injectionArr, '$data', function( name, value ){
+defineValue( winDocEle, '$data', function( name, value, weakRead ){
   const Data = $_GetDatas( this );
 
-  if( arguments.length > 1 ){
-    Data[ name ] = value;
-    return this;
+  // 读取
+  if( arguments.length < 2 || weakRead ){
+    return name == null
+            ? Data
+            : weakRead ? Data.hasOwnProperty( name )
+                          ? Data[ name ]
+                          : Data[ name ] = value
+                       : Data[ name ];
   }
 
-  return name == null ? Data
-                      : Data[ name ];
+  Data[ name ] = value;
+  return this;
 });
 
 /**
@@ -40,7 +45,7 @@ defineValue( injectionArr, '$data', function( name, value ){
  * @param {String} name 需要判断的数据名称, 如果未传入 name, 则是判断是否存有数据
  * @returns {Boolean}
  */
-defineValue( injectionArr, '$hasData', function( name ){
+defineValue( winDocEle, '$hasData', function( name ){
   const Data = $_GetDatas( this );
 
   if( isEmptyObject( Data ) ){
@@ -59,7 +64,7 @@ defineValue( injectionArr, '$hasData', function( name ){
  * @param {String} name 需要删除的数据名称, 多个可使用空格分隔, 如果未传入 names, 则视为删除全部数据
  * @returns {Object}
  */
-defineValue( injectionArr, '$deleteData', function( names ){
+defineValue( winDocEle, '$deleteData', function( names ){
 
   if( names == null ){
     this[ this ] = {};

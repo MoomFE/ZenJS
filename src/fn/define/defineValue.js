@@ -7,6 +7,6 @@ import define from './define';
  * @param {Function} value 添加到 value 选项的方法
  * @param {Object} options 属性选项
  */
-export default function $_DefineValue( obj, name, value, options ){
+export default function defineValue( obj, name, value, options ){
   define( obj, name, { value }, options );
 }

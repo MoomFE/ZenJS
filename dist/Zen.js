@@ -10,13 +10,14 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var Zen = window.Zen = Object.create(null);
-
-  var _window = window,
+  var _window = window;
+  var document = _window.document,
       Element = _window.Element,
       Array = _window.Array;
   var ElementProto = Element.prototype;
   var isArray = Array.isArray;
+
+  var winDocEle = [window, document, ElementProto];
 
   var defineProperty = Object.defineProperty,
       definePropertyOptions = {
@@ -32,12 +33,12 @@
    * @param {Object} options 属性选项
    * @param {Object} options2 属性选项2
    */
-  function $_Define(obj, name, options, options2) {
+  function define(obj, name, options, options2) {
 
     if (isArray(obj)) {
 
       obj.forEach(function (obj) {
-        $_Define(obj, name, options, options2);
+        define(obj, name, options, options2);
       });
 
       return;
@@ -53,8 +54,8 @@
    * @param {Function} value 添加到 value 选项的方法
    * @param {Object} options 属性选项
    */
-  function $_DefineValue(obj, name, value, options) {
-    $_Define(obj, name, { value: value }, options);
+  function defineValue(obj, name, value, options) {
+    define(obj, name, { value: value }, options);
   }
 
   /**
@@ -69,8 +70,6 @@
 
     return true;
   }
-
-  var injectionArr = [window, document, ElementProto];
 
   /**
    * 获取存储在元素上的整个数据集, 如数据集不存在则创建
@@ -88,7 +87,7 @@
    * @param {Object} value 存储的数据
    * @returns {Object}
    */
-  $_DefineValue(injectionArr, '$data', function (name, value) {
+  defineValue(winDocEle, '$data', function (name, value) {
     var Data = $_GetDatas(this);
 
     if (arguments.length > 1) {
@@ -104,7 +103,7 @@
    * @param {String} name 需要判断的数据名称, 如果未传入 name, 则是判断是否存有数据
    * @returns {Boolean}
    */
-  $_DefineValue(injectionArr, '$hasData', function (name) {
+  defineValue(winDocEle, '$hasData', function (name) {
     var Data = $_GetDatas(this);
 
     if (isEmptyObject(Data)) {
@@ -123,7 +122,7 @@
    * @param {String} name 需要删除的数据名称, 多个可使用空格分隔, 如果未传入 names, 则视为删除全部数据
    * @returns {Object}
    */
-  $_DefineValue(injectionArr, '$deleteData', function (names) {
+  defineValue(winDocEle, '$deleteData', function (names) {
 
     if (names == null) {
       this[this] = {};
@@ -137,6 +136,106 @@
     });
 
     return this;
+  });
+
+  /**
+   * ZenJS
+   */
+  var Zen = window.Zen = Object.create(null);
+
+  var guid = 1;
+
+  Object.defineProperty(Zen, 'guid', {
+    get: function get() {
+      return guid++;
+    }
+  });
+
+  var event = Zen.event = {
+
+    global: {},
+
+    add: function add(elem, types, handler, options, selector) {
+
+      console.log(elem, types, handler, options, selector);
+    }
+  };
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+  /**
+   * 判断传入对象是否是对象
+   * @param {Object} obj 需要判断的对象
+   */
+  function isObject(obj) {
+    return obj !== null && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+  }
+
+  // EventTarget
+
+  function returnFalse() {
+    return false;
+  }
+
+  function on(elem, types, selector, options, fn) {
+
+    // on( elem, {}, selector, options )
+    if (isObject(types)) {
+
+      // on( elem, {}, options )
+      if (typeof selector !== 'string') {
+
+        options = options || selector;
+        selector = undefined;
+      }
+      for (var type in types) {
+        on(elem, type, selector, options, types[type]);
+      }
+      return elem;
+    }
+
+    // on( elem, types, fn )
+    if (options == null && fn == null) {
+      fn = selector;
+      options = selector = undefined;
+    }
+    // on( elem, types, selector || options, fn )
+    else if (fn == null) {
+
+        // on( elem, types, selector, fn )
+        if (typeof selector === 'string') {
+          fn = options;
+          options = undefined;
+        }
+        // on( elem, types, options, fn )
+        else {
+            fn = options;
+            options = selector;
+            selector = undefined;
+          }
+      }
+
+    if (fn === false) {
+      fn = returnFalse;
+    } else if (!fn) {
+      return elem;
+    }
+
+    if (options && options.once) {
+      var origFn = fn;
+      fn = function fn(event$$1) {
+        elem.$off(event$$1);
+        return origFn.apply(this, arguments);
+      };
+
+      fn.guid = origFn.guid || Zen.guid;
+    }
+
+    return event.add(elem, types, fn, options, selector), elem;
+  }
+
+  defineValue(winDocEle, '$on', function (types, selector, fn, options) {
+    return on(this, types, selector, options, fn);
   });
 
   Zen.version = '1.0.0-alpha.0';
