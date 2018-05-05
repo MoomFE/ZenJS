@@ -4,7 +4,8 @@
   "description": "ZenJS is a superset of the JavaScript prototype object.",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/rollup --config scripts/build.js"
+    "build": "node_modules/.bin/rollup --config scripts/build.js",
+    "watch": "node_modules/.bin/rollup --config scripts/build.js --watch"
   },
   "keywords": [
     "zen",
@@ -26,6 +27,7 @@
     "rollup": "^0.58.2",
     "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-node-resolve": "^3.3.0",
-    "rollup-plugin-replace": "^2.0.0"
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-watch": "^4.3.1"
   }
 }

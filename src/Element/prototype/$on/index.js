@@ -15,7 +15,7 @@
 import { document } from '../../../var/index';
 import Zen from '../../../var/Zen';
 import winDocEle from '../../../var/winDocEle';
-import event from './event';
+import event from './event/index';
 import rnothtmlwhite from '../../../var/regexp/rnothtmlwhite';
 
 import define from '../../../fn/define/defineValue';
@@ -41,6 +41,10 @@ function safeActiveElement(){
   }catch( err ){}
 }
 
+/**
+ * 将参数各种可能的情况进行梳理调整
+ * 最后交给 Zen.event.add
+ */
 function on( elem, types, selector, options, fn ){
 
   // on( elem, {}, selector, options )
@@ -97,7 +101,7 @@ function on( elem, types, selector, options, fn ){
 
   types = ( types || '' ).match( rnothtmlwhite ) || [ '' ];
 
-  return event.add( elem, types, fn, options, selector ),
+  return Zen.event.add( elem, types, fn, options, selector ),
          elem;
 }
 
