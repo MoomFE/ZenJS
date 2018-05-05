@@ -2,6 +2,7 @@ import winDocEle from '../../var/winDocEle';
 
 import defineValue from '../../fn/define/defineValue';
 import isEmptyObject from'../../fn/isEmptyObject';
+import isObject from '../../fn/isObject';
 
 /**
  * 获取存储在元素上的整个数据集, 如数据集不存在则创建
@@ -23,10 +24,21 @@ function $_GetDatas( elem ){
  * @param {Boolean} weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
  * @returns {Object}
  */
-defineValue( winDocEle, '$data', function( name, value, weakRead ){
+defineValue( winDocEle, '$data', function $data( name, value, weakRead ){
   const Data = $_GetDatas( this );
 
+  // $data( {} )
+  // $data( {}, weakRead )
+  if( isObject( name ) ){
+    for( let _name in name ){
+      $data.call( this, _name, name[ _name ], value );
+    }
+    return this;
+  }
+
   // 读取
+  // $data( name )
+  // $data( name, value, true )
   if( arguments.length < 2 || weakRead ){
     return name == null
             ? Data
@@ -36,6 +48,7 @@ defineValue( winDocEle, '$data', function( name, value, weakRead ){
                        : Data[ name ];
   }
 
+  // $data( name, value )
   Data[ name ] = value;
   return this;
 });

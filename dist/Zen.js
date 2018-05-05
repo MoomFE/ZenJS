@@ -74,6 +74,16 @@
     return true;
   }
 
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+  /**
+   * 判断传入对象是否是对象
+   * @param {Object} obj 需要判断的对象
+   */
+  function isObject(obj) {
+    return obj !== null && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+  }
+
   /**
    * 获取存储在元素上的整个数据集, 如数据集不存在则创建
    * @param {Element} elem 
@@ -91,14 +101,26 @@
    * @param {Boolean} weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
    * @returns {Object}
    */
-  defineValue(winDocEle, '$data', function (name, value, weakRead) {
+  defineValue(winDocEle, '$data', function $data(name, value, weakRead) {
     var Data = $_GetDatas(this);
 
+    // $data( {} )
+    // $data( {}, weakRead )
+    if (isObject(name)) {
+      for (var _name in name) {
+        $data.call(this, _name, name[_name], value);
+      }
+      return this;
+    }
+
     // 读取
+    // $data( name )
+    // $data( name, value, true )
     if (arguments.length < 2 || weakRead) {
       return name == null ? Data : weakRead ? Data.hasOwnProperty(name) ? Data[name] : Data[name] = value : Data[name];
     }
 
+    // $data( name, value )
     Data[name] = value;
     return this;
   });
@@ -142,16 +164,6 @@
 
     return this;
   });
-
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-  /**
-   * 判断传入对象是否是对象
-   * @param {Object} obj 需要判断的对象
-   */
-  function isObject(obj) {
-    return obj !== null && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
-  }
 
   var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
