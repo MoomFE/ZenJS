@@ -1,3 +1,8 @@
 import { document, ElementProto } from './index';
 
-export default [ window, document, ElementProto ];
+/**
+ * [ winodw, document, Element.prototype ]
+ */
+const winDocEle = [ window, document, ElementProto ];
+
+export default winDocEle;
