@@ -1,8 +1,8 @@
-import winDocEle from '../../var/winDocEle';
+import { winDocEle } from '../../../shared/index';
 
-import defineValue from '../../fn/define/defineValue';
-import isEmptyObject from'../../fn/isEmptyObject';
-import isObject from '../../fn/isObject';
+import defineValue from '../../../shared/util/defineValue';
+import isEmptyObject from'../../../shared/util/isEmptyObject';
+import isObject from '../../../shared/util/isObject';
 
 /**
  * 获取存储在元素上的整个数据集, 如数据集不存在则创建

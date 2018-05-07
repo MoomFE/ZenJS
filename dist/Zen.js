@@ -13,40 +13,27 @@
   var _window = window;
   var document = _window.document,
       Element = _window.Element,
-      Array = _window.Array;
-  var ElementProto = Element.prototype;
-  var isArray = Array.isArray;
-
-  /**
-   * [ winodw, document, Element.prototype ]
-   */
+      Array = _window.Array,
+      ElementProto = Element.prototype,
+      isArray = Array.isArray;
   var winDocEle = [window, document, ElementProto];
 
-  var defineProperty = Object.defineProperty,
-      definePropertyOptions = {
+  var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
+
+  var defineProperty = Object.defineProperty;
+  var definePropertyOptions = {
     configurable: true, // 删除/定义
     enumerable: false, // 枚举
-    writable: true // 写
+    writable: true // 写入
   };
 
-  /**
-   * 定义对象属性, 有默认配置
-   * @param {Array} obj 需要添加属性的元素, 可为数组
-   * @param {String} name 属性名
-   * @param {Object} options 属性选项
-   * @param {Object} options2 属性选项2
-   */
   function define(obj, name, options, options2) {
-
     if (isArray(obj)) {
-
       obj.forEach(function (obj) {
         define(obj, name, options, options2);
       });
-
       return;
     }
-
     defineProperty(obj, name, Object.assign({}, definePropertyOptions, options, options2));
   }
 
@@ -66,12 +53,9 @@
    * @param {Object} obj 需要判断的对象
    */
   function isEmptyObject(obj) {
-
     for (var a in obj) {
       return false;
-    }
-
-    return true;
+    }return true;
   }
 
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -165,20 +149,11 @@
     return this;
   });
 
-  var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
-
   /**
    * ZenJS
    */
   var Zen = window.Zen = Object.create(null);
-
-  var guid = 1;
-
-  Object.defineProperty(Zen, 'guid', {
-    get: function get() {
-      return guid++;
-    }
-  });
+  Zen.version = '1.0.0-alpha.0';
 
   /**
    * 事件处理 => 添加事件2: 参数处理
@@ -257,10 +232,8 @@
   /**
    * 事件处理 => 添加事件1: 获取参数
    */
-  defineValue(winDocEle, '$on', function (types, selector, fn, options) {
+  define(winDocEle, '$on', function (types, selector, fn, options) {
     return on(this, types, selector, options, fn);
   });
-
-  Zen.version = '1.0.0-alpha.0';
 
 })));

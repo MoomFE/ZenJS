@@ -1,6 +1,6 @@
-import isObject from '../../../../fn/isObject';
-import rnothtmlwhite from '../../../../var/regexp/rnothtmlwhite';
-import Zen from '../../../../var/Zen';
+import isObject from '../../../../shared/util/isObject';
+import { rnothtmlwhite } from '../../../../shared/index';
+import Zen from '../../../../shared//zen';
 
 /**
  * 事件处理 => 添加事件2: 参数处理

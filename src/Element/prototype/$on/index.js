@@ -12,8 +12,8 @@
 // target.$on( types, selector, listener, options )
 // target.$on( types, selector, options, listener )
 
-import define from '../../../fn/define/defineValue';
-import winDocEle from '../../../var/winDocEle';
+import define from '../../../shared/util/define';
+import { winDocEle } from '../../../shared/index';
 import on from './access/on';
 
 /**
