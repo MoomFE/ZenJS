@@ -99,13 +99,15 @@ export default function on( elem, types, selector, fn, options ){
     delete options.once;
   }
 
-  if( !options.hasOwnProperty('capture') ){
-    options.capture = false;
+  if( options.hasOwnProperty('capture') ){
+    if( options.capture ) options.capture = true;
+    else delete options.capture;
   }
 
   if( options.hasOwnProperty('passive') ){
-    if( !options.passive ) delete options.passive;
     if( !supportsPassiveEvent ) delete options.passive;
+    if( options.passive ) options.passive = true;
+    else delete options.passive;
   }
 
   return event.add( elem, types, selector, fn, options ),
