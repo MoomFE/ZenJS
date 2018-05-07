@@ -1,7 +1,8 @@
-export const
-  { document, Element, Array } = window,
-  { prototype: ElementProto } = Element,
-  { isArray } = Array;
+export const { prototype: ElementProto } = Element;
+
+export const { isArray } = Array;
+
+export const { defineProperty } = Object;
 
 /**
  * [ winodw, document, Element.prototype ]

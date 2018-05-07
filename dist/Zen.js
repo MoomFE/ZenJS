@@ -10,17 +10,14 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var _window = window;
-  var document = _window.document,
-      Element = _window.Element,
-      Array = _window.Array,
-      ElementProto = Element.prototype,
-      isArray = Array.isArray;
+  var _Element = Element;
+  var ElementProto = _Element.prototype;
+  var isArray = Array.isArray;
+  var defineProperty = Object.defineProperty;
   var winDocEle = [window, document, ElementProto];
 
   var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
-  var defineProperty = Object.defineProperty;
   var definePropertyOptions = {
     configurable: true, // 删除/定义
     enumerable: false, // 枚举
@@ -55,7 +52,8 @@
   function isEmptyObject(obj) {
     for (var a in obj) {
       return false;
-    }return true;
+    }
+    return true;
   }
 
   var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -150,79 +148,195 @@
   });
 
   /**
+   * 判断传入对象是否是方法
+   * @param {Object} obj 需要判断的对象
+   */
+  function isString(obj) {
+    return typeof obj === 'string';
+  }
+
+  /**
+   * 判断传入对象是否是逻辑值
+   * @param {Object} obj 需要判断的对象
+   */
+  function isBoolean(obj) {
+    return typeof obj === 'boolean';
+  }
+
+  /**
    * ZenJS
    */
   var Zen = window.Zen = Object.create(null);
   Zen.version = '1.0.0-alpha.0';
 
   /**
+   * 事件处理 => 添加事件3: 绑定事件
+   * @param {Element} elem 需要绑定事件的对象
+   * @param {Array} types 需要绑定的事件集
+   * @param {String} selector 事件委托的选择器
+   * @param {Function} handler 绑定的事件
+   * @param {Object} options 事件绑定参数
+   */
+  function add (elem, types, selector, handler, options) {
+
+    var
+    /** 存放当前元素下的所有事件 */
+    events = elem.$data('events', {}, true),
+
+    /** 事件列表下的命名空间 */
+    eventsNamespace = Object.keys(options).sort().join('_'),
+
+    /** 事件总数 */
+    length = types.length;
+
+    console.log(eventsNamespace);
+
+    /*
+      events: {
+        click: {
+          default: [
+            // no options
+          ],
+          capture: [],
+          passive: [],
+          'capture passive': []
+        },
+        focus: ...
+      }
+    */
+
+    // while( typeLength-- ){
+    // }
+  }
+
+  var event = Zen.event = {
+    global: {},
+    add: add
+  };
+
+  var supportsPassiveEvent = false;
+
+  try {
+    var options = {};
+
+    defineProperty(options, 'passive', {
+      get: function get() {
+        supportsPassiveEvent = true;
+      }
+    });
+
+    window.addEventListener('test-passive-event', null, options);
+  } catch (e) {}
+
+  /**
    * 事件处理 => 添加事件2: 参数处理
    * @param {Element} elem 需要绑定事件的对象
    * @param {String} types 需要绑定的事件集
-   * @param {String} selector 事件委托的选择器 
-   * @param {Object} options 事件绑定参数
+   * @param {String} selector 事件委托的选择器
    * @param {Function} fn 绑定的事件
+   * @param {Object} options 事件绑定参数
    */
-  function on(elem, types, selector, options, fn) {
+  function on(elem, types, selector, fn, options) {
+    var events = void 0;
 
-    // on( elem, {}, selector, options )
+    // on( elem, { type: fn || Boolean } )
+    // on( elem, { type: fn || Boolean }, options )
+    // on( elem, { type: fn || Boolean }, selector )
+    // on( elem, { type: fn || Boolean }, selector, options )
     if (isObject(types)) {
+      events = types;
 
-      // on( elem, {}, options )
-      if (typeof selector !== 'string') {
-        options = options || selector;
+      if (isString(selector)) {
+        options = fn;
+      } else {
+        options = selector;
         selector = undefined;
       }
-
-      for (var type in types) {
-        on(elem, type, selector, options, types[type]);
+    }
+    // on( elem, selector, { type: fn || Boolean } )
+    // on( elem, selector, { type: fn || Boolean }, options )
+    else if (isObject(selector)) {
+        events = selector;
+        selector = types;
+        options = fn;
       }
 
+    if (events) {
+      for (var type in events) {
+        on(elem, type, selector, events[type], options);
+      }
       return elem;
     }
 
-    // on( elem, types, fn )
-    if (options == null && fn == null) {
-      fn = selector;
-      options = selector = undefined;
-    }
-    // on( elem, types, selector || options, fn )
-    else if (fn == null) {
+    if (types == false || types == null) {
+      return;
+    } else {
+      types = types.match(rnothtmlwhite);
 
-        // on( elem, types, selector, fn )
-        if (typeof selector === 'string') {
-          fn = options;
-          options = undefined;
-        }
-        // on( elem, types, options, fn )
-        else {
-            fn = options;
-            options = selector;
-            selector = undefined;
-          }
+      if (types == null || types.length === 0) {
+        return;
+      }
+    }
+
+    // on( elem, types, fn || Boolean )
+    // on( elem, types, fn || Boolean, selector )
+    // on( elem, types, fn || Boolean, options || useCapture )
+    // on( elem, types, fn || Boolean, selector, options || useCapture )
+    if (!isString(selector)) {
+      var _ref = [selector, fn];
+      fn = _ref[0];
+      selector = _ref[1];
+
+
+      if (!isString(selector)) {
+        options = selector;
+        selector = undefined;
+      }
+    }
+
+    if (fn == null) {
+      return;
+    }
+
+    if (isBoolean(fn)) {
+      fn = fn ? returnTrue : returnFalse;
+    }
+
+    // useCapture
+    if (isBoolean(options)) {
+      options = { capture: options };
+    }
+
+    options = options || {};
+
+    if (options.hasOwnProperty('once')) {
+      if (options.once) {
+        var origFn = fn;
+
+        fn = function fn(event$$1) {
+          elem.$off(event$$1);
+          return origFn.apply(this, arguments);
+        };
       }
 
-    if (fn === false) {
-      fn = returnFalse;
-    } else if (!fn) {
-      return elem;
+      delete options.once;
     }
 
-    if (isObject(options) && options.once) {
-      var origFn = fn;
-      fn = function fn(event) {
-        elem.$off(event);
-        return origFn.apply(this, arguments);
-      };
-
-      fn.guid = origFn.guid || Zen.guid;
+    if (!options.hasOwnProperty('capture')) {
+      options.capture = false;
     }
 
-    types = (types || '').match(rnothtmlwhite) || [''];
+    if (options.hasOwnProperty('passive')) {
+      if (!options.passive) delete options.passive;
+      if (!supportsPassiveEvent) delete options.passive;
+    }
 
-    return Zen.event.add(elem, types, fn, options, selector), elem;
+    return event.add(elem, types, selector, fn, options), elem;
   }
 
+  function returnTrue() {
+    return true;
+  }
   function returnFalse() {
     return false;
   }
@@ -232,8 +346,8 @@
   /**
    * 事件处理 => 添加事件1: 获取参数
    */
-  define(winDocEle, '$on', function (types, selector, fn, options) {
-    return on(this, types, selector, options, fn);
+  defineValue(winDocEle, '$on', function (types, selector, fn, options) {
+    return on(this, types, selector, fn, options);
   });
 
 })));

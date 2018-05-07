@@ -1,6 +1,5 @@
-import { isArray } from '../index';
+import { isArray, defineProperty } from '../index';
 
-const defineProperty = Object.defineProperty;
 const definePropertyOptions = {
   configurable: true,// 删除/定义
   enumerable: false,// 枚举
