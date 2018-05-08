@@ -1,6 +1,8 @@
 export const { prototype: ElementProto } = Element;
 
-export const { isArray } = Array;
+export const { isArray, prototype: ArrayProto } = Array;
+
+export const { concat } = ArrayProto;
 
 export const { defineProperty } = Object;
 

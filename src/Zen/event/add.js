@@ -1,6 +1,6 @@
-import { rtypenamespace } from "../../shared";
+import { rtypenamespace, concat } from '../../shared/index';
 import isEmptyObject from '../../shared/util/isEmptyObject';
-import Zen from "../../shared/zen";
+import Zen from '../../shared/zen';
 
 /**
  * 事件处理 => 添加事件3: 绑定事件
@@ -15,8 +15,6 @@ export default function add( elem, types, selector, listener, options ){
   let
     /** 存放当前元素下的所有事件 */
     events = elem.$data( 'events', {}, true ),
-    /** 事件列表下的命名空间 */
-    eventsNamespace = isEmptyObject( options ) ? 'default' : Object.keys( options ).sort().join(','),
     /** 事件总数 */
     length = types.length;
 
@@ -32,41 +30,32 @@ export default function add( elem, types, selector, listener, options ){
     }
 
     
-    let
+    /** 该事件的所有参数 */
+    const handleOptions = {
+      elem,
+      type,
+      listener,
+      selector,
+      options,
       /** 命名空间 */
-      namespace = ( tmp[ 2 ] || '' ).split( '.' ).sort(),
-      /** 该事件的所有参数 */
-      handleOptions = {
-        type,
-        listener,
-        selector,
-        namespace,
-        options
-      },
-      /** 当前元素下当前事件当前命名空间下的所有事件的参数 */
-      handlers = events[ type ] || ( events[ type ] = {} );
+      namespace: ( tmp[ 2 ] || '' ).split( '.' ).sort(),
+      handle: function(){
+        return Zen.event.dispatch.apply( handleOptions, arguments );
+      }
+    };
 
-    if( handlers[ eventsNamespace ] ){
-      handlers = handlers[ eventsNamespace ];
+    (
+      events[ type ] || (
+        events[ type ] = []
+      )
+    ).push( handleOptions );
+
+    if( options.passive ){
+      elem.addEventListener( type, handleOptions.handle, options );
     }else{
-      handlers = handlers[ eventsNamespace ] = [];
-      handlers.delegateCount = 0;
-      handlers.handle = function( event ){
-        return Zen.event.dispatch.apply( this, arguments );
-      }
-
-      if( options.passive ){
-        elem.addEventListener( type, handlers.handle, options );
-      }else{
-        elem.addEventListener( type, handlers.handle, options.capture || false );
-      }
+      elem.addEventListener( type, handleOptions.handle, options.capture || false );
     }
 
-    if( selector ){
-      handlers.splice( handlers.delegateCount++, 0, handleOptions );
-    }else{
-      handlers.push( handleOptions );
-    }
   }
 
 }

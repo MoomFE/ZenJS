@@ -1,8 +1,12 @@
 import isObject from '../../shared/util/isObject';
 import isString from '../../shared/util/isString';
 import isBoolean from '../../shared/util/isBoolean';
-import { rnothtmlwhite } from '../../shared/index';
+
+import returnFalse from '../../shared/util/returnFalse';
+import returnTrue from '../../shared/util/returnTrue';
+
 import event from '../../Zen/event/index';
+import { rnothtmlwhite } from '../../shared/index';
 import { supportsPassiveEvent } from '../../shared/supports/passive-event';
 
 
@@ -48,13 +52,13 @@ export default function on( elem, types, selector, listener, options ){
   }
 
   if( types == false || types == null ){
-    return;
+    return elem;
   }
   else{
     types = types.match( rnothtmlwhite );
 
     if( types == null || types.length === 0 ){
-      return;
+      return elem;
     }
   }
 
@@ -72,11 +76,15 @@ export default function on( elem, types, selector, listener, options ){
   }
 
   if( listener == null ){
-    return;
+    return elem;
   }
 
   if( isBoolean( listener ) ){
     listener = listener ? returnTrue : returnFalse;
+  }
+
+  if( !listener ){
+    return elem;
   }
 
   // useCapture
@@ -108,11 +116,4 @@ export default function on( elem, types, selector, listener, options ){
 
   return event.add( elem, types, selector, listener, options ),
          elem;
-}
-
-function returnTrue(){
-  return true;
-}
-function returnFalse(){
-  return false;
 }

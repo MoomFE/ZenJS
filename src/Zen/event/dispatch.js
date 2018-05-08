@@ -1,5 +1,5 @@
 
 
-export default function dispatch( nativeEvent ){
-
+export default function dispatch( handleOptions, nativeEvent ){
+  console.log( this, arguments )
 }
