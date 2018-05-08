@@ -18,6 +18,6 @@ import on from './access/on';
 /**
  * 事件处理 => 添加事件1: 获取参数
  */
-define( EventTarget.prototype , '$on', function( types, selector, fn, options ){
-  return on( this, types, selector, fn, options );
+define( EventTarget.prototype , '$on', function( types, selector, listener, options ){
+  return on( this, types, selector, listener, options );
 });

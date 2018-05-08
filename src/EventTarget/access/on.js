@@ -11,33 +11,33 @@ import { supportsPassiveEvent } from '../../shared/supports/passive-event';
  * @param {Element} elem 需要绑定事件的对象
  * @param {String} types 需要绑定的事件集
  * @param {String} selector 事件委托的选择器
- * @param {Function} fn 绑定的事件
+ * @param {Function} listener 绑定的事件
  * @param {Object} options 事件绑定参数
  */
-export default function on( elem, types, selector, fn, options ){
+export default function on( elem, types, selector, listener, options ){
   let events;
 
-  // on( elem, { type: fn || Boolean } )
-  // on( elem, { type: fn || Boolean }, options )
-  // on( elem, { type: fn || Boolean }, selector )
-  // on( elem, { type: fn || Boolean }, selector, options )
+  // on( elem, { type: listener || Boolean } )
+  // on( elem, { type: listener || Boolean }, options )
+  // on( elem, { type: listener || Boolean }, selector )
+  // on( elem, { type: listener || Boolean }, selector, options )
   if( isObject( types ) ){
     events = types;
 
     if( isString( selector ) ){
-      options = fn;
+      options = listener;
     }
     else{
       options = selector;
       selector = undefined;
     }
   }
-  // on( elem, selector, { type: fn || Boolean } )
-  // on( elem, selector, { type: fn || Boolean }, options )
+  // on( elem, selector, { type: listener || Boolean } )
+  // on( elem, selector, { type: listener || Boolean }, options )
   else if( isObject( selector ) ){
     events = selector;
     selector = types;
-    options = fn;
+    options = listener;
   }
 
   if( events ){
@@ -58,12 +58,12 @@ export default function on( elem, types, selector, fn, options ){
     }
   }
 
-  // on( elem, types, fn || Boolean )
-  // on( elem, types, fn || Boolean, selector )
-  // on( elem, types, fn || Boolean, options || useCapture )
-  // on( elem, types, fn || Boolean, selector, options || useCapture )
+  // on( elem, types, listener || Boolean )
+  // on( elem, types, listener || Boolean, selector )
+  // on( elem, types, listener || Boolean, options || useCapture )
+  // on( elem, types, listener || Boolean, selector, options || useCapture )
   if( !isString( selector ) ){
-    [ fn, selector ] = [ selector, fn ];
+    [ listener, selector ] = [ selector, listener ];
 
     if( !isString( selector ) ){
       options = selector;
@@ -71,12 +71,12 @@ export default function on( elem, types, selector, fn, options ){
     }
   }
 
-  if( fn == null ){
+  if( listener == null ){
     return;
   }
 
-  if( isBoolean( fn ) ){
-    fn = fn ? returnTrue : returnFalse;
+  if( isBoolean( listener ) ){
+    listener = listener ? returnTrue : returnFalse;
   }
 
   // useCapture
@@ -87,15 +87,16 @@ export default function on( elem, types, selector, fn, options ){
   options = options || {};
 
   Object.keys( options ).forEach( key => {
-    options[ key ] || delete options[ key ];
+    options[ key ] ? options[ key ] = true
+                   : delete options[ key ];
   });
 
   if( 'once' in options ){
-    let origFn = fn;
+    let origListener = listener;
 
-    fn = function( event ){
+    listener = function( event ){
       elem.$off( event );
-      return origFn.apply( this, arguments );
+      return origListener.apply( this, arguments );
     }
 
     delete options.once;
@@ -105,7 +106,7 @@ export default function on( elem, types, selector, fn, options ){
     delete options.passive;
   }
 
-  return event.add( elem, types, selector, fn, options ),
+  return event.add( elem, types, selector, listener, options ),
          elem;
 }
 

@@ -40,12 +40,9 @@ defineValue( winDocEle, '$data', function $data( name, value, weakRead ){
   // $data( name )
   // $data( name, value, true )
   if( arguments.length < 2 || weakRead ){
-    return name == null
-            ? Data
-            : weakRead ? Data.hasOwnProperty( name )
-                          ? Data[ name ]
-                          : Data[ name ] = value
-                       : Data[ name ];
+    if( name == null ) return Data;
+    if( weakRead && !( name in Data ) ) return Data[ name ] = value;
+    return Data[ name ];
   }
 
   // $data( name, value )
@@ -69,7 +66,7 @@ defineValue( winDocEle, '$hasData', function( name ){
     return true;
   }
 
-  return Data.hasOwnProperty( name );
+  return name in Data;
 });
 
 /**

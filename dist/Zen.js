@@ -18,6 +18,8 @@
 
   var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
+  var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
+
   var definePropertyOptions = {
     configurable: true, // 删除/定义
     enumerable: false, // 枚举
@@ -99,7 +101,9 @@
     // $data( name )
     // $data( name, value, true )
     if (arguments.length < 2 || weakRead) {
-      return name == null ? Data : weakRead ? Data.hasOwnProperty(name) ? Data[name] : Data[name] = value : Data[name];
+      if (name == null) return Data;
+      if (weakRead && !(name in Data)) return Data[name] = value;
+      return Data[name];
     }
 
     // $data( name, value )
@@ -123,7 +127,7 @@
       return true;
     }
 
-    return Data.hasOwnProperty(name);
+    return name in Data;
   });
 
   /**
@@ -174,44 +178,83 @@
    * @param {Element} elem 需要绑定事件的对象
    * @param {Array} types 需要绑定的事件集
    * @param {String} selector 事件委托的选择器
-   * @param {Function} handler 绑定的事件
+   * @param {Function} listener 绑定的事件
    * @param {Object} options 事件绑定参数
    */
-  function add (elem, types, selector, handler, options) {
+  function add(elem, types, selector, listener, options) {
 
     var
     /** 存放当前元素下的所有事件 */
     events = elem.$data('events', {}, true),
 
     /** 事件列表下的命名空间 */
-    eventsNamespace = isEmptyObject(options) ? '' : Object.keys(options).sort().join(','),
+    eventsNamespace = isEmptyObject(options) ? 'default' : Object.keys(options).sort().join(','),
 
     /** 事件总数 */
     length = types.length;
 
-    console.log(eventsNamespace);
+    while (length--) {
+      var
+      /** 分离事件名称和命名空间 */
+      tmp = rtypenamespace.exec(types[length]) || [''],
 
-    /*
-      events: {
-        click: {
-          default: [
-            // no options
-          ],
-          capture: [],
-          passive: [],
-          'capture passive': []
-        },
-        focus: ...
+      /** 事件名称 */
+      type = tmp[1];
+
+      if (!type) {
+        continue;
       }
-    */
 
-    // while( typeLength-- ){
-    // }
+      var
+      /** 命名空间 */
+      namespace = (tmp[2] || '').split('.').sort(),
+
+      /** 该事件的所有参数 */
+      handleOptions = {
+        type: type,
+        listener: listener,
+        selector: selector,
+        namespace: namespace,
+        options: options
+      },
+
+      /** 当前元素下当前事件当前命名空间下的所有事件的参数 */
+      handlers = events[type] || (events[type] = {});
+
+      if (handlers[eventsNamespace]) {
+        handlers = handlers[eventsNamespace];
+      } else {
+        handlers = handlers[eventsNamespace] = [];
+        handlers.delegateCount = 0;
+        handlers.handle = function (event) {
+          return Zen.event.dispatch.apply(this, arguments);
+        };
+
+        if (options.passive) {
+          elem.addEventListener(type, handlers.handle, options);
+        } else {
+          elem.addEventListener(type, handlers.handle, options.capture || false);
+        }
+      }
+
+      if (selector) {
+        handlers.splice(handlers.delegateCount++, 0, handleOptions);
+      } else {
+        handlers.push(handleOptions);
+      }
+    }
   }
 
+  function fix(originalEvent) {
+    return originalEvent[Zen.version] ? originalEvent : Zen.Event(originalEvent);
+  }
+
+  function dispatch(nativeEvent) {}
+
   var event = Zen.event = {
-    global: {},
-    add: add
+    add: add,
+    fix: fix,
+    dispatch: dispatch
   };
 
   var supportsPassiveEvent = false;
@@ -232,32 +275,32 @@
    * @param {Element} elem 需要绑定事件的对象
    * @param {String} types 需要绑定的事件集
    * @param {String} selector 事件委托的选择器
-   * @param {Function} fn 绑定的事件
+   * @param {Function} listener 绑定的事件
    * @param {Object} options 事件绑定参数
    */
-  function on(elem, types, selector, fn, options) {
+  function on(elem, types, selector, listener, options) {
     var events = void 0;
 
-    // on( elem, { type: fn || Boolean } )
-    // on( elem, { type: fn || Boolean }, options )
-    // on( elem, { type: fn || Boolean }, selector )
-    // on( elem, { type: fn || Boolean }, selector, options )
+    // on( elem, { type: listener || Boolean } )
+    // on( elem, { type: listener || Boolean }, options )
+    // on( elem, { type: listener || Boolean }, selector )
+    // on( elem, { type: listener || Boolean }, selector, options )
     if (isObject(types)) {
       events = types;
 
       if (isString(selector)) {
-        options = fn;
+        options = listener;
       } else {
         options = selector;
         selector = undefined;
       }
     }
-    // on( elem, selector, { type: fn || Boolean } )
-    // on( elem, selector, { type: fn || Boolean }, options )
+    // on( elem, selector, { type: listener || Boolean } )
+    // on( elem, selector, { type: listener || Boolean }, options )
     else if (isObject(selector)) {
         events = selector;
         selector = types;
-        options = fn;
+        options = listener;
       }
 
     if (events) {
@@ -277,13 +320,13 @@
       }
     }
 
-    // on( elem, types, fn || Boolean )
-    // on( elem, types, fn || Boolean, selector )
-    // on( elem, types, fn || Boolean, options || useCapture )
-    // on( elem, types, fn || Boolean, selector, options || useCapture )
+    // on( elem, types, listener || Boolean )
+    // on( elem, types, listener || Boolean, selector )
+    // on( elem, types, listener || Boolean, options || useCapture )
+    // on( elem, types, listener || Boolean, selector, options || useCapture )
     if (!isString(selector)) {
-      var _ref = [selector, fn];
-      fn = _ref[0];
+      var _ref = [selector, listener];
+      listener = _ref[0];
       selector = _ref[1];
 
 
@@ -293,12 +336,12 @@
       }
     }
 
-    if (fn == null) {
+    if (listener == null) {
       return;
     }
 
-    if (isBoolean(fn)) {
-      fn = fn ? returnTrue : returnFalse;
+    if (isBoolean(listener)) {
+      listener = listener ? returnTrue : returnFalse;
     }
 
     // useCapture
@@ -309,15 +352,15 @@
     options = options || {};
 
     Object.keys(options).forEach(function (key) {
-      options[key] || delete options[key];
+      options[key] ? options[key] = true : delete options[key];
     });
 
     if ('once' in options) {
-      var origFn = fn;
+      var origListener = listener;
 
-      fn = function fn(event$$1) {
+      listener = function listener(event$$1) {
         elem.$off(event$$1);
-        return origFn.apply(this, arguments);
+        return origListener.apply(this, arguments);
       };
 
       delete options.once;
@@ -327,7 +370,7 @@
       delete options.passive;
     }
 
-    return event.add(elem, types, selector, fn, options), elem;
+    return event.add(elem, types, selector, listener, options), elem;
   }
 
   function returnTrue() {
@@ -342,8 +385,8 @@
   /**
    * 事件处理 => 添加事件1: 获取参数
    */
-  defineValue(EventTarget.prototype, '$on', function (types, selector, fn, options) {
-    return on(this, types, selector, fn, options);
+  defineValue(EventTarget.prototype, '$on', function (types, selector, listener, options) {
+    return on(this, types, selector, listener, options);
   });
 
 })));
