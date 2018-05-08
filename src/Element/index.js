@@ -1,1 +1,1 @@
-import './prototype/index';
+import './$data/index';

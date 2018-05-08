@@ -3,15 +3,14 @@ import { defineProperty } from '../index';
 let supportsPassiveEvent = false;
 
 try{
-  let options = {};
 
-  defineProperty( options, 'passive', {
+  var options = defineProperty( {}, 'passive', {
     get: () => {
-      supportsPassiveEvent = true
+      supportsPassiveEvent = true;
     }
   });
 
-  window.addEventListener( 'test-passive-event', null, options );
+  window.addEventListener( 'test', null, options );
   
 }catch(e){}
 

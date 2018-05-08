@@ -217,15 +217,14 @@
   var supportsPassiveEvent = false;
 
   try {
-    var options = {};
 
-    defineProperty(options, 'passive', {
+    var options = defineProperty({}, 'passive', {
       get: function get() {
         supportsPassiveEvent = true;
       }
     });
 
-    window.addEventListener('test-passive-event', null, options);
+    window.addEventListener('test', null, options);
   } catch (e) {}
 
   /**
@@ -309,26 +308,19 @@
 
     options = options || {};
 
-    if (options.hasOwnProperty('once')) {
-      if (options.once) {
-        var origFn = fn;
+    if ('once' in options) {
+      var origFn = fn;
 
-        fn = function fn(event$$1) {
-          elem.$off(event$$1);
-          return origFn.apply(this, arguments);
-        };
-      }
+      fn = function fn(event$$1) {
+        elem.$off(event$$1);
+        return origFn.apply(this, arguments);
+      };
 
       delete options.once;
     }
 
-    if (!options.hasOwnProperty('capture')) {
-      options.capture = false;
-    }
-
-    if (options.hasOwnProperty('passive')) {
-      if (!options.passive) delete options.passive;
-      if (!supportsPassiveEvent) delete options.passive;
+    if ('passive' in options && !supportsPassiveEvent) {
+      delete options.passive;
     }
 
     return event.add(elem, types, selector, fn, options), elem;
@@ -346,7 +338,7 @@
   /**
    * 事件处理 => 添加事件1: 获取参数
    */
-  defineValue(winDocEle, '$on', function (types, selector, fn, options) {
+  defineValue(EventTarget.prototype, '$on', function (types, selector, fn, options) {
     return on(this, types, selector, fn, options);
   });
 

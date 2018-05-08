@@ -1,9 +1,9 @@
-import isObject from '../../../../shared/util/isObject';
-import isString from '../../../../shared/util/isString';
-import isBoolean from '../../../../shared/util/isBoolean';
-import { rnothtmlwhite } from '../../../../shared/index';
-import event from '../../../../Zen/event/index';
-import { supportsPassiveEvent } from '../../../../shared/supports/passive-event';
+import isObject from '../../shared/util/isObject';
+import isString from '../../shared/util/isString';
+import isBoolean from '../../shared/util/isBoolean';
+import { rnothtmlwhite } from '../../shared/index';
+import event from '../../Zen/event/index';
+import { supportsPassiveEvent } from '../../shared/supports/passive-event';
 
 
 /**
@@ -86,28 +86,23 @@ export default function on( elem, types, selector, fn, options ){
 
   options = options || {};
 
-  if( options.hasOwnProperty('once') ){
-    if( options.once ){
-      let origFn = fn;
+  Object.keys( options, key => {
+    options[ key ] || delete options[ key ];
+  });
 
-      fn = function( event ){
-        elem.$off( event );
-        return origFn.apply( this, arguments );
-      }
+  if( 'once' in options ){
+    let origFn = fn;
+
+    fn = function( event ){
+      elem.$off( event );
+      return origFn.apply( this, arguments );
     }
 
     delete options.once;
   }
 
-  if( options.hasOwnProperty('capture') ){
-    if( options.capture ) options.capture = true;
-    else delete options.capture;
-  }
-
-  if( options.hasOwnProperty('passive') ){
-    if( !supportsPassiveEvent ) delete options.passive;
-    if( options.passive ) options.passive = true;
-    else delete options.passive;
+  if( 'passive' in options && !supportsPassiveEvent ){
+    delete options.passive;
   }
 
   return event.add( elem, types, selector, fn, options ),
