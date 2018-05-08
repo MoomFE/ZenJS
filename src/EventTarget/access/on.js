@@ -86,7 +86,7 @@ export default function on( elem, types, selector, fn, options ){
 
   options = options || {};
 
-  Object.keys( options, key => {
+  Object.keys( options ).forEach( key => {
     options[ key ] || delete options[ key ];
   });
 

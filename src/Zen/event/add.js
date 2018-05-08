@@ -15,7 +15,7 @@ export default function( elem, types, selector, handler, options ){
     /** 存放当前元素下的所有事件 */
     events = elem.$data( 'events', {}, true ),
     /** 事件列表下的命名空间 */
-    eventsNamespace = Object.keys( options ).sort().join('_'),
+    eventsNamespace = isEmptyObject( options ) ? '' : Object.keys( options ).sort().join(','),
     /** 事件总数 */
     length = types.length;
 
