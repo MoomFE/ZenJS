@@ -1,4 +1,4 @@
-     .babelrc
+> # .babelrc
 
 > "check-es2015-constants" : const 常量
 
