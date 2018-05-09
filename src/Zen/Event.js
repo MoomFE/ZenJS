@@ -19,7 +19,7 @@ Zen.Event.prototype = {
   // 是否调用过 stopImmediatePropagation 方法
   isImmediatePropagationStopped: returnFalse,
   // 是否是模拟的 event
-  isSimulated: false,
+  isSimulated: false
 };
 
 [
