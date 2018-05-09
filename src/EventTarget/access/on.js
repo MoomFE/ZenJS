@@ -1,13 +1,13 @@
+import event from '../../Zen/event/index';
+import rnothtmlwhite from '../../shared/const/rnothtmlwhite';
+import { supportsPassiveEvent } from '../../shared/supports/passive-event';
+
 import isObject from '../../shared/util/isObject';
 import isString from '../../shared/util/isString';
 import isBoolean from '../../shared/util/isBoolean';
 
 import returnFalse from '../../shared/util/returnFalse';
 import returnTrue from '../../shared/util/returnTrue';
-
-import event from '../../Zen/event/index';
-import { rnothtmlwhite } from '../../shared/index';
-import { supportsPassiveEvent } from '../../shared/supports/passive-event';
 
 
 /**

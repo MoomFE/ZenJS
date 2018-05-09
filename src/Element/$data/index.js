@@ -1,4 +1,4 @@
-import { winDocEle } from '../../shared/index';
+import winDocEle from '../../shared/const/winDocEle';
 
 import defineValue from '../../shared/util/defineValue';
 import isEmptyObject from'../../shared/util/isEmptyObject';

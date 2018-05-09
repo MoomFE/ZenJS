@@ -1,6 +1,8 @@
-import { rtypenamespace, concat } from '../../shared/index';
+import rtypenamespace from '../../shared/const/rtypenamespace';
+import concat from '../../shared/global/Array/prototype/concat';
+
 import isEmptyObject from '../../shared/util/isEmptyObject';
-import Zen from '../../shared/zen';
+import Zen from '../../shared/global/Zen/index';
 
 /**
  * 事件处理 => 添加事件3: 绑定事件
@@ -16,14 +18,18 @@ export default function add( elem, types, selector, listener, options ){
     /** 存放当前元素下的所有事件 */
     events = elem.$data( 'events', {}, true ),
     /** 事件总数 */
-    length = types.length;
+    length = types.length,
+
+    tmp,
+    type,
+    handleOptions;
 
   while( length-- ){
-    let
-      /** 分离事件名称和命名空间 */
-      tmp = rtypenamespace.exec( types[ length ] ) || [ '' ],
-      /** 事件名称 */
-      type = tmp[ 1 ];
+
+    /** 分离事件名称和命名空间 */
+    tmp = rtypenamespace.exec( types[ length ] ) || [ '' ];
+    /** 事件名称 */
+    type = tmp[ 1 ];
 
     if( !type ){
       continue;
@@ -31,7 +37,7 @@ export default function add( elem, types, selector, listener, options ){
 
     
     /** 该事件的所有参数 */
-    const handleOptions = {
+    handleOptions = {
       elem,
       type,
       listener,

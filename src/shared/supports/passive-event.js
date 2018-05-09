@@ -1,4 +1,4 @@
-import { defineProperty } from '../index';
+import defineProperty from '../global/Object/defineProperty';
 
 let supportsPassiveEvent = false;
 

@@ -10,15 +10,16 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var _Element = Element;
-  var ElementProto = _Element.prototype;
-  var isArray = Array.isArray;
-  var defineProperty = Object.defineProperty;
+  var ElementProto = Element.prototype;
+
+  /**
+   * [ winodw, document, Element.prototype ]
+   */
   var winDocEle = [window, document, ElementProto];
 
-  var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
+  var isArray = Array.isArray;
 
-  var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
+  var defineProperty = Object.defineProperty;
 
   var definePropertyOptions = {
     configurable: true, // 删除/定义
@@ -58,14 +59,12 @@
     return true;
   }
 
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
   /**
    * 判断传入对象是否是对象
    * @param {Object} obj 需要判断的对象
    */
   function isObject(obj) {
-    return obj !== null && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+    return obj !== null && typeof obj === 'object';
   }
 
   /**
@@ -151,41 +150,27 @@
     return this;
   });
 
-  /**
-   * 判断传入对象是否是方法
-   * @param {Object} obj 需要判断的对象
-   */
-  function isString(obj) {
-    return typeof obj === 'string';
-  }
+  var assign = Object.assign;
 
-  /**
-   * 判断传入对象是否是逻辑值
-   * @param {Object} obj 需要判断的对象
-   */
-  function isBoolean(obj) {
-    return typeof obj === 'boolean';
-  }
+  var create = Object.create;
 
-  /**
-   * @returns {Boolean} false
-   */
-  function returnFalse() {
-    return false;
-  }
+  var ArrayProto = Array.prototype;
 
-  /**
-   * @returns {Boolean} true
-   */
-  function returnTrue() {
-    return true;
+  var concat = ArrayProto.concat;
+
+  function $create() {
+    return assign.apply(null, concat.apply([create(null)], arguments));
   }
+  defineValue(Object, '$create', $create);
 
   /**
    * ZenJS
    */
-  var Zen = window.Zen = Object.create(null);
-  Zen.version = '1.0.0-alpha.0';
+  var Zen = window.Zen = $create({
+    version: '1.0.0-alpha.0'
+  });
+
+  var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
 
   /**
    * 事件处理 => 添加事件3: 绑定事件
@@ -202,22 +187,24 @@
     events = elem.$data('events', {}, true),
 
     /** 事件总数 */
-    length = types.length;
+    length = types.length,
+        tmp = void 0,
+        type = void 0,
+        handleOptions = void 0;
 
-    var _loop = function _loop() {
-      var
+    while (length--) {
+
       /** 分离事件名称和命名空间 */
-      tmp = rtypenamespace.exec(types[length]) || [''],
-
+      tmp = rtypenamespace.exec(types[length]) || [''];
       /** 事件名称 */
       type = tmp[1];
 
       if (!type) {
-        return 'continue';
+        continue;
       }
 
       /** 该事件的所有参数 */
-      var handleOptions = {
+      handleOptions = {
         elem: elem,
         type: type,
         listener: listener,
@@ -225,7 +212,7 @@
         options: options,
         /** 命名空间 */
         namespace: (tmp[2] || '').split('.').sort(),
-        handle: function handle() {
+        handle: function () {
           return Zen.event.dispatch.apply(handleOptions, arguments);
         }
       };
@@ -237,14 +224,66 @@
       } else {
         elem.addEventListener(type, handleOptions.handle, options.capture || false);
       }
-    };
-
-    while (length--) {
-      var _ret = _loop();
-
-      if (_ret === 'continue') continue;
     }
   }
+
+  /**
+   * @returns {Boolean} false
+   */
+  function returnFalse() {
+    return false;
+  }
+
+  /**
+   * @returns {Boolean} true
+   */
+  function returnTrue() {
+    return true;
+  }
+
+  Zen.Event = function (src, props) {
+
+    if (!(this instanceof Zen.Event)) {
+      return new Zen.Event(src, props);
+    }
+  };
+
+  Zen.Event.prototype = {
+    constructor: Zen.Event,
+    // 是否调用过 event.preventDefault 方法
+    isDefaultPrevented: returnFalse,
+    // 是否调用过 stopPropagation 方法
+    isPropagationStopped: returnFalse,
+    // 是否调用过 stopImmediatePropagation 方法
+    isImmediatePropagationStopped: returnFalse,
+    // 是否是模拟的 event
+    isSimulated: false
+  };
+
+  [
+  // 阻止浏览器默认事件
+  ['preventDefault', 'isDefaultPrevented'],
+  // 停止将事件冒泡到父节点
+  ['stopPropagation', 'isPropagationStopped'],
+  // 停止将事件冒泡到父节点且停止当前元素后续事件执行
+  ['stopImmediatePropagation', 'isImmediatePropagationStopped']].forEach(function (ref) {
+    var fn = ref[0],
+        judgement = ref[1];
+
+    this[fn] = function () {
+      var event = void 0;
+
+      if (this[judgement]()) {
+        return;
+      } else {
+        this[judgement] = returnTrue;
+      }
+
+      if (!this.isSimulated && (event = this.originalEvent)) {
+        event[fn]();
+      }
+    };
+  }.bind(Zen.Event.prototype));
 
   function fix(originalEvent) {
     return originalEvent[Zen.version] ? originalEvent : Zen.Event(originalEvent);
@@ -260,18 +299,36 @@
     dispatch: dispatch
   };
 
+  var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
+
   var supportsPassiveEvent = false;
 
   try {
 
     var options = defineProperty({}, 'passive', {
-      get: function get() {
+      get: function () {
         supportsPassiveEvent = true;
       }
     });
 
     window.addEventListener('test', null, options);
   } catch (e) {}
+
+  /**
+   * 判断传入对象是否是方法
+   * @param {Object} obj 需要判断的对象
+   */
+  function isString(obj) {
+    return typeof obj === 'string';
+  }
+
+  /**
+   * 判断传入对象是否是逻辑值
+   * @param {Object} obj 需要判断的对象
+   */
+  function isBoolean(obj) {
+    return typeof obj === 'boolean';
+  }
 
   /**
    * 事件处理 => 添加事件2: 参数处理
@@ -328,10 +385,7 @@
     // on( elem, types, listener || Boolean, options || useCapture )
     // on( elem, types, listener || Boolean, selector, options || useCapture )
     if (!isString(selector)) {
-      var _ref = [selector, listener];
-      listener = _ref[0];
-      selector = _ref[1];
-
+      [listener, selector] = [selector, listener];
 
       if (!isString(selector)) {
         options = selector;
@@ -365,7 +419,7 @@
     if ('once' in options) {
       var origListener = listener;
 
-      listener = function listener(event$$1) {
+      listener = function (event$$1) {
         elem.$off(event$$1);
         return origListener.apply(this, arguments);
       };
@@ -388,5 +442,10 @@
   defineValue(EventTarget.prototype, '$on', function (types, selector, listener, options) {
     return on(this, types, selector, listener, options);
   });
+
+  function $assign() {
+    return assign.apply(null, concat.apply([{}], arguments));
+  }
+  defineValue(Object, '$assign', $assign);
 
 })));

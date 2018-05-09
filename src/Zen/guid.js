@@ -1,4 +1,4 @@
-import Zen from '../../shared/zen';
+import Zen from '../shared/global/Zen/index';
 
 let guid = 1;
 

@@ -1,4 +1,5 @@
-import { isArray, defineProperty } from '../index';
+import isArray from '../global/Array/isArray';
+import defineProperty from '../global/Object/defineProperty';
 
 const definePropertyOptions = {
   configurable: true,// 删除/定义

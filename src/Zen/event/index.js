@@ -1,4 +1,4 @@
-import Zen from '../../shared/zen';
+import Zen from '../../shared/global/Zen/index';
 import add from './add';
 import fix from './fix';
 import dispatch from './dispatch';

@@ -1,4 +1,4 @@
-import Zen from "../shared/zen";
+import Zen from "../shared/global/Zen/index";
 import returnFalse from '../shared/util/returnFalse';
 import returnTrue from '../shared/util/returnTrue';
 
@@ -20,47 +20,34 @@ Zen.Event.prototype = {
   isImmediatePropagationStopped: returnFalse,
   // 是否是模拟的 event
   isSimulated: false,
+};
 
+[
   // 阻止浏览器默认事件
-  preventDefault(){
-    let event;
-
-    if( this.isDefaultPrevented() ){
-      return;
-    }else{
-      this.isDefaultPrevented = returnTrue;
-    }
-
-    if( !this.isSimulated && ( event = this.originalEvent ) ){
-      event.preventDefault();
-    }
-  },
+  [ 'preventDefault', 'isDefaultPrevented' ],
   // 停止将事件冒泡到父节点
-  stopPropagation(){
-    let event;
-
-    if( this.isPropagationStopped() ){
-      return;
-    }else{
-      this.isPropagationStopped = returnTrue;
-    }
-
-    if( !this.isSimulated && ( event = this.originalEvent ) ){
-      event.stopPropagation();
-    }
-  },
+  [ 'stopPropagation', 'isPropagationStopped' ],
   // 停止将事件冒泡到父节点且停止当前元素后续事件执行
-  stopImmediatePropagation(){
-    let event;
+  [ 'stopImmediatePropagation', 'isImmediatePropagationStopped' ]
+].forEach(
+  function( ref ){
+    const fn = ref[ 0 ],
+          judgement = ref[ 1 ];
 
-    if( this.isImmediatePropagationStopped() ){
-      return;
-    }else{
-      this.isImmediatePropagationStopped = returnTrue;
-    }
+    this[ fn ] = function(){
+      let event;
 
-    if( !this.isSimulated && ( event = this.originalEvent ) ){
-      event.stopImmediatePropagation()
+      if( this[ judgement ]() ){
+        return;
+      }else{
+        this[ judgement ] = returnTrue;
+      }
+
+      if( !this.isSimulated && ( event = this.originalEvent ) ){
+        event[ fn ]();
+      }
     }
-  }
-}
+  }.bind(
+    Zen.Event.prototype
+  )
+);
