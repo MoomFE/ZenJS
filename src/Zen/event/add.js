@@ -1,7 +1,7 @@
 import rtypenamespace from '../../shared/const/rtypenamespace';
 import concat from '../../shared/global/Array/prototype/concat';
 
-import isEmptyObject from '../../shared/util/isEmptyObject';
+import isEmptyObject from '../../Object/$isEmptyObject/index';
 import Zen from '../../shared/global/Zen/index';
 
 /**

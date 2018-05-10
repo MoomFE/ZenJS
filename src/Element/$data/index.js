@@ -1,7 +1,7 @@
 import winDocEle from '../../shared/const/winDocEle';
 
 import defineValue from '../../shared/util/defineValue';
-import isEmptyObject from'../../shared/util/isEmptyObject';
+import isEmptyObject from'../../Object/$isEmptyObject/index';
 import isObject from '../../shared/util/isObject';
 
 /**

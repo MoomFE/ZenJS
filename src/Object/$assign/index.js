@@ -1,9 +1,7 @@
 import Object from '../../shared/global/Object/index';
-import assign from '../../shared/global/Object/assign';
-import concat from '../../shared/global/Array/prototype/concat';
 
 import define from '../../shared/util/defineValue';
-import isPlainObject from '../../shared/util/isPlainObject';
+import isPlainObject from '../$isPlainObject/index';
 import isArray from '../../shared/global/Array/isArray';
 
 /**

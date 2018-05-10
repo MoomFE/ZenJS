@@ -52,12 +52,14 @@
    * 判断传入对象是否是空对象
    * @param {Object} obj 需要判断的对象
    */
-  function isEmptyObject(obj) {
+  function $isEmptyObject(obj) {
     for (var a in obj) {
       return false;
     }
     return true;
   }
+
+  defineValue(Object, '$isEmptyObject', $isEmptyObject);
 
   /**
    * 判断传入对象是否是对象
@@ -118,7 +120,7 @@
   defineValue(winDocEle, '$hasData', function (name) {
     var Data = $_GetDatas(this);
 
-    if (isEmptyObject(Data)) {
+    if ($isEmptyObject(Data)) {
       return false;
     }
 
@@ -174,7 +176,7 @@
    * 判断传入对象是否是纯粹的对象
    * @param {Object} obj 需要判断的对象
    */
-  function isPlainObject(obj) {
+  function $isPlainObject(obj) {
 
     if (!obj || toString.call(obj) !== '[object Object]') {
       return false;
@@ -190,6 +192,8 @@
 
     return isFunction(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
   }
+
+  defineValue(Object, '$isPlainObject', $isPlainObject);
 
   /**
    * Object.assign 的深拷贝版本
@@ -227,7 +231,7 @@
           src = target[name];
 
           // 如果被该属性是原生对象或数组, 则进循环拷贝
-          if (copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
+          if (copy && ($isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
 
             // 目标对象的当前属性是否和该属性类型相同
             // 不是的话, 则进行覆盖
@@ -235,7 +239,7 @@
               copyIsArray = false;
               clone = src && isArray(src) ? src : [];
             } else {
-              clone = src && isPlainObject(src) ? src : {};
+              clone = src && $isPlainObject(src) ? src : {};
             }
 
             target[name] = $assign(clone, copy);
