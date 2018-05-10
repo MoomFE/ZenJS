@@ -12,4 +12,8 @@
 
 > "transform-es2015-spread" : 解构
 
+> "transform-es2015-destructuring" : 赋值解构
+
+> "transform-es2015-parameters" : 函数参数默认值及扩展运算符
+
 > "transform-es2015-template-literals" : 模板字符串
