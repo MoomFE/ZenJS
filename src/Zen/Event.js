@@ -1,13 +1,45 @@
 import Zen from "../shared/global/Zen/index";
 import returnFalse from '../shared/util/returnFalse';
 import returnTrue from '../shared/util/returnTrue';
+import $assign from "../Object/$assign";
+import defineProperty from "../shared/global/Object/defineProperty";
 
 Zen.Event = function( src, props ){
 
-  if( !( this instanceof Zen.Event ) ){
+  if( this instanceof Zen.Event === false ){
     return new Zen.Event( src, props );
   }
 
+  // Event object
+  if( src && src.type ){
+    this.originalEvent = src;
+    this.type = src.type;
+
+    this.isDefaultPrevented =
+      src.defaultPrevented ||
+      src.defaultPrevented === undefined && src.returnValue === false
+        ? returnTrue
+        : returnFalse;
+    
+    this.target = ( src.target && src.target.nodeType === 3 )
+      ? src.target.parentNode
+      : src.target;
+
+    this.currentTarget = src.currentTarget;
+    this.relatedTarget = src.relatedTarget;
+  }
+  // Event type
+  else{
+    this.type = src;
+  }
+
+  if( props ){
+    $assign( this, props );
+  }
+
+  this.timeStamp = src && src.timeStamp || Date.now();
+
+  this[ Zen.varsion ] = true;
 }
 
 Zen.Event.prototype = {
@@ -50,4 +82,10 @@ Zen.Event.prototype = {
   }.bind(
     Zen.Event.prototype
   )
+);
+
+const addProp = function( name, hook ){
+
+}.bind(
+  Zen.Event.prototype
 );

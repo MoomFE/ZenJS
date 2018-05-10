@@ -1,5 +1,5 @@
 import Object from '../../shared/global/Object/index';
-import assign from '../$assign/index';
+import $assign from '../$assign/index';
 import create from '../../shared/global/Object/create';
 
 import define from '../../shared/util/defineValue';
@@ -20,7 +20,7 @@ export default function $create( isNoProto, ...arg ){
     options.unshift( {}, isNoProto );
   }
 
-  return assign.apply( null, options );
+  return $assign.apply( null, options );
 };
 
 define( Object, '$create', $create );
