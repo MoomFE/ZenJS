@@ -13,7 +13,7 @@ export default function $assign(){
   let i = 1,
       length = arguments.length,
       /** 目标对象 */
-      target = arguments[ 0 ],
+      target = arguments[ 0 ] || {},
 
       options,
       name, src, copy, copyIsArray, clone;

@@ -7,7 +7,7 @@ Object.defineProperty( window, 'div', {
 !function(){
 
   const toString = function( obj ){
-    return this.call( obj )
+    return this.call( obj );
   }.bind(
     {}.toString
   );
@@ -16,10 +16,13 @@ Object.defineProperty( window, 'div', {
     return o === undefined;
   }
   function isEqual( first, second ){
-    return first == second;
+    return first === second;
   }
   function isElement( elem ){
     return toString( elem ) === '[object HTMLDivElement]';
+  }
+  function isNull( o ){
+    return o === null;
   }
 
   const describes = [];
@@ -110,6 +113,72 @@ Object.defineProperty( window, 'div', {
             });
           });
         });
+      }
+    ]
+  });
+
+  describes.push({
+    name: 'Object',
+    next: [
+      function(){
+
+        it( '$isEmptyObject', () => {
+          Object.$isEmptyObject( {} ).should.equal( true );
+          Object.$isEmptyObject( { Empty: false } ).should.equal( false );
+        });
+
+        it( '$isPlainObject', () => {
+          Object.$isPlainObject( {} ).should.equal( true );
+          Object.$isPlainObject( Object.create( null ) ).should.equal( true );
+          Object.$isPlainObject( div ).should.equal( false );
+          Object.$isPlainObject( Element ).should.equal( false );
+          Object.$isPlainObject( Element.prototype ).should.equal( false );
+        });
+
+        it( '$assign', () => {
+
+          Object.$isPlainObject( Object.$assign() ).should.equal( true );
+          Object.$isEmptyObject( Object.$assign() ).should.equal( true );
+
+          var obj1 = {},
+              obj2 = { asd: 123 },
+              obj3 = { asd: 1234 };
+
+          Object.$assign( obj1 ).should.equal( obj1 )
+          Object.$isEmptyObject( Object.$assign( obj1 ) ).should.equal( true );
+
+          Object.$assign( obj1, obj2 ).should.equal( obj1 );
+          Object.$isEmptyObject( Object.$assign( obj1, obj2 ) ).should.equal( false );
+
+          Object.$assign( obj1, obj2 ).asd.should.equal( 123 );
+          Object.$assign( obj1, obj2, obj3 ).asd.should.equal( 1234 );
+
+          var obj4 = { infiniteLoop: obj5 },
+              obj5 = { infiniteLoop: obj4 };
+
+          isUndef( Object.$assign( obj4, obj5 ).infiniteLoop ).should.equal( true );
+
+        });
+
+        it( '$create', () => {
+
+          Object.$isEmptyObject( Object.$create() ).should.equal( true );
+          Object.$isPlainObject( Object.$create() ).should.equal( true );
+          Object.$isPlainObject( Object.$create( true ) ).should.equal( true );
+          Object.$isPlainObject( Object.$create( false ) ).should.equal( true );
+
+          ( Object.getPrototypeOf( Object.$create( true ) ) == null ).should.equal( true );
+          ( Object.$create().constructor != null ).should.equal( true );
+
+          var obj1 = { asd: 123 },
+              obj2 = { asd: 1234 };
+
+          Object.$create( obj1 ).asd.should.equal( 123 );
+          Object.$create( obj1, obj2 ).asd.should.equal( 1234 );
+          isEqual( obj1, Object.$create( obj1 ) ).should.equal( false );
+
+        });
+
       }
     ]
   });

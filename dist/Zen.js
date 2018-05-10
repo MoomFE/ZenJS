@@ -205,7 +205,7 @@
         length = arguments.length,
 
     /** 目标对象 */
-    target = arguments[0],
+    target = arguments[0] || {},
         options = void 0,
         name = void 0,
         src = void 0,
