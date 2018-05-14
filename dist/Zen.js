@@ -41,6 +41,56 @@
     define(obj, name, { value: value }, options);
   }
 
+  /**
+   * 页面完全加载完毕后执行传入代码
+   * -- -- 方法可以用 Function[ call / apply ] 的方式使用, 可传入其他 window, 比如 iframe 的 window
+   * @param {Function} func 需要执行的方法
+   * @param {Object} data 需要传入方法的数据
+   */
+  function $ready(func, data) {
+    if (this.document.readyState === 'complete') return func.apply(this, data);
+    this.addEventListener('load', function callback(event) {
+      this.removeEventListener(event.type, callback);
+      func.apply(this, data);
+    });
+  }
+
+  defineValue(window, '$ready', $ready);
+
+  /**
+   * 判断传入参数的类型
+   * @param {Object} obj 需要判断类型的参数
+   * @returns {String}
+   */
+  function $typeof(obj) {
+    var type = void 0;
+
+    if (obj == null) return obj + '';
+    if ((type = typeof obj) === 'object') {
+      if (isArray(obj)) return 'array';
+    }
+    return type;
+  }
+
+  defineValue(window, '$typeof', $typeof);
+
+  /**
+   * 页面加载完毕后执行传入代码
+   * -- 方法可以用 Function[ call / apply ] 的方式使用, 可传入其他 document, 比如 iframe 的 document
+   * 
+   * @param {Function} func 需要执行的方法
+   * @param {Object} data 需要传入方法的数据
+   */
+  function $ready$1(func, data) {
+    if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
+    this.addEventListener('DOMContentLoaded', function callback(event) {
+      this.removeEventListener(event.type, callback);
+      func.apply(window, data);
+    });
+  }
+
+  defineValue(document, '$ready', $ready$1);
+
   var ObjectProto = Object.prototype;
 
   var toString = ObjectProto.toString;
@@ -64,6 +114,7 @@
   /**
    * 判断传入对象是否是纯粹的对象
    * @param {Object} obj 需要判断的对象
+   * @returns {Boolean}
    */
   function $isPlainObject(obj) {
 
@@ -86,7 +137,9 @@
 
   /**
    * Object.assign 的深拷贝版本
-   * 改写自 jQuery
+   * -- 改写自 jQuery
+   * 
+   * @returns {Object}
    */
   function $assign() {
 
@@ -159,6 +212,7 @@
    * 创建一个全新的对象
    * 可传入多个参数, 会对参数进行继承
    * @param {Boolean} isNoProto 是否创建一个无 prototype 的对象
+   * @returns {Object}
    */
   function $create(isNoProto) {
     for (var _len = arguments.length, arg = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -180,6 +234,7 @@
   /**
    * 判断传入对象是否是空对象
    * @param {Object} obj 需要判断的对象
+   * @returns {Boolean}
    */
   function $isEmptyObject(obj) {
     for (var a in obj) {
@@ -189,6 +244,38 @@
   }
 
   defineValue(Object, '$isEmptyObject', $isEmptyObject);
+
+  var StringProto = String.prototype;
+
+  /**
+   * 将字符串首字母大写
+   * 
+   * @returns {String}
+   */
+  function $toCapitalize() {
+    return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
+  }
+
+  defineValue(StringProto, '$toCapitalize', $toCapitalize);
+
+  /**
+   * 快捷创建数组
+   * @param {Number} length 需要创建的数组的长度
+   * @param {Object} insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index
+   * @returns {Array}
+   */
+  function $create$1(length, insert) {
+    var i = 0,
+        result = [];
+
+    length >>= 0;
+
+    for (; i < length; i++) {
+      result.push(insert && isFunction(insert) ? insert(i) : insert);
+    }return result;
+  }
+
+  defineValue(Array, '$create', $create$1);
 
   /**
    * ZenJS

@@ -31,7 +31,7 @@ Object.defineProperty( window, 'div', {
 
   // describes.push({
   //   name: '[ window, document, Element.prototype ].[ $data, $hasData, $deleteData ]',
-  //   next: [
+  //   describe: [
   //     {
   //       name: 'Element.prototype.[ $data, $hasData, $deleteData ]',
   //       describe: () => {
@@ -122,24 +122,62 @@ Object.defineProperty( window, 'div', {
 /* #endregion */
 
   describes.push({
-    name: 'Object',
-    next: [
-      function(){
+    name: 'window',
+    describe: [
+      {
+        name: '$ready',
+        it: function(){
+          // 手动测试的 (*^▽^*)
+        }
+      }, {
+        name: '$typeof',
+        it: function(){
+          $typeof( undefined ).should.equal( 'undefined' );
+          $typeof( null ).should.equal( 'null' );
+          $typeof( [] ).should.equal( 'array' );
+          $typeof( {} ).should.equal( 'object' );
+          $typeof( '' ).should.equal( 'string' );
+          $typeof( 123 ).should.equal( 'number' );
+          $typeof( true ).should.equal( 'boolean' );
+          $typeof( false ).should.equal( 'boolean' );
+        }
+      }
+    ]
+  });
 
-        it( '$isEmptyObject', () => {
+  describes.push({
+    name: 'document',
+    describe: [
+      {
+        name: '$ready',
+        it: function(){
+          // 手动测试的 (*^▽^*)
+        }
+      }
+    ]
+  });
+
+  describes.push({
+    name: 'Object',
+    describe: [
+      {
+        name: '$isEmptyObject',
+        it: function(){
           Object.$isEmptyObject( {} ).should.equal( true );
           Object.$isEmptyObject( { Empty: false } ).should.equal( false );
-        });
-
-        it( '$isPlainObject', () => {
+        }
+      }, {
+        name: '$isPlainObject',
+        it: function(){
           Object.$isPlainObject( {} ).should.equal( true );
           Object.$isPlainObject( Object.create( null ) ).should.equal( true );
           Object.$isPlainObject( div ).should.equal( false );
           Object.$isPlainObject( Element ).should.equal( false );
           Object.$isPlainObject( Element.prototype ).should.equal( false );
-        });
-
-        it( '$assign', () => {
+        }
+      }, {
+        name: '$assign',
+        it: function(){
 
           Object.$isPlainObject( Object.$assign() ).should.equal( true );
           Object.$isEmptyObject( Object.$assign() ).should.equal( true );
@@ -161,11 +199,10 @@ Object.defineProperty( window, 'div', {
               obj5 = { infiniteLoop: obj4 };
 
           isUndef( Object.$assign( obj4, obj5 ).infiniteLoop ).should.equal( true );
-
-        });
-
-        it( '$create', () => {
-
+        }
+      }, {
+        name: '$create',
+        it: function(){
           Object.$isEmptyObject( Object.$create() ).should.equal( true );
           Object.$isPlainObject( Object.$create() ).should.equal( true );
           Object.$isPlainObject( Object.$create( true ) ).should.equal( true );
@@ -180,9 +217,43 @@ Object.defineProperty( window, 'div', {
           Object.$create( obj1 ).asd.should.equal( 123 );
           Object.$create( obj1, obj2 ).asd.should.equal( 1234 );
           isEqual( obj1, Object.$create( obj1 ) ).should.equal( false );
+        }
+      }
+    ]
+  });
 
-        });
+  describes.push({
+    name: 'String',
+    describe: [
+      {
+        name: '$toCapitalize',
+        it: function(){
+          '123'.$toCapitalize().should.equal( '123' );
+          'zen'.$toCapitalize().should.equal( 'Zen' );
+          'zEN'.$toCapitalize().should.equal( 'Zen' );
+        }
+      }
+    ]
+  });
 
+  describes.push({
+    name: 'Array',
+    describe: [
+      {
+        name: '$create',
+        it: function(){
+          Array.$create( 10 ).length.should.equal( 10 );
+          Array.$create( true ).length.should.equal( 1 );
+          Array.$create( false ).length.should.equal( 0 );
+          Array.$create( 1, true )[0].should.equal( true );
+          Array.$create( 1, false )[0].should.equal( false );
+          Array
+            .$create( 10, function( index ){
+              return 'ZenJS-' + index
+            })
+            [ 9 ]
+            .should.equal( 'ZenJS-9' )
+        }
       }
     ]
   });
@@ -192,10 +263,13 @@ Object.defineProperty( window, 'div', {
     (function access( next = describes ){
       next.forEach( _describe => {
         if( typeof _describe === 'function' ) return _describe();
-        describe( _describe.name, () => {
-          if( _describe.next ) access( _describe.next );
-          else if( _describe.describe ) _describe.describe();
-        });
+        if( _describe.it ) it( _describe.name, _describe.it );
+        else if( _describe.describe ){
+          describe( _describe.name, () => {
+            if( Array.isArray( _describe.describe ) ) access( _describe.describe );
+            else _describe.describe();
+          });
+        };
       });
     })();
   });

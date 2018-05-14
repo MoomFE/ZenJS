@@ -6,7 +6,9 @@ import isArray from '../../shared/global/Array/isArray';
 
 /**
  * Object.assign 的深拷贝版本
- * 改写自 jQuery
+ * -- 改写自 jQuery
+ * 
+ * @returns {Object}
  */
 export default function $assign(){
 
