@@ -258,6 +258,28 @@ Object.defineProperty( window, 'div', {
     ]
   });
 
+  describes.push({
+    name: 'Array.prototype',
+    describe: [
+      {
+        name: '$isArray',
+        it: function(){
+          [ 1, 2, 3 ].$inArray( 1 ).should.equal( true );
+          [ 1, 2, 3 ].$inArray( 0 ).should.equal( false );
+          [ '' ].$inArray( false ).should.equal( true );
+          [ undefined ].$inArray( null ).should.equal( true );
+        }
+      }, {
+        name: '$add',
+        it: function(){
+          [ 1 ].$add( 0, 0 )[ 0 ].should.equal( 0 );
+          [ 1 ].$add( 0, 0 )[ 1 ].should.equal( 1 );
+          [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equal( 5 );
+        }
+      }
+    ]
+  });
+
 
   describe( 'ZenJS', function(){
     (function access( next = describes ){

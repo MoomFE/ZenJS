@@ -21,7 +21,7 @@
   };
 
   function define(obj, name, options, options2) {
-    if (isArray(obj)) {
+    if (isArray(obj) && obj instanceof Array) {
       obj.forEach(function (obj) {
         define(obj, name, options, options2);
       });
@@ -276,6 +276,46 @@
   }
 
   defineValue(Array, '$create', $create$1);
+
+  var ArrayProto = Array.prototype;
+
+  /**
+   * 查找数组内是否有此传入值
+   * -- 弱检测
+   * -- 强检测使用 Array.prototype.includes
+   * 
+   * @param {Object} obj 需要检测的值
+   * @returns {Boolean}
+   */
+  function $inArray(obj) {
+    var i = 0,
+        len = this.length;
+
+    for (; i < len; i++) {
+      if (this[i] == obj) return true;
+    }return false;
+  }
+
+  defineValue(ArrayProto, '$inArray', $inArray);
+
+  /**
+   * 在数组指定位置添加元素
+   * @param {Number} index 添加在数组中的位置
+   * @param {Object} args 需要添加的对象, 可以是多个
+   * @returns {Array}
+   */
+  function $add(index) {
+    var i = 0,
+        len = arguments.length <= 1 ? 0 : arguments.length - 1;
+
+    for (; i < len; i++) {
+      this.splice(index++, 0, arguments.length <= i + 1 ? undefined : arguments[i + 1]);
+    }
+
+    return this;
+  }
+
+  defineValue(ArrayProto, '$add', $add);
 
   /**
    * ZenJS

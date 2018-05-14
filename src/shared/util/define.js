@@ -1,3 +1,4 @@
+import Array from '../global/Array/index';
 import isArray from '../global/Array/isArray';
 import defineProperty from '../global/Object/defineProperty';
 
@@ -8,7 +9,7 @@ const definePropertyOptions = {
 };
 
 export default function define( obj, name, options, options2 ){
-  if( isArray( obj ) ){
+  if( isArray( obj ) && obj instanceof Array ){
     obj.forEach( obj => {
       define( obj, name, options, options2 );
     });
