@@ -1,32 +1,70 @@
-const resolve = require('rollup-plugin-node-resolve');
-const replace = require('rollup-plugin-replace');
-const babel = require('rollup-plugin-babel');
-const { title, version, author } = require('../package.json');
+const rollup = require('rollup');
+const extend = require('extend');
+const fs = require('fs');
+const zlib = require('zlib');
+const uglify = require('uglify-js');
 
-const banner =
-`/*!
- * ${ title } v${ version }
- * (c) 2018 ${ author }
- * Released under the MIT License.
- */
-`;
+const config = require('./config');
 
 
-export default {
-  input: 'src/index.js',
-  output: {
-    file: 'dist/Zen.js',
-    format: 'umd',
-    banner,
-    name: 'Zen'
-  },
-  plugins: [
-    resolve(),
-    babel({
-      exclude: 'node_modules/**'
-    }),
-    replace({
-      '__VERSION__': version
+[
+  {}, {
+    input: 'dist/Zen.js',
+    output: 'dist/Zen.min.js'
+  }
+].forEach((
+  {
+    input = config.input,
+    output = config.output.file
+  }
+) => {
+  
+  const isMinify = /min\.js$/.test( output );
+  const rollupConfig = extend(
+    {
+      input,
+      output: { file: output }
+    },
+    config
+  );
+
+  rollup
+    .rollup( rollupConfig )
+    .then( bundle => {
+      return bundle.generate( rollupConfig.output )
     })
-  ]
+    .then( ({ code }) => {
+      if( isMinify ){
+        code = config.output.banner + '\n' + uglify.minify( code ).code;
+      }
+      return write( output, code );
+    })
+    .then(([ size, gzip ]) => {
+      console.log(`${ output } 已构建完毕!\n      size: ${ size }\n      gzip: ${ gzip }`);
+    })
+    .catch(
+      console.log.bind( console )
+    );
+
+});
+
+function write( output, code ){
+  return new Promise(( resolve, reject ) => {
+    fs.writeFile( output, code, err => {
+      if( err ) return reject( err );
+
+      zlib.gzip( code, ( err, zipped ) => {
+        if( err ) return reject( err );
+
+        resolve([
+          getSize( code ),
+          getSize( zipped )
+        ]);
+      });
+    });
+  });
+}
+
+function getSize( code ){
+  return ( code.length / 1024 ).toFixed( 2 ) + 'kb';
 }
