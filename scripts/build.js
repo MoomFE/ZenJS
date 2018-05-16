@@ -12,12 +12,14 @@ const allConfig = [
   }
 ];
 
+
 !async function(){
 
   for( let config of allConfig ){
 
     const input = config.input || defaultConfig.input;
     const output = config.output || defaultConfig.output.file;
+    const now = new Date();
 
     const isMinify = /min\.js$/.test( output );
     const rollupConfig = extend(
@@ -42,7 +44,7 @@ const allConfig = [
           return write( output, code );
         })
         .then( ([ size, gzip ]) => {
-          console.log(`${ output } 已构建完毕!\n      size: ${ size }\n      gzip: ${ gzip }`);
+          console.log(`${ output } 已构建完毕! ${ new Date() - now + 'ms' }\n      size: ${ size }\n      gzip: ${ gzip }`);
           resolve();
         })
         .catch( error => {
