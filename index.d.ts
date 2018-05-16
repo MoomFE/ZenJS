@@ -1,3 +1,12 @@
+interface ArrayConstructor {
+  /**
+   * 快捷创建数组
+   * @param length 需要创建的数组的长度
+   * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index
+   */
+  $create( length: number, insert: any ): T[];
+}
+
 interface Array<T> {
   /**
    * 在数组指定位置添加元素
@@ -6,12 +15,6 @@ interface Array<T> {
    */
   $add( index: number, ...args: T[] ): this;
   /**
-   * 快捷创建数组
-   * @param length 需要创建的数组的长度
-   * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index
-   */
-  $create( length: number, insert: any ): T[];
-  /**
    * 查找数组内是否有此传入值
    * -- 弱检测
    * -- 强检测使用 Array.prototype.includes
@@ -19,6 +22,11 @@ interface Array<T> {
    * @param obj 需要检测的值
    */
   $inArray( obj: any ): boolean;
+  /**
+   * 遍历数组, 并调用传入方法
+   * @param callback 遍历数组时调用的方法, 方法返回 false 时, 退出遍历
+   */
+  $each( callback: ( index: number, value: any, arr: any[] ) => boolean ): any[];
   /**
    * 修改数组内指定下标的值
    * @param index 需要修改的下标
@@ -58,7 +66,7 @@ interface ObjectConstructor {
   /**
    * 遍历对象, 并调用传入方法
    * @param obj 需要遍历的对象
-   * @param callback 遍历对象是调用的方法, 方法返回 false 时, 退出遍历
+   * @param callback 遍历对象时调用的方法, 方法返回 false 时, 退出遍历
    */
   $each( obj: any, callback: ( key: string, value: any, obj: any ) => boolean ): any;
   /**

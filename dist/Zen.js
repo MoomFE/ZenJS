@@ -77,6 +77,24 @@
 
   defineValue(Array, '$create', $create);
 
+  function $each(callback) {
+    var index = 0,
+        length = this.length,
+        value = void 0;
+
+    for (; index < length; index++) {
+      value = this[index];
+
+      if (callback.call(value, index, value, this) === false) {
+        break;
+      }
+    }
+
+    return this;
+  }
+
+  defineValue(ArrayProto, '$each', $each);
+
   function $inArray(obj) {
     var i = 0,
         len = this.length;
@@ -229,7 +247,7 @@
   }
   defineValue(Object, '$create', $create$1);
 
-  function $each(obj, callback) {
+  function $each$1(obj, callback) {
     var value = void 0;
 
     for (var _key in obj) {
@@ -243,7 +261,7 @@
     return obj;
   }
 
-  defineValue(Object, '$each', $each);
+  defineValue(Object, '$each', $each$1);
 
   function $isEmptyObject(obj) {
     for (var a in obj) {

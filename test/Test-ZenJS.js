@@ -155,6 +155,29 @@ Object.defineProperty( window, 'div', {
           [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equal( 5 );
         }
       }, {
+        name: '$each',
+        it: function(){
+          var test1 = [ 1, 2, 3 ].$each(function( index, value, arr ){
+            if( index === 0 ) arr[ index ] = 3;
+            else if( index === 2 ) arr[ index ] = 1;
+          });
+
+          test1[ 0 ].should.equal( 3 );
+          test1[ 2 ].should.equal( 1 );
+
+
+          var test2 = [ 1, 2, 3 ].$each(function( index, value, arr ){
+            if( index === 0 ){
+              arr[ index ] = 3;
+              return false;
+            }
+            else if( index === 2 ) arr[ index ] = 1;
+          });
+
+          test2[ 0 ].should.equal( 3 );
+          test2[ 2 ].should.equal( 3 );
+        }
+      },{
         name: '$inArray',
         it: function(){
           [ 1, 2, 3 ].$inArray( 1 ).should.equal( true );
@@ -234,8 +257,7 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$each',
         it: function(){
-          var test1 = Object.$each( { "3": 1, "2": 2, "1": 3 }, function( key, value, obj ){
-            console.log( key, value, obj )
+          var test1 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
             switch( key ){
               case "3": obj[ key ] = 3; break;
               case "1": obj[ key ] = 1; break; 
@@ -244,6 +266,17 @@ Object.defineProperty( window, 'div', {
 
           test1[ "3" ].should.equal( 3 );
           test1[ "1" ].should.equal( 1 );
+
+          var test2 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
+            switch( key ){
+              case "3": obj[ key ] = 3; break; 
+              case "1": obj[ key ] = 1; 
+                        return false;
+            }
+          });
+
+          test2[ "1" ].should.equal( 1 );
+          test2[ "3" ].should.equal( 1 );
         }
       }, {
         name: '$isEmptyObject',
