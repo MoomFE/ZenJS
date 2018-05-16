@@ -262,7 +262,7 @@ Object.defineProperty( window, 'div', {
     name: 'Array.prototype',
     describe: [
       {
-        name: '$isArray',
+        name: '$inArray',
         it: function(){
           [ 1, 2, 3 ].$inArray( 1 ).should.equal( true );
           [ 1, 2, 3 ].$inArray( 0 ).should.equal( false );
@@ -274,6 +274,7 @@ Object.defineProperty( window, 'div', {
         it: function(){
           [ 1 ].$add( 0, 0 )[ 0 ].should.equal( 0 );
           [ 1 ].$add( 0, 0 )[ 1 ].should.equal( 1 );
+          [ 1 ].$add( 0, 0 ).length.should.equal( 2 );
           [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equal( 5 );
         }
       }
