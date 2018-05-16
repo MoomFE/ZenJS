@@ -41,63 +41,20 @@
     define(obj, name, { value: value }, options);
   }
 
-  /**
-   * 页面完全加载完毕后执行传入代码
-   * -- -- 方法可以用 Function[ call / apply ] 的方式使用, 可传入其他 window, 比如 iframe 的 window
-   * @param {Function} func 需要执行的方法
-   * @param {Object} data 需要传入方法的数据
-   */
-  function $ready(func, data) {
-    if (this.document.readyState === 'complete') return func.apply(this, data);
-    this.addEventListener('load', function callback(event) {
-      this.removeEventListener(event.type, callback);
-      func.apply(this, data);
-    });
-  }
+  var ArrayProto = Array.prototype;
 
-  defineValue(window, '$ready', $ready);
+  function $add(index) {
+    var i = 0,
+        len = arguments.length <= 1 ? 0 : arguments.length - 1;
 
-  /**
-   * 判断传入参数的类型
-   * @param {Object} obj 需要判断类型的参数
-   * @returns {String}
-   */
-  function $typeof(obj) {
-    var type = void 0;
-
-    if (obj == null) return obj + '';
-    if ((type = typeof obj) === 'object') {
-      if (isArray(obj)) return 'array';
+    for (; i < len; i++) {
+      this.splice(index++, 0, arguments.length <= i + 1 ? undefined : arguments[i + 1]);
     }
-    return type;
+
+    return this;
   }
 
-  defineValue(window, '$typeof', $typeof);
-
-  /**
-   * 页面加载完毕后执行传入代码
-   * -- 方法可以用 Function[ call / apply ] 的方式使用, 可传入其他 document, 比如 iframe 的 document
-   * 
-   * @param {Function} func 需要执行的方法
-   * @param {Object} data 需要传入方法的数据
-   */
-  function $ready$1(func, data) {
-    if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
-    this.addEventListener('DOMContentLoaded', function callback(event) {
-      this.removeEventListener(event.type, callback);
-      func.apply(window, data);
-    });
-  }
-
-  defineValue(document, '$ready', $ready$1);
-
-  var ObjectProto = Object.prototype;
-
-  var toString = ObjectProto.toString;
-
-  var getPrototypeOf = Object.getPrototypeOf;
-
-  var hasOwnProperty = Object.hasOwnProperty;
+  defineValue(ArrayProto, '$add', $add);
 
   /**
    * 判断传入对象是否是方法
@@ -107,15 +64,70 @@
     return typeof obj === 'function';
   }
 
+  function $create(length, insert) {
+    var i = 0,
+        result = [];
+
+    length >>= 0;
+
+    for (; i < length; i++) {
+      result.push(insert && isFunction(insert) ? insert(i) : insert);
+    }return result;
+  }
+
+  defineValue(Array, '$create', $create);
+
+  function $inArray(obj) {
+    var i = 0,
+        len = this.length;
+
+    for (; i < len; i++) {
+      if (this[i] == obj) return true;
+    }return false;
+  }
+
+  defineValue(ArrayProto, '$inArray', $inArray);
+
+  /**
+   * 判断传入对象是否是对象
+   * @param {Object} obj 需要判断的对象
+   */
+  function isObject(obj) {
+    return obj !== null && typeof obj === 'object';
+  }
+
+  function $set(index, value) {
+    if (isObject(index)) for (var i in index) {
+      this[i] = index[i];
+    } else this[index] = value;
+
+    return this;
+  }
+
+  defineValue(ArrayProto, '$set', $set);
+
+  function $ready(func, data) {
+    if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
+    this.addEventListener('DOMContentLoaded', function callback(event) {
+      this.removeEventListener(event.type, callback);
+      func.apply(window, data);
+    });
+  }
+
+  defineValue(document, '$ready', $ready);
+
+  var ObjectProto = Object.prototype;
+
+  var toString = ObjectProto.toString;
+
+  var getPrototypeOf = Object.getPrototypeOf;
+
+  var hasOwnProperty = Object.hasOwnProperty;
+
   var fnToString = hasOwnProperty.toString;
 
   var ObjectFunctionString = fnToString.call(Object);
 
-  /**
-   * 判断传入对象是否是纯粹的对象
-   * @param {Object} obj 需要判断的对象
-   * @returns {Boolean}
-   */
   function $isPlainObject(obj) {
 
     if (!obj || toString.call(obj) !== '[object Object]') {
@@ -135,12 +147,6 @@
 
   defineValue(Object, '$isPlainObject', $isPlainObject);
 
-  /**
-   * Object.assign 的深拷贝版本
-   * -- 改写自 jQuery
-   * 
-   * @returns {Object}
-   */
   function $assign() {
 
     var i = 1,
@@ -208,34 +214,37 @@
     return typeof obj === 'boolean';
   }
 
-  /**
-   * 创建一个全新的对象
-   * 可传入多个参数, 会对参数进行继承
-   * @param {Boolean} isNoProto 是否创建一个无 prototype 的对象
-   * @returns {Object}
-   */
-  function $create(isNoProto) {
-    for (var _len = arguments.length, arg = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      arg[_key - 1] = arguments[_key];
+  function $create$1(isNoProto) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
     }
-
-    var options = [].concat(arg);
 
     if (isBoolean(isNoProto) || !isNoProto) {
-      options.unshift(isNoProto ? create(null) : {});
+      args.unshift(isNoProto ? create(null) : {});
     } else {
-      options.unshift({}, isNoProto);
+      args.unshift({}, isNoProto);
     }
 
-    return $assign.apply(null, options);
+    return $assign.apply(null, args);
   }
-  defineValue(Object, '$create', $create);
+  defineValue(Object, '$create', $create$1);
 
-  /**
-   * 判断传入对象是否是空对象
-   * @param {Object} obj 需要判断的对象
-   * @returns {Boolean}
-   */
+  function $each(obj, callback) {
+    var value = void 0;
+
+    for (var _key in obj) {
+      value = obj[_key];
+
+      if (callback.call(value, _key, value, obj) === false) {
+        break;
+      }
+    }
+
+    return obj;
+  }
+
+  defineValue(Object, '$each', $each);
+
   function $isEmptyObject(obj) {
     for (var a in obj) {
       return false;
@@ -258,72 +267,33 @@
 
   defineValue(StringProto, '$toCapitalize', $toCapitalize);
 
-  /**
-   * 快捷创建数组
-   * @param {Number} length 需要创建的数组的长度
-   * @param {Object} insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index
-   * @returns {Array}
-   */
-  function $create$1(length, insert) {
-    var i = 0,
-        result = [];
-
-    length >>= 0;
-
-    for (; i < length; i++) {
-      result.push(insert && isFunction(insert) ? insert(i) : insert);
-    }return result;
+  function $ready$1(func, data) {
+    if (this.document.readyState === 'complete') return func.apply(this, data);
+    this.addEventListener('load', function callback(event) {
+      this.removeEventListener(event.type, callback);
+      func.apply(this, data);
+    });
   }
 
-  defineValue(Array, '$create', $create$1);
+  defineValue(window, '$ready', $ready$1);
 
-  var ArrayProto = Array.prototype;
+  function $typeof(obj) {
+    var type = void 0;
 
-  /**
-   * 查找数组内是否有此传入值
-   * -- 弱检测
-   * -- 强检测使用 Array.prototype.includes
-   * 
-   * @param {Object} obj 需要检测的值
-   * @returns {Boolean}
-   */
-  function $inArray(obj) {
-    var i = 0,
-        len = this.length;
-
-    for (; i < len; i++) {
-      if (this[i] == obj) return true;
-    }return false;
-  }
-
-  defineValue(ArrayProto, '$inArray', $inArray);
-
-  /**
-   * 在数组指定位置添加元素
-   * @param {Number} index 添加在数组中的位置
-   * @param {Object} args 需要添加的对象, 可以是多个
-   * @returns {Array}
-   */
-  function $add(index) {
-    var i = 0,
-        len = arguments.length <= 1 ? 0 : arguments.length - 1;
-
-    for (; i < len; i++) {
-      this.splice(index++, 0, arguments.length <= i + 1 ? undefined : arguments[i + 1]);
+    if (obj == null) return obj + '';
+    if ((type = typeof obj) === 'object') {
+      if (isArray(obj)) return 'array';
     }
-
-    return this;
+    return type;
   }
 
-  defineValue(ArrayProto, '$add', $add);
+  defineValue(window, '$typeof', $typeof);
 
   /**
    * ZenJS
    */
-  var Zen = window.Zen = $create(true, {
+  var Zen = window.Zen = $create$1(true, {
     version: '1.0.0-alpha.0'
   });
-
-  // import './Element/index';
 
 })));

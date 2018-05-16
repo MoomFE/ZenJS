@@ -4,12 +4,7 @@ import define from '../../shared/util/defineValue';
 import isPlainObject from '../$isPlainObject/index';
 import isArray from '../../shared/global/Array/isArray';
 
-/**
- * Object.assign 的深拷贝版本
- * -- 改写自 jQuery
- * 
- * @returns {Object}
- */
+
 export default function $assign(){
 
   let i = 1,

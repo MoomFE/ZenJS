@@ -10,11 +10,7 @@ var fnToString = hasOwnProperty.toString;
 
 var ObjectFunctionString = fnToString.call( Object );
 
-/**
- * 判断传入对象是否是纯粹的对象
- * @param {Object} obj 需要判断的对象
- * @returns {Boolean}
- */
+
 export default function $isPlainObject( obj ){
 
   if( !obj || toString.call( obj ) !== '[object Object]' ){

@@ -122,24 +122,52 @@ Object.defineProperty( window, 'div', {
 /* #endregion */
 
   describes.push({
-    name: 'window',
+    name: 'Array',
     describe: [
       {
-        name: '$ready',
+        name: '$create',
         it: function(){
-          // 手动测试的 (*^▽^*)
+          Array.$create( 10 ).length.should.equal( 10 );
+          Array.$create( true ).length.should.equal( 1 );
+          Array.$create( false ).length.should.equal( 0 );
+          Array.$create( 1, true )[0].should.equal( true );
+          Array.$create( 1, false )[0].should.equal( false );
+          Array
+            .$create( 10, function( index ){
+              return 'ZenJS-' + index
+            })
+            [ 9 ]
+            .should.equal( 'ZenJS-9' )
+        }
+      }
+    ]
+  });
+
+  describes.push({
+    name: 'Array.prototype',
+    describe: [
+      {
+        name: '$add',
+        it: function(){
+          [ 1 ].$add( 0, 0 )[ 0 ].should.equal( 0 );
+          [ 1 ].$add( 0, 0 )[ 1 ].should.equal( 1 );
+          [ 1 ].$add( 0, 0 ).length.should.equal( 2 );
+          [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equal( 5 );
         }
       }, {
-        name: '$typeof',
+        name: '$inArray',
         it: function(){
-          $typeof( undefined ).should.equal( 'undefined' );
-          $typeof( null ).should.equal( 'null' );
-          $typeof( [] ).should.equal( 'array' );
-          $typeof( {} ).should.equal( 'object' );
-          $typeof( '' ).should.equal( 'string' );
-          $typeof( 123 ).should.equal( 'number' );
-          $typeof( true ).should.equal( 'boolean' );
-          $typeof( false ).should.equal( 'boolean' );
+          [ 1, 2, 3 ].$inArray( 1 ).should.equal( true );
+          [ 1, 2, 3 ].$inArray( 0 ).should.equal( false );
+          [ '' ].$inArray( false ).should.equal( true );
+          [ undefined ].$inArray( null ).should.equal( true );
+        }
+      }, {
+        name: '$set',
+        it: function(){
+          [ 1, 2, 3 ].$set( 1, 4 )[ 1 ].should.equal( 4 );
+          [ 1 ].$set( 1, 2 )[ 1 ].should.equal( 2 );
+          [].$set( 1, 1 )[ 1 ].should.equal( 1 );
         }
       }
     ]
@@ -161,21 +189,6 @@ Object.defineProperty( window, 'div', {
     name: 'Object',
     describe: [
       {
-        name: '$isEmptyObject',
-        it: function(){
-          Object.$isEmptyObject( {} ).should.equal( true );
-          Object.$isEmptyObject( { Empty: false } ).should.equal( false );
-        }
-      }, {
-        name: '$isPlainObject',
-        it: function(){
-          Object.$isPlainObject( {} ).should.equal( true );
-          Object.$isPlainObject( Object.create( null ) ).should.equal( true );
-          Object.$isPlainObject( div ).should.equal( false );
-          Object.$isPlainObject( Element ).should.equal( false );
-          Object.$isPlainObject( Element.prototype ).should.equal( false );
-        }
-      }, {
         name: '$assign',
         it: function(){
 
@@ -218,6 +231,35 @@ Object.defineProperty( window, 'div', {
           Object.$create( obj1, obj2 ).asd.should.equal( 1234 );
           isEqual( obj1, Object.$create( obj1 ) ).should.equal( false );
         }
+      }, {
+        name: '$each',
+        it: function(){
+          var test1 = Object.$each( { "3": 1, "2": 2, "1": 3 }, function( key, value, obj ){
+            console.log( key, value, obj )
+            switch( key ){
+              case "3": obj[ key ] = 3; break;
+              case "1": obj[ key ] = 1; break; 
+            }
+          });
+
+          test1[ "3" ].should.equal( 3 );
+          test1[ "1" ].should.equal( 1 );
+        }
+      }, {
+        name: '$isEmptyObject',
+        it: function(){
+          Object.$isEmptyObject( {} ).should.equal( true );
+          Object.$isEmptyObject( { Empty: false } ).should.equal( false );
+        }
+      }, {
+        name: '$isPlainObject',
+        it: function(){
+          Object.$isPlainObject( {} ).should.equal( true );
+          Object.$isPlainObject( Object.create( null ) ).should.equal( true );
+          Object.$isPlainObject( div ).should.equal( false );
+          Object.$isPlainObject( Element ).should.equal( false );
+          Object.$isPlainObject( Element.prototype ).should.equal( false );
+        }
       }
     ]
   });
@@ -237,49 +279,31 @@ Object.defineProperty( window, 'div', {
   });
 
   describes.push({
-    name: 'Array',
+    name: 'window',
     describe: [
       {
-        name: '$create',
+        name: '$ready',
         it: function(){
-          Array.$create( 10 ).length.should.equal( 10 );
-          Array.$create( true ).length.should.equal( 1 );
-          Array.$create( false ).length.should.equal( 0 );
-          Array.$create( 1, true )[0].should.equal( true );
-          Array.$create( 1, false )[0].should.equal( false );
-          Array
-            .$create( 10, function( index ){
-              return 'ZenJS-' + index
-            })
-            [ 9 ]
-            .should.equal( 'ZenJS-9' )
+          // 手动测试的 (*^▽^*)
+        }
+      }, {
+        name: '$typeof',
+        it: function(){
+          $typeof( undefined ).should.equal( 'undefined' );
+          $typeof( null ).should.equal( 'null' );
+          $typeof( [] ).should.equal( 'array' );
+          $typeof( {} ).should.equal( 'object' );
+          $typeof( '' ).should.equal( 'string' );
+          $typeof( 123 ).should.equal( 'number' );
+          $typeof( true ).should.equal( 'boolean' );
+          $typeof( false ).should.equal( 'boolean' );
         }
       }
     ]
   });
 
-  describes.push({
-    name: 'Array.prototype',
-    describe: [
-      {
-        name: '$inArray',
-        it: function(){
-          [ 1, 2, 3 ].$inArray( 1 ).should.equal( true );
-          [ 1, 2, 3 ].$inArray( 0 ).should.equal( false );
-          [ '' ].$inArray( false ).should.equal( true );
-          [ undefined ].$inArray( null ).should.equal( true );
-        }
-      }, {
-        name: '$add',
-        it: function(){
-          [ 1 ].$add( 0, 0 )[ 0 ].should.equal( 0 );
-          [ 1 ].$add( 0, 0 )[ 1 ].should.equal( 1 );
-          [ 1 ].$add( 0, 0 ).length.should.equal( 2 );
-          [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equal( 5 );
-        }
-      }
-    ]
-  });
+
+
 
 
   describe( 'ZenJS', function(){
