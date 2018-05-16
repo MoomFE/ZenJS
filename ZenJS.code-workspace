@@ -14,14 +14,7 @@
     "editor.tabSize": 2,
     "editor.detectIndentation": false,
     "files.exclude": {
-      "**/ZenJS.code-workspace": true,
-      "**/package-lock.json": true,
-      "**/node_modules": true,
-      "**/LICENSE": true,
-      "**/README.md": true,
-      "**/.gitignore": true,
       "**/.vscode": true,
-      "**/.babelrc": true
     }
   }
 }

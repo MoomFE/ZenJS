@@ -1,6 +1,19 @@
 {
   "files.exclude": {
+    "**/.gitignore": true,
+    "**/.babelrc": true,
+
+    "**/jsconfig.json": true,
+
+    "**/node_modules": true,
+    "**/package-lock.json": true,
+
     "**/dist": true,
-    "**/src": true
+    "**/src": true,
+
+    "**/ZenJS.code-workspace": true,
+
+    "**/LICENSE": true,
+    "**/README.md": true,
   }
 }
