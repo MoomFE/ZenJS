@@ -6,7 +6,7 @@ export default function $each( obj, callback ){
   let key,
       value;
 
-  for( let key in obj ){
+  for( key in obj ){
     value = obj[ key ];
 
     if( callback.call( value, key, value, obj ) === false ){

@@ -155,6 +155,22 @@ Object.defineProperty( window, 'div', {
           [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equal( 5 );
         }
       }, {
+        name: '$delete',
+        it: function(){
+          [ 1 ].$delete( 0 ).length.should.equal( 0 );
+          [ 0, 1 ].$delete( 0, 2 ).length.should.equal( 0 );
+          [ 0, 1, 2 ].$delete( 0, 2 ).length.should.equal( 1 );
+          [ 0, 1, 2 ].$delete( 0, 2 )[ 0 ].should.equal( 2 );
+        }
+      }, {
+        name: '$deleteValue',
+        it: function(){
+          [ 1, 2, 3, 4 ].$deleteValue( 4 ).length.should.equal( 3 );
+          Array.$create( 10 ).$deleteValue( undefined ).length.should.equal( 0 );
+          Array.$create( 10, null ).concat( Array.$create( 10, 0 ) ).$deleteValue( false ).length.should.equal( 20 );
+          Array.$create( 10, null ).concat( Array.$create( 10, 0 ) ).$deleteValue( false, false ).length.should.equal( 10 );
+        }
+      }, {
         name: '$each',
         it: function(){
           var test1 = [ 1, 2, 3 ].$each(function( index, value, arr ){
@@ -177,7 +193,14 @@ Object.defineProperty( window, 'div', {
           test2[ 0 ].should.equal( 3 );
           test2[ 2 ].should.equal( 3 );
         }
-      },{
+      }, {
+        name: '$get',
+        it: function(){
+          [ 0, 1, 2 ].$get().should.equal( 0 );
+          [ 0, 1, 2 ].$get( 2 ).should.equal( 2 );
+          [ 0, 1, 2 ].$get( 0, 2 ).length.should.equal( 2 );
+        }
+      }, {
         name: '$inArray',
         it: function(){
           [ 1, 2, 3 ].$inArray( 1 ).should.equal( true );
@@ -191,6 +214,31 @@ Object.defineProperty( window, 'div', {
           [ 1, 2, 3 ].$set( 1, 4 )[ 1 ].should.equal( 4 );
           [ 1 ].$set( 1, 2 )[ 1 ].should.equal( 2 );
           [].$set( 1, 1 )[ 1 ].should.equal( 1 );
+          [].$set({ 0: 0, 1: 1, 2: 2 }).length.should.equal( 3 );
+        }
+      }, {
+        name: '$push',
+        it: function(){
+          [ 1 ].$push( 2 ).length.should.equal( 2 );
+          [ 1 ].$push( 2 )[ 1 ].should.equal( 2 );
+        }
+      }, {
+        name: '$unshift',
+        it: function(){
+          [ 1 ].$unshift( 0 ).length.should.equal( 2 );
+          [ 1 ].$unshift( 0 )[ 0 ].should.equal( 0 );
+        }
+      }, {
+        name: '$pop',
+        it: function(){
+          [ 1, 2, 3 ].$pop().length.should.equal( 2 );
+          [ 1, 2, 3 ].$pop()[ 1 ].should.equal( 2 );
+        }
+      }, {
+        name: '$shift',
+        it: function(){
+          [ 1, 2, 3 ].$shift().length.should.equal( 2 );
+          [ 1, 2, 3 ].$shift()[ 1 ].should.equal( 3 );
         }
       }
     ]

@@ -4,9 +4,11 @@ import ArrayProto from '../../shared/global/Array/prototype/index';
 
 
 export default function $set( index, value ){
+  let _index;
+
   if( isObject( index ) )
-    for( let i in index )
-      this[ i ] = index[ i ];
+    for( _index in index )
+      this[ _index ] = index[ _index ];
   else
     this[ index ] = value;
 

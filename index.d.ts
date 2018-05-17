@@ -9,11 +9,23 @@ interface ArrayConstructor {
 
 interface Array<T> {
   /**
-   * 在数组指定位置添加元素
+   * 在数组指定位置添加对象
    * @param index 添加在数组中的位置
    * @param args 需要添加的对象, 可以是多个
    */
   $add( index: number, ...args: any[] ): this;
+  /**
+   * 在数组指定位置删除若干对象
+   * @param index 需要删除的下标
+   * @param num 需要从该下标开始删除几个对象 - default: 1
+   */
+  $delete( index: number, num?: number = 1 ): this;
+  /**
+   * 从数组中删除与传入对象相同的对象
+   * @param value 需要从数组中删除的对象
+   * @param congruence 是否使用全等进行判断 - default: true
+   */
+  $deleteValue( value: any, congruence?: boolean = true ): this;
   /**
    * 查找数组内是否有此传入值
    * -- 弱检测
@@ -28,6 +40,17 @@ interface Array<T> {
    */
   $each( callback: ( index: number, value: any, arr: any[] ) => boolean ): this;
   /**
+   * 获取指定下标的对象
+   * @param index 需要获取的对象的下标 - default: 1
+   */
+  $get( index?: number = 1 ): any;
+  /**
+   * 获取指定下标开始的若干个对象
+   * @param index 需要获取的对象的下标
+   * @param num 需要从该下标开始获取几个对象
+   */
+  $get( index: number = 1, num: number ): any[];
+  /**
    * 修改数组内指定下标的值
    * @param index 需要修改的下标
    * @param value 值
@@ -38,7 +61,26 @@ interface Array<T> {
    * @param obj 批量修改数组内指定下标的值
    */
   $set( obj: { index: number, value: any } ): this;
+  /**
+   * 调用原生 push 方法, 返回 this
+   * @param items 需要插入到数组末尾的对象
+   */
+  $push( ...items: T[] ): this;
+  /**
+   * 调用原生 unshift 方法, 返回 this
+   * @param items 需要插入到数组开头的对象
+   */
+  $unshift( ...items: T[] ): this;
+  /**
+   * 调用原生 pop 方法, 返回 this
+   */
+  $pop(): this;
+  /**
+   * 调用原生 shift 方法, 返回 this
+   */
+  $shift(): this;
 }
+
 
 interface Document {
   /**
@@ -48,21 +90,21 @@ interface Document {
    * @param func DOM 载入完成后执行的方法
    * @param data 需要传入方法的数据
    */
-  $ready( func: () => void, data: any ): void;
+  $ready( func: () => void, data?: any ): void;
 }
 
 interface ObjectConstructor {
   /**
    * Object.assign 的深拷贝版本
    */
-  $assign( ...args: any[] ): any;
+  $assign( ...args?: any[] ): any;
   /**
    * 创建一个新的对象
    * 可传入多个参数, 参数会使用深拷贝进行继承
    * @param isNoProto 是否创建一个无 prototype 的对象
    * @param args 继承到新对象中的对象
    */
-  $create( isNoProto: boolean, ...args: any[] ): any;
+  $create( isNoProto?: boolean, ...args?: any[] ): any;
   /**
    * 遍历对象, 并调用传入方法
    * @param obj 需要遍历的对象
@@ -96,7 +138,7 @@ interface Window {
    * @param func 页面及页面资源载入完成后执行的方法
    * @param data 需要传入方法的数据
    */
-  $ready( func: () => void, data: any ): void;
+  $ready( func: () => void, data?: any ): void;
   /**
    * 判断传入参数的类型
    * @param obj 需要判断类型的参数

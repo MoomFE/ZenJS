@@ -77,6 +77,43 @@
 
   defineValue(Array, '$create', $create);
 
+  function $delete(index) {
+    var num = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+    this.splice(index, num);
+    return this;
+  }
+
+  defineValue(ArrayProto, '$delete', $delete);
+
+  function _equal(one, two) {
+    return one == two;
+  }
+  function _congruence(one, two) {
+    return one === two;
+  }
+
+  function $deleteValue(value) {
+    var congruence = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+    var index = 0,
+        length = this.length,
+        isEqual = congruence ? _congruence : _equal;
+
+    for (; index < length;) {
+      if (isEqual(this[index], value)) {
+        this.$delete(index);
+        length--;
+      } else {
+        index++;
+      }
+    }
+
+    return this;
+  }
+
+  defineValue(ArrayProto, '$deleteValue', $deleteValue);
+
   function $each(callback) {
     var index = 0,
         length = this.length,
@@ -94,6 +131,18 @@
   }
 
   defineValue(ArrayProto, '$each', $each);
+
+  function $get() {
+    var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var num = arguments[1];
+
+    if (num == null) {
+      return this[index];
+    }
+    return this.slice(index, num);
+  }
+
+  defineValue(ArrayProto, '$get', $get);
 
   function $inArray(obj) {
     var i = 0,
@@ -115,14 +164,24 @@
   }
 
   function $set(index, value) {
-    if (isObject(index)) for (var i in index) {
-      this[i] = index[i];
+    var _index = void 0;
+
+    if (isObject(index)) for (_index in index) {
+      this[_index] = index[_index];
     } else this[index] = value;
 
     return this;
   }
 
   defineValue(ArrayProto, '$set', $set);
+
+  'push_unshift_pop_shift'.split('_').forEach(function (key) {
+
+    defineValue(ArrayProto, "$" + key, function () {
+      this[key].apply(this, arguments);
+      return this;
+    });
+  });
 
   function $ready(func, data) {
     if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
@@ -248,12 +307,13 @@
   defineValue(Object, '$create', $create$1);
 
   function $each$1(obj, callback) {
-    var value = void 0;
+    var key = void 0,
+        value = void 0;
 
-    for (var _key in obj) {
-      value = obj[_key];
+    for (key in obj) {
+      value = obj[key];
 
-      if (callback.call(value, _key, value, obj) === false) {
+      if (callback.call(value, key, value, obj) === false) {
         break;
       }
     }
@@ -274,11 +334,6 @@
 
   var StringProto = String.prototype;
 
-  /**
-   * 将字符串首字母大写
-   * 
-   * @returns {String}
-   */
   function $toCapitalize() {
     return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
   }
