@@ -1,5 +1,6 @@
 import './Array/index';
 import './Document/index';
+import './Math/index';
 import './Object/index';
 import './String/index';
 import './Window/index';

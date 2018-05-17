@@ -193,6 +193,20 @@
 
   defineValue(document, '$ready', $ready);
 
+  var floor = Math.floor;
+
+  var random = Math.random;
+
+  function $random() {
+    var from = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 9;
+    var to = arguments[1];
+
+    to || (to = from, from = 0);
+    return floor(random() * (to - from + 1) + from);
+  }
+
+  defineValue(Math, '$random', $random);
+
   var ObjectProto = Object.prototype;
 
   var toString = ObjectProto.toString;

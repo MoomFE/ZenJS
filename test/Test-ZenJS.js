@@ -1,12 +1,12 @@
 Object.defineProperty( window, 'div', {
-  get: () => {
+  get: function(){
     return document.createElement('div');
   }
 });
 
 !function(){
 
-  const toString = function( obj ){
+  var toString = function( obj ){
     return this.call( obj );
   }.bind(
     {}.toString
@@ -25,7 +25,7 @@ Object.defineProperty( window, 'div', {
     return o === null;
   }
 
-  const describes = [];
+  var describes = [];
 
 /* #region */
 
@@ -37,13 +37,13 @@ Object.defineProperty( window, 'div', {
   //       describe: () => {
   //         it( '$data', () => {
   //           // 存储数据返回对象本身
-  //           isElement( div.$data('Data','div') ).should.equal( true );
-  //           isElement( div.$data({Data:'div'}) ).should.equal( true );
-  //           isElement( div.$data({Data:'div'},true) ).should.equal( true );
+  //           isElement( div.$data('Data','div') ).should.true;
+  //           isElement( div.$data({Data:'div'}) ).should.true;
+  //           isElement( div.$data({Data:'div'},true) ).should.true;
   //           // 有对应数据返回对应数据
   //           div.$data('Data','div').$data('Data').should.equal( 'div' );
   //           // 无对应数据时返回 undefined
-  //           isUndef( div.$data('noData') ).should.equal( true );
+  //           isUndef( div.$data('noData') ).should.true;
   //           // 未传入数据名, 返回全部数据集
   //           JSON.stringify( div.$data('Data','div').$data() ).should.equal( '{"Data":"div"}' );
   //           // 初始化添加方式
@@ -54,22 +54,22 @@ Object.defineProperty( window, 'div', {
   //         });
   //         it( '$hasData', () => {
   //           // 未传入对象则检测是否存过数据
-  //           div.$hasData().should.equal( false );
-  //           div.$data('Data','div').$hasData().should.equal( true );
+  //           div.$hasData().should.false;
+  //           div.$data('Data','div').$hasData().should.true;
   //           // 传入对象检测相应对象
-  //           div.$hasData('noData').should.equal( false );
-  //           div.$data('Data','div').$hasData('Data').should.equal( true );
+  //           div.$hasData('noData').should.false;
+  //           div.$data('Data','div').$hasData('Data').should.true;
   //         });
   //         it( '$deleteData', () => {
   //           // 始终返回自身
-  //           isElement( div.$deleteData() ).should.equal( true );
-  //           isElement( div.$deleteData('noData') ).should.equal( true );
-  //           isElement( div.$deleteData('noData1 noData2') ).should.equal( true );
+  //           isElement( div.$deleteData() ).should.true;
+  //           isElement( div.$deleteData('noData') ).should.true;
+  //           isElement( div.$deleteData('noData1 noData2') ).should.true;
   //           // 删除单个数据
-  //           div.$data('Data','div').$deleteData('Data').$hasData('Data').should.equal( false );
-  //           div.$data('Data','div').$deleteData('Data1').$hasData('Data').should.equal( true );
+  //           div.$data('Data','div').$deleteData('Data').$hasData('Data').should.false;
+  //           div.$data('Data','div').$deleteData('Data1').$hasData('Data').should.true;
   //           // 删除全部数据
-  //           div.$data('Data','div').$deleteData().$hasData().should.equal( false );
+  //           div.$data('Data','div').$deleteData().$hasData().should.false;
   //         });
   //       }
   //     },
@@ -84,7 +84,7 @@ Object.defineProperty( window, 'div', {
   //             // 有对应数据返回对应数据
   //             root.$data('Data').should.equal( 'root' );
   //             // 无对应数据时返回 undefined
-  //             isUndef( root.$data('noData') ).should.equal( true );
+  //             isUndef( root.$data('noData') ).should.true;
   //             // 未传入数据名, 返回全部数据集
   //             JSON.stringify( root.$data() ).should.equal( '{"Data":"root"}' );
   //             // 初始化添加方式
@@ -96,11 +96,11 @@ Object.defineProperty( window, 'div', {
   //           it( '$hasData', () => {
   //             // 未传入对象则检测是否存过数据
   //             root[ root ] = {};
-  //             root.$hasData().should.equal( false );
-  //             root.$data('Data','root').$hasData().should.equal( true );
+  //             root.$hasData().should.false;
+  //             root.$data('Data','root').$hasData().should.true;
   //             // 传入对象检测相应对象
-  //             root.$hasData('noData').should.equal( false );
-  //             root.$hasData('Data').should.equal( true );
+  //             root.$hasData('noData').should.false;
+  //             root.$hasData('Data').should.true;
   //           });
   //           it( '$deleteData', () => {
   //             // 始终返回自身
@@ -108,10 +108,10 @@ Object.defineProperty( window, 'div', {
   //             root.$deleteData( 'noData' ).should.equal( root );
   //             root.$deleteData( 'noData1 noData2' ).should.equal( root );
   //             // 删除单个数据
-  //             div.$data('Data','root').$deleteData('Data').$hasData('Data').should.equal( false );
-  //             div.$data('Data','root').$deleteData('Data1').$hasData('Data').should.equal( true );
+  //             div.$data('Data','root').$deleteData('Data').$hasData('Data').should.false;
+  //             div.$data('Data','root').$deleteData('Data1').$hasData('Data').should.true;
   //             // 删除全部数据
-  //             root.$deleteData().$hasData().should.equal( false );
+  //             root.$deleteData().$hasData().should.false;
   //           });
   //         });
   //       });
@@ -130,8 +130,8 @@ Object.defineProperty( window, 'div', {
           Array.$create( 10 ).length.should.equal( 10 );
           Array.$create( true ).length.should.equal( 1 );
           Array.$create( false ).length.should.equal( 0 );
-          Array.$create( 1, true )[0].should.equal( true );
-          Array.$create( 1, false )[0].should.equal( false );
+          Array.$create( 1, true )[0].should.true;
+          Array.$create( 1, false )[0].should.false;
           Array
             .$create( 10, function( index ){
               return 'ZenJS-' + index
@@ -203,10 +203,10 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$inArray',
         it: function(){
-          [ 1, 2, 3 ].$inArray( 1 ).should.equal( true );
-          [ 1, 2, 3 ].$inArray( 0 ).should.equal( false );
-          [ '' ].$inArray( false ).should.equal( true );
-          [ undefined ].$inArray( null ).should.equal( true );
+          [ 1, 2, 3 ].$inArray( 1 ).should.true;
+          [ 1, 2, 3 ].$inArray( 0 ).should.false;
+          [ '' ].$inArray( false ).should.true;
+          [ undefined ].$inArray( null ).should.true;
         }
       }, {
         name: '$set',
@@ -257,24 +257,47 @@ Object.defineProperty( window, 'div', {
   });
 
   describes.push({
+    name: 'Math',
+    describe: [
+      {
+        name: '$random',
+        it: function(){
+          function compare( num, min, max ){
+            return num >= min && num <= max;
+          }
+          for( var i = 0; i < 100; i++ ){
+            compare( Math.$random(), 0, 9 ).should.true;
+          }
+          for( var i = 0; i < 1000; i++ ){
+            compare( Math.$random( 90 ), 0, 90 ).should.true;
+          }
+          for( var i = 0; i < 1000; i++ ){
+            compare( Math.$random( 36, 126 ), 36, 126 ).should.true;
+          }
+        }
+      }
+    ]
+  });
+
+  describes.push({
     name: 'Object',
     describe: [
       {
         name: '$assign',
         it: function(){
 
-          Object.$isPlainObject( Object.$assign() ).should.equal( true );
-          Object.$isEmptyObject( Object.$assign() ).should.equal( true );
+          Object.$isPlainObject( Object.$assign() ).should.true;
+          Object.$isEmptyObject( Object.$assign() ).should.true;
 
           var obj1 = {},
               obj2 = { asd: 123 },
               obj3 = { asd: 1234 };
 
           Object.$assign( obj1 ).should.equal( obj1 )
-          Object.$isEmptyObject( Object.$assign( obj1 ) ).should.equal( true );
+          Object.$isEmptyObject( Object.$assign( obj1 ) ).should.true;
 
           Object.$assign( obj1, obj2 ).should.equal( obj1 );
-          Object.$isEmptyObject( Object.$assign( obj1, obj2 ) ).should.equal( false );
+          Object.$isEmptyObject( Object.$assign( obj1, obj2 ) ).should.false;
 
           Object.$assign( obj1, obj2 ).asd.should.equal( 123 );
           Object.$assign( obj1, obj2, obj3 ).asd.should.equal( 1234 );
@@ -282,25 +305,25 @@ Object.defineProperty( window, 'div', {
           var obj4 = { infiniteLoop: obj5 },
               obj5 = { infiniteLoop: obj4 };
 
-          isUndef( Object.$assign( obj4, obj5 ).infiniteLoop ).should.equal( true );
+          isUndef( Object.$assign( obj4, obj5 ).infiniteLoop ).should.true;
         }
       }, {
         name: '$create',
         it: function(){
-          Object.$isEmptyObject( Object.$create() ).should.equal( true );
-          Object.$isPlainObject( Object.$create() ).should.equal( true );
-          Object.$isPlainObject( Object.$create( true ) ).should.equal( true );
-          Object.$isPlainObject( Object.$create( false ) ).should.equal( true );
+          Object.$isEmptyObject( Object.$create() ).should.true;
+          Object.$isPlainObject( Object.$create() ).should.true;
+          Object.$isPlainObject( Object.$create( true ) ).should.true;
+          Object.$isPlainObject( Object.$create( false ) ).should.true;
 
-          ( Object.getPrototypeOf( Object.$create( true ) ) == null ).should.equal( true );
-          ( Object.$create().constructor != null ).should.equal( true );
+          ( Object.getPrototypeOf( Object.$create( true ) ) == null ).should.true;
+          ( Object.$create().constructor != null ).should.true;
 
           var obj1 = { asd: 123 },
               obj2 = { asd: 1234 };
 
           Object.$create( obj1 ).asd.should.equal( 123 );
           Object.$create( obj1, obj2 ).asd.should.equal( 1234 );
-          isEqual( obj1, Object.$create( obj1 ) ).should.equal( false );
+          isEqual( obj1, Object.$create( obj1 ) ).should.false;
         }
       }, {
         name: '$each',
@@ -329,17 +352,17 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$isEmptyObject',
         it: function(){
-          Object.$isEmptyObject( {} ).should.equal( true );
-          Object.$isEmptyObject( { Empty: false } ).should.equal( false );
+          Object.$isEmptyObject( {} ).should.true;
+          Object.$isEmptyObject( { Empty: false } ).should.false;
         }
       }, {
         name: '$isPlainObject',
         it: function(){
-          Object.$isPlainObject( {} ).should.equal( true );
-          Object.$isPlainObject( Object.create( null ) ).should.equal( true );
-          Object.$isPlainObject( div ).should.equal( false );
-          Object.$isPlainObject( Element ).should.equal( false );
-          Object.$isPlainObject( Element.prototype ).should.equal( false );
+          Object.$isPlainObject( {} ).should.true;
+          Object.$isPlainObject( Object.create( null ) ).should.true;
+          Object.$isPlainObject( div ).should.false;
+          Object.$isPlainObject( Element ).should.false;
+          Object.$isPlainObject( Element.prototype ).should.false;
         }
       }
     ]
@@ -388,12 +411,12 @@ Object.defineProperty( window, 'div', {
 
 
   describe( 'ZenJS', function(){
-    (function access( next = describes ){
-      next.forEach( _describe => {
+    (function access( next ){
+      ( next || describes ).forEach(function( _describe ){
         if( typeof _describe === 'function' ) return _describe();
         if( _describe.it ) it( _describe.name, _describe.it );
         else if( _describe.describe ){
-          describe( _describe.name, () => {
+          describe( _describe.name, function(){
             if( Array.isArray( _describe.describe ) ) access( _describe.describe );
             else _describe.describe();
           });
