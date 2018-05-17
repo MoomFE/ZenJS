@@ -1,3 +1,5 @@
 import Object from './index';
 
-export default Object.create;
+const { create } = Object;
+
+export default create;

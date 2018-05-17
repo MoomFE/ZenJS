@@ -1,3 +1,5 @@
 import Object from './index';
 
-export default Object.getPrototypeOf;
+const { getPrototypeOf } = Object;
+
+export default getPrototypeOf;

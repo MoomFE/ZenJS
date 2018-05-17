@@ -1,3 +1,5 @@
 import Object from './index';
 
-export default Object.assign;
+const { assign } = Object;
+
+export default assign;

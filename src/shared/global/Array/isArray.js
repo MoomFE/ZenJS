@@ -1,3 +1,5 @@
 import Array from './index';
 
-export default Array.isArray;
+const { isArray } = Array;
+
+export default isArray;

@@ -1,3 +1,5 @@
 import Object from './index';
 
-export default Object.defineProperty;
+const { defineProperty } = Object;
+
+export default defineProperty;

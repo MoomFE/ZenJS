@@ -1,3 +1,5 @@
 import Object from './index';
 
-export default Object.hasOwnProperty;
+const { hasOwnProperty } = Object;
+
+export default hasOwnProperty;

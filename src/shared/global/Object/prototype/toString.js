@@ -1,3 +1,5 @@
 import ObjectProto from './index';
 
-export default ObjectProto.toString;
+const { toString } = ObjectProto;
+
+export default toString;
