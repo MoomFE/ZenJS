@@ -346,6 +346,46 @@
 
   defineValue(Object, '$isEmptyObject', $isEmptyObject);
 
+  var fromCharCode = String.fromCharCode;
+
+  function string$random() {
+    var uppercase = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+    return fromCharCode(uppercase ? $random(65, 90) : $random(97, 122));
+  }
+
+  defineValue(String, '$random', string$random);
+
+  function string$someRandom() {
+    var length = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 12;
+    var hasUppercase = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    var hasNumber = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+    var result = '';
+
+    while (length-- > 0) {
+      result += string$random();
+    }
+
+    if (hasUppercase) {
+      result = result.split('').map(function (code) {
+        return $random(1) ? code.toUpperCase() : code;
+      }).join();
+    }
+
+    if (hasNumber) {
+      result = result.split('').map(function (code) {
+        return $random(1) ? random() : code;
+      })
+      // 第一位不允许为数字
+      .$set(0, string$random($random(1))).join();
+    }
+
+    return result;
+  }
+
+  defineValue(String, '$someRandom', string$someRandom);
+
   var StringProto = String.prototype;
 
   function $toCapitalize() {

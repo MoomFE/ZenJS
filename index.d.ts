@@ -149,6 +149,21 @@ interface String {
   $toCapitalize(): string;
 }
 
+interface StringConstructor {
+  /**
+   * 随机26个字母中的一个
+   * @param uppercase 是否大写 - default: false
+   */
+  $random( uppercase?: boolean = false ): string;
+  /**
+   * 随机指定长度的字符串
+   * @param length 字符串长度 - default: 12
+   * @param hasUppercase 是否随机大写字母 - default: false
+   * @param hasNumber 是否随机数字( 不会随机到首位 ) - default: false
+   */
+  $someRandom( length?: number, hasUppercase?: boolean = false, hasNumber?: boolean = false ): string;
+}
+
 interface Window {
   /**
    * 页面及页面资源载入完成后传入代码

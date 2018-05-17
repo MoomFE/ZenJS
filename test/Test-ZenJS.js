@@ -372,6 +372,39 @@ Object.defineProperty( window, 'div', {
     name: 'String',
     describe: [
       {
+        name: '$random',
+        it: function(){
+          for( var i = 0; i < 260; i++ ){
+            /[a-z]/.test( String.$random() ).should.true;
+          }
+          for( var i = 0; i < 260; i++ ){
+            /[A-Z]/.test( String.$random( true ) ).should.true;
+          }
+        }
+      }, {
+        name: '$someRandom',
+        it: function(){
+          for( var i = 0; i < 260; i++ ){
+            /[a-z]+/.test( String.$someRandom() ).should.true;
+          }
+          for( var i = 0; i < 260; i++ ){
+            /[a-zA-Z]/.test( String.$someRandom( 12, true ) ).should.true;
+          }
+          for( var i = 0; i < 260; i++ ){
+            /[a-zA-Z0-9]/.test( String.$someRandom( 12, true, true ) ).should.true;
+          }
+          for( var i = 0; i < 26; i++ ){
+            String.$someRandom( i ).length.should.equal( i );
+          }
+        }
+      }
+    ]
+  });
+
+  describes.push({
+    name: 'String.prototype',
+    describe: [
+      {
         name: '$toCapitalize',
         it: function(){
           '123'.$toCapitalize().should.equal( '123' );
