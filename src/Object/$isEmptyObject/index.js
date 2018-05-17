@@ -1,4 +1,4 @@
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 import Object from '../../shared/global/Object';
 
 
@@ -9,4 +9,4 @@ export default function $isEmptyObject( obj ){
   return true;
 }
 
-define( Object, '$isEmptyObject', $isEmptyObject );
+defineValue( Object, '$isEmptyObject', $isEmptyObject );

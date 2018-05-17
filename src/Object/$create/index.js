@@ -2,7 +2,7 @@ import Object from '../../shared/global/Object/index';
 import $assign from '../$assign/index';
 import create from '../../shared/global/Object/create';
 
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 import isBoolean from '../../shared/util/isBoolean';
 
 
@@ -17,4 +17,4 @@ export default function $create( isNoProto, ...args ){
   return $assign.apply( null, args );
 };
 
-define( Object, '$create', $create );
+defineValue( Object, '$create', $create );

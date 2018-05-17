@@ -1,5 +1,5 @@
 import isArray from '../../shared/global/Array/isArray';
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 
 
 export default function $typeof( obj ){
@@ -13,4 +13,4 @@ export default function $typeof( obj ){
   return type;
 }
 
-define( window, '$typeof', $typeof );
+defineValue( window, '$typeof', $typeof );

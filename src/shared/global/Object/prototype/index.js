@@ -1,3 +1,5 @@
 import Object from '../index';
 
-export default Object.prototype;
+const ObjectProto = Object.prototype;
+
+export default ObjectProto;

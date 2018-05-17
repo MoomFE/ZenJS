@@ -1,4 +1,4 @@
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 import ArrayProto from '../../shared/global/Array/prototype/index';
 
 
@@ -13,4 +13,4 @@ export default function $add( index, ...args ){
   return this;
 }
 
-define( ArrayProto, '$add', $add );
+defineValue( ArrayProto, '$add', $add );

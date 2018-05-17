@@ -4,7 +4,7 @@ import hasOwnProperty from '../../shared/global/Object/hasOwnProperty';
 import isFunction from '../../shared/util/isFunction';
 import Object from '../../shared/global/Object/index';
 
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 
 var fnToString = hasOwnProperty.toString;
 
@@ -30,4 +30,4 @@ export default function $isPlainObject( obj ){
 
 }
 
-define( Object, '$isPlainObject', $isPlainObject );
+defineValue( Object, '$isPlainObject', $isPlainObject );

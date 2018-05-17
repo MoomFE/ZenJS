@@ -1,3 +1,5 @@
 import String from '../index';
 
-export default String.prototype;
+const StringProto = String.prototype;
+
+export default StringProto;

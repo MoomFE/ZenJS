@@ -1,3 +1,5 @@
 import Element from '../index';
 
-export default Element.prototype;
+const ElementProto = Element.prototype;
+
+export default ElementProto;

@@ -1,4 +1,4 @@
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 import ArrayProto from '../../shared/global/Array/prototype/index';
 
 
@@ -11,4 +11,4 @@ export default function $inArray( obj ){
   return false;
 }
 
-define( ArrayProto, '$inArray', $inArray );
+defineValue( ArrayProto, '$inArray', $inArray );

@@ -1,3 +1,5 @@
 import Array from '../index';
 
-export default Array.prototype;
+const ArrayProto = Array.prototype;
+
+export default ArrayProto;

@@ -1,4 +1,4 @@
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 import Object from '../../shared/global/Object';
 
 
@@ -17,4 +17,4 @@ export default function $each( obj, callback ){
   return obj;
 }
 
-define( Object, '$each', $each );
+defineValue( Object, '$each', $each );

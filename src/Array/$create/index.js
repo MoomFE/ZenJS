@@ -1,5 +1,5 @@
 import isFunction from '../../shared/util/isFunction';
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 import Array from '../../shared/global/Array/index';
 
 
@@ -16,4 +16,4 @@ export default function $create( length, insert ){
   return result;
 }
 
-define( Array, '$create', $create );
+defineValue( Array, '$create', $create );

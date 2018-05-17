@@ -1,4 +1,4 @@
-import define from "../../shared/util/defineValue";
+import defineValue from "../../shared/util/defineValue";
 import ArrayProto from '../../shared/global/Array/prototype/index';
 
 export default function $each( callback ){
@@ -17,4 +17,4 @@ export default function $each( callback ){
   return this;
 }
 
-define( ArrayProto, '$each', $each );
+defineValue( ArrayProto, '$each', $each );

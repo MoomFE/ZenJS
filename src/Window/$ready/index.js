@@ -1,4 +1,4 @@
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 
 
 export default function $ready( func, data ){
@@ -9,4 +9,4 @@ export default function $ready( func, data ){
   });
 }
 
-define( window, '$ready', $ready );
+defineValue( window, '$ready', $ready );

@@ -12,12 +12,12 @@
 // target.$on( types, selector, listener, options )
 // target.$on( types, selector, options, listener )
 
-import define from '../shared/util/defineValue';
+import defineValue from '../shared/util/defineValue';
 import on from './access/on';
 
 /**
  * 事件处理 => 添加事件1: 获取参数
  */
-define( EventTarget.prototype , '$on', function( types, selector, listener, options ){
+defineValue( EventTarget.prototype , '$on', function( types, selector, listener, options ){
   return on( this, types, selector, listener, options );
 });

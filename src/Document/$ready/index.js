@@ -1,4 +1,4 @@
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 import document from '../../shared/global/Document/index';
 
 
@@ -10,4 +10,4 @@ export default function $ready( func, data ){
   });
 }
 
-define( document, '$ready', $ready );
+defineValue( document, '$ready', $ready );

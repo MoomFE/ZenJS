@@ -1,6 +1,6 @@
 import Object from '../../shared/global/Object/index';
 
-import define from '../../shared/util/defineValue';
+import defineValue from '../../shared/util/defineValue';
 import isPlainObject from '../$isPlainObject/index';
 import isArray from '../../shared/global/Array/isArray';
 
@@ -58,4 +58,4 @@ export default function $assign(){
   return target;
 };
 
-define( Object, '$assign', $assign );
+defineValue( Object, '$assign', $assign );

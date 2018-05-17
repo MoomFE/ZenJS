@@ -4,7 +4,7 @@ interface ArrayConstructor {
    * @param length 需要创建的数组的长度
    * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index
    */
-  $create( length: number, insert: any ): T[];
+  $create( length: number, insert: any ): any[];
 }
 
 interface Array<T> {
@@ -13,7 +13,7 @@ interface Array<T> {
    * @param index 添加在数组中的位置
    * @param args 需要添加的对象, 可以是多个
    */
-  $add( index: number, ...args: T[] ): this;
+  $add( index: number, ...args: any[] ): this;
   /**
    * 查找数组内是否有此传入值
    * -- 弱检测
@@ -26,7 +26,7 @@ interface Array<T> {
    * 遍历数组, 并调用传入方法
    * @param callback 遍历数组时调用的方法, 方法返回 false 时, 退出遍历
    */
-  $each( callback: ( index: number, value: any, arr: any[] ) => boolean ): any[];
+  $each( callback: ( index: number, value: any, arr: any[] ) => boolean ): this;
   /**
    * 修改数组内指定下标的值
    * @param index 需要修改的下标
@@ -48,7 +48,7 @@ interface Document {
    * @param func DOM 载入完成后执行的方法
    * @param data 需要传入方法的数据
    */
-  $ready( func: () => void, data: any );
+  $ready( func: () => void, data: any ): void;
 }
 
 interface ObjectConstructor {
@@ -68,7 +68,7 @@ interface ObjectConstructor {
    * @param obj 需要遍历的对象
    * @param callback 遍历对象时调用的方法, 方法返回 false 时, 退出遍历
    */
-  $each( obj: any, callback: ( key: string, value: any, obj: any ) => boolean ): any;
+  $each( obj: any, callback: ( key: string, value: any, obj: any ) => boolean ): obj;
   /**
    * 判断传入对象是否是空对象
    * @param obj 需要判断的对象
@@ -96,7 +96,7 @@ interface Window {
    * @param func 页面及页面资源载入完成后执行的方法
    * @param data 需要传入方法的数据
    */
-  $ready( func: () => void, data: any );
+  $ready( func: () => void, data: any ): void;
   /**
    * 判断传入参数的类型
    * @param obj 需要判断类型的参数
