@@ -384,6 +384,37 @@
 
   defineValue(String, '$random', string$random);
 
+  /**
+   * 判断传入对象是否是正则
+   * @param {Object} obj 需要判断的对象
+   */
+  function isRegExp(obj) {
+    return toString.call(obj) === '[object RegExp]';
+  }
+
+  var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$])/g;
+
+  var StringProto = String.prototype;
+
+  function $replaceAll(searchValue, replaceValue) {
+    var flags = 'g';
+
+    if (isRegExp(searchValue)) {
+      if (searchValue.global) {
+        return this.replace(searchValue, replaceValue);
+      } else {
+        flags += searchValue.flags;
+        searchValue = searchValue.source;
+      }
+    } else {
+      searchValue = searchValue.replace(rkeyword, '\\$1');
+    }
+
+    return this.replace(new RegExp(searchValue, flags), replaceValue);
+  }
+
+  defineValue(StringProto, '$replaceAll', $replaceAll);
+
   function string$someRandom() {
     var result = '',
         length = parametersDefault(arguments, 0, 12);
@@ -412,8 +443,6 @@
   }
 
   defineValue(String, '$someRandom', string$someRandom);
-
-  var StringProto = String.prototype;
 
   function $toCapitalize() {
     return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();

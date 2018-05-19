@@ -171,6 +171,12 @@ interface String {
    * 将字符串首字母大写
    */
   $toCapitalize(): string;
+  /**
+   * 对当前字符串进行全局替换
+   * @param searchValue 匹配字符串中被替换的部分
+   * @param replaceValue 进行替换的字符串
+   */
+  $replaceAll( searchValue: RegExp | string, replaceValue: string ): string;
 }
 
 interface StringConstructor {

@@ -418,6 +418,13 @@ Object.defineProperty( window, 'div', {
           'zen'.$toCapitalize().should.equal( 'Zen' );
           'zEN'.$toCapitalize().should.equal( 'Zen' );
         }
+      }, {
+        name: '$replaceAll',
+        it: function(){
+          '121212'.$replaceAll( '1', '2' ).should.equal( '222222' );
+          '121212'.$replaceAll( /1/, '2' ).should.equal( '222222' );
+          '121212'.$replaceAll( /1/g, '2' ).should.equal( '222222' );
+        }
       }
     ]
   });
