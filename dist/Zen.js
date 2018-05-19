@@ -275,6 +275,25 @@
 
   var toString = ObjectProto.toString;
 
+  /**
+   * 判断传入对象是否是数字
+   * @param {Object} obj 需要判断的对象
+   */
+  function isNumber(obj) {
+    return toString.call(obj) === '[object Number]';
+  }
+
+  function $isNumber(obj) {
+    if (isNumber(obj) || typeof obj === 'string') {
+      if (!isNaN(obj - parseFloat(obj))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  defineValue(Number, '$isNumber', $isNumber);
+
   var getPrototypeOf = Object.getPrototypeOf;
 
   var hasOwnProperty = Object.hasOwnProperty;

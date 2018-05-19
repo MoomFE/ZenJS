@@ -131,6 +131,13 @@ interface Math {
   $randomPlus( from?: number = 0, to?: number = 9 ): number;
 }
 
+interface NumberConstructor {
+  /**
+   * 判断一个对象是否是数字或是否可转为数字
+   * @param obj 需要判断的对象
+   */
+  $isNumber( obj: any ): boolean;
+}
 
 interface ObjectConstructor {
   /**
