@@ -39,7 +39,19 @@ const allConfig = [
         })
         .then( ({ code }) => {
           if( isMinify ){
-            code = defaultConfig.output.banner + '\n' + uglify.minify( code ).code;
+            let minify = uglify.minify( code );
+            
+            if( minify.error ){
+              code = [
+                '\n******************************************************************\n'+
+                `* Minify ERROR: ${ minify.error.message }\n` +
+                `* Line: ${ minify.error.line }\n` +
+                `* Col: ${ minify.error.col }\n` +
+                '******************************************************************'
+              ];
+            }else{
+              code = defaultConfig.output.banner + '\n' + minify.code;
+            }
           }
           return write( output, code );
         })
@@ -49,7 +61,7 @@ const allConfig = [
         })
         .catch( error => {
           console.log( error );
-          reject();
+          resolve();
         });
     });
   }
@@ -57,6 +69,9 @@ const allConfig = [
 
 
 function write( output, code ){
+  if( Array.isArray( code ) ){
+    return Promise.reject( code[ 0 ] );
+  }
   return new Promise(( resolve, reject ) => {
     fs.writeFile( output, code, err => {
       if( err ) return reject( err );
