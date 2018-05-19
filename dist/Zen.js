@@ -43,12 +43,49 @@
 
   var ArrayProto = Array.prototype;
 
+  /**
+   * 获取方法指定位参数, 若未传入参数, 则取默认值
+   * @param {Object} args arguments
+   * @param {Number} index
+   * @param {Object} defaultValue
+   */
+  function parametersDefault(args, index, defaultValue) {
+    var arg = void 0;
+
+    if (args.length > index && (arg = args[index]) !== undefined) {
+      return arg;
+    }
+    return defaultValue;
+  }
+
+  function $get() {
+    var index = parametersDefault(arguments, 0, 0),
+        num = arguments[1];
+
+    if (num == null) {
+      return this[index];
+    }
+    return this.slice(index, num);
+  }
+
+  defineValue(ArrayProto, '$get', $get);
+
+  function parametersRest(args, index) {
+    var length = args.length;
+
+    if (length > index) {
+      return Array.from(args).$get(index, length);
+    }
+    return [];
+  }
+
   function $add(index) {
-    var i = 0,
-        len = arguments.length <= 1 ? 0 : arguments.length - 1;
+    var i = 0;
+    var args = parametersRest(arguments, 1),
+        len = args.length;
 
     for (; i < len; i++) {
-      this.splice(index++, 0, arguments.length <= i + 1 ? undefined : arguments[i + 1]);
+      this.splice(index++, 0, args[i]);
     }
 
     return this;
@@ -78,10 +115,9 @@
   defineValue(Array, '$create', $create);
 
   function $delete(index) {
-    var num = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    var num = parametersDefault(arguments, 1, 1);
 
-    this.splice(index, num);
-    return this;
+    return this.splice(index, num), this;
   }
 
   defineValue(ArrayProto, '$delete', $delete);
@@ -94,11 +130,10 @@
   }
 
   function $deleteValue(value) {
-    var congruence = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
-    var index = 0,
-        length = this.length,
+    var congruence = parametersDefault(arguments, 1, true),
         isEqual = congruence ? _congruence : _equal;
+    var index = 0,
+        length = this.length;
 
     for (; index < length;) {
       if (isEqual(this[index], value)) {
@@ -131,18 +166,6 @@
   }
 
   defineValue(ArrayProto, '$each', $each);
-
-  function $get() {
-    var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    var num = arguments[1];
-
-    if (num == null) {
-      return this[index];
-    }
-    return this.slice(index, num);
-  }
-
-  defineValue(ArrayProto, '$get', $get);
 
   function $inArray(obj) {
     var i = 0,
@@ -178,8 +201,7 @@
   'push_unshift_pop_shift'.split('_').forEach(function (key) {
 
     defineValue(ArrayProto, "$" + key, function () {
-      this[key].apply(this, arguments);
-      return this;
+      return this[key].apply(this, arguments), this;
     });
   });
 
@@ -198,8 +220,8 @@
   var random = Math.random;
 
   function $random() {
-    var from = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 9;
-    var to = arguments[1];
+    var from = parametersDefault(arguments, 0, 9),
+        to = arguments[1];
 
     to || (to = from, from = 0);
     return floor(random() * (to - from + 1) + from);
@@ -215,9 +237,8 @@
 
   var hasOwnProperty = Object.hasOwnProperty;
 
-  var fnToString = hasOwnProperty.toString;
-
-  var ObjectFunctionString = fnToString.call(Object);
+  var fnToString = hasOwnProperty.toString,
+      ObjectFunctionString = fnToString.call(Object);
 
   function $isPlainObject(obj) {
 
@@ -306,9 +327,7 @@
   }
 
   function $create$1(isNoProto) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
+    var args = parametersRest(arguments, 1);
 
     if (isBoolean(isNoProto) || !isNoProto) {
       args.unshift(isNoProto ? create(null) : {});
@@ -349,7 +368,7 @@
   var fromCharCode = String.fromCharCode;
 
   function string$random() {
-    var uppercase = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+    var uppercase = parametersDefault(arguments, 0, false);
 
     return fromCharCode(uppercase ? $random(65, 90) : $random(97, 122));
   }
@@ -357,11 +376,10 @@
   defineValue(String, '$random', string$random);
 
   function string$someRandom() {
-    var length = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 12;
-    var hasUppercase = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    var hasNumber = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-    var result = '';
+    var result = '',
+        length = parametersDefault(arguments, 0, 12);
+    var hasUppercase = parametersDefault(arguments, 1, false),
+        hasNumber = parametersDefault(arguments, 2, false);
 
     while (length-- > 0) {
       result += string$random();

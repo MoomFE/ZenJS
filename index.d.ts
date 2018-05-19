@@ -41,15 +41,15 @@ interface Array<T> {
   $each( callback: ( index: number, value: any, arr: any[] ) => boolean ): this;
   /**
    * 获取指定下标的对象
-   * @param index 需要获取的对象的下标 - default: 1
+   * @param index 需要获取的对象的下标 - default: 0
    */
-  $get( index?: number = 1 ): any;
+  $get( index?: number = 0 ): any;
   /**
    * 获取指定下标开始的若干个对象
-   * @param index 需要获取的对象的下标
+   * @param index 需要获取的对象的下标 - default: 0
    * @param num 需要从该下标开始获取几个对象
    */
-  $get( index: number = 1, num: number ): any[];
+  $get( index: number = 0, num: number ): any[];
   /**
    * 修改数组内指定下标的值
    * @param index 需要修改的下标

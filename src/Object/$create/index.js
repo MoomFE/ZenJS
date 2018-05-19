@@ -4,9 +4,11 @@ import create from '../../shared/global/Object/create';
 
 import defineValue from '../../shared/util/defineValue';
 import isBoolean from '../../shared/util/isBoolean';
+import parametersRest from '../../shared/util/parametersRest';
 
 
-export default function $create( isNoProto, ...args ){
+export default function $create( isNoProto ){
+  const args = parametersRest( arguments, 1 );
 
   if( isBoolean( isNoProto ) || !isNoProto ){
     args.unshift( isNoProto ? create( null ) : {} );

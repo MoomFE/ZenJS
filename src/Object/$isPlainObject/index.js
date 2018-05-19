@@ -3,12 +3,11 @@ import getPrototypeOf from '../../shared/global/Object/getPrototypeOf';
 import hasOwnProperty from '../../shared/global/Object/hasOwnProperty';
 import isFunction from '../../shared/util/isFunction';
 import Object from '../../shared/global/Object/index';
-
 import defineValue from '../../shared/util/defineValue';
 
-var fnToString = hasOwnProperty.toString;
-
-var ObjectFunctionString = fnToString.call( Object );
+const
+  fnToString = hasOwnProperty.toString,
+  ObjectFunctionString = fnToString.call( Object );
 
 
 export default function $isPlainObject( obj ){

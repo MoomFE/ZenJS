@@ -1,11 +1,14 @@
 import defineValue from '../../shared/util/defineValue';
 import ArrayProto from '../../shared/global/Array/prototype/index';
+import parametersRest from '../../shared/util/parametersRest';
 
 
-export default function $add( index, ...args ){
-  let i = 0,
-      len = args.length;
-  
+export default function $add( index ){
+  let i = 0;
+  const
+    args = parametersRest( arguments, 1 ),
+    len = args.length;
+
   for( ; i < len; i++){
     this.splice( index++, 0, args[ i ] );
   }
