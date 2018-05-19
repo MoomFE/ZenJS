@@ -4,7 +4,6 @@ import RegExp from "../../shared/global/RegExp/index";
 import defineValue from "../../shared/util/defineValue";
 import StringProto from "../../shared/global/String/prototype/index";
 
-''.replace
 
 export default function $replaceAll( searchValue, replaceValue ){
   let flags = 'g';
@@ -13,7 +12,7 @@ export default function $replaceAll( searchValue, replaceValue ){
     if( searchValue.global ){
       return this.replace( searchValue, replaceValue )
     }else{
-      flags += searchValue.flags;
+      flags += searchValue.flags || '';
       searchValue = searchValue.source;
     }
   }else{

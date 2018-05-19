@@ -436,7 +436,7 @@
       if (searchValue.global) {
         return this.replace(searchValue, replaceValue);
       } else {
-        flags += searchValue.flags;
+        flags += searchValue.flags || '';
         searchValue = searchValue.source;
       }
     } else {
