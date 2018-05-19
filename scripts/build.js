@@ -43,11 +43,11 @@ const allConfig = [
             
             if( minify.error ){
               code = [
-                '\n******************************************************************\n'+
-                `* Minify ERROR: ${ minify.error.message }\n` +
-                `* Line: ${ minify.error.line }\n` +
-                `* Col: ${ minify.error.col }\n` +
-                '******************************************************************'
+                '\n******************************************************************'+
+                `\n* Minify ERROR: ${ minify.error.message }` +
+                `\n* Line: ${ minify.error.line }` +
+                `\n* Col: ${ minify.error.col }` +
+                '\n******************************************************************'
               ];
             }else{
               code = defaultConfig.output.banner + '\n' + minify.code;
