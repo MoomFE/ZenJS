@@ -8,5 +8,6 @@ import define from './define';
  * @param {Object} options 属性选项
  */
 export default function defineGet( obj, name, get, options ){
-  define( obj, name, { get }, options );
+  return define( obj, name, { get }, options ),
+         get;
 }

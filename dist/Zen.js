@@ -38,7 +38,7 @@
    * @param {Object} options 属性选项
    */
   function defineValue(obj, name, value, options) {
-    define(obj, name, { value: value }, options);
+    return define(obj, name, { value: value }, options), value;
   }
 
   var ArrayProto = Array.prototype;
@@ -214,6 +214,15 @@
   }
 
   defineValue(document, '$ready', $ready);
+
+  function $mean() {
+
+    return Array.from(arguments).reduce(function (count, next) {
+      return count + next;
+    }) / arguments.length;
+  }
+
+  defineValue(Math, '$mean', $mean);
 
   var floor = Math.floor;
 
@@ -411,6 +420,84 @@
   }
 
   defineValue(StringProto, '$toCapitalize', $toCapitalize);
+
+  /**
+   * 判断传入对象是否是字符串
+   * @param {Object} obj 需要判断的对象
+   */
+  function isString(obj) {
+    return typeof obj === 'string';
+  }
+
+  var rBackSlant = /\+/g;
+
+  function toString$1(obj) {
+    switch (typeof obj) {
+      case 'string':
+        return obj;
+      case 'boolean':
+        return obj ? 'true' : 'false'; // 使用 toString 性能慢三倍
+      case 'number':
+        return isFinite(obj) ? obj : '';
+      default:
+        return '';
+    }
+  }
+
+  function stringify(obj) {
+    var sep = parametersDefault(arguments, 1, '&'),
+        eq = parametersDefault(arguments, 2, '=');
+
+    if (isObject(obj)) {
+      return Object.keys(obj).map(function (key) {
+        return encodeURIComponent(toString$1(key)) + eq + encodeURIComponent(toString$1(obj[key]));
+      }).join(sep);
+    }
+
+    return '';
+  }
+
+  function parse(str) {
+    var sep = parametersDefault(arguments, 1, '&'),
+        eq = parametersDefault(arguments, 2, '='),
+        result = {};
+
+    if (!isString(str)) {
+      return result;
+    }
+
+    var i = 0,
+        key,
+        value,
+        cache,
+        index = '';
+    var queryList = str.split(sep),
+        queryLength = queryList.length;
+
+    for (; i < queryLength; i++) {
+      cache = queryList[i].replace(rBackSlant, '%20');
+      index = cache.indexOf(eq);
+
+      if (index > -1) {
+        key = cache.substr(0, index);
+        value = cache.substr(index + 1);
+      } else {
+        key = cache;
+      }
+
+      key = decodeURIComponent(key);
+      value = decodeURIComponent(value);
+
+      result[key] = value;
+    }
+
+    return result;
+  }
+
+  defineValue(window, '$querystring', {
+    stringify: stringify,
+    parse: parse
+  });
 
   function $ready$1(func, data) {
     if (this.document.readyState === 'complete') return func.apply(this, data);

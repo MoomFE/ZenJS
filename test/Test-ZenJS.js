@@ -260,6 +260,13 @@ Object.defineProperty( window, 'div', {
     name: 'Math',
     describe: [
       {
+        name: '$mean',
+        it: function(){
+          Math.$mean( 2, 4, 6 ).should.equal( 4 );
+          Math.$mean( -1, 1 ).should.equal( 0 );
+          Math.$mean( -1, 3 ).should.equal( 1 );
+        }
+      }, {
         name: '$random',
         it: function(){
           function compare( num, min, max ){
@@ -419,6 +426,34 @@ Object.defineProperty( window, 'div', {
     name: 'window',
     describe: [
       {
+        name: '$querystring',
+        describe: [
+          {
+            name: 'stringify',
+            it: function(){
+              $querystring.stringify( { 1: 1 } ).should.equal( '1=1' );
+              $querystring.stringify( { zen: window } ).should.equal( 'zen=' );
+              $querystring.stringify( { zen: Infinity } ).should.equal( 'zen=' );
+              $querystring.stringify( { zen: true } ).should.equal( 'zen=true' );
+              $querystring.stringify( { zen: false } ).should.equal( 'zen=false' );
+              $querystring.stringify( { 1: 1, 2: 2 } ).should.equal( '1=1&2=2' );
+
+              $querystring.stringify( { 1: 1, 2: 2 }, 'z', 'w' ).should.equal( '1w1z2w2' );
+              $querystring.stringify( { 1: 1, 2: 2 }, '1', '2' ).should.equal( '1211222' );
+            }
+          }, {
+            name: 'parse',
+            it: function(){
+              $querystring.parse( '1=1' )[ 1 ].should.equal( '1' );
+              $querystring.parse( '1=2&2=3' )[ 1 ].should.equal( '2' );
+              $querystring.parse( '1=2&2=3' )[ 2 ].should.equal( '3' );
+
+              $querystring.parse( '1w1z2w2', 'z', 'w' )[ 1 ].should.equal( '1' );
+              $querystring.parse( '1w1z2w2', 'z', 'w' )[ 2 ].should.equal( '2' );
+            }
+          }
+        ]
+      }, {
         name: '$ready',
         it: function(){
           // 手动测试的 (*^▽^*)

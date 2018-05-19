@@ -95,6 +95,11 @@ interface Document {
 
 interface Math {
   /**
+   * 传入多个数字, 求出传入参数的平均值
+   * @param args 任意个数数字
+   */
+  $mean( ...args?: number[] ): number;
+  /**
    * 在 0 和 9 之间随机一个数字
    */
   $random(): number;
@@ -142,6 +147,25 @@ interface ObjectConstructor {
   $isPlainObject( obj: any ): boolean;
 }
 
+declare const $querystring: $querystring;
+interface Window { $querystring: $querystring };
+interface $querystring {
+  /**
+   * 将对象进行序列化成 URL 查询字符串
+   * @param obj 需要序列化的对象
+   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
+   * @param eq 在字符串中分隔键和值的字符串 -default: '='
+   */
+  stringify( obj, sep?: string = '&', eq?: string = '=' ): string;
+  /**
+   * 将 URL 查询字符串反序列化为对象
+   * @param str 需要反序列化的字符串
+   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
+   * @param eq 在字符串中分隔键和值的字符串 -default: '='
+   */
+  parse( str, sep?: string = '&', eq?: string = '=' ): any;
+}
+
 interface String {
   /**
    * 将字符串首字母大写
@@ -181,6 +205,7 @@ interface Window {
 }
 
 declare const Zen: Zen;
+interface Window { Zen: Zen };
 interface Zen {
   readonly guid: number;
 }

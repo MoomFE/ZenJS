@@ -8,5 +8,6 @@ import define from './define';
  * @param {Object} options 属性选项
  */
 export default function defineValue( obj, name, value, options ){
-  define( obj, name, { value }, options );
+  return define( obj, name, { value }, options ),
+         value;
 }
