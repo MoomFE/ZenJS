@@ -50,7 +50,7 @@
    * @param {Object} defaultValue
    */
   function parametersDefault(args, index, defaultValue) {
-    var arg = void 0;
+    var arg;
 
     if (args.length > index && (arg = args[index]) !== undefined) {
       return arg;
@@ -152,7 +152,7 @@
   function $each(callback) {
     var index = 0,
         length = this.length,
-        value = void 0;
+        value;
 
     for (; index < length; index++) {
       value = this[index];
@@ -187,7 +187,7 @@
   }
 
   function $set(index, value) {
-    var _index = void 0;
+    var _index;
 
     if (isObject(index)) for (_index in index) {
       this[_index] = index[_index];
@@ -266,12 +266,12 @@
 
     /** 目标对象 */
     target = arguments[0] || {},
-        options = void 0,
-        name = void 0,
-        src = void 0,
-        copy = void 0,
-        copyIsArray = void 0,
-        clone = void 0;
+        options,
+        name,
+        src,
+        copy,
+        copyIsArray,
+        clone;
 
     // 遍历所有的传入参数
     for (; i < length; i++) {
@@ -340,8 +340,8 @@
   defineValue(Object, '$create', $create$1);
 
   function $each$1(obj, callback) {
-    var key = void 0,
-        value = void 0;
+    var key,
+        value;
 
     for (key in obj) {
       value = obj[key];
@@ -423,7 +423,7 @@
   defineValue(window, '$ready', $ready$1);
 
   function $typeof(obj) {
-    var type = void 0;
+    var type;
 
     if (obj == null) return obj + '';
     if ((type = typeof obj) === 'object') {

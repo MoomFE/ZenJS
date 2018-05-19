@@ -4,7 +4,7 @@ let supportsPassiveEvent = false;
 
 try{
 
-  var options = defineProperty( {}, 'passive', {
+  const options = defineProperty( {}, 'passive', {
     get: () => {
       supportsPassiveEvent = true;
     }

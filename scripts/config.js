@@ -15,6 +15,7 @@ const banner =
  */
 `;
 
+const rVoid0 = /\s*=\s*void 0(,|;)/g;
 
 module.exports = {
   input: 'src/index.js',
@@ -31,6 +32,12 @@ module.exports = {
     }),
     replace({
       '__VERSION__': version
-    })
+    }),
+    {
+      name: "remove babel let void 0",
+      transformBundle: function( code ){
+        return code.replace( rVoid0, '$1' );
+      }
+    }
   ]
 };
