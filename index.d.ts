@@ -111,9 +111,24 @@ interface Math {
   /**
    * 在最小数和最大数之间随机一个数字
    * @param from 指定一个最小数, 必须大于-1 - default: 0
-   * @param to 指定一个最大数, 必须大于最小数 - default: 9
+   * @param to 指定一个最大数, 必须大于-1 - default: 9
    */
   $random( from?: number = 0, to?: number = 9 ): number;
+  /**
+   * 在 0 和 9 之间随机一个数字
+   */
+  $randomPlus(): number;
+  /**
+   * 在 0 和指定值之间随机一个数字
+   * @param to 指定一个值, 可为负数 - default: 9
+   */
+  $randomPlus( to?: number = 9 ): number;
+  /**
+   * 在最小数和最大数之间随机一个数字
+   * @param from 指定一个最小数, 可为负数 - default: 0
+   * @param to 指定一个最大数, 可为负数 - default: 9
+   */
+  $randomPlus( from?: number = 0, to?: number = 9 ): number;
 }
 
 

@@ -266,12 +266,12 @@ Object.defineProperty( window, 'div', {
           Math.$mean( -1, 1 ).should.equal( 0 );
           Math.$mean( -1, 3 ).should.equal( 1 );
         }
-      }, {
-        name: '$random',
-        it: function(){
-          function compare( num, min, max ){
-            return num >= min && num <= max;
-          }
+      },
+      function(){
+        function compare( num, min, max ){
+          return num >= min && num <= max;
+        }
+        it( '$random', function(){
           for( var i = 0; i < 100; i++ ){
             compare( Math.$random(), 0, 9 ).should.true;
           }
@@ -281,7 +281,25 @@ Object.defineProperty( window, 'div', {
           for( var i = 0; i < 1000; i++ ){
             compare( Math.$random( 36, 126 ), 36, 126 ).should.true;
           }
-        }
+        });
+
+        it( '$randomPlus', function(){
+          for( var i = 0; i < 100; i++ ){
+            compare( Math.$random(), 0, 9 ).should.true;
+          }
+          for( var i = 0; i < 1000; i++ ){
+            compare( Math.$random( 90 ), 0, 90 ).should.true;
+          }
+          for( var i = 0; i < 1000; i++ ){
+            compare( Math.$random( 36, 126 ), 36, 126 ).should.true;
+          }
+          for( var i = 0; i < 1000; i++ ){
+            compare( Math.$random( -90 ), -90, 0 ).should.true;
+          }
+          for( var i = 0; i < 1000; i++ ){
+            compare( Math.$random( -36, -126 ), -126, -36 ).should.true;
+          }
+        });
       }
     ]
   });

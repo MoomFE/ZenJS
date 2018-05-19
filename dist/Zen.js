@@ -224,19 +224,52 @@
 
   defineValue(Math, '$mean', $mean);
 
-  var floor = Math.floor;
-
   var random = Math.random;
 
-  function $random() {
-    var from = parametersDefault(arguments, 0, 9),
-        to = arguments[1];
+  var floor = Math.floor;
 
-    to || (to = from, from = 0);
+  function _randomParameters(args) {
+    var from = parametersDefault(args, 0, 9),
+        to = parametersDefault(args, 1, 0);
+
+    if (from > to) {
+      var _ref = [to, from];
+      from = _ref[0];
+      to = _ref[1];
+    }
+
+    return [from, to];
+  }
+
+  function _random(from, to) {
     return floor(random() * (to - from + 1) + from);
   }
 
+  function $random() {
+    var cache = _randomParameters(arguments);
+
+    return _random(cache[0], cache[1]);
+  }
+
   defineValue(Math, '$random', $random);
+
+  var abs = Math.abs;
+
+  function $randomPlus() {
+    var cache = _randomParameters(arguments);
+    var from = cache[0],
+        to = cache[1];
+
+    if (from > 0) {
+      return _random(from, to);
+    } else {
+      cache = _random(0, to + abs(from));
+
+      return cache > to ? to - cache : cache;
+    }
+  }
+
+  defineValue(Math, '$randomPlus', $randomPlus);
 
   var ObjectProto = Object.prototype;
 
