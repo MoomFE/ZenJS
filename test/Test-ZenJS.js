@@ -415,6 +415,30 @@ Object.defineProperty( window, 'div', {
   });
 
   describes.push({
+    name: 'Object.prototype',
+    describe: [
+      {
+        name: '$get',
+        it: function(){
+          var test = { z: 1, e: 2, n: 3 };
+
+          test.$get( 'z' ).should.equal( 1 );
+          test.$get( 'e' ).should.equal( 2 );
+          test.$get( 'n' ).should.equal( 3 );
+        }
+      }, {
+        name: '$set',
+        it: function(){
+           var test = {};
+
+           test.$set( 'ZenJS', 'Zw' )[ 'ZenJS' ].should.equal( 'Zw' );
+           test.$set( 1, 2 )[ 1 ].should.equal( 2 );
+        }
+      }
+    ]
+  });
+
+  describes.push({
     name: 'String',
     describe: [
       {

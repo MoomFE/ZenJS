@@ -178,26 +178,6 @@
 
   defineValue(ArrayProto, '$inArray', $inArray);
 
-  /**
-   * 判断传入对象是否是对象
-   * @param {Object} obj 需要判断的对象
-   */
-  function isObject(obj) {
-    return obj !== null && typeof obj === 'object';
-  }
-
-  function $set(index, value) {
-    var _index;
-
-    if (isObject(index)) for (_index in index) {
-      this[_index] = index[_index];
-    } else this[index] = value;
-
-    return this;
-  }
-
-  defineValue(ArrayProto, '$set', $set);
-
   'push_unshift_pop_shift'.split('_').forEach(function (key) {
 
     defineValue(ArrayProto, "$" + key, function () {
@@ -417,6 +397,12 @@
 
   defineValue(Object, '$each', $each$1);
 
+  function $get$1(key) {
+    return this[key];
+  }
+
+  defineValue(ObjectProto, '$get', $get$1);
+
   function $isEmptyObject(obj) {
     for (var a in obj) {
       return false;
@@ -425,6 +411,26 @@
   }
 
   defineValue(Object, '$isEmptyObject', $isEmptyObject);
+
+  /**
+   * 判断传入对象是否是对象
+   * @param {Object} obj 需要判断的对象
+   */
+  function isObject(obj) {
+    return obj !== null && typeof obj === 'object';
+  }
+
+  function $set(key, value) {
+    var _key;
+
+    if (isObject(key)) for (_key in key) {
+      this[_key] = key[_key];
+    } else this[key] = value;
+
+    return this;
+  }
+
+  defineValue(ObjectProto, '$set', $set);
 
   var fromCharCode = String.fromCharCode;
 

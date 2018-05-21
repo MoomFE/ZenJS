@@ -139,6 +139,25 @@ interface NumberConstructor {
   $isNumber( obj: any ): boolean;
 }
 
+interface Object {
+  /**
+   * 获取对象的某个值
+   * @param key 需要获取的 key
+   */
+  $get( key: string ): string;
+  /**
+   * 设置对象的某个值
+   * @param key 需要设置的 key
+   * @param value 需要设置的 value
+   */
+  $set( key: string, value: any ): this;
+  /**
+   * 批量给对象设置值
+   * @param obj 批量修改对象内的值
+   */
+  $set( obj: any ): this;
+}
+
 interface ObjectConstructor {
   /**
    * Object.assign 的深拷贝版本
