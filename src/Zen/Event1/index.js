@@ -1,10 +1,10 @@
-import Zen from "../shared/global/Zen/index";
-import returnFalse from '../shared/util/returnFalse';
-import returnTrue from '../shared/util/returnTrue';
-import $assign from "../Object/$assign";
-import defineProperty from "../shared/global/Object/defineProperty";
+import Zen from "../../shared/global/Zen/index";
+import returnFalse from '../../shared/util/returnFalse';
+import returnTrue from '../../shared/util/returnTrue';
+import $assign from "../../Object/$assign";
+import defineProperty from "../../shared/global/Object/defineProperty";
 
-Zen.Event = function( src, props ){
+export default function Event( src, props ){
 
   if( this instanceof Zen.Event === false ){
     return new Zen.Event( src, props );
@@ -20,7 +20,7 @@ Zen.Event = function( src, props ){
       src.defaultPrevented === undefined && src.returnValue === false
         ? returnTrue
         : returnFalse;
-    
+
     this.target = ( src.target && src.target.nodeType === 3 )
       ? src.target.parentNode
       : src.target;
@@ -40,7 +40,10 @@ Zen.Event = function( src, props ){
   this.timeStamp = src && src.timeStamp || Date.now();
 
   this[ Zen.varsion ] = true;
+
 }
+
+Zen.Event = Event;
 
 Zen.Event.prototype = {
   constructor: Zen.Event,

@@ -1,6 +1,5 @@
 import rtypenamespace from '../../shared/const/rtypenamespace';
 import concat from '../../shared/global/Array/prototype/concat';
-
 import isEmptyObject from '../../Object/$isEmptyObject/index';
 import Zen from '../../shared/global/Zen/index';
 
@@ -61,7 +60,5 @@ export default function add( elem, types, selector, listener, options ){
     }else{
       elem.addEventListener( type, handleOptions.handle, options.capture || false );
     }
-
   }
-
 }

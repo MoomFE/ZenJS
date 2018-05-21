@@ -1,4 +1,4 @@
-import event from '../../Zen/event/index';
+import EventListener from '../../Zen/EventListener/index';
 import rnothtmlwhite from '../../shared/const/rnothtmlwhite';
 import { supportsPassiveEvent } from '../../shared/supports/passive-event';
 
@@ -114,6 +114,6 @@ export default function on( elem, types, selector, listener, options ){
     delete options.passive;
   }
 
-  return event.add( elem, types, selector, listener, options ),
+  return EventListener.add( elem, types, selector, listener, options ),
          elem;
 }
