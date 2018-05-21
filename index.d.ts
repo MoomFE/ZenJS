@@ -21,7 +21,7 @@ interface Array<T> {
    */
   $delete( index: number, num?: number = 1 ): this;
   /**
-   * 从数组中删除与传入对象相同的对象
+   * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
    * @param congruence 是否使用全等进行判断 - default: true
    */
@@ -140,6 +140,17 @@ interface NumberConstructor {
 }
 
 interface Object {
+  /**
+   * 删除对象中指定值
+   * @param keys 可传入多个
+   */
+  $delete( ...keys: any[] ): this;
+  /**
+   * 从对象中删除与传入值相同的对象
+   * @param value 需要删除的对象
+   * @param congruence 是否使用全等进行判断 - default: true
+   */
+  $deleteValue( value: any, congruence?: boolean = true ): this;
   /**
    * 获取对象的某个值
    * @param key 需要获取的 key

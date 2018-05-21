@@ -1,5 +1,7 @@
 import './$assign/index';
 import './$create/index';
+import './$delete/index';
+import './$deleteValue/index';
 import './$each/index';
 import './$get/index';
 import './$isEmptyObject/index';

@@ -127,16 +127,22 @@
 
   defineValue(ArrayProto, '$delete', $delete);
 
-  function _equal(one, two) {
-    return one == two;
-  }
-  function _congruence(one, two) {
+  /**
+   * 判断两个参数是否全等
+   */
+  function congruence(one, two) {
     return one === two;
   }
 
+  /**
+   * 判断两个参数是否相等
+   */
+  function equal(one, two) {
+    return one == two;
+  }
+
   function $deleteValue(value) {
-    var congruence = parametersDefault(arguments, 1, true),
-        isEqual = congruence ? _congruence : _equal;
+    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equal;
     var index = 0,
         length = this.length;
 
@@ -162,7 +168,7 @@
     for (; index < length; index++) {
       value = this[index];
 
-      if (callback.call(value, index, value, this) === false) {
+      if (callback.call(value, value, index, this) === false) {
         break;
       }
     }
@@ -384,6 +390,32 @@
     return $assign.apply(null, args);
   }
   defineValue(Object, '$create', $create$1);
+
+  function $delete$1() {
+    var _this = this;
+
+    Array.from(arguments).$each(function (key) {
+      delete _this[key];
+    });
+    return this;
+  }
+
+  defineValue(ObjectProto, '$delete', $delete$1);
+
+  function $deleteValue$1(value) {
+    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equal;
+    var name;
+
+    for (name in this) {
+      if (isEqual(this[name], value)) {
+        delete this[name];
+      }
+    }
+
+    return this;
+  }
+
+  defineValue(ObjectProto, '$deleteValue', $deleteValue$1);
 
   function $each$1(obj, callback) {
     var key,

@@ -173,7 +173,7 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$each',
         it: function(){
-          var test1 = [ 1, 2, 3 ].$each(function( index, value, arr ){
+          var test1 = [ 1, 2, 3 ].$each(function( value, index, arr ){
             if( index === 0 ) arr[ index ] = 3;
             else if( index === 2 ) arr[ index ] = 1;
           });
@@ -182,7 +182,7 @@ Object.defineProperty( window, 'div', {
           test1[ 2 ].should.equal( 1 );
 
 
-          var test2 = [ 1, 2, 3 ].$each(function( index, value, arr ){
+          var test2 = [ 1, 2, 3 ].$each(function( value, index, arr ){
             if( index === 0 ){
               arr[ index ] = 3;
               return false;
@@ -418,6 +418,30 @@ Object.defineProperty( window, 'div', {
     name: 'Object.prototype',
     describe: [
       {
+        name: '$delete',
+        it: function(){
+          var test = { z: 1, e: 2, n: 3, j: 4, s: 5 };
+
+          JSON
+            .stringify(
+              test.$delete('j').$delete('s').$delete( 'z','e','n' )
+            )
+            .should.equal('{}');
+        }
+      }, {
+        name: '$deleteValue',
+        it: function(){
+          var test = { z: 1, e: 2, n: 3, j: 4, s: 4 };
+
+          JSON
+            .stringify(
+              test.$deleteValue( 4 )
+            )
+            .should.equal(
+              '{"z":1,"e":2,"n":3}'
+            );
+        }
+      }, {
         name: '$get',
         it: function(){
           var test = { z: 1, e: 2, n: 3 };
