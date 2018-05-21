@@ -39,8 +39,6 @@ export default function Event( src, props ){
 
   this.timeStamp = src && src.timeStamp || Date.now();
 
-  this[ Zen.varsion ] = true;
-
 }
 
 Zen.Event = Event;

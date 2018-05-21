@@ -34,7 +34,7 @@ export default function add( elem, types, selector, listener, options ){
       continue;
     }
 
-    
+
     /** 该事件的所有参数 */
     handleOptions = {
       elem,
@@ -42,10 +42,9 @@ export default function add( elem, types, selector, listener, options ){
       listener,
       selector,
       options,
-      /** 命名空间 */
       namespace: ( tmp[ 2 ] || '' ).split( '.' ).sort(),
       handle: function(){
-        return Zen.event.dispatch.apply( handleOptions, arguments );
+        return Zen.EventListener.dispatch.apply( handleOptions, arguments );
       }
     };
 
