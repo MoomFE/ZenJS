@@ -1,4 +1,5 @@
 import define from './define';
+import { defineGetPropertyOptions } from '../const/definePropertyOptions';
 
 /**
  * 定义对象属性, 快捷定义 get 选项
@@ -10,10 +11,7 @@ import define from './define';
 export default function defineGet( obj, name, get, options ){
   return define(
     obj, name, { get },
-    options || {
-      configurable: true,// 删除/定义
-      enumerable: false// 枚举
-    }
+    options || defineGetPropertyOptions
   ),
          get;
 }

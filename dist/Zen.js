@@ -14,12 +14,6 @@
 
   var defineProperty = Object.defineProperty;
 
-  var definePropertyOptions = {
-    configurable: true, // 删除/定义
-    enumerable: false, // 枚举
-    writable: true // 写入
-  };
-
   function define(obj, name, options, options2) {
     if (isArray(obj) && obj instanceof Array) {
       obj.forEach(function (obj) {
@@ -27,8 +21,19 @@
       });
       return;
     }
-    defineProperty(obj, name, Object.assign({}, options2 || definePropertyOptions, options));
+    defineProperty(obj, name, Object.assign({}, options, options2));
   }
+
+  var definePropertyOptions = {
+    configurable: true, // 删除/定义
+    enumerable: false, // 枚举
+    writable: true // 写入
+  };
+
+  var defineGetPropertyOptions = {
+    configurable: true, // 删除/定义
+    enumerable: false // 枚举
+  };
 
   /**
    * 定义对象属性, 快捷定义 value 选项
@@ -38,7 +43,7 @@
    * @param {Object} options 属性选项
    */
   function defineValue(obj, name, value, options) {
-    return define(obj, name, { value: value }, options), value;
+    return define(obj, name, { value: value }, options || definePropertyOptions), value;
   }
 
   var ArrayProto = Array.prototype;
@@ -420,10 +425,7 @@
    * @param {Object} options 属性选项
    */
   function defineGet(obj, name, get, options) {
-    return define(obj, name, { get: get }, options || {
-      configurable: true, // 删除/定义
-      enumerable: false // 枚举
-    }), get;
+    return define(obj, name, { get: get }, options || defineGetPropertyOptions), get;
   }
 
   function $self() {
