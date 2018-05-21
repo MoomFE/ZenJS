@@ -38,7 +38,7 @@ interface Array<T> {
    * 遍历数组, 并调用传入方法
    * @param callback 遍历数组时调用的方法, 方法返回 false 时, 退出遍历
    */
-  $each( callback: ( index: number, value: any, arr: any[] ) => boolean ): this;
+  $each( callback: ( value: any, index: number, arr: any[] ) => boolean ): this;
   /**
    * 获取指定下标的对象
    * @param index 需要获取的对象的下标 - default: 0

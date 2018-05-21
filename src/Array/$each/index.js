@@ -9,7 +9,7 @@ export default function $each( callback ){
   for( ; index < length; index++ ){
     value = this[ index ];
 
-    if( callback.call( value, index, value, this ) === false ){
+    if( callback.call( value, value, index, this ) === false ){
       break;
     }
   }
