@@ -434,6 +434,14 @@ Object.defineProperty( window, 'div', {
            test.$set( 'ZenJS', 'Zw' )[ 'ZenJS' ].should.equal( 'Zw' );
            test.$set( 1, 2 )[ 1 ].should.equal( 2 );
         }
+      }, {
+        name: '$self',
+        it: function(){
+          var test = {};
+
+          test.$self().should.equal( test );
+          test.__self__.should.equal( test );
+        }
       }
     ]
   });

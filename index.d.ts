@@ -156,6 +156,14 @@ interface Object {
    * @param obj 批量修改对象内的值
    */
   $set( obj: any ): this;
+  /**
+   * 返回当前对象
+   */
+  $self(): this;
+  /**
+   * 返回当前对象
+   */
+  readonly __self__: this;
 }
 
 interface ObjectConstructor {

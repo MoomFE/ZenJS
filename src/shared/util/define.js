@@ -17,7 +17,7 @@ export default function define( obj, name, options, options2 ){
   }
   defineProperty(
     obj, name, Object.assign(
-      {}, definePropertyOptions, options, options2
+      {}, options2 || definePropertyOptions, options
     )
   );
 }
