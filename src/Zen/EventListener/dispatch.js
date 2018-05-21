@@ -34,7 +34,7 @@ export default function dispatch( nativeEvent ){
       // 如果当前是点击事件, 将不处理禁用的元素
       if( cur.nodeType === 1 && !( type === 'click' && cur.disabled === true ) ){
         if( cur.matches( selector ) ){
-          self = cur;
+          self = event.currentTarget = cur;
           break;
         }
       }
