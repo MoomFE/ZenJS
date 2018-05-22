@@ -29,7 +29,7 @@ export default function dispatch( nativeEvent ){
         selectors;
 
     // 从被点击的元素开始, 一层一层往上找
-    for( ; cur !== self; cur = cur.parentNode || this ){
+    for( ; cur !== self; cur = cur.parentNode || self ){
       // 是元素节点
       // 如果当前是点击事件, 将不处理禁用的元素
       if( cur.nodeType === 1 && !( type === 'click' && cur.disabled === true ) ){

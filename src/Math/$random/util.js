@@ -6,11 +6,8 @@ export function _randomParameters( args ){
   let from = parametersDefault( args, 0, 9 ),
       to = parametersDefault( args, 1, 0 );
   
-  if( from > to ){
-    [ from, to ] = [ to, from ];
-  }
-
-  return [ from, to ];
+  return from > to ? [ to, from ]
+                   : [ from, to ];
 }
 
 export function _random( from, to ){

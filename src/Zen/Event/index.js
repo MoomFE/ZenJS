@@ -3,6 +3,8 @@ import returnFalse from '../../shared/util/returnFalse';
 import returnTrue from '../../shared/util/returnTrue';
 import $assign from "../../Object/$assign";
 import defineProperty from "../../shared/global/Object/defineProperty";
+import assign from "../../shared/global/Object/assign";
+import { defineGetPropertyOptions } from "../../shared/const/definePropertyOptions";
 
 export default function Event( src, props ){
 
@@ -43,7 +45,7 @@ export default function Event( src, props ){
 
 Zen.Event = Event;
 
-Zen.Event.prototype = {
+const EventProto = Zen.Event.prototype = {
   constructor: Zen.Event,
   // 是否调用过 event.preventDefault 方法
   isDefaultPrevented: returnFalse,
@@ -62,31 +64,38 @@ Zen.Event.prototype = {
   [ 'stopPropagation', 'isPropagationStopped' ],
   // 停止将事件冒泡到父节点且停止当前元素后续事件执行
   [ 'stopImmediatePropagation', 'isImmediatePropagationStopped' ]
-].forEach(
-  function( ref ){
-    const fn = ref[ 0 ],
-          judgement = ref[ 1 ];
+].forEach( ref => {
+  const fn = ref[ 0 ],
+        judgement = ref[ 1 ];
 
-    this[ fn ] = function(){
-      let event;
+  EventProto[ fn ] = function(){
+    let event;
 
-      if( this[ judgement ]() ){
-        return;
-      }else{
-        this[ judgement ] = returnTrue;
-      }
-
-      if( !this.isSimulated && ( event = this.originalEvent ) ){
-        event[ fn ]();
-      }
+    if( EventProto[ judgement ]() ){
+      return;
+    }else{
+      EventProto[ judgement ] = returnTrue;
     }
-  }.bind(
-    Zen.Event.prototype
-  )
-);
 
-const addProp = function( name, hook ){
+    if( !EventProto.isSimulated && ( event = EventProto.originalEvent ) ){
+      event[ fn ]();
+    }
+  }
+});
 
-}.bind(
-  Zen.Event.prototype
-);
+[ 'altKey', 'bubbles', 'cancelable', 'changedTouches', 'ctrlKey', 'detail', 'eventPhase', 'metaKey', 'pageX', 'pageY', 'shiftKey', 'view', 'char', 'charCode', 'key', 'keyCode', 'button', 'buttons', 'clientX', 'clientY', 'offsetX', 'offsetY', 'pointerId', 'pointerType', 'screenX', 'screenY', 'targetTouches', 'toElement', 'touches' ].forEach( name => {
+
+  defineProperty(
+    EventProto, name, assign( {}, defineGetPropertyOptions, {
+      get: function(){
+        const originalEvent = this.originalEvent;
+        if( originalEvent ){
+          return originalEvent[ name ];
+        }
+      },
+      set: function( value ){
+        this.$set( name, value )
+      }
+    })
+  );
+});

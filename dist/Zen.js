@@ -500,6 +500,8 @@
     return true;
   }
 
+  var assign = Object.assign;
+
   function Event(src, props) {
 
     if (this instanceof Zen.Event === false) {
@@ -532,7 +534,7 @@
 
   Zen.Event = Event;
 
-  Zen.Event.prototype = {
+  var EventProto = Zen.Event.prototype = {
     constructor: Zen.Event,
     // 是否调用过 event.preventDefault 方法
     isDefaultPrevented: returnFalse,
@@ -554,22 +556,35 @@
     var fn = ref[0],
         judgement = ref[1];
 
-    this[fn] = function () {
+    EventProto[fn] = function () {
       var event;
 
-      if (this[judgement]()) {
+      if (EventProto[judgement]()) {
         return;
       } else {
-        this[judgement] = returnTrue;
+        EventProto[judgement] = returnTrue;
       }
 
-      if (!this.isSimulated && (event = this.originalEvent)) {
+      if (!EventProto.isSimulated && (event = EventProto.originalEvent)) {
         event[fn]();
       }
     };
-  }.bind(Zen.Event.prototype));
+  });
 
-  var addProp = function (name, hook) {}.bind(Zen.Event.prototype);
+  ['altKey', 'bubbles', 'cancelable', 'changedTouches', 'ctrlKey', 'detail', 'eventPhase', 'metaKey', 'pageX', 'pageY', 'shiftKey', 'view', 'char', 'charCode', 'key', 'keyCode', 'button', 'buttons', 'clientX', 'clientY', 'offsetX', 'offsetY', 'pointerId', 'pointerType', 'screenX', 'screenY', 'targetTouches', 'toElement', 'touches'].forEach(function (name) {
+
+    defineProperty(EventProto, name, assign({}, defineGetPropertyOptions, {
+      get: function () {
+        var originalEvent = this.originalEvent;
+        if (originalEvent) {
+          return originalEvent[name];
+        }
+      },
+      set: function (value) {
+        this.$set(name, value);
+      }
+    }));
+  });
 
   function $set(key, value) {
     var _key;
@@ -610,12 +625,12 @@
       var cur = event.target;
 
       // 从被点击的元素开始, 一层一层往上找
-      for (; cur !== self; cur = cur.parentNode || this) {
+      for (; cur !== self; cur = cur.parentNode || self) {
         // 是元素节点
         // 如果当前是点击事件, 将不处理禁用的元素
         if (cur.nodeType === 1 && !(type === 'click' && cur.disabled === true)) {
           if (cur.matches(selector)) {
-            self = cur;
+            self = event.currentTarget = cur;
             break;
           }
         }
@@ -797,13 +812,7 @@
     var from = parametersDefault(args, 0, 9),
         to = parametersDefault(args, 1, 0);
 
-    if (from > to) {
-      var _ref = [to, from];
-      from = _ref[0];
-      to = _ref[1];
-    }
-
-    return [from, to];
+    return from > to ? [to, from] : [from, to];
   }
 
   function _random(from, to) {
