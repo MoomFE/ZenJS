@@ -1,5 +1,5 @@
 /*!
- * Zen.js v1.0.0-alpha.0
+ * Zen.js v1.0.0
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -206,118 +206,78 @@
 
   defineValue(document, '$ready', $ready);
 
-  var ElementProto = Element.prototype;
+  function $mean() {
 
-  /**
-   * [ winodw, document, Element.prototype ]
-   */
-  var winDocEle = [window, document, ElementProto];
-
-  function $isEmptyObject(obj) {
-    for (var a in obj) {
-      return false;
-    }
-    return true;
+    return Array.from(arguments).reduce(function (count, next) {
+      return count + next;
+    }) / arguments.length;
   }
 
-  defineValue(Object, '$isEmptyObject', $isEmptyObject);
+  defineValue(Math, '$mean', $mean);
 
-  /**
-   * 判断传入对象是否是对象
-   * @param {Object} obj 需要判断的对象
-   */
-  function isObject(obj) {
-    return obj !== null && typeof obj === 'object';
+  var random = Math.random;
+
+  var floor = Math.floor;
+
+  function _randomParameters(args) {
+    var from = parametersDefault(args, 0, 9),
+        to = parametersDefault(args, 1, 0);
+
+    return from > to ? [to, from] : [from, to];
   }
 
-  /**
-   * 获取存储在元素上的整个数据集, 如数据集不存在则创建
-   * @param {Element} elem 
-   * @returns {Object}
-   */
-  function $_GetDatas(elem) {
-    var Datas = elem[elem] || (elem[elem] = {});
-    return Datas;
+  function _random(from, to) {
+    return floor(random() * (to - from + 1) + from);
   }
 
-  /**
-   * 将数据读取或存储
-   * @param {String} name 需要读取或存储的数据名称, 如果未传入 name, 则返回整个数据集
-   * @param {Object} value 存储的数据
-   * @param {Boolean} weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
-   * @returns {Object}
-   */
-  defineValue(winDocEle, '$data', function $data(name, value, weakRead) {
-    var Data = $_GetDatas(this);
+  function $random() {
+    var cache = _randomParameters(arguments);
 
-    // $data( {} )
-    // $data( {}, weakRead )
-    if (isObject(name)) {
-      for (var _name in name) {
-        $data.call(this, _name, name[_name], value);
-      }
-      return this;
+    return _random(cache[0], cache[1]);
+  }
+
+  defineValue(Math, '$random', $random);
+
+  var abs = Math.abs;
+
+  function $randomPlus() {
+    var cache = _randomParameters(arguments);
+    var from = cache[0],
+        to = cache[1];
+
+    if (from > 0) {
+      return _random(from, to);
+    } else {
+      cache = _random(0, to + abs(from));
+
+      return cache > to ? to - cache : cache;
     }
+  }
 
-    // 读取
-    // $data( name )
-    // $data( name, value, true )
-    if (arguments.length < 2 || weakRead) {
-      if (name == null) return Data;
-      if (weakRead && !(name in Data)) return Data[name] = value;
-      return Data[name];
-    }
-
-    // $data( name, value )
-    Data[name] = value;
-    return this;
-  });
-
-  /**
-   * 传入数据名称, 判断当前对象下是否存储了这个数据
-   * @param {String} name 需要判断的数据名称, 如果未传入 name, 则是判断是否存有数据
-   * @returns {Boolean}
-   */
-  defineValue(winDocEle, '$hasData', function (name) {
-    var Data = $_GetDatas(this);
-
-    if ($isEmptyObject(Data)) {
-      return false;
-    }
-
-    if (name == null) {
-      return true;
-    }
-
-    return name in Data;
-  });
-
-  /**
-   * 传入数据名称, 删除当前对象下存储的相应名称的数据
-   * @param {String} name 需要删除的数据名称, 多个可使用空格分隔, 如果未传入 names, 则视为删除全部数据
-   * @returns {Object}
-   */
-  defineValue(winDocEle, '$deleteData', function (names) {
-
-    if (names == null) {
-      this[this] = {};
-      return this;
-    }
-
-    var Data = $_GetDatas(this);
-
-    names.split(' ').forEach(function (name) {
-      delete Data[name];
-    });
-
-    return this;
-  });
-
-  var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
+  defineValue(Math, '$randomPlus', $randomPlus);
 
   var ObjectProto = Object.prototype;
 
   var toString = ObjectProto.toString;
+
+  /**
+   * 判断传入对象是否是数字
+   * @param {Object} obj 需要判断的对象
+   */
+  function isNumber(obj) {
+    return toString.call(obj) === '[object Number]';
+  }
+
+  function $isNumber(obj) {
+    if (isNumber(obj) || typeof obj === 'string') {
+      if (!isNaN(obj - parseFloat(obj))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  defineValue(Number, '$isNumber', $isNumber);
 
   var getPrototypeOf = Object.getPrototypeOf;
 
@@ -425,66 +385,284 @@
   }
   defineValue(Object, '$create', $create$1);
 
+  function $delete$1() {
+    var _this = this;
+
+    Array.from(arguments).$each(function (key) {
+      delete _this[key];
+    });
+    return this;
+  }
+
+  defineValue(ObjectProto, '$delete', $delete$1);
+
+  function $deleteValue$1(value) {
+    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equal;
+    var name;
+
+    for (name in this) {
+      if (isEqual(this[name], value)) {
+        delete this[name];
+      }
+    }
+
+    return this;
+  }
+
+  defineValue(ObjectProto, '$deleteValue', $deleteValue$1);
+
+  function $each$1(obj, callback) {
+    var key,
+        value;
+
+    for (key in obj) {
+      value = obj[key];
+
+      if (callback.call(value, key, value, obj) === false) {
+        break;
+      }
+    }
+
+    return obj;
+  }
+
+  defineValue(Object, '$each', $each$1);
+
+  function $get$1(key) {
+    return this[key];
+  }
+
+  defineValue(ObjectProto, '$get', $get$1);
+
+  function $isEmptyObject(obj) {
+    for (var a in obj) {
+      return false;
+    }
+    return true;
+  }
+
+  defineValue(Object, '$isEmptyObject', $isEmptyObject);
+
+  /**
+   * 定义对象属性, 快捷定义 get 选项
+   * @param {Object} obj 需要添加属性的元素
+   * @param {String} name 属性名
+   * @param {Function} get 添加到 get 选项的方法
+   * @param {Object} options 属性选项
+   */
+  function defineGet(obj, name, get, options) {
+    return define(obj, name, { get: get }, options || defineGetPropertyOptions), get;
+  }
+
+  function $self() {
+    return this;
+  }
+
+  defineValue(ObjectProto, '$self', $self);
+  defineGet(ObjectProto, '__self__', $self);
+
+  /**
+   * 判断传入对象是否是对象
+   * @param {Object} obj 需要判断的对象
+   */
+  function isObject(obj) {
+    return obj !== null && typeof obj === 'object';
+  }
+
+  function $set(key, value) {
+    var _key;
+
+    if (isObject(key)) for (_key in key) {
+      this[_key] = key[_key];
+    } else this[key] = value;
+
+    return this;
+  }
+
+  defineValue(ObjectProto, '$set', $set);
+
+  var fromCharCode = String.fromCharCode;
+
+  function string$random() {
+    var uppercase = parametersDefault(arguments, 0, false);
+
+    return fromCharCode(uppercase ? $random(65, 90) : $random(97, 122));
+  }
+
+  defineValue(String, '$random', string$random);
+
+  /**
+   * 判断传入对象是否是正则
+   * @param {Object} obj 需要判断的对象
+   */
+  function isRegExp(obj) {
+    return toString.call(obj) === '[object RegExp]';
+  }
+
+  var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$])/g;
+
+  var StringProto = String.prototype;
+
+  function $replaceAll(searchValue, replaceValue) {
+    var flags = 'g';
+
+    if (isRegExp(searchValue)) {
+      if (searchValue.global) {
+        return this.replace(searchValue, replaceValue);
+      } else {
+        flags += searchValue.flags || '';
+        searchValue = searchValue.source;
+      }
+    } else {
+      searchValue = searchValue.replace(rkeyword, '\\$1');
+    }
+
+    return this.replace(new RegExp(searchValue, flags), replaceValue);
+  }
+
+  defineValue(StringProto, '$replaceAll', $replaceAll);
+
+  function string$someRandom() {
+    var result = '',
+        length = parametersDefault(arguments, 0, 12);
+    var hasUppercase = parametersDefault(arguments, 1, false),
+        hasNumber = parametersDefault(arguments, 2, false);
+
+    while (length-- > 0) {
+      result += string$random();
+    }
+
+    if (hasUppercase) {
+      result = result.split('').map(function (code) {
+        return $random(1) ? code.toUpperCase() : code;
+      }).join();
+    }
+
+    if (hasNumber) {
+      result = result.split('').map(function (code) {
+        return $random(1) ? random() : code;
+      })
+      // 第一位不允许为数字
+      .$set(0, string$random($random(1))).join();
+    }
+
+    return result;
+  }
+
+  defineValue(String, '$someRandom', string$someRandom);
+
+  function $toCapitalize() {
+    return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
+  }
+
+  defineValue(StringProto, '$toCapitalize', $toCapitalize);
+
+  /**
+   * 判断传入对象是否是字符串
+   * @param {Object} obj 需要判断的对象
+   */
+  function isString(obj) {
+    return typeof obj === 'string';
+  }
+
+  var rBackSlant = /\+/g;
+
+  function toString$1(obj) {
+    switch (typeof obj) {
+      case 'string':
+        return obj;
+      case 'boolean':
+        return obj ? 'true' : 'false'; // 使用 toString 性能慢三倍
+      case 'number':
+        return isFinite(obj) ? obj : '';
+      default:
+        return '';
+    }
+  }
+
+  function stringify(obj) {
+    var sep = parametersDefault(arguments, 1, '&'),
+        eq = parametersDefault(arguments, 2, '=');
+
+    if (isObject(obj)) {
+      return Object.keys(obj).map(function (key) {
+        return encodeURIComponent(toString$1(key)) + eq + encodeURIComponent(toString$1(obj[key]));
+      }).join(sep);
+    }
+
+    return '';
+  }
+
+  function parse(str) {
+    var sep = parametersDefault(arguments, 1, '&'),
+        eq = parametersDefault(arguments, 2, '='),
+        result = {};
+
+    if (!isString(str)) {
+      return result;
+    }
+
+    var i = 0,
+        key,
+        value,
+        cache,
+        index = '';
+    var queryList = str.split(sep),
+        queryLength = queryList.length;
+
+    for (; i < queryLength; i++) {
+      cache = queryList[i].replace(rBackSlant, '%20');
+      index = cache.indexOf(eq);
+
+      if (index > -1) {
+        key = cache.substr(0, index);
+        value = cache.substr(index + 1);
+      } else {
+        key = cache;
+      }
+
+      key = decodeURIComponent(key);
+      value = decodeURIComponent(value);
+
+      result[key] = value;
+    }
+
+    return result;
+  }
+
+  defineValue(window, '$querystring', {
+    stringify: stringify,
+    parse: parse
+  });
+
+  function $ready$1(func, data) {
+    if (this.document.readyState === 'complete') return func.apply(this, data);
+    this.addEventListener('load', function callback(event) {
+      this.removeEventListener(event.type, callback);
+      func.apply(this, data);
+    });
+  }
+
+  defineValue(window, '$ready', $ready$1);
+
+  function $typeof(obj) {
+    var type;
+
+    if (obj == null) return obj + '';
+    if ((type = typeof obj) === 'object') {
+      if (isArray(obj)) return 'array';
+    }
+    return type;
+  }
+
+  defineValue(window, '$typeof', $typeof);
+
   /**
    * ZenJS
    */
   var Zen = window.Zen = $create$1(true, {
-    version: '1.0.0-alpha.0'
+    version: '1.0.0'
   });
-
-  /**
-   * 事件处理 => 添加事件3: 绑定事件
-   * @param {Element} elem 需要绑定事件的对象
-   * @param {Array} types 需要绑定的事件集
-   * @param {String} selector 事件委托的选择器
-   * @param {Function} listener 绑定的事件
-   * @param {Object} options 事件绑定参数
-   */
-  function add(elem, types, selector, listener, options) {
-
-    var
-    /** 存放当前元素下的所有事件 */
-    events = elem.$data('events', {}, true),
-
-    /** 事件总数 */
-    length = types.length,
-        tmp,
-        type,
-        handleOptions;
-
-    while (length--) {
-
-      /** 分离事件名称和命名空间 */
-      tmp = rtypenamespace.exec(types[length]) || [''];
-      /** 事件名称 */
-      type = tmp[1];
-
-      if (!type) {
-        continue;
-      }
-
-      /** 该事件的所有参数 */
-      handleOptions = {
-        elem: elem,
-        type: type,
-        listener: listener,
-        selector: selector,
-        options: options,
-        namespace: (tmp[2] || '').split('.').sort(),
-        handle: function () {
-          return Zen.EventListener.dispatch.apply(handleOptions, arguments);
-        }
-      };
-
-      (events[type] || (events[type] = [])).push(handleOptions);
-
-      if (options.passive) {
-        elem.addEventListener(type, handleOptions.handle, options);
-      } else {
-        elem.addEventListener(type, handleOptions.handle, options.capture || false);
-      }
-    }
-  }
 
   /**
    * @returns {Boolean} false
@@ -586,17 +764,61 @@
     }));
   });
 
-  function $set(key, value) {
-    var _key;
+  var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
 
-    if (isObject(key)) for (_key in key) {
-      this[_key] = key[_key];
-    } else this[key] = value;
+  /**
+   * 事件处理 => 添加事件3: 绑定事件
+   * @param {Element} elem 需要绑定事件的对象
+   * @param {Array} types 需要绑定的事件集
+   * @param {String} selector 事件委托的选择器
+   * @param {Function} listener 绑定的事件
+   * @param {Object} options 事件绑定参数
+   */
+  function add(elem, types, selector, listener, options) {
 
-    return this;
+    var
+    /** 存放当前元素下的所有事件 */
+    events = elem.$data('events', {}, true),
+
+    /** 事件总数 */
+    length = types.length,
+        tmp,
+        type,
+        handleOptions;
+
+    while (length--) {
+
+      /** 分离事件名称和命名空间 */
+      tmp = rtypenamespace.exec(types[length]) || [''];
+      /** 事件名称 */
+      type = tmp[1];
+
+      if (!type) {
+        continue;
+      }
+
+      /** 该事件的所有参数 */
+      handleOptions = {
+        elem: elem,
+        type: type,
+        listener: listener,
+        selector: selector,
+        options: options,
+        namespace: (tmp[2] || '').split('.').sort(),
+        handle: function () {
+          return Zen.EventListener.dispatch.apply(handleOptions, arguments);
+        }
+      };
+
+      (events[type] || (events[type] = [])).push(handleOptions);
+
+      if (options.passive) {
+        elem.addEventListener(type, handleOptions.handle, options);
+      } else {
+        elem.addEventListener(type, handleOptions.handle, options.capture || false);
+      }
+    }
   }
-
-  defineValue(ObjectProto, '$set', $set);
 
   /**
    * 事件处理 => 触发事件
@@ -655,449 +877,6 @@
     add: add,
     dispatch: dispatch
   };
-
-  var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
-
-  var supportsPassiveEvent = false;
-
-  try {
-
-    var options = defineProperty({}, 'passive', {
-      get: function () {
-        supportsPassiveEvent = true;
-      }
-    });
-
-    window.addEventListener('test', null, options);
-  } catch (e) {}
-
-  /**
-   * 判断传入对象是否是字符串
-   * @param {Object} obj 需要判断的对象
-   */
-  function isString(obj) {
-    return typeof obj === 'string';
-  }
-
-  /**
-   * 事件处理 => 添加事件2: 参数处理
-   * @param {Element} elem 需要绑定事件的对象
-   * @param {String} types 需要绑定的事件集
-   * @param {String} selector 事件委托的选择器
-   * @param {Function} listener 绑定的事件
-   * @param {Object} options 事件绑定参数
-   */
-  function on(elem, types, selector, listener, options) {
-    var events;
-
-    // on( elem, { type: listener || Boolean } )
-    // on( elem, { type: listener || Boolean }, options )
-    // on( elem, { type: listener || Boolean }, selector )
-    // on( elem, { type: listener || Boolean }, selector, options )
-    if (isObject(types)) {
-      events = types;
-
-      if (isString(selector)) {
-        options = listener;
-      } else {
-        options = selector;
-        selector = undefined;
-      }
-    }
-    // on( elem, selector, { type: listener || Boolean } )
-    // on( elem, selector, { type: listener || Boolean }, options )
-    else if (isObject(selector)) {
-        events = selector;
-        selector = types;
-        options = listener;
-      }
-
-    if (events) {
-      for (var type in events) {
-        on(elem, type, selector, events[type], options);
-      }
-      return elem;
-    }
-
-    if (types == false || types == null) {
-      return elem;
-    } else {
-      types = types.match(rnothtmlwhite);
-
-      if (types == null || types.length === 0) {
-        return elem;
-      }
-    }
-
-    // on( elem, types, listener || Boolean )
-    // on( elem, types, listener || Boolean, selector )
-    // on( elem, types, listener || Boolean, options || useCapture )
-    // on( elem, types, listener || Boolean, selector, options || useCapture )
-    if (!isString(selector)) {
-      var _ref = [selector, listener];
-      listener = _ref[0];
-      selector = _ref[1];
-
-
-      if (!isString(selector)) {
-        options = selector;
-        selector = undefined;
-      }
-    }
-
-    if (listener == null) {
-      return elem;
-    }
-
-    if (isBoolean(listener)) {
-      listener = listener ? returnTrue : returnFalse;
-    }
-
-    if (!listener) {
-      return elem;
-    }
-
-    // useCapture
-    if (isBoolean(options)) {
-      options = { capture: options };
-    }
-
-    options = options || {};
-
-    Object.keys(options).forEach(function (key) {
-      options[key] ? options[key] = true : delete options[key];
-    });
-
-    if ('once' in options) {
-      var origListener = listener;
-
-      listener = function (event) {
-        elem.$off(event);
-        return origListener.apply(this, arguments);
-      };
-
-      delete options.once;
-    }
-
-    if ('passive' in options && !supportsPassiveEvent) {
-      delete options.passive;
-    }
-
-    return EventListener.add(elem, types, selector, listener, options), elem;
-  }
-
-  // EventTarget
-
-  /**
-   * 事件处理 => 添加事件1: 获取参数
-   */
-  defineValue(EventTarget.prototype, '$on', function (types, selector, listener, options) {
-    return on(this, types, selector, listener, options);
-  });
-
-  function $mean() {
-
-    return Array.from(arguments).reduce(function (count, next) {
-      return count + next;
-    }) / arguments.length;
-  }
-
-  defineValue(Math, '$mean', $mean);
-
-  var random = Math.random;
-
-  var floor = Math.floor;
-
-  function _randomParameters(args) {
-    var from = parametersDefault(args, 0, 9),
-        to = parametersDefault(args, 1, 0);
-
-    return from > to ? [to, from] : [from, to];
-  }
-
-  function _random(from, to) {
-    return floor(random() * (to - from + 1) + from);
-  }
-
-  function $random() {
-    var cache = _randomParameters(arguments);
-
-    return _random(cache[0], cache[1]);
-  }
-
-  defineValue(Math, '$random', $random);
-
-  var abs = Math.abs;
-
-  function $randomPlus() {
-    var cache = _randomParameters(arguments);
-    var from = cache[0],
-        to = cache[1];
-
-    if (from > 0) {
-      return _random(from, to);
-    } else {
-      cache = _random(0, to + abs(from));
-
-      return cache > to ? to - cache : cache;
-    }
-  }
-
-  defineValue(Math, '$randomPlus', $randomPlus);
-
-  /**
-   * 判断传入对象是否是数字
-   * @param {Object} obj 需要判断的对象
-   */
-  function isNumber(obj) {
-    return toString.call(obj) === '[object Number]';
-  }
-
-  function $isNumber(obj) {
-    if (isNumber(obj) || typeof obj === 'string') {
-      if (!isNaN(obj - parseFloat(obj))) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  defineValue(Number, '$isNumber', $isNumber);
-
-  function $delete$1() {
-    var _this = this;
-
-    Array.from(arguments).$each(function (key) {
-      delete _this[key];
-    });
-    return this;
-  }
-
-  defineValue(ObjectProto, '$delete', $delete$1);
-
-  function $deleteValue$1(value) {
-    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equal;
-    var name;
-
-    for (name in this) {
-      if (isEqual(this[name], value)) {
-        delete this[name];
-      }
-    }
-
-    return this;
-  }
-
-  defineValue(ObjectProto, '$deleteValue', $deleteValue$1);
-
-  function $each$1(obj, callback) {
-    var key,
-        value;
-
-    for (key in obj) {
-      value = obj[key];
-
-      if (callback.call(value, key, value, obj) === false) {
-        break;
-      }
-    }
-
-    return obj;
-  }
-
-  defineValue(Object, '$each', $each$1);
-
-  function $get$1(key) {
-    return this[key];
-  }
-
-  defineValue(ObjectProto, '$get', $get$1);
-
-  /**
-   * 定义对象属性, 快捷定义 get 选项
-   * @param {Object} obj 需要添加属性的元素
-   * @param {String} name 属性名
-   * @param {Function} get 添加到 get 选项的方法
-   * @param {Object} options 属性选项
-   */
-  function defineGet(obj, name, get, options) {
-    return define(obj, name, { get: get }, options || defineGetPropertyOptions), get;
-  }
-
-  function $self() {
-    return this;
-  }
-
-  defineValue(ObjectProto, '$self', $self);
-  defineGet(ObjectProto, '__self__', $self);
-
-  var fromCharCode = String.fromCharCode;
-
-  function string$random() {
-    var uppercase = parametersDefault(arguments, 0, false);
-
-    return fromCharCode(uppercase ? $random(65, 90) : $random(97, 122));
-  }
-
-  defineValue(String, '$random', string$random);
-
-  /**
-   * 判断传入对象是否是正则
-   * @param {Object} obj 需要判断的对象
-   */
-  function isRegExp(obj) {
-    return toString.call(obj) === '[object RegExp]';
-  }
-
-  var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$])/g;
-
-  var StringProto = String.prototype;
-
-  function $replaceAll(searchValue, replaceValue) {
-    var flags = 'g';
-
-    if (isRegExp(searchValue)) {
-      if (searchValue.global) {
-        return this.replace(searchValue, replaceValue);
-      } else {
-        flags += searchValue.flags || '';
-        searchValue = searchValue.source;
-      }
-    } else {
-      searchValue = searchValue.replace(rkeyword, '\\$1');
-    }
-
-    return this.replace(new RegExp(searchValue, flags), replaceValue);
-  }
-
-  defineValue(StringProto, '$replaceAll', $replaceAll);
-
-  function string$someRandom() {
-    var result = '',
-        length = parametersDefault(arguments, 0, 12);
-    var hasUppercase = parametersDefault(arguments, 1, false),
-        hasNumber = parametersDefault(arguments, 2, false);
-
-    while (length-- > 0) {
-      result += string$random();
-    }
-
-    if (hasUppercase) {
-      result = result.split('').map(function (code) {
-        return $random(1) ? code.toUpperCase() : code;
-      }).join();
-    }
-
-    if (hasNumber) {
-      result = result.split('').map(function (code) {
-        return $random(1) ? random() : code;
-      })
-      // 第一位不允许为数字
-      .$set(0, string$random($random(1))).join();
-    }
-
-    return result;
-  }
-
-  defineValue(String, '$someRandom', string$someRandom);
-
-  function $toCapitalize() {
-    return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
-  }
-
-  defineValue(StringProto, '$toCapitalize', $toCapitalize);
-
-  var rBackSlant = /\+/g;
-
-  function toString$1(obj) {
-    switch (typeof obj) {
-      case 'string':
-        return obj;
-      case 'boolean':
-        return obj ? 'true' : 'false'; // 使用 toString 性能慢三倍
-      case 'number':
-        return isFinite(obj) ? obj : '';
-      default:
-        return '';
-    }
-  }
-
-  function stringify(obj) {
-    var sep = parametersDefault(arguments, 1, '&'),
-        eq = parametersDefault(arguments, 2, '=');
-
-    if (isObject(obj)) {
-      return Object.keys(obj).map(function (key) {
-        return encodeURIComponent(toString$1(key)) + eq + encodeURIComponent(toString$1(obj[key]));
-      }).join(sep);
-    }
-
-    return '';
-  }
-
-  function parse(str) {
-    var sep = parametersDefault(arguments, 1, '&'),
-        eq = parametersDefault(arguments, 2, '='),
-        result = {};
-
-    if (!isString(str)) {
-      return result;
-    }
-
-    var i = 0,
-        key,
-        value,
-        cache,
-        index = '';
-    var queryList = str.split(sep),
-        queryLength = queryList.length;
-
-    for (; i < queryLength; i++) {
-      cache = queryList[i].replace(rBackSlant, '%20');
-      index = cache.indexOf(eq);
-
-      if (index > -1) {
-        key = cache.substr(0, index);
-        value = cache.substr(index + 1);
-      } else {
-        key = cache;
-      }
-
-      key = decodeURIComponent(key);
-      value = decodeURIComponent(value);
-
-      result[key] = value;
-    }
-
-    return result;
-  }
-
-  defineValue(window, '$querystring', {
-    stringify: stringify,
-    parse: parse
-  });
-
-  function $ready$1(func, data) {
-    if (this.document.readyState === 'complete') return func.apply(this, data);
-    this.addEventListener('load', function callback(event) {
-      this.removeEventListener(event.type, callback);
-      func.apply(this, data);
-    });
-  }
-
-  defineValue(window, '$ready', $ready$1);
-
-  function $typeof(obj) {
-    var type;
-
-    if (obj == null) return obj + '';
-    if ((type = typeof obj) === 'object') {
-      if (isArray(obj)) return 'array';
-    }
-    return type;
-  }
-
-  defineValue(window, '$typeof', $typeof);
 
   var guid = 1;
 

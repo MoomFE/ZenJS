@@ -1,7 +1,7 @@
 import './Array/index';
 import './Document/index';
-import './Element/index';
-import './EventTarget/index';
+// import './Element/index';
+// import './EventTarget/index';
 import './Math/index';
 import './Number/index';
 import './Object/index';
