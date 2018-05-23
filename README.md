@@ -8,7 +8,7 @@
 <br>
 
 ## 浏览器支持
----
+
 * Chrome：23+
 * Edge：12+
 * Firefox：21+
@@ -16,8 +16,10 @@
 * Safari：6+
 * Android: 4.4+
 
+<br>
+
 ## 使用
----
+
 ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，polyfill 则需要自行添加。
 
 * [babel-polyfill](https://babeljs.io/docs/usage/polyfill/)
@@ -28,9 +30,10 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   <script src="Zen.min.js"></script>
 ```
 
+<br>
+
 ## 参考
 ### 更详细的使用方法及介绍请参照 [index.d.ts](https://github.com/MoomFE/ZenJS/blob/master/index.d.ts)
----
 
 
 - Array
@@ -86,8 +89,10 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $querystring.stringify
   - $querystring.parse
 
+<br>
+
 ## 在本地构建ZenJS
----
+
 克隆到本地:
 ```bash
 git clone https://github.com/MoomFE/ZenJS.git
