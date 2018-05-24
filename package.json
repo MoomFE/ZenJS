@@ -1,22 +1,11 @@
 {
   "name": "zenjs",
-  "version": "1.0.1",
-  "description": "ZenJS is a superset of the JavaScript prototype object.",
-  "main": "index.js",
-  "scripts": {
-    "build": "node scripts/build.js",
-    "watch": "node_modules/.bin/rollup -w -c scripts/config.js"
-  },
-  "keywords": [
-    "zen",
-    "zenjs"
-  ],
-  "title": "Zen.js",
-  "author": "Zhang_Wei",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/MoomFE/ZenJS"
+  "version": "1.1.0-bata.0",
+  "description": "ZenJS 是一个高性能的 JavaScript 工具库。",
+  "dependencies": {
+    "extend": "^3.0.1",
+    "jquery": "^3.3.1",
+    "uglify-js": "^3.3.25"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -36,9 +25,23 @@
     "rollup-plugin-replace": "^2.0.0",
     "rollup-watch": "^4.3.1"
   },
-  "dependencies": {
-    "extend": "^3.0.1",
-    "jquery": "^3.3.1",
-    "uglify-js": "^3.3.25"
-  }
+  "scripts": {
+    "build": "node scripts/build.js",
+    "watch": "node_modules/.bin/rollup -w -c scripts/config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoomFE/ZenJS.git"
+  },
+  "keywords": [
+    "zen",
+    "zenjs"
+  ],
+  "title": "Zen.js",
+  "author": "Zhang_Wei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MoomFE/ZenJS/issues"
+  },
+  "homepage": "https://github.com/MoomFE/ZenJS#readme"
 }

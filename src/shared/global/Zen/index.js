@@ -3,7 +3,7 @@ import $create from '../../../Object/$create/index';
 /**
  * ZenJS
  */
-const Zen = window.Zen = $create( true, {
+const Zen = window.Zen = window.ZenJS = $create( true, {
   version: '__VERSION__'
 });
 

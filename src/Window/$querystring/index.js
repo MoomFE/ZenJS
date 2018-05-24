@@ -45,7 +45,9 @@ export function parse( str ){
 
   let i = 0,
       key, value,
-      cache, index = '';
+      cache,
+      index;
+
   const
     queryList = str.split( sep ),
     queryLength = queryList.length;

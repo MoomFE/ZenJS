@@ -1,5 +1,5 @@
 /*!
- * Zen.js v1.0.1
+ * Zen.js v1.1.0-bata.0
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -50,9 +50,9 @@
 
   /**
    * 获取方法指定位参数, 若未传入参数, 则取默认值
-   * @param {Object} args arguments
-   * @param {Number} index
-   * @param {Object} defaultValue
+   * @param {IArguments} args arguments
+   * @param {Number} index 需要在 arguments 中取得默认值的下标
+   * @param {Object} defaultValue 若未传入值时取得默认值
    */
   function parametersDefault(args, index, defaultValue) {
     var arg;
@@ -75,7 +75,13 @@
 
   defineValue(ArrayProto, '$get', $get);
 
-  function parametersRest(args, index) {
+  /**
+   * 获取方法从指定位开始的剩余参数
+   * @param {IArguments} args arguments
+   * @param {Number} index 需要在 arguments 中开始取参数的下标 - default: 0
+   */
+  function parametersRest(args) {
+    var index = parametersDefault(arguments, 1, 0);
     var length = args.length;
 
     if (length > index) {
@@ -462,7 +468,7 @@
   defineGet(ObjectProto, '__self__', $self);
 
   /**
-   * 判断传入对象是否是对象
+   * 判断传入对象是否是对象且不为null
    * @param {Object} obj 需要判断的对象
    */
   function isObject(obj) {
@@ -606,7 +612,8 @@
         key,
         value,
         cache,
-        index = '';
+        index;
+
     var queryList = str.split(sep),
         queryLength = queryList.length;
 
@@ -660,8 +667,8 @@
   /**
    * ZenJS
    */
-  var Zen = window.Zen = $create$1(true, {
-    version: '1.0.1'
+  var Zen = window.Zen = window.ZenJS = $create$1(true, {
+    version: '1.1.0-bata.0'
   });
 
   var guid = 1;
@@ -669,6 +676,44 @@
   defineProperty(Zen, 'guid', {
     get: function () {
       return guid++;
+    }
+  });
+
+  /**
+   * @returns {Boolean} true
+   */
+  function returnTrue() {
+    return true;
+  }
+
+  /**
+   * @returns {Boolean} false
+   */
+  function returnFalse() {
+    return false;
+  }
+
+  Zen.util = $create$1(true, {
+    is: {
+      equal: equal,
+      congruence: congruence
+    },
+    types: {
+      isArray: isArray,
+      isBoolean: isBoolean,
+      isFunction: isFunction,
+      isNumber: isNumber,
+      isObject: isObject,
+      isRegExp: isRegExp,
+      isString: isString
+    },
+    parameters: {
+      default: parametersDefault,
+      rest: parametersRest
+    },
+    fn: {
+      returnTrue: returnTrue,
+      returnFalse: returnFalse
     }
   });
 
