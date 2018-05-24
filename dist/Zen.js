@@ -1,5 +1,5 @@
 /*!
- * Zen.js v1.1.0-bata.0
+ * Zen.js v1.1.0
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -668,7 +668,7 @@
    * ZenJS
    */
   var Zen = window.Zen = window.ZenJS = $create$1(true, {
-    version: '1.1.0-bata.0'
+    version: '1.1.0'
   });
 
   var guid = 1;
