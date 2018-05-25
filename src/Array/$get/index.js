@@ -10,7 +10,7 @@ export default function $get(){
   if( num == null ){
     return this[ index ];
   }
-  return this.slice( index, num );
+  return this.slice( index, num + index );
 }
 
 defineValue( ArrayProto, '$get', $get );
