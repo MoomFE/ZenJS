@@ -184,6 +184,36 @@
 
   defineValue(ArrayProto, '$each', $each);
 
+  function $equals(obj) {
+
+    if (!obj) {
+      return false;
+    }
+
+    if (!Array.isArray(obj)) {
+      return false;
+    }
+
+    var index = 0,
+        length = this.length;
+
+    if (length !== obj.length) {
+      return false;
+    }
+
+    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
+
+    for (; index < length; index++) {
+      if (!isEqual(this[index], obj[index])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  defineValue(ArrayProto, '$equals', $equals);
+
   function $inArray(obj) {
     var i = 0,
         len = this.length;

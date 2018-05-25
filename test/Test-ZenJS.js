@@ -194,6 +194,14 @@ Object.defineProperty( window, 'div', {
           test2[ 2 ].should.equals( 3 );
         }
       }, {
+        name: '$equals',
+        it: function(){
+          [].$equals( ZenJS ).should.false;
+          [ 1, 2, 3 ].$equals( [ 3, 2, 1 ] ).should.false;
+          [].$equals([]).should.true;
+          [ 1, 2, 3 ].$equals( [ 1, 2, 3 ] ).should.true;
+        }
+      }, {
         name: '$get',
         it: function(){
           [ 0, 1, 2, 3, 4, 5 ].$get().should.equals( 0 );
