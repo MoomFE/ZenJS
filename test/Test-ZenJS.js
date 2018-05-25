@@ -196,9 +196,10 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$get',
         it: function(){
-          [ 0, 1, 2 ].$get().should.equal( 0 );
-          [ 0, 1, 2 ].$get( 2 ).should.equal( 2 );
-          [ 0, 1, 2 ].$get( 0, 2 ).length.should.equal( 2 );
+          [ 0, 1, 2, 3, 4, 5 ].$get().should.equal( 0 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( 2 ).should.equal( 2 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( 0, 3 ).length.should.equal( 3 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( 2, 3 ).length.should.equal( 3 );
         }
       }, {
         name: '$inArray',
@@ -488,15 +489,15 @@ Object.defineProperty( window, 'div', {
         it: function(){
           for( var i = 0; i < 260; i++ ){
             /[a-z]+/.test( String.$someRandom() ).should.true;
+            String.$someRandom( i ).length.should.equal( i );
           }
           for( var i = 0; i < 260; i++ ){
             /[a-zA-Z]/.test( String.$someRandom( 12, true ) ).should.true;
+            String.$someRandom( i, true ).length.should.equal( i );
           }
           for( var i = 0; i < 260; i++ ){
             /[a-zA-Z0-9]/.test( String.$someRandom( 12, true, true ) ).should.true;
-          }
-          for( var i = 0; i < 26; i++ ){
-            String.$someRandom( i ).length.should.equal( i );
+            String.$someRandom( i, true, true ).length.should.equal( i );
           }
         }
       }
