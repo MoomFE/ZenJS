@@ -207,25 +207,6 @@ interface ObjectConstructor {
   $isPlainObject( obj: any ): Boolean;
 }
 
-declare const $querystring: $querystring;
-interface Window { $querystring: $querystring };
-interface $querystring {
-  /**
-   * 将对象进行序列化成 URL 查询字符串
-   * @param obj 需要序列化的对象
-   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
-   * @param eq 在字符串中分隔键和值的字符串 -default: '='
-   */
-  stringify( obj, sep?: String = '&', eq?: String = '=' ): String;
-  /**
-   * 将 URL 查询字符串反序列化为对象
-   * @param str 需要反序列化的字符串
-   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
-   * @param eq 在字符串中分隔键和值的字符串 -default: '='
-   */
-  parse( str, sep?: String = '&', eq?: String = '=' ): any;
-}
-
 interface String {
   /**
    * 将字符串首字母大写
@@ -254,25 +235,23 @@ interface StringConstructor {
   $someRandom( length?: Number, hasUppercase?: Boolean = false, hasNumber?: Boolean = false ): String;
 }
 
-interface Window {
-  /**
-   * 页面及页面资源载入完成后传入代码
-   * -- 方法可以用 Function[ call / apply ] 的方式使用, 可传入其他 window, 比如 iframe 的 window
-   * 
-   * @param func 页面及页面资源载入完成后执行的方法
-   * @param data 需要传入方法的数据
-   */
-  $ready( func: () => void, data?: any ): void;
-  /**
-   * 判断传入参数的类型
-   * @param obj 需要判断类型的参数
-   */
-  $typeof( obj: any ): String;
-}
+declare const Zen: ZenJS;
+declare const ZenJS: ZenJS;
+declare const $querystring: $querystring;
+declare const $ready: $ready;
+declare const $typeof: $typeof;
 
-declare const Zen: Zen;
-interface Window { Zen: Zen };
-interface Zen {
+
+interface Window {
+  Zen: ZenJS,
+  ZenJS: ZenJS,
+  $querystring: $querystring,
+  $ready: $ready,
+  $typeof: $typeof
+};
+
+
+interface ZenJS {
   readonly guid: Number;
   /**
    * ZenJS 工具包
@@ -346,3 +325,34 @@ interface Zen {
     }
   }
 }
+
+interface $querystring {
+  /**
+   * 将对象进行序列化成 URL 查询字符串
+   * @param obj 需要序列化的对象
+   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
+   * @param eq 在字符串中分隔键和值的字符串 -default: '='
+   */
+  stringify( obj, sep?: String = '&', eq?: String = '=' ): String;
+  /**
+   * 将 URL 查询字符串反序列化为对象
+   * @param str 需要反序列化的字符串
+   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
+   * @param eq 在字符串中分隔键和值的字符串 -default: '='
+   */
+  parse( str, sep?: String = '&', eq?: String = '=' ): any;
+}
+
+/**
+ * 页面及页面资源载入完成后传入代码
+ * -- 方法可以用 Function[ call / apply ] 的方式使用, 可传入其他 window, 比如 iframe 的 window
+ * 
+ * @param func 页面及页面资源载入完成后执行的方法
+ * @param data 需要传入方法的数据
+ */
+declare function $ready( func: () => void, data?: any ): void;
+/**
+ * 判断传入参数的类型
+ * @param obj 需要判断类型的参数
+ */
+declare function $typeof( obj: any ): String;

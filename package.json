@@ -1,6 +1,6 @@
 {
   "name": "@moomfe/zenjs",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "ZenJS 是一个高性能的 JavaScript 工具库。",
   "dependencies": {},
   "devDependencies": {
