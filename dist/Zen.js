@@ -70,7 +70,7 @@
     if (num == null) {
       return this[index];
     }
-    return this.slice(index, num);
+    return this.slice(index, num + index);
   }
 
   defineValue(ArrayProto, '$get', $get);
@@ -541,15 +541,13 @@
     if (hasUppercase) {
       result = result.split('').map(function (code) {
         return $random(1) ? code.toUpperCase() : code;
-      }).join();
+      }).join('');
     }
 
     if (hasNumber) {
-      result = result.split('').map(function (code) {
-        return $random(1) ? random() : code;
-      })
-      // 第一位不允许为数字
-      .$set(0, string$random($random(1))).join();
+      result = (result[0] || '') + result.slice(1).split('').map(function (code) {
+        return $random(1) ? $random() : code;
+      }).join('');
     }
 
     return result;
