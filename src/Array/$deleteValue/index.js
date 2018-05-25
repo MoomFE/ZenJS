@@ -3,13 +3,13 @@ import defineValue from "../../shared/util/defineValue";
 import ArrayProto from "../../shared/global/Array/prototype/index";
 import parametersDefault from "../../shared/util/parametersDefault";
 import congruence from "../../shared/util/congruence";
-import equal from "../../shared/util/equal";
+import equals from "../../shared/util/equals";
 
 export default function $deleteValue( value ){
   const
     isEqual = parametersDefault( arguments, 1, true )
       ? congruence
-      : equal;
+      : equals;
   let
     index = 0,
     length = this.length;

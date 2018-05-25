@@ -41,16 +41,16 @@ Object.defineProperty( window, 'div', {
   //           isElement( div.$data({Data:'div'}) ).should.true;
   //           isElement( div.$data({Data:'div'},true) ).should.true;
   //           // 有对应数据返回对应数据
-  //           div.$data('Data','div').$data('Data').should.equal( 'div' );
+  //           div.$data('Data','div').$data('Data').should.equals( 'div' );
   //           // 无对应数据时返回 undefined
   //           isUndef( div.$data('noData') ).should.true;
   //           // 未传入数据名, 返回全部数据集
-  //           JSON.stringify( div.$data('Data','div').$data() ).should.equal( '{"Data":"div"}' );
+  //           JSON.stringify( div.$data('Data','div').$data() ).should.equals( '{"Data":"div"}' );
   //           // 初始化添加方式
-  //           div.$data('Data','div').$data('Data','no',true).should.equal( 'div' );
-  //           div.$data('Data','yes',true).should.equal( 'yes' );
+  //           div.$data('Data','div').$data('Data','no',true).should.equals( 'div' );
+  //           div.$data('Data','yes',true).should.equals( 'yes' );
   //           // 批量添加
-  //           JSON.stringify( div.$data({Data1:'div',Data2:'div'}).$data() ).should.equal( '{"Data1":"div","Data2":"div"}' );
+  //           JSON.stringify( div.$data({Data1:'div',Data2:'div'}).$data() ).should.equals( '{"Data1":"div","Data2":"div"}' );
   //         });
   //         it( '$hasData', () => {
   //           // 未传入对象则检测是否存过数据
@@ -78,20 +78,20 @@ Object.defineProperty( window, 'div', {
   //         describe( `${ index ? 'document' : 'window' }.[ $data, $hasData, $deleteData ]`, () => {
   //           it( '$data', () => {
   //             // 存储数据返回对象本身
-  //             root.$data('Data','root').should.equal( root );
-  //             root.$data({'Data':'root'}).should.equal( root );
-  //             root.$data({'Data':'root'},true).should.equal( root );
+  //             root.$data('Data','root').should.equals( root );
+  //             root.$data({'Data':'root'}).should.equals( root );
+  //             root.$data({'Data':'root'},true).should.equals( root );
   //             // 有对应数据返回对应数据
-  //             root.$data('Data').should.equal( 'root' );
+  //             root.$data('Data').should.equals( 'root' );
   //             // 无对应数据时返回 undefined
   //             isUndef( root.$data('noData') ).should.true;
   //             // 未传入数据名, 返回全部数据集
-  //             JSON.stringify( root.$data() ).should.equal( '{"Data":"root"}' );
+  //             JSON.stringify( root.$data() ).should.equals( '{"Data":"root"}' );
   //             // 初始化添加方式
-  //             root.$data('Data','no',true).should.equal( 'root' );
-  //             root.$data('Data1','yes',true).should.equal( 'yes' );
+  //             root.$data('Data','no',true).should.equals( 'root' );
+  //             root.$data('Data1','yes',true).should.equals( 'yes' );
   //             // 批量添加
-  //             JSON.stringify( root.$data({'Data':'root','Data1':'yes'}).$data() ).should.equal( '{"Data":"root","Data1":"yes"}' );
+  //             JSON.stringify( root.$data({'Data':'root','Data1':'yes'}).$data() ).should.equals( '{"Data":"root","Data1":"yes"}' );
   //           });
   //           it( '$hasData', () => {
   //             // 未传入对象则检测是否存过数据
@@ -104,9 +104,9 @@ Object.defineProperty( window, 'div', {
   //           });
   //           it( '$deleteData', () => {
   //             // 始终返回自身
-  //             root.$deleteData().should.equal( root );
-  //             root.$deleteData( 'noData' ).should.equal( root );
-  //             root.$deleteData( 'noData1 noData2' ).should.equal( root );
+  //             root.$deleteData().should.equals( root );
+  //             root.$deleteData( 'noData' ).should.equals( root );
+  //             root.$deleteData( 'noData1 noData2' ).should.equals( root );
   //             // 删除单个数据
   //             div.$data('Data','root').$deleteData('Data').$hasData('Data').should.false;
   //             div.$data('Data','root').$deleteData('Data1').$hasData('Data').should.true;
@@ -127,9 +127,9 @@ Object.defineProperty( window, 'div', {
       {
         name: '$create',
         it: function(){
-          Array.$create( 10 ).length.should.equal( 10 );
-          Array.$create( true ).length.should.equal( 1 );
-          Array.$create( false ).length.should.equal( 0 );
+          Array.$create( 10 ).length.should.equals( 10 );
+          Array.$create( true ).length.should.equals( 1 );
+          Array.$create( false ).length.should.equals( 0 );
           Array.$create( 1, true )[0].should.true;
           Array.$create( 1, false )[0].should.false;
           Array
@@ -137,7 +137,7 @@ Object.defineProperty( window, 'div', {
               return 'ZenJS-' + index
             })
             [ 9 ]
-            .should.equal( 'ZenJS-9' )
+            .should.equals( 'ZenJS-9' )
         }
       }
     ]
@@ -149,26 +149,26 @@ Object.defineProperty( window, 'div', {
       {
         name: '$add',
         it: function(){
-          [ 1 ].$add( 0, 0 )[ 0 ].should.equal( 0 );
-          [ 1 ].$add( 0, 0 )[ 1 ].should.equal( 1 );
-          [ 1 ].$add( 0, 0 ).length.should.equal( 2 );
-          [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equal( 5 );
+          [ 1 ].$add( 0, 0 )[ 0 ].should.equals( 0 );
+          [ 1 ].$add( 0, 0 )[ 1 ].should.equals( 1 );
+          [ 1 ].$add( 0, 0 ).length.should.equals( 2 );
+          [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equals( 5 );
         }
       }, {
         name: '$delete',
         it: function(){
-          [ 1 ].$delete( 0 ).length.should.equal( 0 );
-          [ 0, 1 ].$delete( 0, 2 ).length.should.equal( 0 );
-          [ 0, 1, 2 ].$delete( 0, 2 ).length.should.equal( 1 );
-          [ 0, 1, 2 ].$delete( 0, 2 )[ 0 ].should.equal( 2 );
+          [ 1 ].$delete( 0 ).length.should.equals( 0 );
+          [ 0, 1 ].$delete( 0, 2 ).length.should.equals( 0 );
+          [ 0, 1, 2 ].$delete( 0, 2 ).length.should.equals( 1 );
+          [ 0, 1, 2 ].$delete( 0, 2 )[ 0 ].should.equals( 2 );
         }
       }, {
         name: '$deleteValue',
         it: function(){
-          [ 1, 2, 3, 4 ].$deleteValue( 4 ).length.should.equal( 3 );
-          Array.$create( 10 ).$deleteValue( undefined ).length.should.equal( 0 );
-          Array.$create( 10, null ).concat( Array.$create( 10, 0 ) ).$deleteValue( false ).length.should.equal( 20 );
-          Array.$create( 10, null ).concat( Array.$create( 10, 0 ) ).$deleteValue( false, false ).length.should.equal( 10 );
+          [ 1, 2, 3, 4 ].$deleteValue( 4 ).length.should.equals( 3 );
+          Array.$create( 10 ).$deleteValue( undefined ).length.should.equals( 0 );
+          Array.$create( 10, null ).concat( Array.$create( 10, 0 ) ).$deleteValue( false ).length.should.equals( 20 );
+          Array.$create( 10, null ).concat( Array.$create( 10, 0 ) ).$deleteValue( false, false ).length.should.equals( 10 );
         }
       }, {
         name: '$each',
@@ -178,8 +178,8 @@ Object.defineProperty( window, 'div', {
             else if( index === 2 ) arr[ index ] = 1;
           });
 
-          test1[ 0 ].should.equal( 3 );
-          test1[ 2 ].should.equal( 1 );
+          test1[ 0 ].should.equals( 3 );
+          test1[ 2 ].should.equals( 1 );
 
 
           var test2 = [ 1, 2, 3 ].$each(function( value, index, arr ){
@@ -190,16 +190,16 @@ Object.defineProperty( window, 'div', {
             else if( index === 2 ) arr[ index ] = 1;
           });
 
-          test2[ 0 ].should.equal( 3 );
-          test2[ 2 ].should.equal( 3 );
+          test2[ 0 ].should.equals( 3 );
+          test2[ 2 ].should.equals( 3 );
         }
       }, {
         name: '$get',
         it: function(){
-          [ 0, 1, 2, 3, 4, 5 ].$get().should.equal( 0 );
-          [ 0, 1, 2, 3, 4, 5 ].$get( 2 ).should.equal( 2 );
-          [ 0, 1, 2, 3, 4, 5 ].$get( 0, 3 ).length.should.equal( 3 );
-          [ 0, 1, 2, 3, 4, 5 ].$get( 2, 3 ).length.should.equal( 3 );
+          [ 0, 1, 2, 3, 4, 5 ].$get().should.equals( 0 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( 2 ).should.equals( 2 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( 0, 3 ).length.should.equals( 3 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( 2, 3 ).length.should.equals( 3 );
         }
       }, {
         name: '$inArray',
@@ -212,34 +212,34 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$set',
         it: function(){
-          [ 1, 2, 3 ].$set( 1, 4 )[ 1 ].should.equal( 4 );
-          [ 1 ].$set( 1, 2 )[ 1 ].should.equal( 2 );
-          [].$set( 1, 1 )[ 1 ].should.equal( 1 );
-          [].$set({ 0: 0, 1: 1, 2: 2 }).length.should.equal( 3 );
+          [ 1, 2, 3 ].$set( 1, 4 )[ 1 ].should.equals( 4 );
+          [ 1 ].$set( 1, 2 )[ 1 ].should.equals( 2 );
+          [].$set( 1, 1 )[ 1 ].should.equals( 1 );
+          [].$set({ 0: 0, 1: 1, 2: 2 }).length.should.equals( 3 );
         }
       }, {
         name: '$push',
         it: function(){
-          [ 1 ].$push( 2 ).length.should.equal( 2 );
-          [ 1 ].$push( 2 )[ 1 ].should.equal( 2 );
+          [ 1 ].$push( 2 ).length.should.equals( 2 );
+          [ 1 ].$push( 2 )[ 1 ].should.equals( 2 );
         }
       }, {
         name: '$unshift',
         it: function(){
-          [ 1 ].$unshift( 0 ).length.should.equal( 2 );
-          [ 1 ].$unshift( 0 )[ 0 ].should.equal( 0 );
+          [ 1 ].$unshift( 0 ).length.should.equals( 2 );
+          [ 1 ].$unshift( 0 )[ 0 ].should.equals( 0 );
         }
       }, {
         name: '$pop',
         it: function(){
-          [ 1, 2, 3 ].$pop().length.should.equal( 2 );
-          [ 1, 2, 3 ].$pop()[ 1 ].should.equal( 2 );
+          [ 1, 2, 3 ].$pop().length.should.equals( 2 );
+          [ 1, 2, 3 ].$pop()[ 1 ].should.equals( 2 );
         }
       }, {
         name: '$shift',
         it: function(){
-          [ 1, 2, 3 ].$shift().length.should.equal( 2 );
-          [ 1, 2, 3 ].$shift()[ 1 ].should.equal( 3 );
+          [ 1, 2, 3 ].$shift().length.should.equals( 2 );
+          [ 1, 2, 3 ].$shift()[ 1 ].should.equals( 3 );
         }
       }
     ]
@@ -263,9 +263,9 @@ Object.defineProperty( window, 'div', {
       {
         name: '$mean',
         it: function(){
-          Math.$mean( 2, 4, 6 ).should.equal( 4 );
-          Math.$mean( -1, 1 ).should.equal( 0 );
-          Math.$mean( -1, 3 ).should.equal( 1 );
+          Math.$mean( 2, 4, 6 ).should.equals( 4 );
+          Math.$mean( -1, 1 ).should.equals( 0 );
+          Math.$mean( -1, 3 ).should.equals( 1 );
         }
       },
       function(){
@@ -340,14 +340,14 @@ Object.defineProperty( window, 'div', {
               obj2 = { asd: 123 },
               obj3 = { asd: 1234 };
 
-          Object.$assign( obj1 ).should.equal( obj1 )
+          Object.$assign( obj1 ).should.equals( obj1 )
           Object.$isEmptyObject( Object.$assign( obj1 ) ).should.true;
 
-          Object.$assign( obj1, obj2 ).should.equal( obj1 );
+          Object.$assign( obj1, obj2 ).should.equals( obj1 );
           Object.$isEmptyObject( Object.$assign( obj1, obj2 ) ).should.false;
 
-          Object.$assign( obj1, obj2 ).asd.should.equal( 123 );
-          Object.$assign( obj1, obj2, obj3 ).asd.should.equal( 1234 );
+          Object.$assign( obj1, obj2 ).asd.should.equals( 123 );
+          Object.$assign( obj1, obj2, obj3 ).asd.should.equals( 1234 );
 
           var obj4 = { infiniteLoop: obj5 },
               obj5 = { infiniteLoop: obj4 };
@@ -368,8 +368,8 @@ Object.defineProperty( window, 'div', {
           var obj1 = { asd: 123 },
               obj2 = { asd: 1234 };
 
-          Object.$create( obj1 ).asd.should.equal( 123 );
-          Object.$create( obj1, obj2 ).asd.should.equal( 1234 );
+          Object.$create( obj1 ).asd.should.equals( 123 );
+          Object.$create( obj1, obj2 ).asd.should.equals( 1234 );
           isEqual( obj1, Object.$create( obj1 ) ).should.false;
         }
       }, {
@@ -382,8 +382,8 @@ Object.defineProperty( window, 'div', {
             }
           });
 
-          test1[ "3" ].should.equal( 3 );
-          test1[ "1" ].should.equal( 1 );
+          test1[ "3" ].should.equals( 3 );
+          test1[ "1" ].should.equals( 1 );
 
           var test2 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
             switch( key ){
@@ -393,8 +393,8 @@ Object.defineProperty( window, 'div', {
             }
           });
 
-          test2[ "1" ].should.equal( 1 );
-          test2[ "3" ].should.equal( 1 );
+          test2[ "1" ].should.equals( 1 );
+          test2[ "3" ].should.equals( 1 );
         }
       }, {
         name: '$isEmptyObject',
@@ -427,7 +427,7 @@ Object.defineProperty( window, 'div', {
             .stringify(
               test.$delete('j').$delete('s').$delete( 'z','e','n' )
             )
-            .should.equal('{}');
+            .should.equals('{}');
         }
       }, {
         name: '$deleteValue',
@@ -438,7 +438,7 @@ Object.defineProperty( window, 'div', {
             .stringify(
               test.$deleteValue( 4 )
             )
-            .should.equal(
+            .should.equals(
               '{"z":1,"e":2,"n":3}'
             );
         }
@@ -447,25 +447,25 @@ Object.defineProperty( window, 'div', {
         it: function(){
           var test = { z: 1, e: 2, n: 3 };
 
-          test.$get( 'z' ).should.equal( 1 );
-          test.$get( 'e' ).should.equal( 2 );
-          test.$get( 'n' ).should.equal( 3 );
+          test.$get( 'z' ).should.equals( 1 );
+          test.$get( 'e' ).should.equals( 2 );
+          test.$get( 'n' ).should.equals( 3 );
         }
       }, {
         name: '$set',
         it: function(){
            var test = {};
 
-           test.$set( 'ZenJS', 'Zw' )[ 'ZenJS' ].should.equal( 'Zw' );
-           test.$set( 1, 2 )[ 1 ].should.equal( 2 );
+           test.$set( 'ZenJS', 'Zw' )[ 'ZenJS' ].should.equals( 'Zw' );
+           test.$set( 1, 2 )[ 1 ].should.equals( 2 );
         }
       }, {
         name: '$self',
         it: function(){
           var test = {};
 
-          test.$self().should.equal( test );
-          test.__self__.should.equal( test );
+          test.$self().should.equals( test );
+          test.__self__.should.equals( test );
         }
       }
     ]
@@ -489,15 +489,15 @@ Object.defineProperty( window, 'div', {
         it: function(){
           for( var i = 0; i < 260; i++ ){
             /[a-z]+/.test( String.$someRandom() ).should.true;
-            String.$someRandom( i ).length.should.equal( i );
+            String.$someRandom( i ).length.should.equals( i );
           }
           for( var i = 0; i < 260; i++ ){
             /[a-zA-Z]/.test( String.$someRandom( 12, true ) ).should.true;
-            String.$someRandom( i, true ).length.should.equal( i );
+            String.$someRandom( i, true ).length.should.equals( i );
           }
           for( var i = 0; i < 260; i++ ){
             /[a-zA-Z0-9]/.test( String.$someRandom( 12, true, true ) ).should.true;
-            String.$someRandom( i, true, true ).length.should.equal( i );
+            String.$someRandom( i, true, true ).length.should.equals( i );
           }
         }
       }
@@ -510,16 +510,16 @@ Object.defineProperty( window, 'div', {
       {
         name: '$toCapitalize',
         it: function(){
-          '123'.$toCapitalize().should.equal( '123' );
-          'zen'.$toCapitalize().should.equal( 'Zen' );
-          'zEN'.$toCapitalize().should.equal( 'Zen' );
+          '123'.$toCapitalize().should.equals( '123' );
+          'zen'.$toCapitalize().should.equals( 'Zen' );
+          'zEN'.$toCapitalize().should.equals( 'Zen' );
         }
       }, {
         name: '$replaceAll',
         it: function(){
-          '121212'.$replaceAll( '1', '2' ).should.equal( '222222' );
-          '121212'.$replaceAll( /1/, '2' ).should.equal( '222222' );
-          '121212'.$replaceAll( /1/g, '2' ).should.equal( '222222' );
+          '121212'.$replaceAll( '1', '2' ).should.equals( '222222' );
+          '121212'.$replaceAll( /1/, '2' ).should.equals( '222222' );
+          '121212'.$replaceAll( /1/g, '2' ).should.equals( '222222' );
         }
       }
     ]
@@ -534,25 +534,25 @@ Object.defineProperty( window, 'div', {
           {
             name: 'stringify',
             it: function(){
-              $querystring.stringify( { 1: 1 } ).should.equal( '1=1' );
-              $querystring.stringify( { zen: window } ).should.equal( 'zen=' );
-              $querystring.stringify( { zen: Infinity } ).should.equal( 'zen=' );
-              $querystring.stringify( { zen: true } ).should.equal( 'zen=true' );
-              $querystring.stringify( { zen: false } ).should.equal( 'zen=false' );
-              $querystring.stringify( { 1: 1, 2: 2 } ).should.equal( '1=1&2=2' );
+              $querystring.stringify( { 1: 1 } ).should.equals( '1=1' );
+              $querystring.stringify( { zen: window } ).should.equals( 'zen=' );
+              $querystring.stringify( { zen: Infinity } ).should.equals( 'zen=' );
+              $querystring.stringify( { zen: true } ).should.equals( 'zen=true' );
+              $querystring.stringify( { zen: false } ).should.equals( 'zen=false' );
+              $querystring.stringify( { 1: 1, 2: 2 } ).should.equals( '1=1&2=2' );
 
-              $querystring.stringify( { 1: 1, 2: 2 }, 'z', 'w' ).should.equal( '1w1z2w2' );
-              $querystring.stringify( { 1: 1, 2: 2 }, '1', '2' ).should.equal( '1211222' );
+              $querystring.stringify( { 1: 1, 2: 2 }, 'z', 'w' ).should.equals( '1w1z2w2' );
+              $querystring.stringify( { 1: 1, 2: 2 }, '1', '2' ).should.equals( '1211222' );
             }
           }, {
             name: 'parse',
             it: function(){
-              $querystring.parse( '1=1' )[ 1 ].should.equal( '1' );
-              $querystring.parse( '1=2&2=3' )[ 1 ].should.equal( '2' );
-              $querystring.parse( '1=2&2=3' )[ 2 ].should.equal( '3' );
+              $querystring.parse( '1=1' )[ 1 ].should.equals( '1' );
+              $querystring.parse( '1=2&2=3' )[ 1 ].should.equals( '2' );
+              $querystring.parse( '1=2&2=3' )[ 2 ].should.equals( '3' );
 
-              $querystring.parse( '1w1z2w2', 'z', 'w' )[ 1 ].should.equal( '1' );
-              $querystring.parse( '1w1z2w2', 'z', 'w' )[ 2 ].should.equal( '2' );
+              $querystring.parse( '1w1z2w2', 'z', 'w' )[ 1 ].should.equals( '1' );
+              $querystring.parse( '1w1z2w2', 'z', 'w' )[ 2 ].should.equals( '2' );
             }
           }
         ]
@@ -564,14 +564,14 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$typeof',
         it: function(){
-          $typeof( undefined ).should.equal( 'undefined' );
-          $typeof( null ).should.equal( 'null' );
-          $typeof( [] ).should.equal( 'array' );
-          $typeof( {} ).should.equal( 'object' );
-          $typeof( '' ).should.equal( 'string' );
-          $typeof( 123 ).should.equal( 'number' );
-          $typeof( true ).should.equal( 'boolean' );
-          $typeof( false ).should.equal( 'boolean' );
+          $typeof( undefined ).should.equals( 'undefined' );
+          $typeof( null ).should.equals( 'null' );
+          $typeof( [] ).should.equals( 'array' );
+          $typeof( {} ).should.equals( 'object' );
+          $typeof( '' ).should.equals( 'string' );
+          $typeof( 123 ).should.equals( 'number' );
+          $typeof( true ).should.equals( 'boolean' );
+          $typeof( false ).should.equals( 'boolean' );
         }
       }
     ]

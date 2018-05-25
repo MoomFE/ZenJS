@@ -1,5 +1,5 @@
 /*!
- * Zen.js v1.1.1
+ * Zen.js v1.2.0-bata.0
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -143,12 +143,12 @@
   /**
    * 判断两个参数是否相等
    */
-  function equal(one, two) {
+  function equals(one, two) {
     return one == two;
   }
 
   function $deleteValue(value) {
-    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equal;
+    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
     var index = 0,
         length = this.length;
 
@@ -403,7 +403,7 @@
   defineValue(ObjectProto, '$delete', $delete$1);
 
   function $deleteValue$1(value) {
-    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equal;
+    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
     var name;
 
     for (name in this) {
@@ -666,7 +666,7 @@
    * ZenJS
    */
   var Zen = window.Zen = window.ZenJS = $create$1(true, {
-    version: '1.1.1'
+    version: '1.2.0-bata.0'
   });
 
   var guid = 1;
@@ -693,7 +693,7 @@
 
   Zen.util = $create$1(true, {
     is: {
-      equal: equal,
+      equals: equals,
       congruence: congruence
     },
     types: {

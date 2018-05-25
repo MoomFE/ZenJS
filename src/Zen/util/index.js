@@ -1,6 +1,6 @@
 import Zen from "../../shared/global/Zen/index";
 import $create from "../../Object/$create/index";
-import equal from "../../shared/util/equal";
+import equals from "../../shared/util/equals";
 import congruence from "../../shared/util/congruence";
 import isArray from "../../shared/global/Array/isArray";
 import isBoolean from "../../shared/util/isBoolean";
@@ -16,7 +16,7 @@ import returnFalse from "../../shared/util/returnFalse";
 
 Zen.util = $create( true, {
   is: {
-    equal,
+    equals,
     congruence
   },
   types: {

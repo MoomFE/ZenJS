@@ -1,6 +1,6 @@
 import parametersDefault from "../../shared/util/parametersDefault";
 import congruence from "../../shared/util/congruence";
-import equal from "../../shared/util/equal";
+import equals from "../../shared/util/equals";
 import defineValue from "../../shared/util/defineValue";
 import ObjectProto from "../../shared/global/Object/prototype/index";
 
@@ -8,7 +8,7 @@ export default function $deleteValue( value ){
   const
     isEqual = parametersDefault( arguments, 1, true )
       ? congruence
-      : equal;
+      : equals;
   let name;
   
   for( name in this ){

@@ -261,7 +261,7 @@ interface ZenJS {
       /**
        * 判断两个参数是否相等
        */
-      equal( one: any, two: any ): Boolean;
+      equals( one: any, two: any ): Boolean;
       /**
        * 判断两个参数是否全等
        */
