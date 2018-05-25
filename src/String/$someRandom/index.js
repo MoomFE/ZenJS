@@ -5,6 +5,7 @@ import random from "../../shared/global/Math/random";
 import defineValue from "../../shared/util/defineValue";
 import String from "../../shared/global/String/index";
 import parametersDefault from "../../shared/util/parametersDefault";
+import $isNumber from "../../Number/$isNumber/index";
 
 export default function string$someRandom(){
   let
@@ -22,19 +23,15 @@ export default function string$someRandom(){
     result = result
       .split('')
       .map( code => $random( 1 ) ? code.toUpperCase() : code )
-      .join();
+      .join('');
   }
 
   if( hasNumber ){
-    result = result
+    result = ( result[0] || '' ) + result
+      .slice( 1 )
       .split('')
-      .map( code => $random( 1 ) ? random() : code )
-      // 第一位不允许为数字
-      .$set(
-        0,
-        string$random( $random( 1 ) )
-      )
-      .join();
+      .map( code => $random( 1 ) ? $random() : code )
+      .join('');
   }
 
   return result;
