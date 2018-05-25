@@ -10,10 +10,6 @@ export default function $equals( obj ){
     return false;
   }
 
-  if( !Array.isArray( obj ) ){
-    return false;
-  }
-
   let index = 0,
       length = this.length;
 
