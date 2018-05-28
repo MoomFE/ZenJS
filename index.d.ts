@@ -87,8 +87,7 @@ interface Array<T> {
   $shift(): this;
 }
 
-
-interface Document {
+interface EventTarget {
   /**
    * 页面加载完成后执行传入代码
    * -- 方法可以用 function[ call / apply ] 的方式使用, 可传入其他 document, 比如 iframe 的 document
@@ -97,6 +96,122 @@ interface Document {
    * @param data 需要传入方法的数据
    */
   $ready( func: () => void, data?: any ): void;
+}
+
+interface EventTarget{
+  /**
+   * 返回存储在对象上的全部数据
+   */
+  $data(): any;
+  /**
+   * 读取指定名称的数据
+   * @param name 需要读取的数据名称
+   */
+  $data( name: String ): any;
+  /**
+   * 将数据读取或存储
+   * @param name 需要存储的数据名称
+   * @param value 存储的数据
+   * @param weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
+   */
+  $data( name: String, value: any, weakRead?: Boolean ): any;
+  /**
+   * 判断当前对象下是否存有数据
+   */
+  $hasData(): Boolean;
+  /**
+   * 传入数据名称, 判断当前对象下是否存储了这个数据
+   * @param {String} name 需要判断的数据名称
+   */
+  $hasData( name: String ): Boolean;
+  /**
+   * 删除存储在对象上的全部数据
+   */
+  $deleteData(): this;
+  /**
+   * 传入数据名称, 删除当前对象下存储的相应名称的数据
+   * @param {String} name 需要删除的数据名称, 多个可使用空格分隔
+   */
+  $deleteData( names:String ): this;
+  /**
+   * 传入键值对事件进行绑定
+   * @param obj { 事件: 方法 }
+   */
+  $on( obj: { type: Function } ): this;
+  /**
+   * 传入键值对事件进行绑定
+   * @param obj { 事件: 方法 }
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $on( obj: { type: Function }, options?: any ): this;
+  /**
+   * 传入键值对事件进行绑定
+   * @param obj { 事件: 方法 }
+   * @param selector 事件代理的选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $on( obj: { type: Function }, selector?: String, options?: any ): this;
+  /**
+   * 传入键值对事件进行绑定
+   * @param selector 事件代理的选择器
+   * @param obj { 事件: 方法 }
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $on( selector: String, obj: { type: Function }, options?: any ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   */
+  $on( types: String, listener: Function ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $on( types: String, listener: Function, options?: any ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param selector 事件代理的选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $on( types: String, listener: Function, selector?: String, options?: any ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定
+   * @param types 需要绑定的事件名
+   * @param selector 事件代理的选择器
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   */
+  $on( types: String, selector: String, listener?: Function ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定
+   * @param types 需要绑定的事件名
+   * @param selector 事件代理的选择器
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $on( types: String, selector: String, listener?: Function, options?: any ): this;
+  /**
+   * 传入事件名和方法进行事件移除, 只会移除无委托选择器的相关事件方法
+   * @param types 需要解绑的事件集
+   */
+  $off( types: String ): this;
+  /**
+   * 传入事件名和方法进行事件移除, 将会对事件委托选择器进行匹配, 将会移除匹配到的相关事件方法
+   * @param types 需要解绑的事件集
+   * @param selector 事件委托选择器, 若值为 "*", 则移除所有事件委托选择器相关事件方法, 若值为 "**", 则移除所有相关事件方法, 不管有没有事件委托选择器
+   */
+  $off( types: String, selector: String ): this;
+  /**
+   * 传入事件名和方法进行事件移除
+   * @param types 需要解绑的事件集
+   * @param selector 事件委托选择器, 若值为 "*", 则移除所有事件委托选择器相关事件方法, 若值为 "**", 则移除所有相关事件方法, 不管有没有事件委托选择器
+   * @param listener 解绑的事件, 只会移除与传入方法匹配的相关事件方法
+   */
+  $off( types: String, selector: String, listener: Function ): this;
 }
 
 interface Math {
@@ -241,11 +356,7 @@ interface StringConstructor {
   $someRandom( length?: Number, hasUppercase?: Boolean = false, hasNumber?: Boolean = false ): String;
 }
 
-declare const Zen: ZenJS;
-declare const ZenJS: ZenJS;
-declare const $querystring: $querystring;
-declare const $ready: $ready;
-declare const $typeof: $typeof;
+
 
 
 interface Window {
@@ -362,3 +473,13 @@ declare function $ready( func: () => void, data?: any ): void;
  * @param obj 需要判断类型的参数
  */
 declare function $typeof( obj: any ): String;
+
+declare const Zen: ZenJS;
+
+declare const ZenJS: ZenJS;
+
+declare const $querystring: $querystring;
+
+declare const $ready: $ready;
+
+declare const $typeof: $typeof;

@@ -16,13 +16,6 @@ function $_GetDatas( elem ){
 }
 
 
-/**
- * 将数据读取或存储
- * @param {String} name 需要读取或存储的数据名称, 如果未传入 name, 则返回整个数据集
- * @param {Object} value 存储的数据
- * @param {Boolean} weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
- * @returns {Object}
- */
 defineValue( EventTargetProto, '$data', function $data( name, value, weakRead ){
   const Data = $_GetDatas( this );
 
@@ -49,11 +42,7 @@ defineValue( EventTargetProto, '$data', function $data( name, value, weakRead ){
   return this;
 });
 
-/**
- * 传入数据名称, 判断当前对象下是否存储了这个数据
- * @param {String} name 需要判断的数据名称, 如果未传入 name, 则是判断是否存有数据
- * @returns {Boolean}
- */
+
 defineValue( EventTargetProto, '$hasData', function( name ){
   const Data = $_GetDatas( this );
 
@@ -68,11 +57,7 @@ defineValue( EventTargetProto, '$hasData', function( name ){
   return name in Data;
 });
 
-/**
- * 传入数据名称, 删除当前对象下存储的相应名称的数据
- * @param {String} name 需要删除的数据名称, 多个可使用空格分隔, 如果未传入 names, 则视为删除全部数据
- * @returns {Object}
- */
+
 defineValue( EventTargetProto, '$deleteData', function( names ){
 
   if( names == null ){

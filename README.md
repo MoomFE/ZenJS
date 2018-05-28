@@ -55,6 +55,13 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
 - document
   - $ready
 
+- EventTarget.prototype
+  - $data
+  - $hasData
+  - $deleteData
+  - $on
+  - $off
+
 - Math
   - $mean
   - $random
