@@ -135,18 +135,18 @@ interface EventTarget{
   $deleteData( names:String ): this;
   /**
    * 传入键值对事件进行绑定
-   * @param obj { 事件: 方法 }
+   * @param obj 事件: 方法
    */
   $on( obj: { type: Function } ): this;
   /**
    * 传入键值对事件进行绑定
-   * @param obj { 事件: 方法 }
+   * @param obj 事件: 方法
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
   $on( obj: { type: Function }, options?: any ): this;
   /**
    * 传入键值对事件进行绑定
-   * @param obj { 事件: 方法 }
+   * @param obj 事件: 方法
    * @param selector 事件代理的选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
@@ -154,7 +154,7 @@ interface EventTarget{
   /**
    * 传入键值对事件进行绑定
    * @param selector 事件代理的选择器
-   * @param obj { 事件: 方法 }
+   * @param obj 事件: 方法
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
   $on( selector: String, obj: { type: Function }, options?: any ): this;
@@ -196,18 +196,18 @@ interface EventTarget{
   $on( types: String, selector: String, listener?: Function, options?: any ): this;
   /**
    * 传入键值对事件进行绑定, 只会执行一次
-   * @param obj { 事件: 方法 }
+   * @param obj 事件: 方法
    */
   $one( obj: { type: Function } ): this;
   /**
    * 传入键值对事件进行绑定, 只会执行一次
-   * @param obj { 事件: 方法 }
+   * @param obj 事件: 方法
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
   $one( obj: { type: Function }, options?: any ): this;
   /**
    * 传入键值对事件进行绑定, 只会执行一次
-   * @param obj { 事件: 方法 }
+   * @param obj 事件: 方法
    * @param selector 事件代理的选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
@@ -215,7 +215,7 @@ interface EventTarget{
   /**
    * 传入键值对事件进行绑定, 只会执行一次
    * @param selector 事件代理的选择器
-   * @param obj { 事件: 方法 }
+   * @param obj 事件: 方法
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
   $one( selector: String, obj: { type: Function }, options?: any ): this;

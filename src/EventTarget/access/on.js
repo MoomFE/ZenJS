@@ -8,6 +8,7 @@ import isBoolean from '../../shared/util/isBoolean';
 
 import returnFalse from '../../shared/util/returnFalse';
 import returnTrue from '../../shared/util/returnTrue';
+import ZenJS from '../../shared/global/ZenJS/index';
 
 
 /**
@@ -46,7 +47,7 @@ export default function on( elem, types, selector, listener, options ){
 
   if( events ){
     for( let type in events ){
-      on( elem, type, selector, events[ type ], options );
+      on( elem, type, events[ type ], selector, options );
     }
     return elem;
   }
@@ -67,7 +68,7 @@ export default function on( elem, types, selector, listener, options ){
   if( !isString( selector ) ){
     [ listener, selector ] = [ selector, listener ];
 
-    if( !isString( selector ) ){
+    if( !isString( selector ) && options == null ){
       options = selector;
       selector = undefined;
     }

@@ -271,13 +271,6 @@
     return Datas;
   }
 
-  /**
-   * 将数据读取或存储
-   * @param {String} name 需要读取或存储的数据名称, 如果未传入 name, 则返回整个数据集
-   * @param {Object} value 存储的数据
-   * @param {Boolean} weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
-   * @returns {Object}
-   */
   defineValue(EventTargetProto, '$data', function $data(name, value, weakRead) {
     var Data = $_GetDatas(this);
 
@@ -304,11 +297,6 @@
     return this;
   });
 
-  /**
-   * 传入数据名称, 判断当前对象下是否存储了这个数据
-   * @param {String} name 需要判断的数据名称, 如果未传入 name, 则是判断是否存有数据
-   * @returns {Boolean}
-   */
   defineValue(EventTargetProto, '$hasData', function (name) {
     var Data = $_GetDatas(this);
 
@@ -323,11 +311,6 @@
     return name in Data;
   });
 
-  /**
-   * 传入数据名称, 删除当前对象下存储的相应名称的数据
-   * @param {String} name 需要删除的数据名称, 多个可使用空格分隔, 如果未传入 names, 则视为删除全部数据
-   * @returns {Object}
-   */
   defineValue(EventTargetProto, '$deleteData', function (names) {
 
     if (names == null) {
@@ -459,7 +442,7 @@
   /**
    * ZenJS
    */
-  var ZenJS$1 = window.Zen = window.ZenJS = $create$1(true, {
+  var ZenJS = window.Zen = window.ZenJS = $create$1(true, {
     version: '2.0.0-beta.0'
   });
 
@@ -484,7 +467,7 @@
         namespace,
         handleOptions;
 
-    var guid = listener.guid || (listener.guid = ZenJS$1.guid);
+    var guid = listener.guid || (listener.guid = ZenJS.guid);
 
     while (length--) {
 
@@ -511,7 +494,7 @@
         namespace: namespace,
         namespaceStr: namespace.join('.'),
         handle: function () {
-          return ZenJS$1.EventListener.dispatch.apply(handleOptions, arguments);
+          return ZenJS.EventListener.dispatch.apply(handleOptions, arguments);
         }
       };
 
@@ -560,8 +543,8 @@
 
   function Event(src, props) {
 
-    if (this instanceof ZenJS$1.Event === false) {
-      return new ZenJS$1.Event(src, props);
+    if (this instanceof ZenJS.Event === false) {
+      return new ZenJS.Event(src, props);
     }
 
     // Event object
@@ -589,10 +572,10 @@
     this.timeStamp = src && src.timeStamp || Date.now();
   }
 
-  ZenJS$1.Event = Event;
+  ZenJS.Event = Event;
 
-  var EventProto = ZenJS$1.Event.prototype = {
-    constructor: ZenJS$1.Event,
+  var EventProto = ZenJS.Event.prototype = {
+    constructor: ZenJS.Event,
     // 是否调用过 event.preventDefault 方法
     isDefaultPrevented: returnFalse,
     // 是否调用过 stopPropagation 方法
@@ -785,7 +768,7 @@
     }
   }
 
-  var EventListener = ZenJS$1.EventListener = {
+  var EventListener = ZenJS.EventListener = {
     add: add,
     dispatch: dispatch,
     remove: remove
@@ -847,7 +830,7 @@
 
     if (events) {
       for (var type in events) {
-        on(elem, type, selector, events[type], options);
+        on(elem, type, events[type], selector, options);
       }
       return elem;
     }
@@ -870,7 +853,7 @@
       selector = _ref[1];
 
 
-      if (!isString(selector)) {
+      if (!isString(selector) && options == null) {
         options = selector;
         selector = undefined;
       }
@@ -950,7 +933,7 @@
       listener = listener ? returnTrue : returnFalse;
     }
 
-    ZenJS$1.EventListener.remove(this, types, listener, selector);
+    ZenJS.EventListener.remove(this, types, listener, selector);
 
     return this;
   }
@@ -1280,13 +1263,13 @@
 
   var guid = 1;
 
-  defineProperty(ZenJS$1, 'guid', {
+  defineProperty(ZenJS, 'guid', {
     get: function () {
       return guid++;
     }
   });
 
-  var util = ZenJS$1.util = $create$1(true);
+  var util = ZenJS.util = $create$1(true);
 
   util.is = $create$1(true, {
     equals: equals,

@@ -178,8 +178,8 @@ Object.defineProperty( window, 'div', {
     describe: [
       {
         name: 'Element.prototype.[ $data, $hasData, $deleteData ]',
-        describe: () => {
-          it( '$data', () => {
+        describe: function(){
+          it( '$data', function(){
             // 存储数据返回对象本身
             isElement( div.$data('Data','div') ).should.true;
             isElement( div.$data({Data:'div'}) ).should.true;
@@ -196,7 +196,7 @@ Object.defineProperty( window, 'div', {
             // 批量添加
             JSON.stringify( div.$data({Data1:'div',Data2:'div'}).$data() ).should.equals( '{"Data1":"div","Data2":"div"}' );
           });
-          it( '$hasData', () => {
+          it( '$hasData', function(){
             // 未传入对象则检测是否存过数据
             div.$hasData().should.false;
             div.$data('Data','div').$hasData().should.true;
@@ -204,7 +204,7 @@ Object.defineProperty( window, 'div', {
             div.$hasData('noData').should.false;
             div.$data('Data','div').$hasData('Data').should.true;
           });
-          it( '$deleteData', () => {
+          it( '$deleteData', function(){
             // 始终返回自身
             isElement( div.$deleteData() ).should.true;
             isElement( div.$deleteData('noData') ).should.true;
@@ -218,9 +218,9 @@ Object.defineProperty( window, 'div', {
         }
       },
       function(){
-        [ window, document ].forEach(( root, index ) => {
-          describe( `${ index ? 'document' : 'window' }.[ $data, $hasData, $deleteData ]`, () => {
-            it( '$data', () => {
+        [ window, document ].forEach( function( root, index ){
+          describe( ( index ? 'document' : 'window' ) + '.[ $data, $hasData, $deleteData ]', function(){
+            it( '$data', function(){
               // 存储数据返回对象本身
               root.$data('Data','root').should.equals( root );
               root.$data({'Data':'root'}).should.equals( root );
@@ -237,7 +237,7 @@ Object.defineProperty( window, 'div', {
               // 批量添加
               JSON.stringify( root.$data({'Data':'root','Data1':'yes'}).$data() ).should.equals( '{"Data":"root","Data1":"yes"}' );
             });
-            it( '$hasData', () => {
+            it( '$hasData', function(){
               // 未传入对象则检测是否存过数据
               root[ root ] = {};
               root.$hasData().should.false;
@@ -246,7 +246,7 @@ Object.defineProperty( window, 'div', {
               root.$hasData('noData').should.false;
               root.$hasData('Data').should.true;
             });
-            it( '$deleteData', () => {
+            it( '$deleteData', function(){
               // 始终返回自身
               root.$deleteData().should.equals( root );
               root.$deleteData( 'noData' ).should.equals( root );
@@ -259,6 +259,11 @@ Object.defineProperty( window, 'div', {
             });
           });
         });
+      }, {
+        name: '$on',
+        describe: function(){
+
+        }
       }
     ]
   });
