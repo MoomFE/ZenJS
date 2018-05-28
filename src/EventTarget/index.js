@@ -12,12 +12,15 @@
 // target.$on( types, selector, listener, options )
 // target.$on( types, selector, options, listener )
 
+import './$data/index';
+
 import defineValue from '../shared/util/defineValue';
 import on from './access/on';
 import off from './access/off';
+import EventTargetProto from '../shared/global/EventTarget/prototype/index';
 
 
-defineValue( EventTarget.prototype, {
+defineValue( EventTargetProto, {
   /**
    * 事件处理 => 添加事件1: 获取参数
    */

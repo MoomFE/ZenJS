@@ -1,8 +1,7 @@
-import winDocEle from '../../shared/const/winDocEle';
-
 import defineValue from '../../shared/util/defineValue';
 import isEmptyObject from'../../Object/$isEmptyObject/index';
 import isObject from '../../shared/util/isObject';
+import EventTargetProto from '../../shared/global/EventTarget/prototype/index';
 
 /**
  * 获取存储在元素上的整个数据集, 如数据集不存在则创建
@@ -24,7 +23,7 @@ function $_GetDatas( elem ){
  * @param {Boolean} weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
  * @returns {Object}
  */
-defineValue( winDocEle, '$data', function $data( name, value, weakRead ){
+defineValue( EventTargetProto, '$data', function $data( name, value, weakRead ){
   const Data = $_GetDatas( this );
 
   // $data( {} )
@@ -55,7 +54,7 @@ defineValue( winDocEle, '$data', function $data( name, value, weakRead ){
  * @param {String} name 需要判断的数据名称, 如果未传入 name, 则是判断是否存有数据
  * @returns {Boolean}
  */
-defineValue( winDocEle, '$hasData', function( name ){
+defineValue( EventTargetProto, '$hasData', function( name ){
   const Data = $_GetDatas( this );
 
   if( isEmptyObject( Data ) ){
@@ -74,7 +73,7 @@ defineValue( winDocEle, '$hasData', function( name ){
  * @param {String} name 需要删除的数据名称, 多个可使用空格分隔, 如果未传入 names, 则视为删除全部数据
  * @returns {Object}
  */
-defineValue( winDocEle, '$deleteData', function( names ){
+defineValue( EventTargetProto, '$deleteData', function( names ){
 
   if( names == null ){
     this[ this ] = {};
