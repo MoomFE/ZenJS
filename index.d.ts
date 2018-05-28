@@ -40,7 +40,7 @@ interface Array<T> {
    */
   $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): this;
   /**
-   * 判断传入数组的内容是否和当前数组相同
+   * 判断传入数组或类数组的内容是否和当前数组相同
    * @param obj 需要检测的值
    * @param congruence 是否使用全等进行判断 - default: true
    */
