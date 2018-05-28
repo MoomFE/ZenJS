@@ -5,7 +5,7 @@ import parametersDefault from "../../shared/util/parametersDefault";
 import congruence from "../../shared/util/congruence";
 import equals from "../../shared/util/equals";
 
-export default function $deleteValue( value ){
+function $deleteValue( value ){
   const
     isEqual = parametersDefault( arguments, 1, true )
       ? congruence

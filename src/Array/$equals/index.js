@@ -4,7 +4,7 @@ import parametersDefault from "../../shared/util/parametersDefault";
 import congruence from "../../shared/util/congruence";
 import equals from "../../shared/util/equals";
 
-export default function $equals( obj ){
+function $equals( obj ){
 
   if( !obj ){
     return false;

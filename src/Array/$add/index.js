@@ -3,7 +3,7 @@ import ArrayProto from '../../shared/global/Array/prototype/index';
 import parametersRest from '../../shared/util/parametersRest';
 
 
-export default function $add( index ){
+function $add( index ){
   let i = 0;
   const
     args = parametersRest( arguments, 1 ),

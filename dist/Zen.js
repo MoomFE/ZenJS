@@ -1,5 +1,5 @@
 /*!
- * Zen.js v1.2.0-bata.1
+ * Zen.js v2.0.0-beta.0
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -222,7 +222,6 @@
   defineValue(ArrayProto, '$inArray', $inArray);
 
   'push_unshift_pop_shift'.split('_').forEach(function (key) {
-
     defineValue(ArrayProto, "$" + key, function () {
       return this[key].apply(this, arguments), this;
     });
@@ -692,7 +691,7 @@
    * ZenJS
    */
   var Zen = window.Zen = window.ZenJS = $create$1(true, {
-    version: '1.2.0-bata.1'
+    version: '2.0.0-beta.0'
   });
 
   var guid = 1;
@@ -717,28 +716,31 @@
     return false;
   }
 
-  Zen.util = $create$1(true, {
-    is: {
-      equals: equals,
-      congruence: congruence
-    },
-    types: {
-      isArray: isArray,
-      isBoolean: isBoolean,
-      isFunction: isFunction,
-      isNumber: isNumber,
-      isObject: isObject,
-      isRegExp: isRegExp,
-      isString: isString
-    },
-    parameters: {
-      default: parametersDefault,
-      rest: parametersRest
-    },
-    fn: {
-      returnTrue: returnTrue,
-      returnFalse: returnFalse
-    }
+  var util = Zen.util = $create$1(true);
+
+  util.is = $create$1(true, {
+    equals: equals,
+    congruence: congruence
+  });
+
+  util.types = $create$1(true, {
+    isArray: isArray,
+    isBoolean: isBoolean,
+    isFunction: isFunction,
+    isNumber: isNumber,
+    isObject: isObject,
+    isRegExp: isRegExp,
+    isString: isString
+  });
+
+  util.parameters = $create$1(true, {
+    default: parametersDefault,
+    rest: parametersRest
+  });
+
+  util.fn = $create$1(true, {
+    returnTrue: returnTrue,
+    returnFalse: returnFalse
   });
 
   // import './Event/index';

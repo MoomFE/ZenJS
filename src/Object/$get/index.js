@@ -1,7 +1,7 @@
 import defineValue from "../../shared/util/defineValue";
 import ObjectProto from "../../shared/global/Object/prototype/index";
 
-export default function $get( key ){
+function $get( key ){
   return this[ key ];
 }
 

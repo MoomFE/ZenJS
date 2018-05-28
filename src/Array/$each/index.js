@@ -1,7 +1,7 @@
 import defineValue from "../../shared/util/defineValue";
 import ArrayProto from '../../shared/global/Array/prototype/index';
 
-export default function $each( callback ){
+function $each( callback ){
   let index = 0,
       length = this.length,
       value;

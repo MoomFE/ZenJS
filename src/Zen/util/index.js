@@ -14,26 +14,29 @@ import parametersRest from "../../shared/util/parametersRest";
 import returnTrue from "../../shared/util/returnTrue";
 import returnFalse from "../../shared/util/returnFalse";
 
-Zen.util = $create( true, {
-  is: {
-    equals,
-    congruence
-  },
-  types: {
-    isArray,
-    isBoolean,
-    isFunction,
-    isNumber,
-    isObject,
-    isRegExp,
-    isString
-  },
-  parameters: {
-    default: parametersDefault,
-    rest: parametersRest
-  },
-  fn: {
-    returnTrue,
-    returnFalse
-  }
+const util = Zen.util = $create( true );
+
+util.is = $create( true, {
+  equals,
+  congruence
+});
+
+util.types = $create( true, {
+  isArray,
+  isBoolean,
+  isFunction,
+  isNumber,
+  isObject,
+  isRegExp,
+  isString
+});
+
+util.parameters = $create( true, {
+  default: parametersDefault,
+  rest: parametersRest
+});
+
+util.fn = $create( true, {
+  returnTrue,
+  returnFalse
 });

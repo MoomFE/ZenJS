@@ -2,7 +2,7 @@ import defineValue from "../../shared/util/defineValue";
 import ObjectProto from "../../shared/global/Object/prototype/index";
 import defineGet from "../../shared/util/defineGet";
 
-export default function $self(){
+function $self(){
   return this;
 }
 

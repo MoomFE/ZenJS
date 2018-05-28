@@ -4,7 +4,7 @@ import equals from "../../shared/util/equals";
 import defineValue from "../../shared/util/defineValue";
 import ObjectProto from "../../shared/global/Object/prototype/index";
 
-export default function $deleteValue( value ){
+function $deleteValue( value ){
   const
     isEqual = parametersDefault( arguments, 1, true )
       ? congruence
