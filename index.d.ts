@@ -195,6 +195,67 @@ interface EventTarget{
    */
   $on( types: String, selector: String, listener?: Function, options?: any ): this;
   /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param obj { 事件: 方法 }
+   */
+  $one( obj: { type: Function } ): this;
+  /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param obj { 事件: 方法 }
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $one( obj: { type: Function }, options?: any ): this;
+  /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param obj { 事件: 方法 }
+   * @param selector 事件代理的选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $one( obj: { type: Function }, selector?: String, options?: any ): this;
+  /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param selector 事件代理的选择器
+   * @param obj { 事件: 方法 }
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $one( selector: String, obj: { type: Function }, options?: any ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   */
+  $one( types: String, listener: Function ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $one( types: String, listener: Function, options?: any ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param selector 事件代理的选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $one( types: String, listener: Function, selector?: String, options?: any ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param selector 事件代理的选择器
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   */
+  $one( types: String, selector: String, listener?: Function ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param selector 事件代理的选择器
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $one( types: String, selector: String, listener?: Function, options?: any ): this;
+  /**
    * 传入事件名和方法进行事件移除, 只会移除无委托选择器的相关事件方法
    * @param types 需要解绑的事件集
    */
