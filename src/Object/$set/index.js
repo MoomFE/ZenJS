@@ -2,7 +2,8 @@ import isObject from "../../shared/util/isObject";
 import defineValue from "../../shared/util/defineValue";
 import ObjectProto from "../../shared/global/Object/prototype/index";
 
-function $set( key, value ){
+
+defineValue( ObjectProto, '$set', function( key, value ){
   let _key;
 
   if( isObject( key ) )
@@ -12,6 +13,4 @@ function $set( key, value ){
     this[ key ] = value;
   
   return this;
-}
-
-defineValue( ObjectProto, '$set', $set );
+});

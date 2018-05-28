@@ -63,7 +63,7 @@
     return defaultValue;
   }
 
-  function $get() {
+  defineValue(ArrayProto, '$get', function () {
     var index = parametersDefault(arguments, 0, 0),
         num = arguments[1];
 
@@ -71,9 +71,7 @@
       return this[index];
     }
     return this.slice(index, num + index);
-  }
-
-  defineValue(ArrayProto, '$get', $get);
+  });
 
   /**
    * 获取方法从指定位开始的剩余参数
@@ -90,7 +88,7 @@
     return [];
   }
 
-  function $add(index) {
+  defineValue(ArrayProto, '$add', function (index) {
     var i = 0;
     var args = parametersRest(arguments, 1),
         len = args.length;
@@ -100,9 +98,7 @@
     }
 
     return this;
-  }
-
-  defineValue(ArrayProto, '$add', $add);
+  });
 
   /**
    * 判断传入对象是否是方法
@@ -125,13 +121,11 @@
 
   defineValue(Array, '$create', $create);
 
-  function $delete(index) {
+  defineValue(ArrayProto, '$delete', function (index) {
     var num = parametersDefault(arguments, 1, 1);
 
     return this.splice(index, num), this;
-  }
-
-  defineValue(ArrayProto, '$delete', $delete);
+  });
 
   /**
    * 判断两个参数是否全等
@@ -147,7 +141,7 @@
     return one == two;
   }
 
-  function $deleteValue(value) {
+  defineValue(ArrayProto, '$deleteValue', function (value) {
     var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
     var index = 0,
         length = this.length;
@@ -162,11 +156,9 @@
     }
 
     return this;
-  }
+  });
 
-  defineValue(ArrayProto, '$deleteValue', $deleteValue);
-
-  function $each(callback) {
+  defineValue(ArrayProto, '$each', function (callback) {
     var index = 0,
         length = this.length,
         value;
@@ -180,11 +172,9 @@
     }
 
     return this;
-  }
+  });
 
-  defineValue(ArrayProto, '$each', $each);
-
-  function $equals(obj) {
+  defineValue(ArrayProto, '$equals', function (obj) {
 
     if (!obj) {
       return false;
@@ -206,20 +196,16 @@
     }
 
     return true;
-  }
+  });
 
-  defineValue(ArrayProto, '$equals', $equals);
-
-  function $inArray(obj) {
+  defineValue(ArrayProto, '$inArray', function (obj) {
     var i = 0,
         len = this.length;
 
     for (; i < len; i++) {
       if (this[i] == obj) return true;
     }return false;
-  }
-
-  defineValue(ArrayProto, '$inArray', $inArray);
+  });
 
   'push_unshift_pop_shift'.split('_').forEach(function (key) {
     defineValue(ArrayProto, "$" + key, function () {
@@ -227,15 +213,13 @@
     });
   });
 
-  function $ready(func, data) {
+  defineValue(document, '$ready', function (func, data) {
     if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
     this.addEventListener('DOMContentLoaded', function callback(event) {
       this.removeEventListener(event.type, callback);
       func.apply(window, data);
     });
-  }
-
-  defineValue(document, '$ready', $ready);
+  });
 
   function $mean() {
 
@@ -416,18 +400,16 @@
   }
   defineValue(Object, '$create', $create$1);
 
-  function $delete$1() {
+  defineValue(ObjectProto, '$delete', function $delete() {
     var _this = this;
 
     Array.from(arguments).$each(function (key) {
       delete _this[key];
     });
     return this;
-  }
+  });
 
-  defineValue(ObjectProto, '$delete', $delete$1);
-
-  function $deleteValue$1(value) {
+  defineValue(ObjectProto, '$deleteValue', function $deleteValue(value) {
     var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
     var name;
 
@@ -438,11 +420,9 @@
     }
 
     return this;
-  }
+  });
 
-  defineValue(ObjectProto, '$deleteValue', $deleteValue$1);
-
-  function $each$1(obj, callback) {
+  function $each(obj, callback) {
     var key,
         value;
 
@@ -457,13 +437,11 @@
     return obj;
   }
 
-  defineValue(Object, '$each', $each$1);
+  defineValue(Object, '$each', $each);
 
-  function $get$1(key) {
+  defineValue(ObjectProto, '$get', function (key) {
     return this[key];
-  }
-
-  defineValue(ObjectProto, '$get', $get$1);
+  });
 
   function $isEmptyObject(obj) {
     for (var a in obj) {
@@ -500,7 +478,7 @@
     return obj !== null && typeof obj === 'object';
   }
 
-  function $set(key, value) {
+  defineValue(ObjectProto, '$set', function (key, value) {
     var _key;
 
     if (isObject(key)) for (_key in key) {
@@ -508,9 +486,7 @@
     } else this[key] = value;
 
     return this;
-  }
-
-  defineValue(ObjectProto, '$set', $set);
+  });
 
   var fromCharCode = String.fromCharCode;
 
@@ -534,7 +510,7 @@
 
   var StringProto = String.prototype;
 
-  function $replaceAll(searchValue, replaceValue) {
+  defineValue(StringProto, '$replaceAll', function (searchValue, replaceValue) {
     var flags = 'g';
 
     if (isRegExp(searchValue)) {
@@ -549,9 +525,7 @@
     }
 
     return this.replace(new RegExp(searchValue, flags), replaceValue);
-  }
-
-  defineValue(StringProto, '$replaceAll', $replaceAll);
+  });
 
   function string$someRandom() {
     var result = '',
@@ -580,11 +554,9 @@
 
   defineValue(String, '$someRandom', string$someRandom);
 
-  function $toCapitalize() {
+  defineValue(StringProto, '$toCapitalize', function $toCapitalize() {
     return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
-  }
-
-  defineValue(StringProto, '$toCapitalize', $toCapitalize);
+  });
 
   /**
    * 判断传入对象是否是字符串
@@ -665,15 +637,13 @@
     parse: parse
   });
 
-  function $ready$1(func, data) {
+  defineValue(window, '$ready', function (func, data) {
     if (this.document.readyState === 'complete') return func.apply(this, data);
     this.addEventListener('load', function callback(event) {
       this.removeEventListener(event.type, callback);
       func.apply(this, data);
     });
-  }
-
-  defineValue(window, '$ready', $ready$1);
+  });
 
   function $typeof(obj) {
     var type;

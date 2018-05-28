@@ -5,7 +5,8 @@ import parametersDefault from "../../shared/util/parametersDefault";
 import congruence from "../../shared/util/congruence";
 import equals from "../../shared/util/equals";
 
-function $deleteValue( value ){
+
+defineValue( ArrayProto, '$deleteValue', function( value ){
   const
     isEqual = parametersDefault( arguments, 1, true )
       ? congruence
@@ -24,6 +25,4 @@ function $deleteValue( value ){
   }
 
   return this;
-}
-
-defineValue( ArrayProto, '$deleteValue', $deleteValue );
+});

@@ -3,7 +3,7 @@ import ArrayProto from '../../shared/global/Array/prototype/index';
 import parametersRest from '../../shared/util/parametersRest';
 
 
-function $add( index ){
+defineValue( ArrayProto, '$add', function( index ){
   let i = 0;
   const
     args = parametersRest( arguments, 1 ),
@@ -14,6 +14,4 @@ function $add( index ){
   }
 
   return this;
-}
-
-defineValue( ArrayProto, '$add', $add );
+});

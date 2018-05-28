@@ -5,7 +5,7 @@ import defineValue from "../../shared/util/defineValue";
 import StringProto from "../../shared/global/String/prototype/index";
 
 
-export default function $replaceAll( searchValue, replaceValue ){
+defineValue( StringProto, '$replaceAll', function( searchValue, replaceValue ){
   let flags = 'g';
 
   if( isRegExp( searchValue ) ){
@@ -23,6 +23,4 @@ export default function $replaceAll( searchValue, replaceValue ){
     new RegExp( searchValue, flags ),
     replaceValue
   );
-}
-
-defineValue( StringProto, '$replaceAll', $replaceAll );
+});

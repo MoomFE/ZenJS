@@ -4,7 +4,8 @@ import equals from "../../shared/util/equals";
 import defineValue from "../../shared/util/defineValue";
 import ObjectProto from "../../shared/global/Object/prototype/index";
 
-function $deleteValue( value ){
+
+defineValue( ObjectProto, '$deleteValue', function $deleteValue( value ){
   const
     isEqual = parametersDefault( arguments, 1, true )
       ? congruence
@@ -18,6 +19,4 @@ function $deleteValue( value ){
   }
 
   return this;
-}
-
-defineValue( ObjectProto, '$deleteValue', $deleteValue );
+});

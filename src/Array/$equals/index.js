@@ -4,7 +4,8 @@ import parametersDefault from "../../shared/util/parametersDefault";
 import congruence from "../../shared/util/congruence";
 import equals from "../../shared/util/equals";
 
-function $equals( obj ){
+
+defineValue( ArrayProto, '$equals', function( obj ){
 
   if( !obj ){
     return false;
@@ -29,6 +30,4 @@ function $equals( obj ){
   }
 
   return true;
-}
-
-defineValue( ArrayProto, '$equals', $equals );
+});
