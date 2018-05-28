@@ -1,5 +1,5 @@
+import "../../Object/$set/index";
 import Event from "../Event/index";
-import $set from "../../Object/$set/index";
 import from from "../../shared/global/Array/from";
 
 /**

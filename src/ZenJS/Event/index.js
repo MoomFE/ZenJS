@@ -1,4 +1,4 @@
-import Zen from "../../shared/global/Zen/index";
+import ZenJS from "../../shared/global/ZenJS/index";
 import returnFalse from '../../shared/util/returnFalse';
 import returnTrue from '../../shared/util/returnTrue';
 import $assign from "../../Object/$assign";
@@ -6,14 +6,23 @@ import defineProperty from "../../shared/global/Object/defineProperty";
 import assign from "../../shared/global/Object/assign";
 import { defineGetPropertyOptions } from "../../shared/const/definePropertyOptions";
 
+/**
+ * event.target : 触发事件的元素
+ * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
+ * event.delegateTarget : 绑定事件的元素
+ * event.relatedTarget : 事件的相关节点, mouseover 时移出的节点, mouseout 时移入的节点
+ */
+
+
 export default function Event( src, props ){
 
-  if( this instanceof Zen.Event === false ){
-    return new Zen.Event( src, props );
+  if( this instanceof ZenJS.Event === false ){
+    return new ZenJS.Event( src, props );
   }
 
   // Event object
   if( src && src.type ){
+
     this.originalEvent = src;
     this.type = src.type;
 
@@ -43,10 +52,10 @@ export default function Event( src, props ){
 
 }
 
-Zen.Event = Event;
+ZenJS.Event = Event;
 
-const EventProto = Zen.Event.prototype = {
-  constructor: Zen.Event,
+const EventProto = ZenJS.Event.prototype = {
+  constructor: ZenJS.Event,
   // 是否调用过 event.preventDefault 方法
   isDefaultPrevented: returnFalse,
   // 是否调用过 stopPropagation 方法
@@ -83,19 +92,53 @@ const EventProto = Zen.Event.prototype = {
   }
 });
 
-[ 'altKey', 'bubbles', 'cancelable', 'changedTouches', 'ctrlKey', 'detail', 'eventPhase', 'metaKey', 'pageX', 'pageY', 'shiftKey', 'view', 'char', 'charCode', 'key', 'keyCode', 'button', 'buttons', 'clientX', 'clientY', 'offsetX', 'offsetY', 'pointerId', 'pointerType', 'screenX', 'screenY', 'targetTouches', 'toElement', 'touches' ].forEach( name => {
 
+function addProp( name, get, set ){
   defineProperty(
     EventProto, name, assign( {}, defineGetPropertyOptions, {
-      get: function(){
+      get: get || function(){
         const originalEvent = this.originalEvent;
         if( originalEvent ){
           return originalEvent[ name ];
         }
       },
-      set: function( value ){
-        this.$set( name, value )
+      set: set || function( value ){
+        this[ name ] = value;
       }
     })
   );
-});
+};
+
+Event.addProp = addProp;
+
+[
+  'altKey',
+  'bubbles',
+  'cancelable',
+  'changedTouches',
+  'ctrlKey',
+  'detail',
+  'eventPhase',
+  'metaKey',
+  'pageX',
+  'pageY',
+  'shiftKey',
+  'view',
+  'char',
+  'charCode',
+  'key',
+  'keyCode',
+  'button',
+  'buttons',
+  'clientX',
+  'clientY',
+  'offsetX',
+  'offsetY',
+  'pointerId',
+  'pointerType',
+  'screenX',
+  'screenY',
+  'targetTouches',
+  'toElement',
+  'touches'
+].forEach( name => addProp( name ) );

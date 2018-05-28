@@ -1,4 +1,4 @@
-import Zen from "../../shared/global/Zen/index";
+import ZenJS from "../../shared/global/ZenJS/index";
 import $create from "../../Object/$create/index";
 import equals from "../../shared/util/equals";
 import congruence from "../../shared/util/congruence";
@@ -14,7 +14,7 @@ import parametersRest from "../../shared/util/parametersRest";
 import returnTrue from "../../shared/util/returnTrue";
 import returnFalse from "../../shared/util/returnFalse";
 
-const util = Zen.util = $create( true );
+const util = ZenJS.util = $create( true );
 
 util.is = $create( true, {
   equals,
@@ -40,3 +40,5 @@ util.fn = $create( true, {
   returnTrue,
   returnFalse
 });
+
+export default util;

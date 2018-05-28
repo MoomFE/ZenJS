@@ -1,11 +1,11 @@
 import './Array/index';
 import './Document/index';
-// import './Element/index';
-// import './EventTarget/index';
+import './Element/index';
+import './EventTarget/index';
 import './Math/index';
 import './Number/index';
 import './Object/index';
 import './String/index';
 import './Window/index';
-import './shared/global/Zen/index';
-import './Zen/index';
+import './shared/global/ZenJS/index';
+import './ZenJS/index';

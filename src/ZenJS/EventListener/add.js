@@ -1,7 +1,7 @@
 import rtypenamespace from '../../shared/const/rtypenamespace';
 import concat from '../../shared/global/Array/prototype/concat';
 import isEmptyObject from '../../Object/$isEmptyObject/index';
-import Zen from '../../shared/global/Zen/index';
+import ZenJS from '../../shared/global/ZenJS/index';
 
 /**
  * 事件处理 => 添加事件3: 绑定事件
@@ -21,12 +21,17 @@ export default function add( elem, types, selector, listener, options ){
 
     tmp,
     type,
+    namespace,
     handleOptions;
+
+  const guid = listener.guid || (
+    listener.guid = ZenJS.guid
+  );
 
   while( length-- ){
 
     /** 分离事件名称和命名空间 */
-    tmp = rtypenamespace.exec( types[ length ] ) || [ '' ];
+    tmp = rtypenamespace.exec( types[ length ] ) || [];
     /** 事件名称 */
     type = tmp[ 1 ];
 
@@ -34,17 +39,21 @@ export default function add( elem, types, selector, listener, options ){
       continue;
     }
 
+    /** 命名空间 */
+    namespace = ( tmp[ 2 ] || '' ).split( '.' ).sort();
 
     /** 该事件的所有参数 */
     handleOptions = {
       elem,
       type,
+      guid,
       listener,
       selector,
       options,
-      namespace: ( tmp[ 2 ] || '' ).split( '.' ).sort(),
+      namespace,
+      namespaceStr: namespace.join('.'),
       handle: function(){
-        return Zen.EventListener.dispatch.apply( handleOptions, arguments );
+        return ZenJS.EventListener.dispatch.apply( handleOptions, arguments );
       }
     };
 

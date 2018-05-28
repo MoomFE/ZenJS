@@ -1,4 +1,4 @@
-import EventListener from '../../Zen/EventListener/index';
+import EventListener from '../../ZenJS/EventListener/index';
 import rnothtmlwhite from '../../shared/const/rnothtmlwhite';
 import { supportsPassiveEvent } from '../../shared/supports/passive-event';
 
@@ -51,9 +51,7 @@ export default function on( elem, types, selector, listener, options ){
     return elem;
   }
 
-  if( types == false || types == null ){
-    return elem;
-  }
+  if( !types ) return elem;
   else{
     types = types.match( rnothtmlwhite );
 
@@ -99,13 +97,17 @@ export default function on( elem, types, selector, listener, options ){
                    : delete options[ key ];
   });
 
-  if( 'once' in options ){
+  if( 'once' in options || this === true ){
     let origListener = listener;
 
     listener = function( event ){
       elem.$off( event );
       return origListener.apply( this, arguments );
     }
+
+    listener.guid = origListener.guid || (
+      origListener.guid = ZenJS.guid
+    );
 
     delete options.once;
   }

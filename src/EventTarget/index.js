@@ -14,10 +14,24 @@
 
 import defineValue from '../shared/util/defineValue';
 import on from './access/on';
+import off from './access/off';
 
-/**
- * 事件处理 => 添加事件1: 获取参数
- */
-defineValue( EventTarget.prototype , '$on', function( types, selector, listener, options ){
-  return on( this, types, selector, listener, options );
+
+defineValue( EventTarget.prototype, {
+  /**
+   * 事件处理 => 添加事件1: 获取参数
+   */
+  $on( types, selector, listener, options ){
+    return on( this, types, selector, listener, options );
+  },
+  /**
+   * 事件处理 => 添加事件1: 获取参数
+   */
+  $one( types, selector, listener, options ){
+    return on.call( true, this, types, selector, listener, options );
+  },
+  /**
+   * 事件处理 => 移除事件1: 获取并处理参数
+   */
+  $off: off
 });
