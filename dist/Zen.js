@@ -1072,10 +1072,63 @@
 
   defineValue(Object, '$each', $each);
 
+  var keys = Object.keys;
+
   var stringify = JSON.stringify;
 
+  function equals$1(obj, obj2) {
+
+    if (toString.call(obj) !== toString.call(obj2)) {
+      return false;
+    }
+
+    if (keys(obj).length !== keys(obj2).length) {
+      return false;
+    }
+
+    var key,
+        value,
+        value2;
+
+    for (key in obj) {
+      value = obj[key];
+      value2 = obj2[key];
+
+      if (value === value2) {
+        continue;
+      }
+
+      if (!value || value === obj) {
+        return false;
+      } else if ($isPlainObject(value) || isArray(value)) {
+        if (!equals$1(value, value2)) {
+          return false;
+        }
+      } else {
+        try {
+          if (stringify(value) !== stringify(value2)) {
+            return false;
+          }
+        } catch (error) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   function $equals(obj, obj2) {
-    return toString.call(obj) === toString.call(obj2) && stringify(obj) === stringify(obj2);
+
+    if (obj === obj2) {
+      return true;
+    } else if (!obj) {
+      return false;
+    } else if (!equals$1(obj, obj2)) {
+      return false;
+    }
+
+    return true;
   }
 
   defineValue(Object, '$equals', $equals);

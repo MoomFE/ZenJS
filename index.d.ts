@@ -439,7 +439,7 @@ interface ObjectConstructor {
    */
   $each( obj: any, callback: ( key: String, value: any, obj: any ) => Boolean ): obj;
   /**
-   * 判断两个对象及对象的内容是否相同
+   * 判断两个对象的类型是否相同然后判断两个对象的各个属性是否相同, 如果属性也有属性, 也会继续进行判断
    * @param obj 需要判断的第一个对象
    * @param obj2 需要判断的第二个对象
    */

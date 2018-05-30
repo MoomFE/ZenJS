@@ -1,7 +1,7 @@
 import Object from '../../shared/global/Object/index';
 
 import defineValue from '../../shared/util/defineValue';
-import isPlainObject from '../$isPlainObject/index';
+import $isPlainObject from '../$isPlainObject/index';
 import isArray from '../../shared/global/Array/isArray';
 
 
@@ -33,7 +33,7 @@ export default function $assign(){
         src = target[ name ];
 
         // 如果被该属性是原生对象或数组, 则进循环拷贝
-        if( copy && ( isPlainObject( copy ) || ( copyIsArray = isArray( copy ) ) ) ){
+        if( copy && ( $isPlainObject( copy ) || ( copyIsArray = isArray( copy ) ) ) ){
 
           // 目标对象的当前属性是否和该属性类型相同
           // 不是的话, 则进行覆盖
@@ -41,7 +41,7 @@ export default function $assign(){
             copyIsArray = false;
             clone = src && isArray( src ) ? src : [];
           }else{
-            clone = src && isPlainObject( src ) ? src : {};
+            clone = src && $isPlainObject( src ) ? src : {};
           }
 
           target[ name ] = $assign( clone, copy );

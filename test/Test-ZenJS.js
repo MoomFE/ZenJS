@@ -174,6 +174,181 @@ Object.defineProperty( window, 'div', {
   });
 
   describes.push({
+    name: 'Object',
+    describe: [
+      {
+        name: '$assign',
+        it: function(){
+
+          Object.$isPlainObject( Object.$assign() ).should.true;
+          Object.$isEmptyObject( Object.$assign() ).should.true;
+
+          var obj1 = {},
+              obj2 = { asd: 123 },
+              obj3 = { asd: 1234 };
+
+          Object.$assign( obj1 ).should.equals( obj1 )
+          Object.$isEmptyObject( Object.$assign( obj1 ) ).should.true;
+
+          Object.$assign( obj1, obj2 ).should.equals( obj1 );
+          Object.$isEmptyObject( Object.$assign( obj1, obj2 ) ).should.false;
+
+          Object.$assign( obj1, obj2 ).asd.should.equals( 123 );
+          Object.$assign( obj1, obj2, obj3 ).asd.should.equals( 1234 );
+
+          var obj4 = { infiniteLoop: obj5 },
+              obj5 = { infiniteLoop: obj4 };
+
+          isUndef( Object.$assign( obj4, obj5 ).infiniteLoop ).should.true;
+        }
+      }, {
+        name: '$create',
+        it: function(){
+          Object.$isEmptyObject( Object.$create() ).should.true;
+          Object.$isPlainObject( Object.$create() ).should.true;
+          Object.$isPlainObject( Object.$create( true ) ).should.true;
+          Object.$isPlainObject( Object.$create( false ) ).should.true;
+
+          ( Object.getPrototypeOf( Object.$create( true ) ) == null ).should.true;
+          ( Object.$create().constructor != null ).should.true;
+
+          var obj1 = { asd: 123 },
+              obj2 = { asd: 1234 };
+
+          Object.$create( obj1 ).asd.should.equals( 123 );
+          Object.$create( obj1, obj2 ).asd.should.equals( 1234 );
+          isEqual( obj1, Object.$create( obj1 ) ).should.false;
+        }
+      }, {
+        name: '$each',
+        it: function(){
+          var test1 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
+            switch( key ){
+              case "3": obj[ key ] = 3; break;
+              case "1": obj[ key ] = 1; break; 
+            }
+          });
+
+          test1[ "3" ].should.equals( 3 );
+          test1[ "1" ].should.equals( 1 );
+
+          var test2 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
+            switch( key ){
+              case "3": obj[ key ] = 3; break; 
+              case "1": obj[ key ] = 1; 
+                        return false;
+            }
+          });
+
+          test2[ "1" ].should.equals( 1 );
+          test2[ "3" ].should.equals( 1 );
+        }
+      }, {
+        name: '$equals',
+        it: function(){
+          Object.$equals( null, null ).should.true;
+          Object.$equals( undefined, undefined ).should.true;
+          Object.$equals( {}, {} ).should.true;
+          Object.$equals( { a: 1 }, { a: 1 } ).should.true;
+          Object.$equals( '', '' ).should.true;
+          Object.$equals( true, true ).should.true;
+          Object.$equals( false, false ).should.true;
+          Object.$equals( div, div ).should.true;
+
+          Object.$equals( {}, [] ).should.false;
+          Object.$equals( {}, div ).should.false;
+          Object.$equals( {}, { a: 1 } ).should.false;
+
+          var a = {};
+              a.a = a;
+          Object.$equals( a, a ).should.true;
+
+          var b = {};
+              b.a = a;
+          Object.$equals( a, b ).should.true;
+
+          b.a = b;
+          Object.$equals( a, b ).should.false;
+
+          b.a = { a: 1 };
+          Object.$equals( a, b ).should.false;
+        }
+      }, {
+        name: '$isEmptyObject',
+        it: function(){
+          Object.$isEmptyObject( {} ).should.true;
+          Object.$isEmptyObject( { Empty: false } ).should.false;
+        }
+      }, {
+        name: '$isPlainObject',
+        it: function(){
+          Object.$isPlainObject( {} ).should.true;
+          Object.$isPlainObject( Object.create( null ) ).should.true;
+          Object.$isPlainObject( div ).should.false;
+          Object.$isPlainObject( Element ).should.false;
+          Object.$isPlainObject( Element.prototype ).should.false;
+        }
+      }
+    ]
+  });
+
+  describes.push({
+    name: 'Object.prototype',
+    describe: [
+      {
+        name: '$delete',
+        it: function(){
+          var test = { z: 1, e: 2, n: 3, j: 4, s: 5 };
+
+          JSON
+            .stringify(
+              test.$delete('j').$delete('s').$delete( 'z','e','n' )
+            )
+            .should.equals('{}');
+        }
+      }, {
+        name: '$deleteValue',
+        it: function(){
+          var test = { z: 1, e: 2, n: 3, j: 4, s: 4 };
+
+          JSON
+            .stringify(
+              test.$deleteValue( 4 )
+            )
+            .should.equals(
+              '{"z":1,"e":2,"n":3}'
+            );
+        }
+      }, {
+        name: '$get',
+        it: function(){
+          var test = { z: 1, e: 2, n: 3 };
+
+          test.$get( 'z' ).should.equals( 1 );
+          test.$get( 'e' ).should.equals( 2 );
+          test.$get( 'n' ).should.equals( 3 );
+        }
+      }, {
+        name: '$set',
+        it: function(){
+           var test = {};
+
+           test.$set( 'ZenJS', 'Zw' )[ 'ZenJS' ].should.equals( 'Zw' );
+           test.$set( 1, 2 )[ 1 ].should.equals( 2 );
+        }
+      }, {
+        name: '$self',
+        it: function(){
+          var test = {};
+
+          test.$self().should.equals( test );
+          test.__self__.should.equals( test );
+        }
+      }
+    ]
+  });
+
+  describes.push({
     name: 'EventTarget',
     describe: [
       {
@@ -261,9 +436,54 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$on',
         it: function(){
-          div.$on({ click: false }).$hasData('events');
-          div.$on({ click: false }).$data('events').click.should.to.be.an('array');
-          div.$on({ click: false })
+          // 测试数据存储
+          div.$on( 'click', false ).$hasData('events');
+          div.$on( 'click', false ).$data('events').click.should.to.be.an('array');
+          div.$on( 'click', false ).$data('events').click.length.should.equals( 1 );
+          div.$on( 'click', false ).$data('events').click[0].should.to.be.an('object');
+          // 测试命名空间存储
+          div.$on( 'click', false ).$data('events').click[0].namespaceStr.should.equals('');
+          div.$on( 'click.a', false ).$data('events').click[0].namespaceStr.should.equals('a');
+          div.$on( 'click.a.b', false ).$data('events').click[0].namespaceStr.should.equals('a.b');
+          // 测试可选参数
+          div.$on('click', false).$data('events').click[0].options.should.to.be.an('object');
+            // 可选参数为 false 时, 不会添加到参数中
+            JSON.stringify( div.$on( 'click', false, false ).$data('events').click[0].options ).should.equals('{}');
+            JSON.stringify( div.$on( 'click', false, { capture: false } ).$data('events').click[0].options ).should.equals('{}');
+            JSON.stringify( div.$on( 'click', false, { passive: false } ).$data('events').click[0].options ).should.equals('{}');
+            JSON.stringify( div.$on( 'click', false, { once: false } ).$data('events').click[0].options ).should.equals('{}');
+            JSON.stringify( div.$on( 'click', false, { one: false } ).$data('events').click[0].options ).should.equals('{}');
+            // useCapture
+            JSON.stringify( div.$on( 'click', false, true ).$data('events').click[0].options ).should.equals('{"capture":true}');
+            JSON.stringify( div.$on( 'click', false, { capture: true } ).$data('events').click[0].options ).should.equals('{"capture":true}');
+            // once
+            JSON.stringify( div.$on( 'click', false, { once: true } ).$data('events').click[0].options ).should.equals('{}');
+            JSON.stringify( div.$on( 'click', false, { one: true } ).$data('events').click[0].options ).should.equals('{}');
+            (
+              div.$on( 'click', false ).$data('events').click[0].listener ===
+              div.$on( 'click', false ).$data('events').click[0].listener
+            ).should.true;
+            (
+              div.$on( 'click', false ).$data('events').click[0].listener !==
+              div.$on( 'click', false, { once: true } ).$data('events').click[0].listener
+            ).should.true;
+            (
+              div.$on( 'click', false ).$data('events').click[0].listener !==
+              div.$on( 'click', false, { one: true } ).$data('events').click[0].listener
+            ).should.true;
+            // passive
+            if( ZenJS.util.supports.passiveEvent ){
+              JSON.stringify( div.$on( 'click', false, { passive: true } ).$data('events').click[0].options ).should.equals('{"passive":true}');
+            }else{
+              JSON.stringify( div.$on( 'click', false, { passive: true } ).$data('events').click[0].options ).should.equals('{}');
+            }
+          // 测试各种传值方式
+          var test1 = div.$on( 'click', 'div', false, false ).$data('events');
+
+          // Object.$equals(
+          //   test1,
+          //   div.$on( { click: false }, false, 'div' ).$data('events')
+          // ).should.true;
         }
       }
     ]
@@ -333,151 +553,6 @@ Object.defineProperty( window, 'div', {
           Number.$isNumber( [] ).should.false;
           Number.$isNumber( true ).should.false;
           Number.$isNumber( false ).should.false;
-        }
-      }
-    ]
-  });
-
-  describes.push({
-    name: 'Object',
-    describe: [
-      {
-        name: '$assign',
-        it: function(){
-
-          Object.$isPlainObject( Object.$assign() ).should.true;
-          Object.$isEmptyObject( Object.$assign() ).should.true;
-
-          var obj1 = {},
-              obj2 = { asd: 123 },
-              obj3 = { asd: 1234 };
-
-          Object.$assign( obj1 ).should.equals( obj1 )
-          Object.$isEmptyObject( Object.$assign( obj1 ) ).should.true;
-
-          Object.$assign( obj1, obj2 ).should.equals( obj1 );
-          Object.$isEmptyObject( Object.$assign( obj1, obj2 ) ).should.false;
-
-          Object.$assign( obj1, obj2 ).asd.should.equals( 123 );
-          Object.$assign( obj1, obj2, obj3 ).asd.should.equals( 1234 );
-
-          var obj4 = { infiniteLoop: obj5 },
-              obj5 = { infiniteLoop: obj4 };
-
-          isUndef( Object.$assign( obj4, obj5 ).infiniteLoop ).should.true;
-        }
-      }, {
-        name: '$create',
-        it: function(){
-          Object.$isEmptyObject( Object.$create() ).should.true;
-          Object.$isPlainObject( Object.$create() ).should.true;
-          Object.$isPlainObject( Object.$create( true ) ).should.true;
-          Object.$isPlainObject( Object.$create( false ) ).should.true;
-
-          ( Object.getPrototypeOf( Object.$create( true ) ) == null ).should.true;
-          ( Object.$create().constructor != null ).should.true;
-
-          var obj1 = { asd: 123 },
-              obj2 = { asd: 1234 };
-
-          Object.$create( obj1 ).asd.should.equals( 123 );
-          Object.$create( obj1, obj2 ).asd.should.equals( 1234 );
-          isEqual( obj1, Object.$create( obj1 ) ).should.false;
-        }
-      }, {
-        name: '$each',
-        it: function(){
-          var test1 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
-            switch( key ){
-              case "3": obj[ key ] = 3; break;
-              case "1": obj[ key ] = 1; break; 
-            }
-          });
-
-          test1[ "3" ].should.equals( 3 );
-          test1[ "1" ].should.equals( 1 );
-
-          var test2 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
-            switch( key ){
-              case "3": obj[ key ] = 3; break; 
-              case "1": obj[ key ] = 1; 
-                        return false;
-            }
-          });
-
-          test2[ "1" ].should.equals( 1 );
-          test2[ "3" ].should.equals( 1 );
-        }
-      }, {
-        name: '$isEmptyObject',
-        it: function(){
-          Object.$isEmptyObject( {} ).should.true;
-          Object.$isEmptyObject( { Empty: false } ).should.false;
-        }
-      }, {
-        name: '$isPlainObject',
-        it: function(){
-          Object.$isPlainObject( {} ).should.true;
-          Object.$isPlainObject( Object.create( null ) ).should.true;
-          Object.$isPlainObject( div ).should.false;
-          Object.$isPlainObject( Element ).should.false;
-          Object.$isPlainObject( Element.prototype ).should.false;
-        }
-      }
-    ]
-  });
-
-  describes.push({
-    name: 'Object.prototype',
-    describe: [
-      {
-        name: '$delete',
-        it: function(){
-          var test = { z: 1, e: 2, n: 3, j: 4, s: 5 };
-
-          JSON
-            .stringify(
-              test.$delete('j').$delete('s').$delete( 'z','e','n' )
-            )
-            .should.equals('{}');
-        }
-      }, {
-        name: '$deleteValue',
-        it: function(){
-          var test = { z: 1, e: 2, n: 3, j: 4, s: 4 };
-
-          JSON
-            .stringify(
-              test.$deleteValue( 4 )
-            )
-            .should.equals(
-              '{"z":1,"e":2,"n":3}'
-            );
-        }
-      }, {
-        name: '$get',
-        it: function(){
-          var test = { z: 1, e: 2, n: 3 };
-
-          test.$get( 'z' ).should.equals( 1 );
-          test.$get( 'e' ).should.equals( 2 );
-          test.$get( 'n' ).should.equals( 3 );
-        }
-      }, {
-        name: '$set',
-        it: function(){
-           var test = {};
-
-           test.$set( 'ZenJS', 'Zw' )[ 'ZenJS' ].should.equals( 'Zw' );
-           test.$set( 1, 2 )[ 1 ].should.equals( 2 );
-        }
-      }, {
-        name: '$self',
-        it: function(){
-          var test = {};
-
-          test.$self().should.equals( test );
-          test.__self__.should.equals( test );
         }
       }
     ]
