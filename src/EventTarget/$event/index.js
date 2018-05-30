@@ -17,6 +17,9 @@ import on from './access/on';
 import off from './access/off';
 import EventTargetProto from '../../shared/global/EventTarget/prototype/index';
 
+function $one( types, selector, listener, options ){
+  return on.call( true, this, types, selector, listener, options );
+}
 
 defineValue( EventTargetProto, {
   /**
@@ -28,9 +31,8 @@ defineValue( EventTargetProto, {
   /**
    * 事件处理 => 添加事件1: 获取参数
    */
-  $one( types, selector, listener, options ){
-    return on.call( true, this, types, selector, listener, options );
-  },
+  $one,
+  $once: $one,
   /**
    * 事件处理 => 移除事件1: 获取并处理参数
    */

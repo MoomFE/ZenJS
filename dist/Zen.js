@@ -768,11 +768,11 @@
     }
   }
 
-  var EventListener = ZenJS.EventListener = {
+  var EventListener = ZenJS.EventListener = $create$1(true, {
     add: add,
     dispatch: dispatch,
     remove: remove
-  };
+  });
 
   var supportsPassiveEvent = false;
 
@@ -882,7 +882,7 @@
       options[key] ? options[key] = true : delete options[key];
     });
 
-    if ('once' in options || this === true) {
+    if (this === true || 'one' in options || 'once' in options) {
       var origListener = listener;
 
       listener = function (event) {
@@ -892,6 +892,7 @@
 
       listener.guid = origListener.guid || (origListener.guid = ZenJS.guid);
 
+      delete options.one;
       delete options.once;
     }
 
@@ -940,6 +941,10 @@
 
   // EventTarget
 
+  function $one(types, selector, listener, options) {
+    return on.call(true, this, types, selector, listener, options);
+  }
+
   defineValue(EventTargetProto, {
     /**
      * 事件处理 => 添加事件1: 获取参数
@@ -951,10 +956,8 @@
     /**
      * 事件处理 => 添加事件1: 获取参数
      */
-    $one: function (types, selector, listener, options) {
-      return on.call(true, this, types, selector, listener, options);
-    },
-
+    $one: $one,
+    $once: $one,
     /**
      * 事件处理 => 移除事件1: 获取并处理参数
      */
@@ -1068,6 +1071,14 @@
   }
 
   defineValue(Object, '$each', $each);
+
+  var stringify = JSON.stringify;
+
+  function $equals(obj, obj2) {
+    return toString.call(obj) === toString.call(obj2) && stringify(obj) === stringify(obj2);
+  }
+
+  defineValue(Object, '$equals', $equals);
 
   defineValue(ObjectProto, '$get', function (key) {
     return this[key];
@@ -1185,7 +1196,7 @@
     }
   }
 
-  function stringify(obj) {
+  function stringify$1(obj) {
     var sep = parametersDefault(arguments, 1, '&'),
         eq = parametersDefault(arguments, 2, '=');
 
@@ -1237,7 +1248,7 @@
   }
 
   defineValue(window, '$querystring', {
-    stringify: stringify,
+    stringify: stringify$1,
     parse: parse
   });
 
@@ -1294,6 +1305,10 @@
   util.fn = $create$1(true, {
     returnTrue: returnTrue,
     returnFalse: returnFalse
+  });
+
+  util.supports = $create$1(true, {
+    passiveEvent: supportsPassiveEvent
   });
 
 })));

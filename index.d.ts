@@ -19,13 +19,13 @@ interface Array<T> {
    * @param index 需要删除的下标
    * @param num 需要从该下标开始删除几个对象 - default: 1
    */
-  $delete( index: Number, num?: Number = 1 ): this;
+  $delete( index: Number, num: Number = 1 ): this;
   /**
    * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
    * @param congruence 是否使用全等进行判断 - default: true
    */
-  $deleteValue( value: any, congruence?: Boolean = true ): this;
+  $deleteValue( value: any, congruence: Boolean = true ): this;
   /**
    * 查找数组内是否有此传入值
    * -- 弱检测
@@ -44,12 +44,12 @@ interface Array<T> {
    * @param obj 需要检测的值
    * @param congruence 是否使用全等进行判断 - default: true
    */
-  $equals( obj: any[], congruence?: Boolean = true ): Boolean;
+  $equals( obj: any[], congruence: Boolean = true ): Boolean;
   /**
    * 获取指定下标的对象
    * @param index 需要获取的对象的下标 - default: 0
    */
-  $get( index?: Number = 0 ): any;
+  $get( index: Number = 0 ): any;
   /**
    * 获取指定下标开始的若干个对象
    * @param index 需要获取的对象的下标 - default: 0
@@ -87,7 +87,7 @@ interface Array<T> {
   $shift(): this;
 }
 
-interface EventTarget {
+interface Document {
   /**
    * 页面加载完成后执行传入代码
    * -- 方法可以用 function[ call / apply ] 的方式使用, 可传入其他 document, 比如 iframe 的 document
@@ -256,6 +256,67 @@ interface EventTarget{
    */
   $one( types: String, selector: String, listener?: Function, options?: any ): this;
   /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param obj 事件: 方法
+   */
+  $once( obj: { type: Function } ): this;
+  /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param obj 事件: 方法
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $once( obj: { type: Function }, options?: any ): this;
+  /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param obj 事件: 方法
+   * @param selector 事件代理的选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $once( obj: { type: Function }, selector?: String, options?: any ): this;
+  /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param selector 事件代理的选择器
+   * @param obj 事件: 方法
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $once( selector: String, obj: { type: Function }, options?: any ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   */
+  $once( types: String, listener: Function ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $once( types: String, listener: Function, options?: any ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param selector 事件代理的选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $once( types: String, listener: Function, selector?: String, options?: any ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param selector 事件代理的选择器
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   */
+  $once( types: String, selector: String, listener?: Function ): this;
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param selector 事件代理的选择器
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $once( types: String, selector: String, listener?: Function, options?: any ): this;
+  /**
    * 传入事件名和方法进行事件移除, 只会移除无委托选择器的相关事件方法
    * @param types 需要解绑的事件集
    */
@@ -289,13 +350,13 @@ interface Math {
    * 在 0 和最大值之间随机一个数字
    * @param to 指定一个最大值, 必须大于-1 - default: 9
    */
-  $random( to?: Number = 9 ): Number;
+  $random( to: Number = 9 ): Number;
   /**
    * 在最小数和最大数之间随机一个数字
    * @param from 指定一个最小数, 必须大于-1 - default: 0
    * @param to 指定一个最大数, 必须大于-1 - default: 9
    */
-  $random( from?: Number = 0, to?: Number = 9 ): Number;
+  $random( from: Number = 0, to: Number = 9 ): Number;
   /**
    * 在 0 和 9 之间随机一个数字
    */
@@ -304,13 +365,13 @@ interface Math {
    * 在 0 和指定值之间随机一个数字
    * @param to 指定一个值, 可为负数 - default: 9
    */
-  $randomPlus( to?: Number = 9 ): Number;
+  $randomPlus( to: Number = 9 ): Number;
   /**
    * 在最小数和最大数之间随机一个数字
    * @param from 指定一个最小数, 可为负数 - default: 0
    * @param to 指定一个最大数, 可为负数 - default: 9
    */
-  $randomPlus( from?: Number = 0, to?: Number = 9 ): Number;
+  $randomPlus( from: Number = 0, to: Number = 9 ): Number;
 }
 
 interface NumberConstructor {
@@ -332,7 +393,7 @@ interface Object {
    * @param value 需要删除的对象
    * @param congruence 是否使用全等进行判断 - default: true
    */
-  $deleteValue( value: any, congruence?: Boolean = true ): this;
+  $deleteValue( value: any, congruence: Boolean = true ): this;
   /**
    * 获取对象的某个值
    * @param key 需要获取的 key
@@ -378,6 +439,12 @@ interface ObjectConstructor {
    */
   $each( obj: any, callback: ( key: String, value: any, obj: any ) => Boolean ): obj;
   /**
+   * 判断两个对象及对象的内容是否相同
+   * @param obj 需要判断的第一个对象
+   * @param obj2 需要判断的第二个对象
+   */
+  $equals( obj: any, obj2: any ): Boolean;
+  /**
    * 判断传入对象是否是空对象
    * @param obj 需要判断的对象
    */
@@ -407,14 +474,14 @@ interface StringConstructor {
    * 随机26个字母中的一个
    * @param uppercase 是否大写 - default: false
    */
-  $random( uppercase?: Boolean = false ): String;
+  $random( uppercase: Boolean = false ): String;
   /**
    * 随机指定长度的字符串
    * @param length 字符串长度 - default: 12
    * @param hasUppercase 是否随机大写字母 - default: false
    * @param hasNumber 是否随机数字( 不会随机到首位 ) - default: false
    */
-  $someRandom( length?: Number, hasUppercase?: Boolean = false, hasNumber?: Boolean = false ): String;
+  $someRandom( length: Number = 12, hasUppercase: Boolean = false, hasNumber: Boolean = false ): String;
 }
 
 
@@ -495,11 +562,17 @@ interface ZenJS {
        * @param args arguments
        * @param index 需要在 arguments 中开始取参数的下标 - default: 0
        */
-      rest( args: IArguments, index?: Number = 0 ): any[];
+      rest( args: IArguments, index: Number = 0 ): any[];
     },
     fn: {
       returnTrue(): true;
       returnFalse(): false;
+    },
+    supports: {
+      /**
+       * 判断浏览器是否支持事件的 passive 选项
+       */
+      readonly passiveEvent: Boolean
     }
   }
 }
@@ -511,14 +584,14 @@ interface $querystring {
    * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
    * @param eq 在字符串中分隔键和值的字符串 -default: '='
    */
-  stringify( obj, sep?: String = '&', eq?: String = '=' ): String;
+  stringify( obj, sep: String = '&', eq: String = '=' ): String;
   /**
    * 将 URL 查询字符串反序列化为对象
    * @param str 需要反序列化的字符串
    * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
    * @param eq 在字符串中分隔键和值的字符串 -default: '='
    */
-  parse( str, sep?: String = '&', eq?: String = '=' ): any;
+  parse( str, sep: String = '&', eq: String = '=' ): any;
 }
 
 /**

@@ -98,7 +98,7 @@ export default function on( elem, types, selector, listener, options ){
                    : delete options[ key ];
   });
 
-  if( 'once' in options || this === true ){
+  if( this === true || 'one' in options || 'once' in options ){
     let origListener = listener;
 
     listener = function( event ){
@@ -110,6 +110,7 @@ export default function on( elem, types, selector, listener, options ){
       origListener.guid = ZenJS.guid
     );
 
+    delete options.one;
     delete options.once;
   }
 

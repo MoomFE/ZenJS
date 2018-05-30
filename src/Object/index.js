@@ -3,6 +3,7 @@ import './$create/index';
 import './$delete/index';
 import './$deleteValue/index';
 import './$each/index';
+import './$equals/index';
 import './$get/index';
 import './$isEmptyObject/index';
 import './$isPlainObject/index';
