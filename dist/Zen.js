@@ -728,13 +728,13 @@
       }
 
       /** 命名空间 */
-      namespace = (tmp[2] || '').split('.').sort();
+      namespace = (tmp[2] || '').split('.').sort().join('.');
       /** 事件集 */
       handlers = events[type] || [];
       /** 事件集数量 */
       handlersLength = handlers.length;
 
-      tmp = tmp[2] && new RegExp("(^|\\.)" + namespace.join("\\.(?:.*\\.|)") + "(\\.|$)");
+      tmp = tmp[2] && new RegExp('^' + namespace + '$');
 
       while (handlersLength--) {
         handleOptions = handlers[handlersLength];
@@ -755,7 +755,7 @@
         // 允许所有没事件委托的事件通过
         : !handleOptions.selector) {
           // 移除事件
-          elem.removeEventListener(type, handleOptions.listener);
+          elem.removeEventListener(type, handleOptions.handle);
           // 移除事件缓存
           handlers.splice(handlersLength, 1);
         }
@@ -816,7 +816,7 @@
         options = listener;
       } else {
         options = selector;
-        selector = undefined;
+        selector = listener;
       }
     }
     // on( elem, selector, { type: listener || Boolean } )

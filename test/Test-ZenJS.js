@@ -440,6 +440,7 @@ Object.defineProperty( window, 'div', {
           div.$on( 'click', false ).$hasData('events');
           div.$on( 'click', false ).$data('events').click.should.to.be.an('array');
           div.$on( 'click', false ).$data('events').click.length.should.equals( 1 );
+          div.$on( 'click', false ).$on( 'click', false ).$data('events').click.length.should.equals( 2 );
           div.$on( 'click', false ).$data('events').click[0].should.to.be.an('object');
           // 测试命名空间存储
           div.$on( 'click', false ).$data('events').click[0].namespaceStr.should.equals('');
@@ -478,12 +479,73 @@ Object.defineProperty( window, 'div', {
               JSON.stringify( div.$on( 'click', false, { passive: true } ).$data('events').click[0].options ).should.equals('{}');
             }
           // 测试各种传值方式
-          var test1 = div.$on( 'click', 'div', false, false ).$data('events');
+          var test = div.$on( 'click', 'div', false, false ).$data('events');
 
-          Object.$equals(
-            test1,
-            div.$on( { click: false }, 'div', false ).$data('events')
-          ).should.true;
+          Object.$equals( test, div.$on( { click: false }, 'div', false ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( { click: false }, false, 'div' ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, false ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, { capture: false } ).$data('events') ).should.true;
+
+          test = div.$on( 'click', 'div', false, true ).$data('events');
+          Object.$equals( test, div.$on( { click: false }, 'div', true ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( { click: false }, true, 'div' ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, true ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, { capture: true } ).$data('events') ).should.true;
+
+          test = div.$on( 'click', 'div', true, true ).$data('events');
+          Object.$equals( test, div.$on( { click: true }, 'div', true ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( { click: true }, true, 'div' ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: true }, true ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: true }, { capture: true } ).$data('events') ).should.true;
+
+          test = div.$on( 'click', 'div', true, true ).$data('events');
+          Object.$equals( test, div.$on( { click: true }, 'div', true ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( { click: true }, true, 'div' ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: true }, true ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: true }, { capture: true } ).$data('events') ).should.true;
+
+          test = div.$on( 'click', 'div', false, { once: true } ).$data('events');
+          Object.$equals( test, div.$on( { click: false }, 'div', { once: true } ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( { click: false }, { once: true }, 'div' ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, { once: true } ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, { once: true } ).$data('events') ).should.true;
+
+          Object.$equals( test, div.$on( { click: false }, 'div', { one: true } ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( { click: false }, { one: true }, 'div' ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, { one: true } ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, { one: true } ).$data('events') ).should.true;
+
+          test = div.$on( 'click', 'div', false, { passive: true } ).$data('events');
+          Object.$equals( test, div.$on( { click: false }, 'div', { passive: true } ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( { click: false }, { passive: true }, 'div' ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, { passive: true } ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, { passive: true } ).$data('events') ).should.true;
+        }
+      }, {
+        name: '$one / $once',
+        it: function(){
+          var test = div.$one( 'click', 'div', false ).$data('events');
+
+          Object.$equals( test, div.$on( 'click', 'div', false, { once: true } ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'click', false, 'div', { once: true } ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( { click: false }, 'div', { once: true } ).$data('events') ).should.true;
+          Object.$equals( test, div.$on( 'div', { click: false }, { once: true } ).$data('events') ).should.true;
+        }
+      }, {
+        name: '$off',
+        it: function(){
+          var test = div;
+
+          test.$on( 'click', false );
+          test.$on( 'click.a', false );
+          test.$on( 'click.a.b', false );
+          test.$on( 'click.a.b.c', false );
+
+          test.$data('events').click.length.should.equals( 4 );
+          console.log(
+            test.$off('click.a').$data('events')
+          )
+          test.$off('click.a').$data('events').click.length.should.equals( 3 );
         }
       }
     ]

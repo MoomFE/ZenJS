@@ -34,7 +34,7 @@ export default function on( elem, types, selector, listener, options ){
     }
     else{
       options = selector;
-      selector = undefined;
+      selector = listener;
     }
   }
   // on( elem, selector, { type: listener || Boolean } )
