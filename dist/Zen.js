@@ -853,7 +853,7 @@
       selector = _ref[1];
 
 
-      if (!isString(selector) && options == null) {
+      if (selector && !isString(selector)) {
         options = selector;
         selector = undefined;
       }

@@ -177,92 +177,93 @@ Object.defineProperty( window, 'div', {
     name: 'EventTarget',
     describe: [
       {
-        name: 'Element.prototype.[ $data, $hasData, $deleteData ]',
-        describe: function(){
-          it( '$data', function(){
-            // 存储数据返回对象本身
-            isElement( div.$data('Data','div') ).should.true;
-            isElement( div.$data({Data:'div'}) ).should.true;
-            isElement( div.$data({Data:'div'},true) ).should.true;
-            // 有对应数据返回对应数据
-            div.$data('Data','div').$data('Data').should.equals( 'div' );
-            // 无对应数据时返回 undefined
-            isUndef( div.$data('noData') ).should.true;
-            // 未传入数据名, 返回全部数据集
-            JSON.stringify( div.$data('Data','div').$data() ).should.equals( '{"Data":"div"}' );
-            // 初始化添加方式
-            div.$data('Data','div').$data('Data','no',true).should.equals( 'div' );
-            div.$data('Data','yes',true).should.equals( 'yes' );
-            // 批量添加
-            JSON.stringify( div.$data({Data1:'div',Data2:'div'}).$data() ).should.equals( '{"Data1":"div","Data2":"div"}' );
-          });
-          it( '$hasData', function(){
-            // 未传入对象则检测是否存过数据
-            div.$hasData().should.false;
-            div.$data('Data','div').$hasData().should.true;
-            // 传入对象检测相应对象
-            div.$hasData('noData').should.false;
-            div.$data('Data','div').$hasData('Data').should.true;
-          });
-          it( '$deleteData', function(){
-            // 始终返回自身
-            isElement( div.$deleteData() ).should.true;
-            isElement( div.$deleteData('noData') ).should.true;
-            isElement( div.$deleteData('noData1 noData2') ).should.true;
-            // 删除单个数据
-            div.$data('Data','div').$deleteData('Data').$hasData('Data').should.false;
-            div.$data('Data','div').$deleteData('Data1').$hasData('Data').should.true;
-            // 删除全部数据
-            div.$data('Data','div').$deleteData().$hasData().should.false;
-          });
+        name: '$data',
+        it: function(){
+          // 存储数据返回对象本身
+          isElement( div.$data('Data','div') ).should.true;
+          isElement( div.$data({Data:'div'}) ).should.true;
+          isElement( div.$data({Data:'div'},true) ).should.true;
+          window.$data('Data','window').should.equals( window );
+          window.$data({'Data':'window'}).should.equals( window );
+          window.$data({'Data':'window'},true).should.equals( window );
+          document.$data('Data','document').should.equals( document );
+          document.$data({'Data':'document'}).should.equals( document );
+          document.$data({'Data':'document'},true).should.equals( document );
+          // 有对应数据返回对应数据
+          div.$data('Data','div').$data('Data').should.equals( 'div' );
+          window.$data('Data').should.equals( 'window' );
+          document.$data('Data').should.equals( 'document' );
+          // 无对应数据时返回 undefined
+          isUndef( div.$data('noData') ).should.true;
+          isUndef( window.$data('noData') ).should.true;
+          isUndef( document.$data('noData') ).should.true;
+          // 未传入数据名, 返回全部数据集
+          JSON.stringify( div.$data('Data','div').$data() ).should.equals( '{"Data":"div"}' );
+          JSON.stringify( window.$data() ).should.equals( '{"Data":"window"}' );
+          JSON.stringify( document.$data() ).should.equals( '{"Data":"document"}' );
+          // 初始化添加方式
+          div.$data('Data','div').$data('Data','no',true).should.equals( 'div' );
+          div.$data('Data','yes',true).should.equals( 'yes' );
+          window.$data('Data','no',true).should.equals( 'window' );
+          window.$data('Data1','yes',true).should.equals( 'yes' );
+          document.$data('Data','no',true).should.equals( 'document' );
+          document.$data('Data1','yes',true).should.equals( 'yes' );
+          // 批量添加
+          JSON.stringify( div.$data({Data1:'div',Data2:'div'}).$data() ).should.equals( '{"Data1":"div","Data2":"div"}' );
+          JSON.stringify( window.$data({'Data':'window','Data1':'yes'}).$data() ).should.equals( '{"Data":"window","Data1":"yes"}' );
+          JSON.stringify( document.$data({'Data':'document','Data1':'yes'}).$data() ).should.equals( '{"Data":"document","Data1":"yes"}' );
         }
-      },
-      function(){
-        [ window, document ].forEach( function( root, index ){
-          describe( ( index ? 'document' : 'window' ) + '.[ $data, $hasData, $deleteData ]', function(){
-            it( '$data', function(){
-              // 存储数据返回对象本身
-              root.$data('Data','root').should.equals( root );
-              root.$data({'Data':'root'}).should.equals( root );
-              root.$data({'Data':'root'},true).should.equals( root );
-              // 有对应数据返回对应数据
-              root.$data('Data').should.equals( 'root' );
-              // 无对应数据时返回 undefined
-              isUndef( root.$data('noData') ).should.true;
-              // 未传入数据名, 返回全部数据集
-              JSON.stringify( root.$data() ).should.equals( '{"Data":"root"}' );
-              // 初始化添加方式
-              root.$data('Data','no',true).should.equals( 'root' );
-              root.$data('Data1','yes',true).should.equals( 'yes' );
-              // 批量添加
-              JSON.stringify( root.$data({'Data':'root','Data1':'yes'}).$data() ).should.equals( '{"Data":"root","Data1":"yes"}' );
-            });
-            it( '$hasData', function(){
-              // 未传入对象则检测是否存过数据
-              root[ root ] = {};
-              root.$hasData().should.false;
-              root.$data('Data','root').$hasData().should.true;
-              // 传入对象检测相应对象
-              root.$hasData('noData').should.false;
-              root.$hasData('Data').should.true;
-            });
-            it( '$deleteData', function(){
-              // 始终返回自身
-              root.$deleteData().should.equals( root );
-              root.$deleteData( 'noData' ).should.equals( root );
-              root.$deleteData( 'noData1 noData2' ).should.equals( root );
-              // 删除单个数据
-              div.$data('Data','root').$deleteData('Data').$hasData('Data').should.false;
-              div.$data('Data','root').$deleteData('Data1').$hasData('Data').should.true;
-              // 删除全部数据
-              root.$deleteData().$hasData().should.false;
-            });
-          });
-        });
+      }, {
+        name: '$hasData',
+        it: function(){
+          // 未传入对象则检测是否存过数据
+          div.$hasData().should.false;
+          div.$data('Data','div').$hasData().should.true;
+          window[ window ] = {};
+          window.$hasData().should.false;
+          window.$data('Data','window').$hasData().should.true;
+          document[ document ] = {};
+          document.$hasData().should.false;
+          document.$data('Data','document').$hasData().should.true;
+          // 传入对象检测相应对象
+          div.$hasData('noData').should.false;
+          div.$data('Data','div').$hasData('Data').should.true;
+          window.$hasData('noData').should.false;
+          window.$hasData('Data').should.true;
+          document.$hasData('noData').should.false;
+          document.$hasData('Data').should.true;
+        }
+      }, {
+        name: '$deleteData',
+        it: function(){
+          // 始终返回自身
+          isElement( div.$deleteData() ).should.true;
+          isElement( div.$deleteData('noData') ).should.true;
+          isElement( div.$deleteData('noData1 noData2') ).should.true;
+          window.$deleteData().should.equals( window );
+          window.$deleteData( 'noData' ).should.equals( window );
+          window.$deleteData( 'noData1 noData2' ).should.equals( window );
+          document.$deleteData().should.equals( document );
+          document.$deleteData( 'noData' ).should.equals( document );
+          document.$deleteData( 'noData1 noData2' ).should.equals( document );
+          // 删除单个数据
+          div.$data('Data','div').$deleteData('Data').$hasData('Data').should.false;
+          div.$data('Data','div').$deleteData('Data1').$hasData('Data').should.true;
+          window.$data('Data','window').$deleteData('Data').$hasData('Data').should.false;
+          window.$data('Data','window').$deleteData('Data1').$hasData('Data').should.true;
+          document.$data('Data','document').$deleteData('Data').$hasData('Data').should.false;
+          document.$data('Data','document').$deleteData('Data1').$hasData('Data').should.true;
+          // 删除全部数据
+          div.$data('Data','div').$deleteData().$hasData().should.false;
+          window.$deleteData().$hasData().should.false;
+          document.$deleteData().$hasData().should.false;
+        }
       }, {
         name: '$on',
-        describe: function(){
-
+        it: function(){
+          div.$on({ click: false }).$hasData('events');
+          div.$on({ click: false }).$data('events').click.should.to.be.an('array');
+          div.$on({ click: false })
         }
       }
     ]
