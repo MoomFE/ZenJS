@@ -1,8 +1,8 @@
-import isObject from "../../shared/util/isObject";
-import isBoolean from "../../shared/util/isBoolean";
-import returnTrue from "../../shared/util/returnTrue";
-import returnFalse from "../../shared/util/returnFalse";
-import ZenJS from "../../shared/global/ZenJS/index";
+import isObject from "../../../shared/util/isObject";
+import isBoolean from "../../../shared/util/isBoolean";
+import returnTrue from "../../../shared/util/returnTrue";
+import returnFalse from "../../../shared/util/returnFalse";
+import ZenJS from "../../../shared/global/ZenJS/index";
 
 
 /**
