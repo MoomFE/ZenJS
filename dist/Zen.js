@@ -267,8 +267,7 @@
    * @returns {Object}
    */
   function $_GetDatas(elem) {
-    var Datas = elem[elem] || (elem[elem] = {});
-    return Datas;
+    return elem.__ZENJS_DATA__ || (defineValue(elem, '__ZENJS_DATA__', {}), elem.__ZENJS_DATA__);
   }
 
   defineValue(EventTargetProto, '$data', function $data(name, value, weakRead) {
@@ -314,7 +313,7 @@
   defineValue(EventTargetProto, '$deleteData', function (names) {
 
     if (names == null) {
-      this[this] = {};
+      this.__ZENJS_DATA__ = {};
       return this;
     }
 

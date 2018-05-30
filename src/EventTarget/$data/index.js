@@ -2,6 +2,7 @@ import defineValue from '../../shared/util/defineValue';
 import isEmptyObject from'../../Object/$isEmptyObject/index';
 import isObject from '../../shared/util/isObject';
 import EventTargetProto from '../../shared/global/EventTarget/prototype/index';
+import defineProperty from '../../shared/global/Object/defineProperty';
 
 /**
  * 获取存储在元素上的整个数据集, 如数据集不存在则创建
@@ -9,10 +10,10 @@ import EventTargetProto from '../../shared/global/EventTarget/prototype/index';
  * @returns {Object}
  */
 function $_GetDatas( elem ){
-  const Datas = elem[ elem ] || (
-    elem[ elem ] = {}
+  return elem.__ZENJS_DATA__ || (
+    defineValue( elem, '__ZENJS_DATA__', {} ),
+    elem.__ZENJS_DATA__
   );
-  return Datas;
 }
 
 
@@ -61,7 +62,7 @@ defineValue( EventTargetProto, '$hasData', function( name ){
 defineValue( EventTargetProto, '$deleteData', function( names ){
 
   if( names == null ){
-    this[ this ] = {};
+    this.__ZENJS_DATA__ = {};
     return this;
   }
 

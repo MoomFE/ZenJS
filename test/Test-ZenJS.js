@@ -394,10 +394,10 @@ Object.defineProperty( window, 'div', {
           // 未传入对象则检测是否存过数据
           div.$hasData().should.false;
           div.$data('Data','div').$hasData().should.true;
-          window[ window ] = {};
+          window.__ZENJS_DATA__ = {};
           window.$hasData().should.false;
           window.$data('Data','window').$hasData().should.true;
-          document[ document ] = {};
+          document.__ZENJS_DATA__ = {};
           document.$hasData().should.false;
           document.$data('Data','document').$hasData().should.true;
           // 传入对象检测相应对象
@@ -480,10 +480,10 @@ Object.defineProperty( window, 'div', {
           // 测试各种传值方式
           var test1 = div.$on( 'click', 'div', false, false ).$data('events');
 
-          // Object.$equals(
-          //   test1,
-          //   div.$on( { click: false }, false, 'div' ).$data('events')
-          // ).should.true;
+          Object.$equals(
+            test1,
+            div.$on( { click: false }, 'div', false ).$data('events')
+          ).should.true;
         }
       }
     ]
