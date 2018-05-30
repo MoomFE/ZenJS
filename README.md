@@ -61,6 +61,7 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $deleteData
   - $on
   - $one
+  - $once
   - $off
 
 - Math
@@ -75,6 +76,7 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $assign
   - $create
   - $each
+  - $equals
   - $isEmptyObject
   - $isPlainObject
 
