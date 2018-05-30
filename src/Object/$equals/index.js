@@ -5,58 +5,49 @@ import keys from "../../shared/global/Object/keys";
 import $isPlainObject from "../$isPlainObject/index";
 import isArray from "../../shared/global/Array/isArray";
 import stringify from "../../shared/global/JSON/stringify";
+import isFunction from "../../shared/util/isFunction";
 
 
-function equals( obj, obj2 ){
-
-  if( toString.call( obj ) !== toString.call( obj2 ) ){
-    return false;
-  }
-
-  if( keys( obj ).length !== keys( obj2 ).length ){
-    return false;
-  }
-
-  let key,
-      value,
-      value2;
-  
-  for( key in obj ){
-    value = obj[ key ];
-    value2 = obj2[ key ];
-
-    if( value === value2 ){
-      continue;
-    }
-
-    if( !value || value === obj ){
-      return false;
-    }else if( $isPlainObject( value ) || isArray( value ) ){
-      if( !equals( value, value2 ) ){
-        return false;
-      }
-    }else{
-      try {
-        if( stringify( value ) !== stringify( value2 ) ){
-          return false;
-        }
-      }catch(error){
-        return false;
-      }
-    }
-  }
-
-  return true;
+function unFunctionObject( obj ){
+  var type = typeof obj;
+  return type !== 'object' && type !== 'function';
 }
 
-export default function $equals( obj, obj2 ){
+export default function $equals( obj, obj2, parent ){
+  let key,
+      value, value2;
 
   if( obj === obj2 ){
     return true;
-  }else if( !obj ){
+  }
+
+  if( !obj || parent && parent === obj ){
     return false;
-  }else if( !equals( obj, obj2 ) ){
+  }else if( toString.call( obj ) !== toString.call( obj2 ) ){
     return false;
+  }else if( unFunctionObject( obj ) ){
+    return false;
+  }else if( $isPlainObject( obj ) || isArray( obj ) ){
+    if( keys( obj ).length !== keys( obj2 ).length ){
+      return false;
+    }
+    for( key in obj ){
+      if( !$equals( obj[ key ], obj2[ key ], obj ) ){
+        return false;
+      }
+    }
+  }else if( isFunction( obj.toString ) && !( key = obj.toString() ).startsWith('[object ') ){
+    if( obj2.toString() !== key ){
+      return false;
+    }
+  }else{
+    try{
+      if( stringify( obj ) !== stringify( obj2 ) ){
+        return false;
+      }
+    }catch( error ){
+      return false;
+    }
   }
 
   return true;
