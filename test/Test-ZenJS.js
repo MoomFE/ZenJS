@@ -548,18 +548,69 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$off',
         it: function(){
-          var test = div;
+          // 移除全部事件
+          Object.$equals( window.div.$on('click',false).$off().$data('events'), {} ).should.true;
+          Object.$equals( window.div.$on('click.ZenJS',false).$off().$data('events'), {} ).should.true;
+          Object.$equals( window.div.$on({ click: false, dblclick: true }).$off().$data('events'), {} ).should.true;
+          // 移除全部指定事件
+          Object.$equals( window.div.$on('click',false).$off('click').$data('events'), {} ).should.true;
+          Object.$equals( window.div.$on({ click: false, dblclick: true }).$off('click').$data('events'), window.div.$on('dblclick',true).$data('events') ).should.true;
+          // 使用命名空间移除事件
+          Object.$equals( window.div.$on({ click: false, 'click.ZenJS': true }).$off('click.ZenJS').$data('events'), window.div.$on('click',false).$data('events') ).should.true;
+          // 事件委托
+          var div = window.div;
 
-          test.$on( 'click', false );
-          test.$on( 'click.a', false );
-          test.$on( 'click.a.b', false );
-          test.$on( 'click.a.b.c', false );
+          div.$on( 'click', false );
+          div.$on( 'click', false, 'div' );
 
-          test.$data('events').click.length.should.equals( 4 );
-          // console.log(
-          //   test.$off('click.a').$data('events')
-          // )
-          // test.$off('click.a').$data('events').click.length.should.equals( 3 );
+          // 移除绑定在当前元素上的 click 事件, 但并不包括事件委托
+          div.$off( 'click' );
+          Object.$equals( div.$data('events'), window.div.$on( 'click', false, 'div' ).$data('events') ).should.true;
+
+          // 移除绑定在当前元素上的 click 事件, 只移除事件委托
+          div.$on( 'click', false );
+          div.$off( 'click', '*' );
+          Object.$equals( div.$data('events'), window.div.$on( 'click', false ).$data('events') ).should.true;
+
+          // 移除绑定在当前元素上的 click 事件及事件委托
+          div.$on( 'click', false );
+          div.$off( 'click', '**' );
+          Object.$equals( div.$data('events'), {} ).should.true;
+
+
+
+          div = window.div;
+          div.$on( { click: false, dblclick: false });
+          div.$on( { click: false, dblclick: false }, 'div' );
+
+          // 移除绑定在当前元素上的所有事件委托事件
+          div.$off( '*' );
+          Object.$equals( div.$data('events'), window.div.$on( { click: false, dblclick: false }).$data('events') ).should.true;
+
+          // 移除绑定在当前元素上的所有事件及事件委托
+          div.$on( { click: false, dblclick: false }, 'div' );
+          div.$off( '**' );
+          Object.$equals( div.$data('events'), {} ).should.true;
+        }
+      }, {
+        name: '$on / $one / $once / $off',
+        it: function(){
+
+          var div = window.div,
+              num = 0;
+
+          div
+            .$on( 'click', function(){ num = 1 })
+            .click();
+
+          num.should.equals( 1 );
+
+          div
+            .$on( 'click', function(){ num = 2 })
+            .click();
+
+          num.should.equals( 2 );
+
         }
       }
     ]

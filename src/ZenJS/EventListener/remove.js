@@ -58,26 +58,28 @@ export default function remove( elem, types, listener, selector, mappedTypes ){
     while( handlersLength-- ){
       handleOptions = handlers[ handlersLength ];
 
-      if(
-        // 检查注入到方法上的 guid 是否相同
-        ( !listener || listener.guid === handleOptions.guid ) &&
-        // 检查命名空间是否相同
-        ( !tmp || tmp.test( handleOptions.namespaceStr ) ) &&
-        // 检查事件委托
-        selector
-          // 允许所有绑定的事件通过, 不管有没有事件委托
-          ? selector === '**' ? true
-            // 允许所有有事件委托的事件通过
-            : selector === '*' ? !!handleOptions.selector
-              // 事件委托必须相同才能通过
-              : selector === handleOptions.selector
-          // 允许所有没事件委托的事件通过
-          : !handleOptions.selector
-      ){
-        // 移除事件
-        elem.removeEventListener( type, handleOptions.handle );
-        // 移除事件缓存
-        handlers.splice( handlersLength, 1 );
+      // 检查注入到方法上的 guid 是否相同 ( 如果有 )
+      if( !listener || listener.guid === handleOptions.guid ){
+        // 检查命名空间是否相同 ( 如果有 )
+        if( !tmp || tmp.test( handleOptions.namespaceStr ) ){
+          // 检查事件委托
+          if(
+            selector
+              // 允许所有绑定的事件通过, 不管有没有事件委托
+              ? selector === '**' ||
+                // 允许所有有事件委托的事件通过
+                selector === '*' && handleOptions.selector ||
+                // 事件委托必须相同才能通过
+                selector === handleOptions.selector
+              // 允许所有没事件委托的事件通过
+              : !handleOptions.selector
+          ){
+            // 移除事件
+            elem.removeEventListener( type, handleOptions.handle );
+            // 移除事件缓存
+            handlers.splice( handlersLength, 1 );
+          }
+        }
       }
     }
 

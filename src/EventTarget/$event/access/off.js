@@ -13,8 +13,7 @@ import ZenJS from "../../../shared/global/ZenJS/index";
  */
 export default function off( types, selector, listener ){
 
-  let handleOptions,
-      type;
+  let handleOptions;
 
   // $off( ZenJS.Event )
   if( types && types.preventDefault && ( handleOptions = types.handleOptions ) ){
@@ -33,10 +32,15 @@ export default function off( types, selector, listener ){
 
   // $off( object, select )
   if( isObject( types ) ){
-    for( type in types ){
+    for( let type in types ){
       off.call( this, type, selector, types[ type ] );
     }
     return this;
+  }
+
+  if( types === '*' || types === '**' ){
+    selector = types;
+    types = undefined;
   }
 
   if( isBoolean( listener ) ){

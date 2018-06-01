@@ -739,25 +739,26 @@
       while (handlersLength--) {
         handleOptions = handlers[handlersLength];
 
-        if (
-        // 检查注入到方法上的 guid 是否相同
-        (!listener || listener.guid === handleOptions.guid) && (
-        // 检查命名空间是否相同
-        !tmp || tmp.test(handleOptions.namespaceStr)) &&
-        // 检查事件委托
-        selector
-        // 允许所有绑定的事件通过, 不管有没有事件委托
-        ? selector === '**' ? true
-        // 允许所有有事件委托的事件通过
-        : selector === '*' ? !!handleOptions.selector
-        // 事件委托必须相同才能通过
-        : selector === handleOptions.selector
-        // 允许所有没事件委托的事件通过
-        : !handleOptions.selector) {
-          // 移除事件
-          elem.removeEventListener(type, handleOptions.handle);
-          // 移除事件缓存
-          handlers.splice(handlersLength, 1);
+        // 检查注入到方法上的 guid 是否相同 ( 如果有 )
+        if (!listener || listener.guid === handleOptions.guid) {
+          // 检查命名空间是否相同 ( 如果有 )
+          if (!tmp || tmp.test(handleOptions.namespaceStr)) {
+            // 检查事件委托
+            if (selector
+            // 允许所有绑定的事件通过, 不管有没有事件委托
+            ? selector === '**' ||
+            // 允许所有有事件委托的事件通过
+            selector === '*' && handleOptions.selector ||
+            // 事件委托必须相同才能通过
+            selector === handleOptions.selector
+            // 允许所有没事件委托的事件通过
+            : !handleOptions.selector) {
+              // 移除事件
+              elem.removeEventListener(type, handleOptions.handle);
+              // 移除事件缓存
+              handlers.splice(handlersLength, 1);
+            }
+          }
         }
       }
 
@@ -910,8 +911,7 @@
    */
   function off(types, selector, listener) {
 
-    var handleOptions,
-        type;
+    var handleOptions;
 
     // $off( ZenJS.Event )
     if (types && types.preventDefault && (handleOptions = types.handleOptions)) {
@@ -923,10 +923,15 @@
 
     // $off( object, select )
     if (isObject(types)) {
-      for (type in types) {
+      for (var type in types) {
         off.call(this, type, selector, types[type]);
       }
       return this;
+    }
+
+    if (types === '*' || types === '**') {
+      selector = types;
+      types = undefined;
     }
 
     if (isBoolean(listener)) {
