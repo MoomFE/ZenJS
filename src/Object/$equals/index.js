@@ -14,8 +14,9 @@ function unFunctionObject( obj ){
 }
 
 export default function $equals( obj, obj2, parent ){
-  let key,
-      value, value2;
+  let index, length, key,
+      oIsArray,
+      oString;
 
   if( obj === obj2 ){
     return true;
@@ -27,17 +28,28 @@ export default function $equals( obj, obj2, parent ){
     return false;
   }else if( unFunctionObject( obj ) ){
     return false;
-  }else if( $isPlainObject( obj ) || isArray( obj ) ){
-    if( keys( obj ).length !== keys( obj2 ).length ){
-      return false;
-    }
-    for( key in obj ){
-      if( !$equals( obj[ key ], obj2[ key ], obj ) ){
+  }else if( $isPlainObject( obj ) || ( oIsArray = isArray( obj ) ) ){
+    if( oIsArray ){
+      if( obj.length !== obj2.length ){
         return false;
       }
+      for( index = 0, length = obj.length; index < length; index++ ){
+        if( !$equals( obj[ index ], obj2[ index ], obj ) ){
+          return false;
+        }
+      }
+    }else{
+      if( keys( obj ).length !== keys( obj2 ).length ){
+        return false;
+      }
+      for( key in obj ){
+        if( !$equals( obj[ key ], obj2[ key ], obj ) ){
+          return false;
+        }
+      }
     }
-  }else if( isFunction( obj.toString ) && !( key = obj.toString() ).startsWith('[object ') ){
-    if( obj2.toString() !== key ){
+  }else if( isFunction( obj.toString ) && !( oString = obj.toString() ).startsWith('[object ') ){
+    if( obj2.toString() !== oString ){
       return false;
     }
   }else{

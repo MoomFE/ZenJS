@@ -439,7 +439,9 @@ interface ObjectConstructor {
    */
   $each( obj: any, callback: ( key: String, value: any, obj: any ) => Boolean ): obj;
   /**
-   * 判断两个对象的类型是否相同然后判断两个对象的各个属性是否相同, 如果属性也有属性, 也会继续进行判断
+   * 判断两个对象的类型是否相同然后判断两个对象的各个属性是否相同. 如果属性也有属性, 也会继续进行判断.
+   * 目前可判断原生类型以及提供了 toString 接口的对象.
+   * 对于实在无法判断的对象, 将会使用 JSON.stringify 进行转换后进行判断( 这一步骤将会产生误差, 比如两个 Set 对象将无法进行判断 ).
    * @param obj 需要判断的第一个对象
    * @param obj2 需要判断的第二个对象
    */
