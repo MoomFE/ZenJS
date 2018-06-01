@@ -12,6 +12,9 @@ const allConfig = [
   }
 ];
 
+const readmePath = __dirname.replace( /scripts$/, 'README.md' ),
+      debugSearch = /(\|\sDebug\s+\|\s)[0-9\.\skb]+(\s\|\s)[0-9\.\skb]+(\s\|)/,
+      minSearch = /(\|\sMin\s+\|\s)[0-9\.\skb]+(\s\|\s)[0-9\.\skb]+(\s\|)/;
 
 !async function(){
 
@@ -57,6 +60,14 @@ const allConfig = [
         })
         .then( ([ size, gzip ]) => {
           console.log(`${ output } 已构建完毕! ${ new Date() - now + 'ms' }\n      size: ${ size }\n      gzip: ${ gzip }`);
+
+          fs.writeFileSync(
+            readmePath,
+            fs.readFileSync( readmePath, 'utf-8' )
+              .replace( isMinify ? minSearch : debugSearch, `$1${ size }$2${ gzip }$3` ),
+            'utf-8'
+          );
+
           resolve();
         })
         .catch( error => {

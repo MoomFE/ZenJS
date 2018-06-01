@@ -18,6 +18,14 @@
 
 <br>
 
+## 大小
+|       | Default | GZip   |
+| -:    | :-      | :-     |
+| Debug | 30.84kb | 8.35kb |
+| Min   | 11.32kb | 4.50kb |
+
+<br>
+
 ## 使用
 
 ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，polyfill 则需要自行添加。
