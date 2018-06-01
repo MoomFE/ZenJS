@@ -599,18 +599,44 @@ Object.defineProperty( window, 'div', {
           var div = window.div,
               num = 0;
 
-          div
-            .$on( 'click', function(){ num = 1 })
-            .click();
-
+          div.$on( 'click', function(){ num++ } )
+             .click();
           num.should.equals( 1 );
 
-          div
-            .$on( 'click', function(){ num = 2 })
-            .click();
+          div.$on( 'click', function(){ num++ } )
+             .click();
+          num.should.equals( 3 );
 
-          num.should.equals( 2 );
+          div.$one( 'click', function(){ num++ } )
+             .click();
+          num.should.equals( 6 );
 
+          div.click();
+          num.should.equals( 8 );
+
+          num = 0;
+          div.$off();
+
+          var childDiv = div.appendChild( window.div );
+
+          div.$on( 'click', function(){ num++ } );
+          div.$on( 'click', 'div', function(){ num += 2 } );
+
+          childDiv.click();
+          num.should.equals( 3 );
+
+          div.$off()
+          childDiv.click();
+          num.should.equals( 5 );
+
+          div.$off('*');
+          div.$on( 'click', function(){ num++ } );
+          childDiv.click();
+          num.should.equals( 6 );
+
+          div.$off('**');
+          childDiv.click();
+          num.should.equals( 6 );
         }
       }
     ]
