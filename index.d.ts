@@ -499,6 +499,62 @@ interface Window {
 
 
 interface ZenJS {
+  /**
+   * 一些可修改的配置
+   */
+  config: {
+    /**
+     * 注入到浏览器中的功能
+     */
+    inject: {
+      /**
+       * 当此选项打开时, 浏览器自带的 addEventListener 和 removeEventListener 方法将被替换为 ZenJS 重写的 $on, $off .
+       * 默认打开.
+       */
+      event: Boolean;
+    }
+  },
+  /**
+   * 创建一个可写的事件对象
+   * @param event 原生事件对象
+   */
+  Event( event: DocumentEventMap ): any,
+  /**
+   * 关于事件绑定/解绑/触发的方法( 内部使用 )
+   */
+  EventListener: {
+    /**
+     * 绑定事件( 内部使用 )
+     * @param elem 需要绑定事件的对象
+     * @param types 需要绑定的事件集
+     * @param selector 事件委托的选择器
+     * @param listener 绑定的事件
+     * @param options 事件绑定参数
+     */
+    add( elem: Element, types: Array, selector: String, listener: Function, options: Object );
+    /**
+     * 触发事件时调用的方法( 内部使用 )
+     * @param nativeEvent 当前触发的事件对象
+     */
+    dispatch( nativeEvent: DocumentEventMap ): any;
+    /**
+     * 移除事件( 内部使用 )
+     * @param elem 需要移除事件的对象
+     * @param types 需要解绑的事件集
+     * @param listener 解绑的事件
+     * @param selector 事件委托的选择器
+     */
+    remove( elem: Element, types: String, listener: Function, selector: String );
+    /**
+     * 触发绑定在元素上的事件( 只触发事件 && 内部使用 )
+     * @param elem 需要触发事件的对象
+     * @param types 需要触发的事件集
+     */
+    emit( elem: Element, types: String );
+  },
+  /**
+   * 唯一编号, 每次读取会自动递增
+   */
   readonly guid: Number,
   /**
    * ZenJS 工具包
@@ -574,46 +630,12 @@ interface ZenJS {
       /**
        * 判断浏览器是否支持事件的 passive 选项
        */
-      readonly passiveEvent: Boolean
+      readonly passiveEvent: Boolean,
+      /**
+       * 判断浏览器是否支持 EventTarget
+       */
+      readonly EventTarget: Boolean
     }
-  },
-  /**
-   * 创建一个可写的事件对象
-   * @param event 原生事件对象
-   */
-  Event( event: DocumentEventMap ): any,
-  /**
-   * 关于事件绑定/解绑/触发的方法( 内部使用 )
-   */
-  EventListener: {
-    /**
-     * 绑定事件( 内部使用 )
-     * @param elem 需要绑定事件的对象
-     * @param types 需要绑定的事件集
-     * @param selector 事件委托的选择器
-     * @param listener 绑定的事件
-     * @param options 事件绑定参数
-     */
-    add( elem: Element, types: Array, selector: String, listener: Function, options: Object );
-    /**
-     * 触发事件时调用的方法( 内部使用 )
-     * @param nativeEvent 当前触发的事件对象
-     */
-    dispatch( nativeEvent: DocumentEventMap ): any;
-    /**
-     * 移除事件( 内部使用 )
-     * @param elem 需要移除事件的对象
-     * @param types 需要解绑的事件集
-     * @param listener 解绑的事件
-     * @param selector 事件委托的选择器
-     */
-    remove( elem: Element, types: String, listener: Function, selector: String );
-    /**
-     * 触发绑定在元素上的事件( 只触发事件 && 内部使用 )
-     * @param elem 需要触发事件的对象
-     * @param types 需要触发的事件集
-     */
-    emit( elem: Element, types: String );
   }
 }
 

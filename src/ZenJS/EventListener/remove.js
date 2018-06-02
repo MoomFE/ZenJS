@@ -75,7 +75,7 @@ export default function remove( elem, types, listener, selector ){
               : !handleOptions.selector
           ){
             // 移除事件
-            elem.removeEventListener( type, handleOptions.handle );
+            elem.__ZENJS_EVENT_REMOVE__( type, handleOptions.handle );
             // 移除事件缓存
             handlers.splice( handlersLength, 1 );
           }

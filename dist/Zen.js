@@ -265,6 +265,16 @@
 
   var EventTarget = supportsEventTarget ? window.EventTarget.prototype : [window, document, ElementProto];
 
+  if (supportsEventTarget) {
+    defineValue(EventTarget, '__ZENJS_EVENT_ADD__', EventTarget.addEventListener);
+    defineValue(EventTarget, '__ZENJS_EVENT_REMOVE__', EventTarget.removeEventListener);
+  } else {
+    EventTarget.forEach(function (obj) {
+      defineValue(obj, '__ZENJS_EVENT_ADD__', obj.addEventListener);
+      defineValue(obj, '__ZENJS_EVENT_REMOVE__', obj.removeEventListener);
+    });
+  }
+
   /**
    * 获取存储在元素上的整个数据集, 如数据集不存在则创建
    * @param {Element} elem 
@@ -504,9 +514,9 @@
       (events[type] || (events[type] = [])).push(handleOptions);
 
       if (options.passive) {
-        elem.addEventListener(type, handleOptions.handle, options);
+        elem.__ZENJS_EVENT_ADD__(type, handleOptions.handle, options);
       } else {
-        elem.addEventListener(type, handleOptions.handle, options.capture || false);
+        elem.__ZENJS_EVENT_ADD__(type, handleOptions.handle, options.capture || false);
       }
     }
   }
@@ -757,7 +767,7 @@
             // 允许所有没事件委托的事件通过
             : !handleOptions.selector) {
               // 移除事件
-              elem.removeEventListener(type, handleOptions.handle);
+              elem.__ZENJS_EVENT_REMOVE__(type, handleOptions.handle);
               // 移除事件缓存
               handlers.splice(handlersLength, 1);
             }
@@ -1403,7 +1413,51 @@
 
   defineValue(window, '$typeof', $typeof);
 
+  var inject = $create$1(true);
+
+  /**
+   * 事件
+   */
+  var event;
+
+  defineProperty(inject, 'event', {
+    get: function () {
+      return event;
+    },
+    set: function (val) {
+      if (!isBoolean(val) || event === val) return false;
+      if (event = val) {
+        if (supportsEventTarget) {
+          defineValue(EventTarget, 'addEventListener', EventTarget.$on);
+          defineValue(EventTarget, 'removeEventListener', EventTarget.$off);
+        } else {
+          EventTarget.forEach(function (obj) {
+            defineValue(obj, 'addEventListener', obj.$on);
+            defineValue(obj, 'removeEventListener', obj.$off);
+          });
+        }
+      } else {
+        if (supportsEventTarget) {
+          defineValue(EventTarget, 'addEventListener', EventTarget.__ZENJS_EVENT_ADD__);
+          defineValue(EventTarget, 'removeEventListener', EventTarget.__ZENJS_EVENT_REMOVE__);
+        } else {
+          EventTarget.forEach(function (obj) {
+            defineValue(obj, 'addEventListener', obj.__ZENJS_EVENT_ADD__);
+            defineValue(obj, 'removeEventListener', obj.__ZENJS_EVENT_REMOVE__);
+          });
+        }
+      }
+    }
+  });
+
   var config = ZenJS.config = $create$1(true);
+
+  config.inject = inject;
+
+  // 默认开启所有注入项
+  keys(inject).forEach(function (key) {
+    inject[key] = true;
+  });
 
   var guid = 1;
 

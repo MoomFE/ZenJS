@@ -64,9 +64,9 @@ export default function add( elem, types, selector, listener, options ){
     ).push( handleOptions );
 
     if( options.passive ){
-      elem.addEventListener( type, handleOptions.handle, options );
+      elem.__ZENJS_EVENT_ADD__( type, handleOptions.handle, options );
     }else{
-      elem.addEventListener( type, handleOptions.handle, options.capture || false );
+      elem.__ZENJS_EVENT_ADD__( type, handleOptions.handle, options.capture || false );
     }
   }
 }
