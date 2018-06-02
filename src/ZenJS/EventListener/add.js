@@ -2,6 +2,7 @@ import rtypenamespace from '../../shared/const/rtypenamespace';
 import concat from '../../shared/global/Array/prototype/concat';
 import isEmptyObject from '../../Object/$isEmptyObject/index';
 import ZenJS from '../../shared/global/ZenJS/index';
+import { addEventListenerPrivate } from '../../shared/const/event';
 
 /**
  * 事件处理 => 添加事件3: 绑定事件
@@ -64,9 +65,9 @@ export default function add( elem, types, selector, listener, options ){
     ).push( handleOptions );
 
     if( options.passive ){
-      elem.__ZENJS_EVENT_ADD__( type, handleOptions.handle, options );
+      elem[ addEventListenerPrivate ]( type, handleOptions.handle, options );
     }else{
-      elem.__ZENJS_EVENT_ADD__( type, handleOptions.handle, options.capture || false );
+      elem[ addEventListenerPrivate ]( type, handleOptions.handle, options.capture || false );
     }
   }
 }

@@ -1,4 +1,5 @@
 import defineProperty from '../global/Object/defineProperty';
+import { addEventListener } from '../const/event';
 
 let supportsPassiveEvent = false;
 
@@ -10,8 +11,8 @@ try{
     }
   });
 
-  window.addEventListener( 'test', null, options );
-  
+  window[ addEventListener ]( 'test', null, options );
+
 }catch(e){}
 
 export {

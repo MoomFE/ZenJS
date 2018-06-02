@@ -242,9 +242,15 @@
     });
   });
 
+  var addEventListener = 'addEventListener';
+  var addEventListenerPrivate = '__ZENJS_EVENT_ADD__';
+
+  var removeEventListener = 'removeEventListener';
+  var removeEventListenerPrivate = '__ZENJS_EVENT_REMOVE__';
+
   defineValue(document, '$ready', function (func, data) {
     if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
-    this.addEventListener('DOMContentLoaded', function callback(event) {
+    this[addEventListener]('DOMContentLoaded', function callback(event) {
       this.removeEventListener(event.type, callback);
       func.apply(window, data);
     });
@@ -266,14 +272,16 @@
   var EventTarget = supportsEventTarget ? window.EventTarget.prototype : [window, document, ElementProto];
 
   if (supportsEventTarget) {
-    defineValue(EventTarget, '__ZENJS_EVENT_ADD__', EventTarget.addEventListener);
-    defineValue(EventTarget, '__ZENJS_EVENT_REMOVE__', EventTarget.removeEventListener);
+    defineValue(EventTarget, addEventListenerPrivate, EventTarget[addEventListener]);
+    defineValue(EventTarget, removeEventListenerPrivate, EventTarget[removeEventListener]);
   } else {
     EventTarget.forEach(function (obj) {
-      defineValue(obj, '__ZENJS_EVENT_ADD__', obj.addEventListener);
-      defineValue(obj, '__ZENJS_EVENT_REMOVE__', obj.removeEventListener);
+      defineValue(obj, addEventListenerPrivate, obj[addEventListener]);
+      defineValue(obj, removeEventListenerPrivate, obj[removeEventListener]);
     });
   }
+
+  var DATA = '__ZENJS_DATA__';
 
   /**
    * 获取存储在元素上的整个数据集, 如数据集不存在则创建
@@ -281,7 +289,7 @@
    * @returns {Object}
    */
   function $_GetDatas(elem) {
-    return elem.__ZENJS_DATA__ || (defineValue(elem, '__ZENJS_DATA__', {}), elem.__ZENJS_DATA__);
+    return elem[DATA] || (defineValue(elem, DATA, {}), elem[DATA]);
   }
 
   defineValue(EventTarget, '$data', function $data(name, value, weakRead) {
@@ -327,7 +335,7 @@
   defineValue(EventTarget, '$deleteData', function (names) {
 
     if (names == null) {
-      this.__ZENJS_DATA__ = {};
+      this[DATA] = {};
       return this;
     }
 
@@ -514,9 +522,9 @@
       (events[type] || (events[type] = [])).push(handleOptions);
 
       if (options.passive) {
-        elem.__ZENJS_EVENT_ADD__(type, handleOptions.handle, options);
+        elem[addEventListenerPrivate](type, handleOptions.handle, options);
       } else {
-        elem.__ZENJS_EVENT_ADD__(type, handleOptions.handle, options.capture || false);
+        elem[addEventListenerPrivate](type, handleOptions.handle, options.capture || false);
       }
     }
   }
@@ -767,7 +775,7 @@
             // 允许所有没事件委托的事件通过
             : !handleOptions.selector) {
               // 移除事件
-              elem.__ZENJS_EVENT_REMOVE__(type, handleOptions.handle);
+              elem[removeEventListenerPrivate](type, handleOptions.handle);
               // 移除事件缓存
               handlers.splice(handlersLength, 1);
             }
@@ -858,7 +866,7 @@
       }
     });
 
-    window.addEventListener('test', null, options);
+    window[addEventListener]('test', null, options);
   } catch (e) {}
 
   /**
@@ -1018,8 +1026,6 @@
 
     return this;
   }
-
-  // EventTarget
 
   function $one(types, selector, listener, options) {
     return on.call(true, this, types, selector, listener, options);
@@ -1395,7 +1401,7 @@
 
   defineValue(window, '$ready', function (func, data) {
     if (this.document.readyState === 'complete') return func.apply(this, data);
-    this.addEventListener('load', function callback(event) {
+    this[addEventListener]('load', function callback(event) {
       this.removeEventListener(event.type, callback);
       func.apply(this, data);
     });
@@ -1428,22 +1434,22 @@
       if (!isBoolean(val) || event === val) return false;
       if (event = val) {
         if (supportsEventTarget) {
-          defineValue(EventTarget, 'addEventListener', EventTarget.$on);
-          defineValue(EventTarget, 'removeEventListener', EventTarget.$off);
+          defineValue(EventTarget, addEventListener, EventTarget.$on);
+          defineValue(EventTarget, '', EventTarget.$off);
         } else {
           EventTarget.forEach(function (obj) {
-            defineValue(obj, 'addEventListener', obj.$on);
-            defineValue(obj, 'removeEventListener', obj.$off);
+            defineValue(obj, addEventListener, obj.$on);
+            defineValue(obj, removeEventListener, obj.$off);
           });
         }
       } else {
         if (supportsEventTarget) {
-          defineValue(EventTarget, 'addEventListener', EventTarget.__ZENJS_EVENT_ADD__);
-          defineValue(EventTarget, 'removeEventListener', EventTarget.__ZENJS_EVENT_REMOVE__);
+          defineValue(EventTarget, addEventListener, EventTarget[addEventListenerPrivate]);
+          defineValue(EventTarget, removeEventListener, EventTarget[removeEventListenerPrivate]);
         } else {
           EventTarget.forEach(function (obj) {
-            defineValue(obj, 'addEventListener', obj.__ZENJS_EVENT_ADD__);
-            defineValue(obj, 'removeEventListener', obj.__ZENJS_EVENT_REMOVE__);
+            defineValue(obj, addEventListener, obj[addEventListenerPrivate]);
+            defineValue(obj, removeEventListener, obj[removeEventListenerPrivate]);
           });
         }
       }

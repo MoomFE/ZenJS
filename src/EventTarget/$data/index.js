@@ -4,15 +4,17 @@ import isObject from '../../shared/util/isObject';
 import EventTarget from '../../shared/global/EventTarget/index';
 import defineProperty from '../../shared/global/Object/defineProperty';
 
+const DATA = '__ZENJS_DATA__';
+
 /**
  * 获取存储在元素上的整个数据集, 如数据集不存在则创建
  * @param {Element} elem 
  * @returns {Object}
  */
 function $_GetDatas( elem ){
-  return elem.__ZENJS_DATA__ || (
-    defineValue( elem, '__ZENJS_DATA__', {} ),
-    elem.__ZENJS_DATA__
+  return elem[ DATA ] || (
+    defineValue( elem, DATA, {} ),
+    elem[ DATA ]
   );
 }
 
@@ -62,7 +64,7 @@ defineValue( EventTarget, '$hasData', function( name ){
 defineValue( EventTarget, '$deleteData', function( names ){
 
   if( names == null ){
-    this.__ZENJS_DATA__ = {};
+    this[ DATA ] = {};
     return this;
   }
 
