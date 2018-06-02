@@ -612,9 +612,8 @@ interface ZenJS {
      * 触发绑定在元素上的事件( 只触发事件 && 内部使用 )
      * @param elem 需要触发事件的对象
      * @param types 需要触发的事件集
-     * @param selector 事件委托的选择器
      */
-    emit( elem: Element, types: String, selector: String );
+    emit( elem: Element, types: String );
   }
 }
 

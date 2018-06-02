@@ -39,14 +39,8 @@ defineValue( EventTargetProto, {
    */
   $off: off,
 
-  $emit: function( types, selector ){
-
-    if( types === '*' || types === '**' ){
-      selector = types;
-      types = undefined;
-    }
-
-    ZenJS.EventListener.emit( this, types, selector );
-
+  $emit: function( types ){
+    return ZenJS.EventListener.emit( this, types ),
+      this;
   }
 });

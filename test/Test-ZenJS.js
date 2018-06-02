@@ -534,6 +534,9 @@ Object.defineProperty( window, 'div', {
           Object.$equals( test, div.$on( { click: false }, { passive: true }, 'div' ).$data('events') ).should.true;
           Object.$equals( test, div.$on( 'div', { click: false }, { passive: true } ).$data('events') ).should.true;
           Object.$equals( test, div.$on( 'div', { click: false }, { passive: true } ).$data('events') ).should.true;
+
+          test = div.$on( 'click', false ).$on( 'dblclick', false ).$data('events');
+          Object.$equals( test, div.$on( 'click dblclick', false ).$data('events') ).should.true;
         }
       }, {
         name: '$one / $once',
@@ -637,6 +640,28 @@ Object.defineProperty( window, 'div', {
           div.$off('**');
           childDiv.click();
           num.should.equals( 6 );
+        }
+      }, {
+        name: '$emit',
+        it: function(){
+          
+          var div = window.div,
+              num = 0;
+
+          div.$on( 'click dblclick', function(){ num++ });
+
+          div.$emit();
+          num.should.equals( 0 );
+
+          div.$emit( 'click' );
+          num.should.equal( 1 );
+
+          div.$emit( 'click dblclick' );
+          num.should.equal( 3 );
+
+          div.$off();
+          num.should.equals( 3 );
+
         }
       }
     ]
