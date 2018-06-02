@@ -631,7 +631,7 @@
 
   /**
    * 事件处理 => 触发事件
-   * @param {Event} nativeEvent 当前触发的事件对象
+   * @param {DocumentEventMap} nativeEvent 当前触发的事件对象
    */
   function dispatch(nativeEvent) {
 
@@ -687,11 +687,11 @@
   /**
    * 事件处理 => 移除事件2: 移除事件
    * @param {Element} elem 需要移除事件的对象
-   * @param {Array} types 需要解绑的事件集
+   * @param {String} types 需要解绑的事件集
    * @param {Function} listener 解绑的事件
    * @param {String} selector 事件委托的选择器
    */
-  function remove(elem, types, listener, selector, mappedTypes) {
+  function remove(elem, types, listener, selector) {
 
     if (!elem.$hasData('events')) {
       return;
@@ -768,10 +768,19 @@
     }
   }
 
+  /**
+   * 触发绑定在元素上的事件( 只触发事件 )
+   * @param {Element} elem 
+   * @param {String} types 
+   * @param {String} selector 
+   */
+  function emit(elem, types, selector) {}
+
   var EventListener = ZenJS.EventListener = $create$1(true, {
     add: add,
     dispatch: dispatch,
-    remove: remove
+    remove: remove,
+    emit: emit
   });
 
   var supportsPassiveEvent = false;
@@ -929,6 +938,8 @@
       return this;
     }
 
+    // $off( '*' )
+    // $off( '**' )
     if (types === '*' || types === '**') {
       selector = types;
       types = undefined;
@@ -965,7 +976,17 @@
     /**
      * 事件处理 => 移除事件1: 获取并处理参数
      */
-    $off: off
+    $off: off,
+
+    $emit: function (types, selector) {
+
+      if (types === '*' || types === '**') {
+        selector = types;
+        types = undefined;
+      }
+
+      ZenJS.EventListener.emit(this, types, selector);
+    }
   });
 
   function $mean() {

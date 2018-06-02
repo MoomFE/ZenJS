@@ -5,11 +5,11 @@ import rnothtmlwhite from "../../shared/const/rnothtmlwhite";
 /**
  * 事件处理 => 移除事件2: 移除事件
  * @param {Element} elem 需要移除事件的对象
- * @param {Array} types 需要解绑的事件集
+ * @param {String} types 需要解绑的事件集
  * @param {Function} listener 解绑的事件
  * @param {String} selector 事件委托的选择器
  */
-export default function remove( elem, types, listener, selector, mappedTypes ){
+export default function remove( elem, types, listener, selector ){
 
   if( !elem.$hasData( 'events' ) ){
     return;

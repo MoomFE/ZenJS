@@ -38,6 +38,8 @@ export default function off( types, selector, listener ){
     return this;
   }
 
+  // $off( '*' )
+  // $off( '**' )
   if( types === '*' || types === '**' ){
     selector = types;
     types = undefined;

@@ -499,7 +499,7 @@ interface Window {
 
 
 interface ZenJS {
-  readonly guid: Number;
+  readonly guid: Number,
   /**
    * ZenJS 工具包
    */
@@ -576,6 +576,45 @@ interface ZenJS {
        */
       readonly passiveEvent: Boolean
     }
+  },
+  /**
+   * 创建一个可写的事件对象
+   * @param event 原生事件对象
+   */
+  Event( event: DocumentEventMap ): any,
+  /**
+   * 关于事件绑定/解绑/触发的方法( 内部使用 )
+   */
+  EventListener: {
+    /**
+     * 绑定事件( 内部使用 )
+     * @param elem 需要绑定事件的对象
+     * @param types 需要绑定的事件集
+     * @param selector 事件委托的选择器
+     * @param listener 绑定的事件
+     * @param options 事件绑定参数
+     */
+    add( elem: Element, types: Array, selector: String, listener: Function, options: Object );
+    /**
+     * 触发事件时调用的方法( 内部使用 )
+     * @param nativeEvent 当前触发的事件对象
+     */
+    dispatch( nativeEvent: DocumentEventMap ): any;
+    /**
+     * 移除事件( 内部使用 )
+     * @param elem 需要移除事件的对象
+     * @param types 需要解绑的事件集
+     * @param listener 解绑的事件
+     * @param selector 事件委托的选择器
+     */
+    remove( elem: Element, types: String, listener: Function, selector: String );
+    /**
+     * 触发绑定在元素上的事件( 只触发事件 && 内部使用 )
+     * @param elem 需要触发事件的对象
+     * @param types 需要触发的事件集
+     * @param selector 事件委托的选择器
+     */
+    emit( elem: Element, types: String, selector: String );
   }
 }
 

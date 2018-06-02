@@ -16,6 +16,7 @@ import defineValue from '../../shared/util/defineValue';
 import on from './access/on';
 import off from './access/off';
 import EventTargetProto from '../../shared/global/EventTarget/prototype/index';
+import ZenJS from '../../shared/global/ZenJS/index';
 
 function $one( types, selector, listener, options ){
   return on.call( true, this, types, selector, listener, options );
@@ -36,5 +37,16 @@ defineValue( EventTargetProto, {
   /**
    * 事件处理 => 移除事件1: 获取并处理参数
    */
-  $off: off
+  $off: off,
+
+  $emit: function( types, selector ){
+
+    if( types === '*' || types === '**' ){
+      selector = types;
+      types = undefined;
+    }
+
+    ZenJS.EventListener.emit( this, types, selector );
+
+  }
 });
