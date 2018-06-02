@@ -93,7 +93,7 @@ const EventProto = ZenJS.Event.prototype = {
 });
 
 
-function addProp( name, get, set ){
+const addProp = Event.addProp = function addProp( name, get, set ){
   defineProperty(
     EventProto, name, assign( {}, defineGetPropertyOptions, {
       get: get || function(){
@@ -108,8 +108,6 @@ function addProp( name, get, set ){
     })
   );
 };
-
-Event.addProp = addProp;
 
 [
   'altKey',

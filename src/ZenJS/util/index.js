@@ -45,5 +45,3 @@ util.fn = $create( true, {
 util.supports = $create( true, {
   passiveEvent: supportsPassiveEvent
 });
-
-export default util;

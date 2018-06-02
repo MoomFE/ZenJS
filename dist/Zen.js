@@ -610,7 +610,7 @@
     };
   });
 
-  function addProp(name, get, set) {
+  var addProp = Event.addProp = function addProp(name, get, set) {
     defineProperty(EventProto, name, assign({}, defineGetPropertyOptions, {
       get: get || function () {
         var originalEvent = this.originalEvent;
@@ -622,8 +622,7 @@
         this[name] = value;
       }
     }));
-  }
-  Event.addProp = addProp;
+  };
 
   ['altKey', 'bubbles', 'cancelable', 'changedTouches', 'ctrlKey', 'detail', 'eventPhase', 'metaKey', 'pageX', 'pageY', 'shiftKey', 'view', 'char', 'charCode', 'key', 'keyCode', 'button', 'buttons', 'clientX', 'clientY', 'offsetX', 'offsetY', 'pointerId', 'pointerType', 'screenX', 'screenY', 'targetTouches', 'toElement', 'touches'].forEach(function (name) {
     return addProp(name);
@@ -1399,6 +1398,8 @@
   }
 
   defineValue(window, '$typeof', $typeof);
+
+  var config = ZenJS.config = $create$1(true);
 
   var guid = 1;
 
