@@ -15,14 +15,14 @@
 import defineValue from '../../shared/util/defineValue';
 import on from './access/on';
 import off from './access/off';
-import EventTargetProto from '../../shared/global/EventTarget/prototype/index';
+import EventTarget from '../../shared/global/EventTarget/index';
 import ZenJS from '../../shared/global/ZenJS/index';
 
 function $one( types, selector, listener, options ){
   return on.call( true, this, types, selector, listener, options );
 }
 
-defineValue( EventTargetProto, {
+defineValue( EventTarget, {
   /**
    * 事件处理 => 添加事件1: 获取参数
    */

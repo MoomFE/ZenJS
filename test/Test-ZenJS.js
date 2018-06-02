@@ -12,8 +12,8 @@ Object.defineProperty( window, 'div', {
     {}.toString
   );
 
-  function isUndef( o ){
-    return o === undefined;
+  function isUndef( obj ){
+    return obj === undefined;
   }
   function isEqual( first, second ){
     return first === second;
@@ -21,8 +21,11 @@ Object.defineProperty( window, 'div', {
   function isElement( elem ){
     return toString( elem ) === '[object HTMLDivElement]';
   }
-  function isNull( o ){
-    return o === null;
+  function isNull( obj ){
+    return obj === null;
+  }
+  function isWindow( obj ){
+    return obj != null && obj === obj.window;
   }
 
   var describes = [];
@@ -372,9 +375,10 @@ Object.defineProperty( window, 'div', {
           isElement( div.$data('Data','div') ).should.true;
           isElement( div.$data({Data:'div'}) ).should.true;
           isElement( div.$data({Data:'div'},true) ).should.true;
-          window.$data('Data','window').should.equals( window );
-          window.$data({'Data':'window'}).should.equals( window );
-          window.$data({'Data':'window'},true).should.equals( window );
+          isWindow( window.$data('Data','window') ).should.true;
+          isWindow( window.$data('Data','window') ).should.true;
+          isWindow( window.$data({'Data':'window'}) ).should.true;
+          isWindow( window.$data({'Data':'window'},true) ).should.true;
           document.$data('Data','document').should.equals( document );
           document.$data({'Data':'document'}).should.equals( document );
           document.$data({'Data':'document'},true).should.equals( document );
@@ -429,9 +433,9 @@ Object.defineProperty( window, 'div', {
           isElement( div.$deleteData() ).should.true;
           isElement( div.$deleteData('noData') ).should.true;
           isElement( div.$deleteData('noData1 noData2') ).should.true;
-          window.$deleteData().should.equals( window );
-          window.$deleteData( 'noData' ).should.equals( window );
-          window.$deleteData( 'noData1 noData2' ).should.equals( window );
+          isWindow( window.$deleteData() ).should.true;
+          isWindow( window.$deleteData( 'noData' ) ).should.true;
+          isWindow( window.$deleteData( 'noData1 noData2' ) ).should.true;
           document.$deleteData().should.equals( document );
           document.$deleteData( 'noData' ).should.equals( document );
           document.$deleteData( 'noData1 noData2' ).should.equals( document );
@@ -451,17 +455,21 @@ Object.defineProperty( window, 'div', {
         name: '$on',
         it: function(){
           // 测试数据存储
-          div.$on( 'click', false ).$hasData('events');
+          div.$on( 'click', false ).$hasData('events').should.true;
           div.$on( 'click', false ).$data('events').click.should.to.be.an('array');
           div.$on( 'click', false ).$data('events').click.length.should.equals( 1 );
           div.$on( 'click', false ).$on( 'click', false ).$data('events').click.length.should.equals( 2 );
-          div.$on( 'click', false ).$data('events').click[0].should.to.be.an('object');
+          (
+            typeof div.$on( 'click', false ).$data('events').click[0] === 'object'
+          ).should.true;
           // 测试命名空间存储
           div.$on( 'click', false ).$data('events').click[0].namespaceStr.should.equals('');
           div.$on( 'click.a', false ).$data('events').click[0].namespaceStr.should.equals('a');
           div.$on( 'click.a.b', false ).$data('events').click[0].namespaceStr.should.equals('a.b');
           // 测试可选参数
-          div.$on('click', false).$data('events').click[0].options.should.to.be.an('object');
+          (
+            typeof div.$on('click', false).$data('events').click[0].options === 'object'
+          ).should.true;
             // 可选参数为 false 时, 不会添加到参数中
             JSON.stringify( div.$on( 'click', false, false ).$data('events').click[0].options ).should.equals('{}');
             JSON.stringify( div.$on( 'click', false, { capture: false } ).$data('events').click[0].options ).should.equals('{}');
@@ -600,21 +608,35 @@ Object.defineProperty( window, 'div', {
         it: function(){
 
           var div = window.div,
-              num = 0;
+              num = 0,
+              isIE = false;
 
           div.$on( 'click', function(){ num++ } )
              .click();
+          if( num === 0 ) isIE = true;
+          if( isIE ){
+            div.$emit('click');
+          }
           num.should.equals( 1 );
 
           div.$on( 'click', function(){ num++ } )
              .click();
+          if( isIE ){
+            div.$emit('click');
+          }
           num.should.equals( 3 );
 
           div.$one( 'click', function(){ num++ } )
              .click();
+          if( isIE ){
+            div.$emit('click');
+          }
           num.should.equals( 6 );
 
           div.click();
+          if( isIE ){
+            div.$emit('click');
+          }
           num.should.equals( 8 );
 
           num = 0;
@@ -752,6 +774,8 @@ Object.defineProperty( window, 'div', {
       }, {
         name: '$someRandom',
         it: function(){
+          this.timeout( 666666 );
+
           for( var i = 0; i < 260; i++ ){
             /[a-z]+/.test( String.$someRandom() ).should.true;
             String.$someRandom( i ).length.should.equals( i );

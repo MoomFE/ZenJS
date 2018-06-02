@@ -1,7 +1,7 @@
 import defineValue from '../../shared/util/defineValue';
 import isEmptyObject from'../../Object/$isEmptyObject/index';
 import isObject from '../../shared/util/isObject';
-import EventTargetProto from '../../shared/global/EventTarget/prototype/index';
+import EventTarget from '../../shared/global/EventTarget/index';
 import defineProperty from '../../shared/global/Object/defineProperty';
 
 /**
@@ -17,7 +17,7 @@ function $_GetDatas( elem ){
 }
 
 
-defineValue( EventTargetProto, '$data', function $data( name, value, weakRead ){
+defineValue( EventTarget, '$data', function $data( name, value, weakRead ){
   const Data = $_GetDatas( this );
 
   // $data( {} )
@@ -44,7 +44,7 @@ defineValue( EventTargetProto, '$data', function $data( name, value, weakRead ){
 });
 
 
-defineValue( EventTargetProto, '$hasData', function( name ){
+defineValue( EventTarget, '$hasData', function( name ){
   const Data = $_GetDatas( this );
 
   if( isEmptyObject( Data ) ){
@@ -59,7 +59,7 @@ defineValue( EventTargetProto, '$hasData', function( name ){
 });
 
 
-defineValue( EventTargetProto, '$deleteData', function( names ){
+defineValue( EventTarget, '$deleteData', function( names ){
 
   if( names == null ){
     this.__ZENJS_DATA__ = {};

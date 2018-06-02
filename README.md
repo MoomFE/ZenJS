@@ -21,8 +21,8 @@
 ## 大小
 |       | Default | Gzip   |
 | -:    | :-      | :-     |
-| Debug | 32.23kb | 8.48kb |
-| Min   | 11.70kb | 4.59kb |
+| Debug | 32.40kb | 8.52kb |
+| Min   | 11.79kb | 4.62kb |
 
 <br>
 

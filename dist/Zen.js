@@ -259,7 +259,11 @@
 
   defineValue(Object, '$isEmptyObject', $isEmptyObject);
 
-  var EventTargetProto = EventTarget.prototype;
+  var ElementProto = Element.prototype;
+
+  var supportsEventTarget = 'EventTarget' in window;
+
+  var EventTarget = supportsEventTarget ? window.EventTarget.prototype : [window, document, ElementProto];
 
   /**
    * 获取存储在元素上的整个数据集, 如数据集不存在则创建
@@ -270,7 +274,7 @@
     return elem.__ZENJS_DATA__ || (defineValue(elem, '__ZENJS_DATA__', {}), elem.__ZENJS_DATA__);
   }
 
-  defineValue(EventTargetProto, '$data', function $data(name, value, weakRead) {
+  defineValue(EventTarget, '$data', function $data(name, value, weakRead) {
     var Data = $_GetDatas(this);
 
     // $data( {} )
@@ -296,7 +300,7 @@
     return this;
   });
 
-  defineValue(EventTargetProto, '$hasData', function (name) {
+  defineValue(EventTarget, '$hasData', function (name) {
     var Data = $_GetDatas(this);
 
     if ($isEmptyObject(Data)) {
@@ -310,7 +314,7 @@
     return name in Data;
   });
 
-  defineValue(EventTargetProto, '$deleteData', function (names) {
+  defineValue(EventTarget, '$deleteData', function (names) {
 
     if (names == null) {
       this.__ZENJS_DATA__ = {};
@@ -1011,7 +1015,7 @@
     return on.call(true, this, types, selector, listener, options);
   }
 
-  defineValue(EventTargetProto, {
+  defineValue(EventTarget, {
     /**
      * 事件处理 => 添加事件1: 获取参数
      */
@@ -1437,7 +1441,8 @@
   });
 
   util.supports = $create$1(true, {
-    passiveEvent: supportsPassiveEvent
+    passiveEvent: supportsPassiveEvent,
+    EventTarget: supportsEventTarget
   });
 
 })));

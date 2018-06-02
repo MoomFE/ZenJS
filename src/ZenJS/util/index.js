@@ -14,6 +14,7 @@ import parametersRest from "../../shared/util/parametersRest";
 import returnTrue from "../../shared/util/returnTrue";
 import returnFalse from "../../shared/util/returnFalse";
 import { supportsPassiveEvent } from "../../shared/supports/passive-event";
+import { supportsEventTarget } from "../../shared/supports/event-target";
 
 const util = ZenJS.util = $create( true );
 
@@ -43,5 +44,6 @@ util.fn = $create( true, {
 });
 
 util.supports = $create( true, {
-  passiveEvent: supportsPassiveEvent
+  passiveEvent: supportsPassiveEvent,
+  EventTarget: supportsEventTarget
 });
