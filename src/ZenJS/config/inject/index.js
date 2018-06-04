@@ -40,7 +40,8 @@ defineProperty( inject, 'event', {
         });
       }
     }
-  }
+  },
+  enumerable: true
 });
 
 export default inject;

@@ -1455,7 +1455,8 @@
           });
         }
       }
-    }
+    },
+    enumerable: true
   });
 
   var config = ZenJS.config = $create$1(true);
