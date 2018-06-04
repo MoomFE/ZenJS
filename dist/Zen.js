@@ -1499,7 +1499,10 @@
 
   util.fn = $create$1(true, {
     returnTrue: returnTrue,
-    returnFalse: returnFalse
+    returnFalse: returnFalse,
+    define: define,
+    defineGet: defineGet,
+    defineValue: defineValue
   });
 
   util.supports = $create$1(true, {

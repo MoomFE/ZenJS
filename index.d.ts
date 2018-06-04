@@ -623,6 +623,30 @@ interface ZenJS {
       rest( args: IArguments, index: Number = 0 ): any[];
     },
     fn: {
+      /**
+       * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
+       * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+       * @param name 要定义或修改的属性的名称
+       * @param options 将被定义或修改的属性描述符
+       * @param options2 将被定义或修改的属性描述符, 会覆盖前一个 options
+       */
+      define( obj: any, name: String, options: any, options2: any );
+      /**
+       * 在一个对象上定义/修改一个新属性的 get 描述符
+       * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+       * @param name 要定义或修改的属性的名称
+       * @param get 将被定义或修改的 get 描述符
+       * @param options 将被定义或修改的属性描述符
+       */
+      defineGet( obj: any, name: String, get: Function, options: any );
+      /**
+       * 在一个对象上定义/修改一个新属性的 value 描述符
+       * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+       * @param name 要定义或修改的属性的名称
+       * @param value 将被定义或修改的 value 描述符
+       * @param options 将被定义或修改的属性描述符
+       */
+      defineValue( obj: any, name: String, value: Function, options: any );
       returnTrue(): true;
       returnFalse(): false;
     },
