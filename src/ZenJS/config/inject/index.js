@@ -22,7 +22,7 @@ defineProperty( inject, 'event', {
     if( event = val ){
       if( supportsEventTarget ){
         defineValue( EventTarget, addEventListener, EventTarget.$on );
-        defineValue( EventTarget, '', EventTarget.$off );
+        defineValue( EventTarget, removeEventListener, EventTarget.$off );
       }else{
         EventTarget.forEach( obj => {
           defineValue( obj, addEventListener, obj.$on );

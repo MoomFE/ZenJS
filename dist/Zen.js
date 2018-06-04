@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.1
+ * Zen.js v2.0.2
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -464,7 +464,7 @@
    * ZenJS
    */
   var ZenJS = window.Zen = window.ZenJS = $create$1(true, {
-    version: '2.0.1'
+    version: '2.0.2'
   });
 
   /**
@@ -1437,7 +1437,7 @@
       if (event = val) {
         if (supportsEventTarget) {
           defineValue(EventTarget, addEventListener, EventTarget.$on);
-          defineValue(EventTarget, '', EventTarget.$off);
+          defineValue(EventTarget, removeEventListener, EventTarget.$off);
         } else {
           EventTarget.forEach(function (obj) {
             defineValue(obj, addEventListener, obj.$on);
