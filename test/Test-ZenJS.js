@@ -602,6 +602,13 @@ Object.defineProperty( window, 'div', {
           div.$on( { click: false, dblclick: false }, 'div' );
           div.$off( '**' );
           Object.$equals( div.$data('events'), {} ).should.true;
+
+          // 正常移除
+          div.$on( 'click', function click(){
+            this.$off( 'click', click );
+          });
+          div.click();
+          isUndef( div.$data( 'events' ).click ).should.true;
         }
       }, {
         name: '$on / $one / $once / $off',

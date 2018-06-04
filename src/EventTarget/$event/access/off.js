@@ -3,6 +3,7 @@ import isBoolean from "../../../shared/util/isBoolean";
 import returnTrue from "../../../shared/util/returnTrue";
 import returnFalse from "../../../shared/util/returnFalse";
 import ZenJS from "../../../shared/global/ZenJS/index";
+import isString from "../../../shared/util/isString";
 
 
 /**
@@ -17,16 +18,12 @@ export default function off( types, selector, listener ){
 
   // $off( ZenJS.Event )
   if( types && types.preventDefault && ( handleOptions = types.handleOptions ) ){
-
     off.call(
       types.delegateTarget,
-      handleOptions.namespace
-        ? `${ handleOptions.type }.${ handleOptions.namespace.join('.') }`
-        : handleOptions.type,
-      handleOptions.selector,
-      handleOptions.listener
+      handleOptions.namespace ? `${ handleOptions.type }.${ handleOptions.namespace.join('.') }` : handleOptions.type,
+      handleOptions.listener,
+      handleOptions.selector
     );
-
     return this;
   }
 
@@ -42,11 +39,17 @@ export default function off( types, selector, listener ){
   // $off( '**' )
   if( types === '*' || types === '**' ){
     selector = types;
-    types = undefined;
-  }
-
-  if( isBoolean( listener ) ){
-    listener = listener ? returnTrue : returnFalse;
+    types = listener = undefined;
+  }else{
+    // $off( types, listener )
+    // $off( types, listener, selector )
+    if( !isString( selector ) ){
+      [ listener, selector ] = [ selector, listener ];
+    }
+    // $off( types, true || false )
+    if( isBoolean( listener ) ){
+      listener = listener ? returnTrue : returnFalse;
+    }
   }
 
   ZenJS.EventListener.remove( this, types, listener, selector );

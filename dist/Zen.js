@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.2
+ * Zen.js v2.0.3
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -464,7 +464,7 @@
    * ZenJS
    */
   var ZenJS = window.Zen = window.ZenJS = $create$1(true, {
-    version: '2.0.2'
+    version: '2.0.3'
   });
 
   /**
@@ -997,9 +997,7 @@
 
     // $off( ZenJS.Event )
     if (types && types.preventDefault && (handleOptions = types.handleOptions)) {
-
-      off.call(types.delegateTarget, handleOptions.namespace ? handleOptions.type + "." + handleOptions.namespace.join('.') : handleOptions.type, handleOptions.selector, handleOptions.listener);
-
+      off.call(types.delegateTarget, handleOptions.namespace ? handleOptions.type + "." + handleOptions.namespace.join('.') : handleOptions.type, handleOptions.listener, handleOptions.selector);
       return this;
     }
 
@@ -1015,11 +1013,19 @@
     // $off( '**' )
     if (types === '*' || types === '**') {
       selector = types;
-      types = undefined;
-    }
-
-    if (isBoolean(listener)) {
-      listener = listener ? returnTrue : returnFalse;
+      types = listener = undefined;
+    } else {
+      // $off( types, listener )
+      // $off( types, listener, selector )
+      if (!isString(selector)) {
+        var _ref = [selector, listener];
+        listener = _ref[0];
+        selector = _ref[1];
+      }
+      // $off( types, true || false )
+      if (isBoolean(listener)) {
+        listener = listener ? returnTrue : returnFalse;
+      }
     }
 
     ZenJS.EventListener.remove(this, types, listener, selector);
