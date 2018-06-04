@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.0
+ * Zen.js v2.0.1
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -464,7 +464,7 @@
    * ZenJS
    */
   var ZenJS = window.Zen = window.ZenJS = $create$1(true, {
-    version: '2.0.0'
+    version: '2.0.1'
   });
 
   /**
