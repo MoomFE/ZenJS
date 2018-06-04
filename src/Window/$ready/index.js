@@ -3,9 +3,11 @@ import { addEventListener } from '../../shared/const/event';
 
 
 defineValue( window, '$ready', function( func, data ){
-  if( this.document.readyState === 'complete' ) return func.apply( this, data );
-  this[ addEventListener ]( 'load', function callback( event ){
-    this.removeEventListener( event.type, callback );
-    func.apply( this, data );
+  const self = this || window;
+
+  if( self.document.readyState === 'complete' ) return func.apply( self, data );
+  self[ addEventListener ]( 'load', function callback( event ){
+    self.removeEventListener( event.type, callback );
+    func.apply( self, data );
   });
 });
