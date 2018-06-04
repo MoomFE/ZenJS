@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.0-beta.0
+ * Zen.js v2.0.0
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -464,7 +464,7 @@
    * ZenJS
    */
   var ZenJS = window.Zen = window.ZenJS = $create$1(true, {
-    version: '2.0.0-beta.0'
+    version: '2.0.0'
   });
 
   /**
@@ -1498,11 +1498,11 @@
   });
 
   util.fn = $create$1(true, {
-    returnTrue: returnTrue,
-    returnFalse: returnFalse,
     define: define,
     defineGet: defineGet,
-    defineValue: defineValue
+    defineValue: defineValue,
+    returnTrue: returnTrue,
+    returnFalse: returnFalse
   });
 
   util.supports = $create$1(true, {
