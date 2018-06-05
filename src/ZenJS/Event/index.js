@@ -24,7 +24,6 @@ export default function Event( src, props ){
   if( src && src.type ){
 
     this.originalEvent = src;
-    this.type = src.type;
 
     this.isDefaultPrevented =
       src.defaultPrevented ||
@@ -36,8 +35,11 @@ export default function Event( src, props ){
       ? src.target.parentNode
       : src.target;
 
-    this.currentTarget = src.currentTarget;
-    this.relatedTarget = src.relatedTarget;
+    for( let key in src ){
+      if( !( key in this ) ){
+        this[ key ] = src[ key ];
+      }
+    }
   }
   // Event type
   else{
@@ -93,50 +95,50 @@ const EventProto = ZenJS.Event.prototype = {
 });
 
 
-const addProp = Event.addProp = function addProp( name, get, set ){
-  defineProperty(
-    EventProto, name, assign( {}, defineGetPropertyOptions, {
-      get: get || function(){
-        const originalEvent = this.originalEvent;
-        if( originalEvent ){
-          return originalEvent[ name ];
-        }
-      },
-      set: set || function( value ){
-        this[ name ] = value;
-      }
-    })
-  );
-};
+// const addProp = Event.addProp = function addProp( name, get, set ){
+//   defineProperty(
+//     EventProto, name, assign( {}, defineGetPropertyOptions, {
+//       get: get || function(){
+//         const originalEvent = this.originalEvent;
+//         if( originalEvent ){
+//           return originalEvent[ name ];
+//         }
+//       },
+//       set: set || function( value ){
+//         this[ name ] = value;
+//       }
+//     })
+//   );
+// };
 
-[
-  'altKey',
-  'bubbles',
-  'cancelable',
-  'changedTouches',
-  'ctrlKey',
-  'detail',
-  'eventPhase',
-  'metaKey',
-  'pageX',
-  'pageY',
-  'shiftKey',
-  'view',
-  'char',
-  'charCode',
-  'key',
-  'keyCode',
-  'button',
-  'buttons',
-  'clientX',
-  'clientY',
-  'offsetX',
-  'offsetY',
-  'pointerId',
-  'pointerType',
-  'screenX',
-  'screenY',
-  'targetTouches',
-  'toElement',
-  'touches'
-].forEach( name => addProp( name ) );
+// [
+//   'altKey',
+//   'bubbles',
+//   'cancelable',
+//   'changedTouches',
+//   'ctrlKey',
+//   'detail',
+//   'eventPhase',
+//   'metaKey',
+//   'pageX',
+//   'pageY',
+//   'shiftKey',
+//   'view',
+//   'char',
+//   'charCode',
+//   'key',
+//   'keyCode',
+//   'button',
+//   'buttons',
+//   'clientX',
+//   'clientY',
+//   'offsetX',
+//   'offsetY',
+//   'pointerId',
+//   'pointerType',
+//   'screenX',
+//   'screenY',
+//   'targetTouches',
+//   'toElement',
+//   'touches'
+// ].forEach( name => addProp( name ) );

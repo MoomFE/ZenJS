@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.3
+ * Zen.js v2.0.4
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -464,7 +464,7 @@
    * ZenJS
    */
   var ZenJS = window.Zen = window.ZenJS = $create$1(true, {
-    version: '2.0.3'
+    version: '2.0.4'
   });
 
   /**
@@ -553,8 +553,6 @@
     return true;
   }
 
-  var assign = Object.assign;
-
   /**
    * event.target : 触发事件的元素
    * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
@@ -572,14 +570,16 @@
     if (src && src.type) {
 
       this.originalEvent = src;
-      this.type = src.type;
 
       this.isDefaultPrevented = src.defaultPrevented || src.defaultPrevented === undefined && src.returnValue === false ? returnTrue : returnFalse;
 
       this.target = src.target && src.target.nodeType === 3 ? src.target.parentNode : src.target;
 
-      this.currentTarget = src.currentTarget;
-      this.relatedTarget = src.relatedTarget;
+      for (var key in src) {
+        if (!(key in this)) {
+          this[key] = src[key];
+        }
+      }
     }
     // Event type
     else {
@@ -632,23 +632,53 @@
     };
   });
 
-  var addProp = Event.addProp = function addProp(name, get, set) {
-    defineProperty(EventProto, name, assign({}, defineGetPropertyOptions, {
-      get: get || function () {
-        var originalEvent = this.originalEvent;
-        if (originalEvent) {
-          return originalEvent[name];
-        }
-      },
-      set: set || function (value) {
-        this[name] = value;
-      }
-    }));
-  };
+  // const addProp = Event.addProp = function addProp( name, get, set ){
+  //   defineProperty(
+  //     EventProto, name, assign( {}, defineGetPropertyOptions, {
+  //       get: get || function(){
+  //         const originalEvent = this.originalEvent;
+  //         if( originalEvent ){
+  //           return originalEvent[ name ];
+  //         }
+  //       },
+  //       set: set || function( value ){
+  //         this[ name ] = value;
+  //       }
+  //     })
+  //   );
+  // };
 
-  ['altKey', 'bubbles', 'cancelable', 'changedTouches', 'ctrlKey', 'detail', 'eventPhase', 'metaKey', 'pageX', 'pageY', 'shiftKey', 'view', 'char', 'charCode', 'key', 'keyCode', 'button', 'buttons', 'clientX', 'clientY', 'offsetX', 'offsetY', 'pointerId', 'pointerType', 'screenX', 'screenY', 'targetTouches', 'toElement', 'touches'].forEach(function (name) {
-    return addProp(name);
-  });
+  // [
+  //   'altKey',
+  //   'bubbles',
+  //   'cancelable',
+  //   'changedTouches',
+  //   'ctrlKey',
+  //   'detail',
+  //   'eventPhase',
+  //   'metaKey',
+  //   'pageX',
+  //   'pageY',
+  //   'shiftKey',
+  //   'view',
+  //   'char',
+  //   'charCode',
+  //   'key',
+  //   'keyCode',
+  //   'button',
+  //   'buttons',
+  //   'clientX',
+  //   'clientY',
+  //   'offsetX',
+  //   'offsetY',
+  //   'pointerId',
+  //   'pointerType',
+  //   'screenX',
+  //   'screenY',
+  //   'targetTouches',
+  //   'toElement',
+  //   'touches'
+  // ].forEach( name => addProp( name ) );
 
   /**
    * 事件处理 => 触发事件
