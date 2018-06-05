@@ -8,9 +8,19 @@ const defaultConfig = require('./config');
 const allConfig = [
   {}, {
     input: 'dist/Zen.js',
-    output: 'dist/Zen.min.js'
+    output: 'dist/Zen.min.js',
+    format: 'es'
   }
-];
+].map( config => {
+  if( typeof config.output === 'string' ) config.output = {
+    file: config.output
+  }
+  if( config.format ){
+    config.output = extend( true, { format: config.format }, config.output );
+    delete config.format;
+  }
+  return config;
+});
 
 const readmePath = __dirname.replace( /scripts$/, 'README.md' ),
       debugSearch = /(\|\sDebug\s+\|\s)[0-9\.\skb]+(\s\|\s)[0-9\.\skb]+(\s\|)/,
@@ -20,18 +30,18 @@ const readmePath = __dirname.replace( /scripts$/, 'README.md' ),
 
   for( let config of allConfig ){
 
-    const input = config.input || defaultConfig.input;
-    const output = config.output || defaultConfig.output.file;
+    const output = config.output && config.output.file || defaultConfig.output.file;
     const now = new Date();
 
     const isMinify = /min\.js$/.test( output );
     const rollupConfig = extend(
-      {
-        input,
-        output: { file: output }
-      },
-      defaultConfig
+      true,
+      { }, defaultConfig, config
     );
+
+    if( isMinify ){
+      delete rollupConfig.plugins;
+    }
 
     await new Promise(( resolve, reject ) => {
 
@@ -59,7 +69,7 @@ const readmePath = __dirname.replace( /scripts$/, 'README.md' ),
           return write( output, code );
         })
         .then( ([ size, gzip ]) => {
-          console.log(`${ output } 已构建完毕! ${ new Date() - now + 'ms' }\n      size: ${ size }\n      gzip: ${ gzip }`);
+          console.log(`\n${ output } 已构建完毕! ${ new Date() - now + 'ms' }\n      size: ${ size }\n      gzip: ${ gzip }\n`);
 
           fs.writeFileSync(
             readmePath,
