@@ -20,10 +20,10 @@ const rVoid0 = /\s*=\s*void 0(,|;)/g;
 module.exports = {
   input: 'src/index.js',
   output: {
-    file: 'dist/Zen.js',
+    file: 'dist/zen.js',
     format: 'umd',
     banner,
-    name: 'Zen'
+    name: 'ZenJS'
   },
   plugins: [
     resolve(),

@@ -7,12 +7,21 @@ const uglify = require('uglify-js');
 const readmePath = __dirname.replace( /scripts$/, 'README.md' );
 const defaultConfig = require('./config');
 const allConfig = [
-  {
-    readmeSearchKey: 'Debug'
-  }, {
-    readmeSearchKey: 'Min',
+  {}, {
     output: {
-      file: 'dist/Zen.min.js'
+      file: 'dist/zen.min.js'
+    }
+  }, {
+    output: {
+      file: 'dist/zen.common.js',
+      format: 'cjs',
+      footer: '\nmodule.exports = ZenJS;'
+    }
+  }, {
+    output: {
+      file: 'dist/zen.esm.js',
+      format: 'es',
+      footer: '\nexport default ZenJS;'
     }
   }
 ];
@@ -23,18 +32,15 @@ const allConfig = [
   for( let config of allConfig ){
 
     const output = config.output && config.output.file || defaultConfig.output.file;
+    const fileName = output.replace( /^dist\//, '' );
     const now = new Date();
 
     const isMinify = /min\.js$/.test( output );
-    const rReadmeSearch = config.readmeSearchKey
-                            ? new RegExp(`(\\|\\s${ config.readmeSearchKey }\\s+\\|\\s)[0-9\\.\\skb]+(\\s\\|\\s)[0-9\\.\\skb]+(\\s\\|)`)
-                            : null;
+    const rReadmeSearch = new RegExp(`(\\|\\s${ fileName }\\s+\\|\\s)[0-9\\.\\skb]+(\\s\\|\\s)[0-9\\.\\skb]+(\\s\\|)`);
     const rollupConfig = extend(
       true,
       { }, defaultConfig, config
     );
-
-    delete rollupConfig.readmeSearchKey;
 
     await new Promise(( resolve, reject ) => {
 
@@ -64,7 +70,7 @@ const allConfig = [
         .then( ([ size, gzip ]) => {
           console.log(`\n${ output } 已构建完毕! ${ new Date() - now + 'ms' }\n      size: ${ size }\n      gzip: ${ gzip }`);
 
-          rReadmeSearch && fs.writeFileSync(
+          fs.writeFileSync(
             readmePath,
             fs.readFileSync( readmePath, 'utf-8' )
               .replace( rReadmeSearch, `$1${ size }$2${ gzip }$3` ),
