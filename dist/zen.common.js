@@ -244,7 +244,9 @@ var addEventListenerPrivate = '__ZENJS_EVENT_ADD__';
 var removeEventListener = 'removeEventListener';
 var removeEventListenerPrivate = '__ZENJS_EVENT_REMOVE__';
 
-defineValue(document, '$ready', function (func, data) {
+var inBrowser = typeof window !== 'undefined';
+
+inBrowser && defineValue(document, '$ready', function (func, data) {
   if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
   this[addEventListener]('DOMContentLoaded', function callback(event) {
     this.removeEventListener(event.type, callback);
@@ -261,16 +263,16 @@ function $isEmptyObject(obj) {
 
 defineValue(Object, '$isEmptyObject', $isEmptyObject);
 
-var ElementProto = Element.prototype;
+var ElementProto = inBrowser ? Element.prototype : undefined;
 
-var supportsEventTarget = 'EventTarget' in window;
+var supportsEventTarget = inBrowser && 'EventTarget' in window;
 
-var EventTarget = supportsEventTarget ? window.EventTarget.prototype : [window, document, ElementProto];
+var EventTarget = supportsEventTarget ? window.EventTarget.prototype : inBrowser ? [window, document, ElementProto] : undefined;
 
 if (supportsEventTarget) {
   defineValue(EventTarget, addEventListenerPrivate, EventTarget[addEventListener]);
   defineValue(EventTarget, removeEventListenerPrivate, EventTarget[removeEventListener]);
-} else {
+} else if (EventTarget) {
   EventTarget.forEach(function (obj) {
     defineValue(obj, addEventListenerPrivate, obj[addEventListener]);
     defineValue(obj, removeEventListenerPrivate, obj[removeEventListener]);
@@ -288,61 +290,64 @@ function $_GetDatas(elem) {
   return elem[DATA] || (defineValue(elem, DATA, {}), elem[DATA]);
 }
 
-defineValue(EventTarget, '$data', function $data(name, value, weakRead) {
-  var Data = $_GetDatas(this);
+if (inBrowser) {
 
-  // $data( {} )
-  // $data( {}, weakRead )
-  if (isObject(name)) {
-    for (var _name in name) {
-      $data.call(this, _name, name[_name], value);
+  defineValue(EventTarget, '$data', function $data(name, value, weakRead) {
+    var Data = $_GetDatas(this);
+
+    // $data( {} )
+    // $data( {}, weakRead )
+    if (isObject(name)) {
+      for (var _name in name) {
+        $data.call(this, _name, name[_name], value);
+      }
+      return this;
     }
+
+    // 读取
+    // $data( name )
+    // $data( name, value, true )
+    if (arguments.length < 2 || weakRead) {
+      if (name == null) return Data;
+      if (weakRead && !(name in Data)) return Data[name] = value;
+      return Data[name];
+    }
+
+    // $data( name, value )
+    Data[name] = value;
     return this;
-  }
-
-  // 读取
-  // $data( name )
-  // $data( name, value, true )
-  if (arguments.length < 2 || weakRead) {
-    if (name == null) return Data;
-    if (weakRead && !(name in Data)) return Data[name] = value;
-    return Data[name];
-  }
-
-  // $data( name, value )
-  Data[name] = value;
-  return this;
-});
-
-defineValue(EventTarget, '$hasData', function (name) {
-  var Data = $_GetDatas(this);
-
-  if ($isEmptyObject(Data)) {
-    return false;
-  }
-
-  if (name == null) {
-    return true;
-  }
-
-  return name in Data;
-});
-
-defineValue(EventTarget, '$deleteData', function (names) {
-
-  if (names == null) {
-    this[DATA] = {};
-    return this;
-  }
-
-  var Data = $_GetDatas(this);
-
-  names.split(' ').forEach(function (name) {
-    delete Data[name];
   });
 
-  return this;
-});
+  defineValue(EventTarget, '$hasData', function (name) {
+    var Data = $_GetDatas(this);
+
+    if ($isEmptyObject(Data)) {
+      return false;
+    }
+
+    if (name == null) {
+      return true;
+    }
+
+    return name in Data;
+  });
+
+  defineValue(EventTarget, '$deleteData', function (names) {
+
+    if (names == null) {
+      this[DATA] = {};
+      return this;
+    }
+
+    var Data = $_GetDatas(this);
+
+    names.split(' ').forEach(function (name) {
+      delete Data[name];
+    });
+
+    return this;
+  });
+}
 
 var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
 
@@ -459,9 +464,13 @@ defineValue(Object, '$create', $create$1);
 /**
  * ZenJS
  */
-var ZenJS = window.Zen = window.ZenJS = $create$1(true, {
+var ZenJS = $create$1(true, {
   version: '2.0.4'
 });
+
+if (inBrowser) {
+  window.Zen = window.ZenJS = ZenJS;
+}
 
 /**
  * 事件处理 => 添加事件3: 绑定事件
@@ -589,10 +598,8 @@ function Event(src, props) {
   this.timeStamp = src && src.timeStamp || Date.now();
 }
 
-ZenJS.Event = Event;
-
-var EventProto = ZenJS.Event.prototype = {
-  constructor: ZenJS.Event,
+var EventProto = Event.prototype = {
+  constructor: Event,
   // 是否调用过 event.preventDefault 方法
   isDefaultPrevented: returnFalse,
   // 是否调用过 stopPropagation 方法
@@ -627,6 +634,10 @@ var EventProto = ZenJS.Event.prototype = {
     }
   };
 });
+
+if (inBrowser) {
+  ZenJS.Event = Event;
+}
 
 // const addProp = Event.addProp = function addProp( name, get, set ){
 //   defineProperty(
@@ -875,12 +886,16 @@ function emit(elem, types) {
   }
 }
 
-var EventListener = ZenJS.EventListener = $create$1(true, {
+var EventListener = $create$1(true, {
   add: add,
   dispatch: dispatch,
   remove: remove,
   emit: emit
 });
+
+if (inBrowser) {
+  ZenJS.EventListener = EventListener;
+}
 
 var supportsPassiveEvent = false;
 
@@ -1063,7 +1078,7 @@ function $one(types, selector, listener, options) {
   return on.call(true, this, types, selector, listener, options);
 }
 
-defineValue(EventTarget, {
+inBrowser && defineValue(EventTarget, {
   /**
    * 事件处理 => 添加事件1: 获取参数
    */
@@ -1426,12 +1441,12 @@ function parse(str) {
   return result;
 }
 
-defineValue(window, '$querystring', {
+inBrowser && defineValue(window, '$querystring', {
   stringify: stringify$1,
   parse: parse
 });
 
-defineValue(window, '$ready', function (func, data) {
+inBrowser && defineValue(window, '$ready', function (func, data) {
   var self = this || window;
 
   if (self.document.readyState === 'complete') return func.apply(self, data);
@@ -1451,7 +1466,7 @@ function $typeof(obj) {
   return type;
 }
 
-defineValue(window, '$typeof', $typeof);
+inBrowser && defineValue(window, '$typeof', $typeof);
 
 var inject = $create$1(true);
 
@@ -1460,7 +1475,7 @@ var inject = $create$1(true);
  */
 var event;
 
-defineProperty(inject, 'event', {
+inBrowser && defineProperty(inject, 'event', {
   get: function () {
     return event;
   },

@@ -5,6 +5,7 @@ import $assign from "../../Object/$assign";
 import defineProperty from "../../shared/global/Object/defineProperty";
 import assign from "../../shared/global/Object/assign";
 import { defineGetPropertyOptions } from "../../shared/const/definePropertyOptions";
+import inBrowser from "../../shared/const/inBrowser";
 
 /**
  * event.target : 触发事件的元素
@@ -54,10 +55,8 @@ export default function Event( src, props ){
 
 }
 
-ZenJS.Event = Event;
-
-const EventProto = ZenJS.Event.prototype = {
-  constructor: ZenJS.Event,
+const EventProto = Event.prototype = {
+  constructor: Event,
   // 是否调用过 event.preventDefault 方法
   isDefaultPrevented: returnFalse,
   // 是否调用过 stopPropagation 方法
@@ -94,6 +93,9 @@ const EventProto = ZenJS.Event.prototype = {
   }
 });
 
+if( inBrowser ){
+  ZenJS.Event = Event;
+}
 
 // const addProp = Event.addProp = function addProp( name, get, set ){
 //   defineProperty(

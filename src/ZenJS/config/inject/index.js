@@ -5,6 +5,7 @@ import { supportsEventTarget } from "../../../shared/supports/event-target";
 import EventTarget from "../../../shared/global/EventTarget/index";
 import defineValue from "../../../shared/util/defineValue";
 import { addEventListener, removeEventListener, addEventListenerPrivate, removeEventListenerPrivate } from "../../../shared/const/event";
+import inBrowser from "../../../shared/const/inBrowser";
 
 
 const inject = $create( true );
@@ -15,7 +16,7 @@ const inject = $create( true );
  */
 var event;
 
-defineProperty( inject, 'event', {
+inBrowser && defineProperty( inject, 'event', {
   get: () => event,
   set: val => {
     if( !isBoolean( val ) || event === val ) return false;

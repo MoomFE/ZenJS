@@ -3,6 +3,7 @@ import isEmptyObject from'../../Object/$isEmptyObject/index';
 import isObject from '../../shared/util/isObject';
 import EventTarget from '../../shared/global/EventTarget/index';
 import defineProperty from '../../shared/global/Object/defineProperty';
+import inBrowser from '../../shared/const/inBrowser';
 
 const DATA = '__ZENJS_DATA__';
 
@@ -18,61 +19,63 @@ function $_GetDatas( elem ){
   );
 }
 
+if( inBrowser ){
 
-defineValue( EventTarget, '$data', function $data( name, value, weakRead ){
-  const Data = $_GetDatas( this );
-
-  // $data( {} )
-  // $data( {}, weakRead )
-  if( isObject( name ) ){
-    for( let _name in name ){
-      $data.call( this, _name, name[ _name ], value );
+  defineValue( EventTarget, '$data', function $data( name, value, weakRead ){
+    const Data = $_GetDatas( this );
+  
+    // $data( {} )
+    // $data( {}, weakRead )
+    if( isObject( name ) ){
+      for( let _name in name ){
+        $data.call( this, _name, name[ _name ], value );
+      }
+      return this;
     }
+  
+    // 读取
+    // $data( name )
+    // $data( name, value, true )
+    if( arguments.length < 2 || weakRead ){
+      if( name == null ) return Data;
+      if( weakRead && !( name in Data ) ) return Data[ name ] = value;
+      return Data[ name ];
+    }
+  
+    // $data( name, value )
+    Data[ name ] = value;
     return this;
-  }
-
-  // 读取
-  // $data( name )
-  // $data( name, value, true )
-  if( arguments.length < 2 || weakRead ){
-    if( name == null ) return Data;
-    if( weakRead && !( name in Data ) ) return Data[ name ] = value;
-    return Data[ name ];
-  }
-
-  // $data( name, value )
-  Data[ name ] = value;
-  return this;
-});
-
-
-defineValue( EventTarget, '$hasData', function( name ){
-  const Data = $_GetDatas( this );
-
-  if( isEmptyObject( Data ) ){
-    return false;
-  }
-
-  if( name == null ){
-    return true;
-  }
-
-  return name in Data;
-});
-
-
-defineValue( EventTarget, '$deleteData', function( names ){
-
-  if( names == null ){
-    this[ DATA ] = {};
+  });
+  
+  defineValue( EventTarget, '$hasData', function( name ){
+    const Data = $_GetDatas( this );
+  
+    if( isEmptyObject( Data ) ){
+      return false;
+    }
+  
+    if( name == null ){
+      return true;
+    }
+  
+    return name in Data;
+  });
+  
+  defineValue( EventTarget, '$deleteData', function( names ){
+  
+    if( names == null ){
+      this[ DATA ] = {};
+      return this;
+    }
+  
+    const Data = $_GetDatas( this );
+  
+    names.split(' ').forEach( name => {
+      delete Data[ name ];
+    });
+  
     return this;
-  }
-
-  const Data = $_GetDatas( this );
-
-  names.split(' ').forEach( name => {
-    delete Data[ name ];
   });
 
-  return this;
-});
+}
+
