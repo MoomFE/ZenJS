@@ -21,6 +21,10 @@ function isObject(obj) {
 function define(obj, name, options, options2) {
   var key;
 
+  if (obj == null) {
+    return;
+  }
+
   // define( [ window, document ], name, options )
   if (isArray(obj) && obj instanceof Array) {
     obj.forEach(function (obj) {
@@ -1466,7 +1470,7 @@ function $typeof(obj) {
   return type;
 }
 
-inBrowser && defineValue(window, '$typeof', $typeof);
+defineValue(inBrowser ? window : typeof global !== 'undefined' ? global : undefined, '$typeof', $typeof);
 
 var inject = $create$1(true);
 

@@ -14,4 +14,10 @@ export default function $typeof( obj ){
   return type;
 }
 
-inBrowser && defineValue( window, '$typeof', $typeof );
+defineValue(
+  inBrowser ? window
+            : typeof global !== 'undefined'
+              ? global
+              : undefined,
+  '$typeof', $typeof
+);
