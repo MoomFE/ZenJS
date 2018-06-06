@@ -2,6 +2,9 @@
   "name": "@moomfe/zenjs",
   "version": "2.0.4",
   "description": "ZenJS 是一个高性能的 JavaScript 工具库。",
+  "main": "dist/zen.common.js",
+  "module": "dist/zen.esm.js",
+  "typings": "index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -38,7 +41,7 @@
   ],
   "title": "Zen.js",
   "author": "Zhang_Wei",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/MoomFE/ZenJS/issues"
   },
