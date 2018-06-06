@@ -20,7 +20,7 @@
 
 ## 大小 - 版本详解
 |               | Default | Gzip   |  -  | Module    | Use in  |
-| -:            | :-      | :-     | :-: | :-        | :-      |
+| :-            | :-      | :-     | :-: | :-        | :-      |
 | zen.js        | 35.38kb | 9.10kb | \|  | UMD       | Browser |
 | zen.min.js    | 11.86kb | 4.70kb | \|  | UMD       | Browser |
 | zen.common.js | 32.76kb | 8.92kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
