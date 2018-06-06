@@ -6,6 +6,10 @@ import isObject from './isObject';
 export default function define( obj, name, options, options2 ){
   let key;
 
+  if( obj == null ){
+    return;
+  }
+
   // define( [ window, document ], name, options )
   if( isArray( obj ) && obj instanceof Array ){
     obj.forEach( obj => define( obj, name, options, options2 ) );
