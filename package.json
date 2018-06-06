@@ -1,6 +1,6 @@
 {
   "name": "@moomfe/zenjs",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "ZenJS 是一个高性能的 JavaScript 工具库。",
   "main": "dist/zen.common.js",
   "module": "dist/zen.esm.js",
