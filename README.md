@@ -22,7 +22,7 @@
 |       | Default | Gzip   |
 | -:    | :-      | :-     |
 | Debug | 34.88kb | 8.97kb |
-| Min   | 11.71kb | 4.63kb |
+| Min   | 11.72kb | 4.64kb |
 
 <br>
 

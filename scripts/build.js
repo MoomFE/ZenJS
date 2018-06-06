@@ -4,27 +4,19 @@ const fs = require('fs');
 const zlib = require('zlib');
 const uglify = require('uglify-js');
 
+const readmePath = __dirname.replace( /scripts$/, 'README.md' );
 const defaultConfig = require('./config');
 const allConfig = [
-  {}, {
-    input: 'dist/Zen.js',
-    output: 'dist/Zen.min.js',
-    format: 'es'
+  {
+    readmeSearchKey: 'Debug'
+  }, {
+    readmeSearchKey: 'Min',
+    output: {
+      file: 'dist/Zen.min.js'
+    }
   }
-].map( config => {
-  if( typeof config.output === 'string' ) config.output = {
-    file: config.output
-  }
-  if( config.format ){
-    config.output = extend( true, { format: config.format }, config.output );
-    delete config.format;
-  }
-  return config;
-});
+];
 
-const readmePath = __dirname.replace( /scripts$/, 'README.md' ),
-      debugSearch = /(\|\sDebug\s+\|\s)[0-9\.\skb]+(\s\|\s)[0-9\.\skb]+(\s\|)/,
-      minSearch = /(\|\sMin\s+\|\s)[0-9\.\skb]+(\s\|\s)[0-9\.\skb]+(\s\|)/;
 
 !async function(){
 
@@ -34,14 +26,15 @@ const readmePath = __dirname.replace( /scripts$/, 'README.md' ),
     const now = new Date();
 
     const isMinify = /min\.js$/.test( output );
+    const rReadmeSearch = config.readmeSearchKey
+                            ? new RegExp(`(\\|\\s${ config.readmeSearchKey }\\s+\\|\\s)[0-9\\.\\skb]+(\\s\\|\\s)[0-9\\.\\skb]+(\\s\\|)`)
+                            : null;
     const rollupConfig = extend(
       true,
       { }, defaultConfig, config
     );
 
-    if( isMinify ){
-      delete rollupConfig.plugins;
-    }
+    delete rollupConfig.readmeSearchKey;
 
     await new Promise(( resolve, reject ) => {
 
@@ -69,12 +62,12 @@ const readmePath = __dirname.replace( /scripts$/, 'README.md' ),
           return write( output, code );
         })
         .then( ([ size, gzip ]) => {
-          console.log(`\n${ output } 已构建完毕! ${ new Date() - now + 'ms' }\n      size: ${ size }\n      gzip: ${ gzip }\n`);
+          console.log(`\n${ output } 已构建完毕! ${ new Date() - now + 'ms' }\n      size: ${ size }\n      gzip: ${ gzip }`);
 
-          fs.writeFileSync(
+          rReadmeSearch && fs.writeFileSync(
             readmePath,
             fs.readFileSync( readmePath, 'utf-8' )
-              .replace( isMinify ? minSearch : debugSearch, `$1${ size }$2${ gzip }$3` ),
+              .replace( rReadmeSearch, `$1${ size }$2${ gzip }$3` ),
             'utf-8'
           );
 
