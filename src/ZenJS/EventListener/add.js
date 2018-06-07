@@ -65,7 +65,10 @@ export default function add( elem, types, selector, listener, options ){
     ).push( handleOptions );
 
     if( options.passive ){
-      elem[ addEventListenerPrivate ]( type, handleOptions.handle, options );
+      elem[ addEventListenerPrivate ]( type, handleOptions.handle, {
+        passive: true,
+        capture: options.capture || false
+      });
     }else{
       elem[ addEventListenerPrivate ]( type, handleOptions.handle, options.capture || false );
     }

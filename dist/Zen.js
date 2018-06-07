@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.5
+ * Zen.js v2.0.6
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -473,7 +473,7 @@
    * ZenJS
    */
   var ZenJS = $create$1(true, {
-    version: '2.0.5'
+    version: '2.0.6'
   });
 
   if (inBrowser) {
@@ -535,7 +535,10 @@
       (events[type] || (events[type] = [])).push(handleOptions);
 
       if (options.passive) {
-        elem[addEventListenerPrivate](type, handleOptions.handle, options);
+        elem[addEventListenerPrivate](type, handleOptions.handle, {
+          passive: true,
+          capture: options.capture || false
+        });
       } else {
         elem[addEventListenerPrivate](type, handleOptions.handle, options.capture || false);
       }
@@ -571,6 +574,10 @@
    * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
    * event.delegateTarget : 绑定事件的元素
    * event.relatedTarget : 事件的相关节点, mouseover 时移出的节点, mouseout 时移入的节点
+   * 
+   * event.preventDefault() : 阻止浏览器默认事件
+   * event.stopPropagation() : 停止将事件冒泡到父节点
+   * event.stopImmediatePropagation() : 停止将事件冒泡到父节点且停止当前元素后续事件执行
    */
 
   function Event(src, props) {
@@ -607,41 +614,8 @@
   }
 
   var EventProto = Event.prototype = {
-    constructor: Event,
-    // 是否调用过 event.preventDefault 方法
-    isDefaultPrevented: returnFalse,
-    // 是否调用过 stopPropagation 方法
-    isPropagationStopped: returnFalse,
-    // 是否调用过 stopImmediatePropagation 方法
-    isImmediatePropagationStopped: returnFalse,
-    // 是否是模拟的 event
-    isSimulated: false
+    constructor: Event
   };
-
-  [
-  // 阻止浏览器默认事件
-  ['preventDefault', 'isDefaultPrevented'],
-  // 停止将事件冒泡到父节点
-  ['stopPropagation', 'isPropagationStopped'],
-  // 停止将事件冒泡到父节点且停止当前元素后续事件执行
-  ['stopImmediatePropagation', 'isImmediatePropagationStopped']].forEach(function (ref) {
-    var fn = ref[0],
-        judgement = ref[1];
-
-    EventProto[fn] = function () {
-      var event;
-
-      if (EventProto[judgement]()) {
-        return;
-      } else {
-        EventProto[judgement] = returnTrue;
-      }
-
-      if (!EventProto.isSimulated && (event = EventProto.originalEvent)) {
-        event[fn]();
-      }
-    };
-  });
 
   if (inBrowser) {
     ZenJS.Event = Event;
@@ -649,51 +623,26 @@
 
   // const addProp = Event.addProp = function addProp( name, get, set ){
   //   defineProperty(
-  //     EventProto, name, assign( {}, defineGetPropertyOptions, {
-  //       get: get || function(){
-  //         const originalEvent = this.originalEvent;
-  //         if( originalEvent ){
-  //           return originalEvent[ name ];
+  //     EventProto,
+  //     name, {
+  //       enumerable: true,
+  //       configurable: true,
+
+  //       get: isFunction( get )
+  //         ? function(){
+  //           if( this.originalEvent ){
+  //             return get( this.originalEvent );
+  //           }
   //         }
-  //       },
-  //       set: set || function( value ){
+  //         : function(){
+  //           return this[ name ];
+  //         },
+  //       set(){
   //         this[ name ] = value;
   //       }
-  //     })
+  //     }
   //   );
   // };
-
-  // [
-  //   'altKey',
-  //   'bubbles',
-  //   'cancelable',
-  //   'changedTouches',
-  //   'ctrlKey',
-  //   'detail',
-  //   'eventPhase',
-  //   'metaKey',
-  //   'pageX',
-  //   'pageY',
-  //   'shiftKey',
-  //   'view',
-  //   'char',
-  //   'charCode',
-  //   'key',
-  //   'keyCode',
-  //   'button',
-  //   'buttons',
-  //   'clientX',
-  //   'clientY',
-  //   'offsetX',
-  //   'offsetY',
-  //   'pointerId',
-  //   'pointerType',
-  //   'screenX',
-  //   'screenY',
-  //   'targetTouches',
-  //   'toElement',
-  //   'touches'
-  // ].forEach( name => addProp( name ) );
 
   /**
    * 事件处理 => 触发事件
@@ -984,8 +933,8 @@
       selector = _ref[1];
 
 
-      if (selector && !isString(selector)) {
-        options = selector;
+      if (!isString(selector)) {
+        if (!options) options = selector;
         selector = undefined;
       }
     }

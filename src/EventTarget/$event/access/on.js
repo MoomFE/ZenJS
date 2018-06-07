@@ -68,8 +68,8 @@ export default function on( elem, types, selector, listener, options ){
   if( !isString( selector ) ){
     [ listener, selector ] = [ selector, listener ];
 
-    if( selector && !isString( selector ) ){
-      options = selector;
+    if( !isString( selector ) ){
+      if( !options ) options = selector;
       selector = undefined;
     }
   }
