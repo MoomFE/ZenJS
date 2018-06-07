@@ -1,6 +1,7 @@
 import isArray from '../../shared/global/Array/isArray';
 import defineValue from '../../shared/util/defineValue';
 import inBrowser from '../../shared/const/inBrowser';
+import ZenJS from '../../shared/global/ZenJS/index';
 
 
 export default function $typeof( obj ){
@@ -14,10 +15,4 @@ export default function $typeof( obj ){
   return type;
 }
 
-defineValue(
-  inBrowser ? window
-            : typeof global !== 'undefined'
-              ? global
-              : undefined,
-  '$typeof', $typeof
-);
+inBrowser && defineValue( window, '$typeof', $typeof );

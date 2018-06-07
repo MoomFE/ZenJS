@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.6
+ * Zen.js v2.0.7
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -473,7 +473,7 @@
    * ZenJS
    */
   var ZenJS = $create$1(true, {
-    version: '2.0.6'
+    version: '2.0.7'
   });
 
   if (inBrowser) {
@@ -1423,7 +1423,7 @@
     return type;
   }
 
-  defineValue(inBrowser ? window : typeof global !== 'undefined' ? global : undefined, '$typeof', $typeof);
+  inBrowser && defineValue(window, '$typeof', $typeof);
 
   var inject = $create$1(true);
 
