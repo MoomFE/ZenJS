@@ -64,6 +64,14 @@ const EventProto = Event.prototype = {
   constructor: Event
 };
 
+[ 'preventDefault', 'stopPropagation', 'stopImmediatePropagation' ].forEach( fn => {
+  EventProto[ fn ] = function(){
+    if( this.originalEvent ){
+      this.originalEvent[ fn ]();
+    }
+  }
+});
+
 if( inBrowser ){
   ZenJS.Event = Event;
 }

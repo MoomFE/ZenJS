@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.7
+ * Zen.js v2.0.8
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -469,7 +469,7 @@ defineValue(Object, '$create', $create$1);
  * ZenJS
  */
 var ZenJS = $create$1(true, {
-  version: '2.0.7'
+  version: '2.0.8'
 });
 
 if (inBrowser) {
@@ -612,6 +612,14 @@ function Event(src, props) {
 var EventProto = Event.prototype = {
   constructor: Event
 };
+
+['preventDefault', 'stopPropagation', 'stopImmediatePropagation'].forEach(function (fn) {
+  EventProto[fn] = function () {
+    if (this.originalEvent) {
+      this.originalEvent[fn]();
+    }
+  };
+});
 
 if (inBrowser) {
   ZenJS.Event = Event;
@@ -990,7 +998,7 @@ function off(types, selector, listener) {
   var handleOptions;
 
   // $off( ZenJS.Event )
-  if (types && types.preventDefault && (handleOptions = types.handleOptions)) {
+  if (types && types.delegateTarget && (handleOptions = types.handleOptions)) {
     off.call(types.delegateTarget, handleOptions.namespace ? handleOptions.type + "." + handleOptions.namespace.join('.') : handleOptions.type, handleOptions.listener, handleOptions.selector);
     return this;
   }
