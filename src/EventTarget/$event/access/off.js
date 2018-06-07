@@ -17,7 +17,7 @@ export default function off( types, selector, listener ){
   let handleOptions;
 
   // $off( ZenJS.Event )
-  if( types && types.preventDefault && ( handleOptions = types.handleOptions ) ){
+  if( types && types.delegateTarget && ( handleOptions = types.handleOptions ) ){
     off.call(
       types.delegateTarget,
       handleOptions.namespace ? `${ handleOptions.type }.${ handleOptions.namespace.join('.') }` : handleOptions.type,

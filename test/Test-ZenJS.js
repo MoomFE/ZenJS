@@ -607,11 +607,33 @@ Object.defineProperty( window, 'div', {
           div.$on( 'click', function click(){
             this.$off( 'click', click );
           });
-          div.click();
+          div.$emit('click');
           isUndef( div.$data( 'events' ).click ).should.true;
         }
       }, {
-        name: '$on / $one / $once / $off',
+        name: '$emit',
+        it: function(){
+          
+          var div = window.div,
+              num = 0;
+
+          div.$on( 'click dblclick', function(){ num++ });
+
+          div.$emit();
+          num.should.equals( 0 );
+
+          div.$emit( 'click' );
+          num.should.equal( 1 );
+
+          div.$emit( 'click dblclick' );
+          num.should.equal( 3 );
+
+          div.$off();
+          num.should.equals( 3 );
+
+        }
+      }, {
+        name: '$on / $one / $once / $off / $emit',
         it: function(){
 
           var div = window.div,
@@ -669,28 +691,6 @@ Object.defineProperty( window, 'div', {
           div.$off('**');
           childDiv.click();
           num.should.equals( 6 );
-        }
-      }, {
-        name: '$emit',
-        it: function(){
-          
-          var div = window.div,
-              num = 0;
-
-          div.$on( 'click dblclick', function(){ num++ });
-
-          div.$emit();
-          num.should.equals( 0 );
-
-          div.$emit( 'click' );
-          num.should.equal( 1 );
-
-          div.$emit( 'click dblclick' );
-          num.should.equal( 3 );
-
-          div.$off();
-          num.should.equals( 3 );
-
         }
       }
     ]
