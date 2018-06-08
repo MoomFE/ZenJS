@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.8
+ * Zen.js v2.0.9
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -301,15 +301,16 @@
   if (inBrowser) {
 
     defineValue(EventTarget, '$data', function $data(name, value, weakRead) {
-      var Data = $_GetDatas(this);
+      var self = this || window;
+      var Data = $_GetDatas(self);
 
       // $data( {} )
       // $data( {}, weakRead )
       if (isObject(name)) {
         for (var _name in name) {
-          $data.call(this, _name, name[_name], value);
+          $data.call(self, _name, name[_name], value);
         }
-        return this;
+        return self;
       }
 
       // 读取
@@ -323,11 +324,11 @@
 
       // $data( name, value )
       Data[name] = value;
-      return this;
+      return self;
     });
 
     defineValue(EventTarget, '$hasData', function (name) {
-      var Data = $_GetDatas(this);
+      var Data = $_GetDatas(this || window);
 
       if ($isEmptyObject(Data)) {
         return false;
@@ -341,19 +342,20 @@
     });
 
     defineValue(EventTarget, '$deleteData', function (names) {
+      var self = this || window;
 
       if (names == null) {
-        this[DATA] = {};
-        return this;
+        self[DATA] = {};
+        return self;
       }
 
-      var Data = $_GetDatas(this);
+      var Data = $_GetDatas(self);
 
       names.split(' ').forEach(function (name) {
         delete Data[name];
       });
 
-      return this;
+      return self;
     });
   }
 
@@ -473,7 +475,7 @@
    * ZenJS
    */
   var ZenJS = $create$1(true, {
-    version: '2.0.8'
+    version: '2.0.9'
   });
 
   if (inBrowser) {

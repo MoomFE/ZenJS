@@ -22,15 +22,16 @@ function $_GetDatas( elem ){
 if( inBrowser ){
 
   defineValue( EventTarget, '$data', function $data( name, value, weakRead ){
-    const Data = $_GetDatas( this );
+    const self = this || window;
+    const Data = $_GetDatas( self );
   
     // $data( {} )
     // $data( {}, weakRead )
     if( isObject( name ) ){
       for( let _name in name ){
-        $data.call( this, _name, name[ _name ], value );
+        $data.call( self, _name, name[ _name ], value );
       }
-      return this;
+      return self;
     }
   
     // 读取
@@ -44,11 +45,11 @@ if( inBrowser ){
   
     // $data( name, value )
     Data[ name ] = value;
-    return this;
+    return self;
   });
   
   defineValue( EventTarget, '$hasData', function( name ){
-    const Data = $_GetDatas( this );
+    const Data = $_GetDatas( this || window );
   
     if( isEmptyObject( Data ) ){
       return false;
@@ -62,19 +63,20 @@ if( inBrowser ){
   });
   
   defineValue( EventTarget, '$deleteData', function( names ){
+    const self = this || window;
   
     if( names == null ){
-      this[ DATA ] = {};
-      return this;
+      self[ DATA ] = {};
+      return self;
     }
   
-    const Data = $_GetDatas( this );
+    const Data = $_GetDatas( self );
   
     names.split(' ').forEach( name => {
       delete Data[ name ];
     });
   
-    return this;
+    return self;
   });
 
 }

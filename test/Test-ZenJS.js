@@ -405,6 +405,8 @@ Object.defineProperty( window, 'div', {
           JSON.stringify( div.$data({Data1:'div',Data2:'div'}).$data() ).should.equals( '{"Data1":"div","Data2":"div"}' );
           JSON.stringify( window.$data({'Data':'window','Data1':'yes'}).$data() ).should.equals( '{"Data":"window","Data1":"yes"}' );
           JSON.stringify( document.$data({'Data':'document','Data1':'yes'}).$data() ).should.equals( '{"Data":"document","Data1":"yes"}' );
+          // 直接使用 $data 而不使用 window.$data
+          $data('Data').should.equals('window');
         }
       }, {
         name: '$hasData',
@@ -425,6 +427,9 @@ Object.defineProperty( window, 'div', {
           window.$hasData('Data').should.true;
           document.$hasData('noData').should.false;
           document.$hasData('Data').should.true;
+          // 直接使用 $data 而不使用 window.$data
+          $hasData('noData').should.false;
+          $hasData('Data').should.true;
         }
       }, {
         name: '$deleteData',
@@ -450,6 +455,9 @@ Object.defineProperty( window, 'div', {
           div.$data('Data','div').$deleteData().$hasData().should.false;
           window.$deleteData().$hasData().should.false;
           document.$deleteData().$hasData().should.false;
+          // 直接使用 $data 而不使用 window.$data
+          $data('Data','window');
+          $deleteData().$hasData().should.false;
         }
       }, {
         name: '$on',
