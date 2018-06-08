@@ -631,6 +631,13 @@ Object.defineProperty( window, 'div', {
           div.$off();
           num.should.equals( 3 );
 
+          div
+            .$on( 'Test-Event', function( event ){
+              event.preventDefault();
+              event.stopPropagation();
+              event.stopImmediatePropagation();
+            })
+            .$emit( 'Test-Event' );
         }
       }, {
         name: '$on / $one / $once / $off / $emit',
