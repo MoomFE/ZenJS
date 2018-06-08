@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.9
+ * Zen.js v2.0.10
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -469,7 +469,7 @@ defineValue(Object, '$create', $create$1);
  * ZenJS
  */
 var ZenJS = $create$1(true, {
-  version: '2.0.9'
+  version: '2.0.10'
 });
 
 if (inBrowser) {
@@ -693,7 +693,7 @@ function dispatch(nativeEvent) {
 
   var result = this.listener.apply(self, args);
 
-  if (result === false) {
+  if (result === false && ZenJS.config.event.returnFalse) {
     event.preventDefault();
     event.stopPropagation();
   }
@@ -1432,7 +1432,7 @@ inBrowser && defineValue(window, '$typeof', $typeof);
 var inject = $create$1(true);
 
 /**
- * 事件
+ * ZenJS 重写的 $on 和 $off 对浏览器自带的 addEventListener 和 removeEventListener 的注入
  */
 var event;
 
@@ -1467,14 +1467,26 @@ inBrowser && defineProperty(inject, 'event', {
   enumerable: true
 });
 
+var event$1 = $create$1(true, {
+  /**
+   * 当事件绑定的方法返回 false 时,
+   * 是否阻止浏览器默认事件且停止将事件冒泡到父节点
+   */
+  returnFalse: false
+});
+
 var config = ZenJS.config = $create$1(true);
 
+// 注入到浏览器中的功能, 将会改变浏览器默认行为
 config.inject = inject;
 
 // 默认开启所有注入项
 keys(inject).forEach(function (key) {
   inject[key] = true;
 });
+
+// 事件相关自定义配置
+config.event = event$1;
 
 var guid = 1;
 

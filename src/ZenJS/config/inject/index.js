@@ -12,7 +12,7 @@ const inject = $create( true );
 
 
 /**
- * 事件
+ * ZenJS 重写的 $on 和 $off 对浏览器自带的 addEventListener 和 removeEventListener 的注入
  */
 var event;
 

@@ -25,7 +25,7 @@ interface Array<T> {
    * @param value 需要从数组中删除的对象
    * @param congruence 是否使用全等进行判断 - default: true
    */
-  $deleteValue( value: any, congruence: Boolean = true ): this;
+  $deleteValue( value: any, congruence?: true ): this;
   /**
    * 查找数组内是否有此传入值
    * -- 弱检测
@@ -44,7 +44,7 @@ interface Array<T> {
    * @param obj 需要检测的值
    * @param congruence 是否使用全等进行判断 - default: true
    */
-  $equals( obj: any[], congruence: Boolean = true ): Boolean;
+  $equals( obj: any[], congruence?: true ): Boolean;
   /**
    * 获取指定下标的对象
    * @param index 需要获取的对象的下标 - default: 0
@@ -393,7 +393,7 @@ interface Object {
    * @param value 需要删除的对象
    * @param congruence 是否使用全等进行判断 - default: true
    */
-  $deleteValue( value: any, congruence: Boolean = true ): this;
+  $deleteValue( value: any, congruence?: true ): this;
   /**
    * 获取对象的某个值
    * @param key 需要获取的 key
@@ -476,14 +476,14 @@ interface StringConstructor {
    * 随机26个字母中的一个
    * @param uppercase 是否大写 - default: false
    */
-  $random( uppercase: Boolean = false ): String;
+  $random( uppercase?: false ): String;
   /**
    * 随机指定长度的字符串
    * @param length 字符串长度 - default: 12
    * @param hasUppercase 是否随机大写字母 - default: false
    * @param hasNumber 是否随机数字( 不会随机到首位 ) - default: false
    */
-  $someRandom( length: Number = 12, hasUppercase: Boolean = false, hasNumber: Boolean = false ): String;
+  $someRandom( length: Number = 12, hasUppercase?: false, hasNumber?: false ): String;
 }
 
 
@@ -504,14 +504,20 @@ interface ZenJS {
    */
   config: {
     /**
-     * 注入到浏览器中的功能
+     * 注入到浏览器中的功能, 将会改变浏览器默认行为
      */
     inject: {
       /**
-       * 当此选项打开时, 浏览器自带的 addEventListener 和 removeEventListener 方法将被替换为 ZenJS 重写的 $on, $off .
-       * 默认打开.
+       * ZenJS 重写的 $on 和 $off 对浏览器自带的 addEventListener 和 removeEventListener 的注入 - default: true
        */
-      event: Boolean;
+      event: true;
+    },
+    event: {
+      /**
+       * 当事件绑定的方法返回 false 时,
+       * 是否阻止浏览器默认事件且停止将事件冒泡到父节点 - default: false
+       */
+      returnFalse: false
     }
   },
   /**
@@ -560,6 +566,9 @@ interface ZenJS {
    * ZenJS 工具包
    */
   util: {
+    /**
+     * 变量判断
+     */
     is: {
       /**
        * 判断两个参数是否相等
@@ -570,6 +579,9 @@ interface ZenJS {
        */
       congruence( one: any, two: any ): Boolean;
     },
+    /**
+     * 变量类型判断
+     */
     types: {
       /**
        * 判断传入参数是否是数组
@@ -607,6 +619,9 @@ interface ZenJS {
        */
       isString( obj: any ): Boolean;
     },
+    /**
+     * 方法参数处理
+     */
     parameters: {
       /**
        * 获取方法指定位参数, 若未传入参数, 则取默认值
@@ -622,6 +637,9 @@ interface ZenJS {
        */
       rest( args: IArguments, index: Number = 0 ): any[];
     },
+    /**
+     * 实用方法
+     */
     fn: {
       /**
        * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
@@ -650,6 +668,9 @@ interface ZenJS {
       returnTrue(): true;
       returnFalse(): false;
     },
+    /**
+     * 浏览器特性判断
+     */
     supports: {
       /**
        * 判断浏览器是否支持事件的 passive 选项

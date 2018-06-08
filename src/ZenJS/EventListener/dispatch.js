@@ -1,6 +1,7 @@
 import "../../Object/$set/index";
 import Event from "../Event/index";
 import from from "../../shared/global/Array/from";
+import ZenJS from "../../shared/global/ZenJS/index";
 
 /**
  * 事件处理 => 触发事件
@@ -47,7 +48,7 @@ export default function dispatch( nativeEvent ){
 
   const result = this.listener.apply( self, args );
 
-  if( result === false ){
+  if( result === false && ZenJS.config.event.returnFalse ){
     event.preventDefault();
     event.stopPropagation();
   }
