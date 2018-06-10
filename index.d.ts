@@ -33,11 +33,6 @@ interface Array<T> {
    * 
    * @param obj 需要检测的值
    */
-  $inArray( obj: any ): Boolean;
-  /**
-   * 遍历数组, 并调用传入方法
-   * @param callback 遍历数组时调用的方法, 方法返回 false 时, 退出遍历
-   */
   $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): this;
   /**
    * 判断传入数组或类数组的内容是否和当前数组相同
@@ -61,6 +56,11 @@ interface Array<T> {
    * @param index 需要修改的下标
    * @param value 值
    */
+  $inArray( obj: any ): Boolean;
+  /**
+   * 遍历数组, 并调用传入方法
+   * @param callback 遍历数组时调用的方法, 方法返回 false 时, 退出遍历
+   */
   $set( index: Number, value: any ): this;
   /**
    * 修改数组内指定下标的值
@@ -69,14 +69,14 @@ interface Array<T> {
   $set( obj: { index: Number, value: any } ): this;
   /**
    * 调用原生 push 方法, 返回 this
-   * @param items 需要插入到数组末尾的对象
+   * @param args 需要插入到数组末尾的对象
    */
-  $push( ...items: T[] ): this;
+  $push( ...args: T[] ): this;
   /**
    * 调用原生 unshift 方法, 返回 this
-   * @param items 需要插入到数组开头的对象
+   * @param args 需要插入到数组开头的对象
    */
-  $unshift( ...items: T[] ): this;
+  $unshift( ...args: T[] ): this;
   /**
    * 调用原生 pop 方法, 返回 this
    */
@@ -334,6 +334,11 @@ interface EventTarget{
    * @param listener 解绑的事件, 只会移除与传入方法匹配的相关事件方法
    */
   $off( types: String, selector: String, listener: Function ): this;
+  /**
+   * 触发绑定在元素上的事件( 只触发事件 )
+   * @param types 触发的事件名
+   */
+  $emit( types ): this;
 }
 
 interface Math {
