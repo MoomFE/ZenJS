@@ -4,6 +4,18 @@ Object.defineProperty( window, 'div', {
   }
 });
 
+Object.defineProperty( window, 'span', {
+  get: function(){
+    return document.createElement('span');
+  }
+});
+
+Object.defineProperty( window, 'a', {
+  get: function(){
+    return document.createElement('a');
+  }
+});
+
 !function(){
 
   var toString = function( obj ){
@@ -204,6 +216,21 @@ Object.defineProperty( window, 'div', {
           div.$not( 'div' ).should.false;
 
           div.$not( window ).should.true;
+        }
+      }, {
+        name: '$parent',
+        it: function(){
+
+          isUndef( div.$parent() ).should.true;
+
+          var div1 = div,
+              span1 = div1.appendChild( span ),
+              a1 = span1.appendChild( a );
+
+          a1.$parent().should.equal( span1 );
+          a1.$parent('span').should.equal( span1 );
+          isUndef( a1.$parent('div') ).should.true;
+
         }
       }, {
         name: '$query',
