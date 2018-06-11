@@ -227,6 +227,12 @@ defineValue(ArrayProto, '$equals', function (obj) {
   return true;
 });
 
+'push_unshift_pop_shift'.split('_').forEach(function (key) {
+  defineValue(ArrayProto, "$" + key, function () {
+    return this[key].apply(this, arguments), this;
+  });
+});
+
 defineValue(ArrayProto, '$inArray', function (obj) {
   var i = 0,
       len = this.length;
@@ -234,12 +240,6 @@ defineValue(ArrayProto, '$inArray', function (obj) {
   for (; i < len; i++) {
     if (this[i] == obj) return true;
   }return false;
-});
-
-'push_unshift_pop_shift'.split('_').forEach(function (key) {
-  defineValue(ArrayProto, "$" + key, function () {
-    return this[key].apply(this, arguments), this;
-  });
 });
 
 var addEventListener = 'addEventListener';
@@ -258,6 +258,29 @@ inBrowser && defineValue(document, '$ready', function (func, data) {
   });
 });
 
+var ElementProto = inBrowser ? Element.prototype : undefined;
+
+/**
+ * 判断传入对象是否是字符串
+ * @param {Object} obj 需要判断的对象
+ */
+function isString(obj) {
+  return typeof obj === 'string';
+}
+
+inBrowser && defineValue(ElementProto, '$is', function (selector) {
+  return selector.nodeType ? this === selector : isString(selector) ? this.matches(selector) : false;
+});
+
+inBrowser && defineValue(ElementProto, '$not', function (selector) {
+  return !this.$is(selector);
+});
+
+inBrowser && [document, ElementProto].forEach(function (elem) {
+  defineValue(elem, '$query', elem.querySelectorAll);
+  defineValue(elem, '$queryFirst', elem.querySelector);
+});
+
 function $isEmptyObject(obj) {
   for (var a in obj) {
     return false;
@@ -266,8 +289,6 @@ function $isEmptyObject(obj) {
 }
 
 defineValue(Object, '$isEmptyObject', $isEmptyObject);
-
-var ElementProto = inBrowser ? Element.prototype : undefined;
 
 var supportsEventTarget = inBrowser && 'EventTarget' in window;
 
@@ -887,14 +908,6 @@ try {
 
   window[addEventListener]('test', null, options);
 } catch (e) {}
-
-/**
- * 判断传入对象是否是字符串
- * @param {Object} obj 需要判断的对象
- */
-function isString(obj) {
-  return typeof obj === 'string';
-}
 
 /**
  * 事件处理 => 添加事件2: 参数处理

@@ -177,6 +177,49 @@ Object.defineProperty( window, 'div', {
   });
 
   describes.push({
+    name: 'Element.prototype',
+    describe: [
+      {
+        name: '$is',
+        it: function(){
+          var div1 = div;
+
+          div.$is( div ).should.false;
+          div1.$is( div1 ).should.true;
+
+          div.$is( 'span' ).should.false;
+          div.$is( 'div' ).should.true;
+
+          div.$is( window ).should.false;
+        }
+      }, {
+        name: '$not',
+        it: function(){
+          var div1 = div;
+
+          div.$not( div ).should.true;
+          div1.$not( div1 ).should.false;
+
+          div.$not( 'span' ).should.true;
+          div.$not( 'div' ).should.false;
+
+          div.$not( window ).should.true;
+        }
+      }, {
+        name: '$query',
+        it: function(){
+          div.$query.should.equal( div.querySelectorAll );
+        }
+      }, {
+        name: '$queryFirst',
+        it: function(){
+          div.$queryFirst.should.equal( div.querySelector );
+        }
+      }
+    ]
+  });
+
+  describes.push({
     name: 'Object',
     describe: [
       {

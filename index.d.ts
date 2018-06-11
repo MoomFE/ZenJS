@@ -98,6 +98,30 @@ interface Document {
   $ready( func: () => void, data?: any ): void;
 }
 
+interface Element {
+  /**
+   * 对当前 DOM 元素进行判断是否符合传入的要求
+   * @param selector DOM 元素或选择器
+   */
+  $is( selector: Element | String ): Boolean;
+  /**
+   * 对当前 DOM 元素进行判断是否不符合传入的要求
+   * @param selector DOM 元素或选择器
+   */
+  $not( selector: Element | String ): Boolean;
+  /**
+   * 调用原生 querySelectorAll 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $query( selectors ): NodeListOf<HTMLElementTagNameMap[K]>;
+  /**
+   * 调用原生  querySelector 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $queryFirst( selectors ): HTMLElementTagNameMap[K] | null;
+}
+
+
 interface EventTarget{
   /**
    * 返回存储在对象上的全部数据
