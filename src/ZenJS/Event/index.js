@@ -8,7 +8,7 @@ import { defineGetPropertyOptions } from "../../shared/const/definePropertyOptio
 import inBrowser from "../../shared/const/inBrowser";
 import isFunction from "../../shared/util/isFunction";
 
-/**
+/*
  * event.target : 触发事件的元素
  * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
  * event.delegateTarget : 绑定事件的元素
@@ -76,25 +76,47 @@ if( inBrowser ){
   ZenJS.Event = Event;
 }
 
-// const addProp = Event.addProp = function addProp( name, get, set ){
-//   defineProperty(
-//     EventProto,
-//     name, {
-//       enumerable: true,
-//       configurable: true,
+const addProp = Event.addProp = function addProp( name, get ){
+  defineProperty(
+    EventProto,
+    name, {
+      enumerable: true,
+      configurable: true,
 
-//       get: isFunction( get )
-//         ? function(){
-//           if( this.originalEvent ){
-//             return get( this.originalEvent );
-//           }
-//         }
-//         : function(){
-//           return this[ name ];
-//         },
-//       set(){
-//         this[ name ] = value;
-//       }
-//     }
-//   );
-// };
+      get: isFunction( get )
+        ? function(){
+          if( this.originalEvent ){
+            return get( this.originalEvent );
+          }
+        }
+        : function(){
+          return this[ name ];
+        },
+      set(){
+        this[ name ] = value;
+      }
+    }
+  );
+};
+
+
+
+const rkeyEvent = /^key/,
+      rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/;
+
+addProp( 'which', function( event ){
+  let button;
+
+  if( event.which == null && rkeyEvent.test( event.type ) ){
+    return event.charCode != null ? event.charCode : event.keyCode;
+  }
+
+  if( !event.which && ( button = event.button ) !== undefined && rmouseEvent.test( event.type ) ){
+    if ( button & 1 ) return 1;
+    if ( button & 2 ) return 3;
+    if ( button & 4 ) return 2;
+    return 0;
+  }
+
+  return event.which;
+});

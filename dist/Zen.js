@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.0.10
+ * Zen.js v2.1.0-bata
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -475,7 +475,7 @@
    * ZenJS
    */
   var ZenJS = $create$1(true, {
-    version: '2.0.10'
+    version: '2.1.0-bata'
   });
 
   if (inBrowser) {
@@ -571,13 +571,13 @@
     return true;
   }
 
-  /**
+  /*
    * event.target : 触发事件的元素
    * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
    * event.delegateTarget : 绑定事件的元素
    * event.relatedTarget : 事件的相关节点, mouseover 时移出的节点, mouseout 时移入的节点
    * 
-   * event.preventDefault() : 阻止浏览器默认事件
+   * event.preventDefault() : 阻止浏览器默认行为
    * event.stopPropagation() : 停止将事件冒泡到父节点
    * event.stopImmediatePropagation() : 停止将事件冒泡到父节点且停止当前元素后续事件执行
    */
@@ -631,28 +631,43 @@
     ZenJS.Event = Event;
   }
 
-  // const addProp = Event.addProp = function addProp( name, get, set ){
-  //   defineProperty(
-  //     EventProto,
-  //     name, {
-  //       enumerable: true,
-  //       configurable: true,
+  var addProp = Event.addProp = function addProp(name, get) {
+    defineProperty(EventProto, name, {
+      enumerable: true,
+      configurable: true,
 
-  //       get: isFunction( get )
-  //         ? function(){
-  //           if( this.originalEvent ){
-  //             return get( this.originalEvent );
-  //           }
-  //         }
-  //         : function(){
-  //           return this[ name ];
-  //         },
-  //       set(){
-  //         this[ name ] = value;
-  //       }
-  //     }
-  //   );
-  // };
+      get: isFunction(get) ? function () {
+        if (this.originalEvent) {
+          return get(this.originalEvent);
+        }
+      } : function () {
+        return this[name];
+      },
+      set: function () {
+        this[name] = value;
+      }
+    });
+  };
+
+  var rkeyEvent = /^key/,
+      rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/;
+
+  addProp('which', function (event) {
+    var button;
+
+    if (event.which == null && rkeyEvent.test(event.type)) {
+      return event.charCode != null ? event.charCode : event.keyCode;
+    }
+
+    if (!event.which && (button = event.button) !== undefined && rmouseEvent.test(event.type)) {
+      if (button & 1) return 1;
+      if (button & 2) return 3;
+      if (button & 4) return 2;
+      return 0;
+    }
+
+    return event.which;
+  });
 
   /**
    * 事件处理 => 触发事件
@@ -1476,7 +1491,7 @@
   var event$1 = $create$1(true, {
     /**
      * 当事件绑定的方法返回 false 时,
-     * 是否阻止浏览器默认事件且停止将事件冒泡到父节点
+     * 是否阻止浏览器默认行为且停止事件冒泡
      */
     returnFalse: false
   });

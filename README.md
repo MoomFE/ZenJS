@@ -21,10 +21,10 @@
 ## 大小 - 版本详解
 |               | Default | Gzip   |  -  | Module    | Use in  |
 | :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 34.80kb | 8.96kb | \|  | UMD       | Browser |
-| zen.min.js    | 11.74kb | 4.67kb | \|  | UMD       | Browser |
-| zen.common.js | 32.24kb | 8.78kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 32.23kb | 8.76kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js        | 35.19kb | 9.07kb | \|  | UMD       | Browser |
+| zen.min.js    | 12.19kb | 4.84kb | \|  | UMD       | Browser |
+| zen.common.js | 32.61kb | 8.89kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js    | 32.60kb | 8.88kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 
 <br>
