@@ -26,11 +26,8 @@ export function Filter( node, filter, handle, checkSelf ){
   // Node
   if( node.nodeType ){
 
-    if( checkSelf ){
-      return (
-        filterIsString ? node.$is( filter ) : filter( node )
-      ) ? node
-        : null;
+    if( checkSelf && ( filterIsString ? node.$is( filter ) : filter( node ) ) ){
+      return node;
     }
 
     if( filterIsString ){
@@ -38,6 +35,7 @@ export function Filter( node, filter, handle, checkSelf ){
     }else{
       while( ( node = node[ handle ] ) && !filter( node ) ){}
     }
+
     return node;
   }
 

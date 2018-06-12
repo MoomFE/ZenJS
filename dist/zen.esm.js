@@ -299,8 +299,8 @@ function Filter(node, filter, handle, checkSelf) {
   // Node
   if (node.nodeType) {
 
-    if (checkSelf) {
-      return (filterIsString ? node.$is(filter) : filter(node)) ? node : null;
+    if (checkSelf && (filterIsString ? node.$is(filter) : filter(node))) {
+      return node;
     }
 
     if (filterIsString) {
@@ -308,6 +308,7 @@ function Filter(node, filter, handle, checkSelf) {
     } else {
       while ((node = node[handle]) && !filter(node)) {}
     }
+
     return node;
   }
 
@@ -318,11 +319,11 @@ function Filter(node, filter, handle, checkSelf) {
 }
 
 inBrowser && defineValue(ElementProto, {
-  $parent: function (filter) {
+  $parent: function (filter, checkSelf) {
     return Filter(this.parentElement, filter, null, true);
   },
-  $parents: function (filter) {
-    return Filter(this, filter, 'parentElement');
+  $parents: function (filter, checkSelf) {
+    return checkSelf ? Filter(this, filter, 'parentElement', true) : Filter(this, filter, 'parentElement');
   }
 });
 

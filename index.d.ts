@@ -100,15 +100,28 @@ interface Document {
 
 interface Element {
   /**
-   * 对当前 DOM 元素进行判断是否符合传入的要求
-   * @param selector DOM 元素或选择器
+   * 对当前节点进行判断是否符合传入的要求
+   * @param selector CSS 选择器或选择器
    */
   $is( selector: Element | String ): Boolean;
   /**
-   * 对当前 DOM 元素进行判断是否不符合传入的要求
-   * @param selector DOM 元素或选择器
+   * 对当前节点进行判断是否不符合传入的要求
+   * @param selector CSS 选择器或选择器
    */
   $not( selector: Element | String ): Boolean;
+  /**
+   * 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $parent( filter?: String | Function ): Element | null;
+  /**
+   * 从当前节点的父节点开始,
+   * 一层一层向上查找到符合过滤条件的父节点,
+   * 若未传入过滤条件, 则直接返回当前节点的父节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   * @param checkSelf 是否从当前节点开始检测, 不从当前节点的父节点开始
+   */
+  $parents( filter?: String | Function, checkSelf?: Boolean ): Element | null
   /**
    * 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString

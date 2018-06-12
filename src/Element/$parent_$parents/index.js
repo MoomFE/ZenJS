@@ -5,10 +5,12 @@ import { Filter } from "./util";
 
 
 inBrowser && defineValue( ElementProto, {
-  $parent( filter ){
+  $parent( filter, checkSelf ){
     return Filter( this.parentElement, filter, null, true );
   },
-  $parents( filter ){
-    return Filter( this, filter, 'parentElement' );
+  $parents( filter, checkSelf ){
+    return checkSelf
+      ? Filter( this, filter, 'parentElement', true )
+      : Filter( this, filter, 'parentElement' );
   }
 });

@@ -259,6 +259,8 @@ Object.defineProperty( window, 'a', {
           div_div_div.$parents('div').should.equals( div_div );
           div_div_div.$parents('#div').should.equals( div );
 
+          // checkSelf
+          div_div_div.$parents( null, true ).should.equals( div_div_div );
         }
       }, {
         name: '$query',
