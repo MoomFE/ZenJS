@@ -221,6 +221,73 @@ Object.defineProperty( window, 'a', {
           div.$not( window ).should.true;
         }
       }, {
+        name: '$next',
+        it: function(){
+
+          var div = window.div,
+              div1 = div.appendChild( window.div ),
+              div2 = div.appendChild( window.div ),
+              div3 = div.appendChild( window.div.$set( 'id', 'div3' ) );
+
+          div1.$next().should.equals( div2 );
+          div1.$next('div').should.equals( div2 );
+          div1.$next('#div3').should.equals( div3 );
+          isLikeNull( div3.$next() ).should.true;
+          isLikeNull( div3.$next('div') ).should.true;
+        }
+      }, {
+        name: '$prev',
+        it: function(){
+
+          var div = window.div,
+              div1 = div.appendChild( window.div.$set( 'id', 'div3' ) ),
+              div2 = div.appendChild( window.div ),
+              div3 = div.appendChild( window.div );
+
+          div3.$prev().should.equals( div2 );
+          div3.$prev('div').should.equals( div2 );
+          div3.$prev('#div3').should.equals( div1 );
+          isLikeNull( div1.$prev() ).should.true;
+          isLikeNull( div1.$prev('div') ).should.true;
+
+        }
+      }, {
+        name: '$nextAll',
+        it: function(){
+
+          var div = window.div,
+              div1 = div.appendChild( window.div.$set( 'id', 'div3' ) ),
+              div2 = div.appendChild( window.div ),
+              div3 = div.appendChild( window.div );
+
+          Object.$equals( div1.$nextAll(), [ div2, div3 ] ).should.true;
+          Object.$equals( div2.$nextAll(), [ div3 ] ).should.true;
+          Object.$equals( div3.$nextAll(), [  ] ).should.true;
+
+          Object.$equals( div1.$nextAll('div'), [ div2, div3 ] ).should.true;
+          Object.$equals( div2.$nextAll('div'), [ div3 ] ).should.true;
+          Object.$equals( div3.$nextAll('div'), [  ] ).should.true;
+
+        }
+      }, {
+        name: '$prevAll',
+        it: function(){
+
+          var div = window.div,
+              div1 = div.appendChild( window.div.$set( 'id', 'div3' ) ),
+              div2 = div.appendChild( window.div ),
+              div3 = div.appendChild( window.div );
+
+          Object.$equals( div3.$prevAll(), [ div1, div2 ] ).should.true;
+          Object.$equals( div2.$prevAll(), [ div1 ] ).should.true;
+          Object.$equals( div1.$prevAll(), [  ] ).should.true;
+
+          Object.$equals( div3.$prevAll('div'), [ div1, div2 ] ).should.true;
+          Object.$equals( div2.$prevAll('div'), [ div1 ] ).should.true;
+          Object.$equals( div1.$prevAll('div'), [  ] ).should.true;
+
+        }
+      }, {
         name: '$parent',
         it: function(){
 

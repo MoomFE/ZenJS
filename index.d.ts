@@ -126,13 +126,13 @@ interface Element {
    * 若未传入过滤条件, 则直接返回当前节点后面的所有兄弟节点
    * @param filter 过滤条件: CSS 选择器或方法
    */
-  $nextAll( filter ): Element | null;
+  $nextAll( filter ): Array[ Element ];
   /**
    * 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点前面的所有兄弟节点
    * @param filter 过滤条件: CSS 选择器或方法
    */
-  $prevAll( filter ): Element | null;
+  $prevAll( filter ): Array[ Element ];
   /**
    * 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
    * @param filter 过滤条件: CSS 选择器或方法

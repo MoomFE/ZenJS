@@ -10,7 +10,7 @@ import isString from "../shared/util/isString";
 export function Filter( node, filter, handle, checkSelf ){
 
   // 没有可过滤的元素
-  if( node == null || node.length === 0 ) return;
+  if( node == null || node.length === 0 ) return node;
 
   // 没有过滤条件
   if( filter == null ){

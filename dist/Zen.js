@@ -291,7 +291,7 @@
   function Filter(node, filter, handle, checkSelf) {
 
     // 没有可过滤的元素
-    if (node == null || node.length === 0) return;
+    if (node == null || node.length === 0) return node;
 
     // 没有过滤条件
     if (filter == null) {
@@ -336,14 +336,14 @@
 
   inBrowser && [['$next', 'nextElementSibling'], ['$prev', 'previousElementSibling']].forEach(function (arr) {
 
-    var name = arr[1],
+    var name = arr[0],
         fn = arr[1];
     var options = {};
 
-    options[name] = function () {
+    options[name] = function (filter) {
       return Filter(this, filter, fn);
     };
-    options[name + 'All'] = function () {
+    options[name + 'All'] = function (filter) {
       return Filter(dir(this, fn), filter);
     };
 
