@@ -9,8 +9,6 @@ inBrowser && defineValue( ElementProto, {
     return Filter( this.parentElement, filter, null, true );
   },
   $parents( filter, checkSelf ){
-    return checkSelf
-      ? Filter( this, filter, 'parentElement', true )
-      : Filter( this, filter, 'parentElement' );
+    return Filter( this, filter, 'parentElement', checkSelf );
   }
 });
