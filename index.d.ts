@@ -110,13 +110,36 @@ interface Element {
    */
   $not( selector: Element | String ): Boolean;
   /**
+   * 获取当前节点的下一个匹配过滤条件的节点,
+   * 若未传入过滤条件, 则直接返回当前节点的下一个节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $next( filter ): Element | null;
+  /**
+   * 获取当前节点的上一个匹配过滤条件的节点,
+   * 若未传入过滤条件, 则直接返回当前节点的上一个节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $prev( filter ): Element | null;
+  /**
+   * 获取从当前节点后面的所有匹配过滤条件的兄弟节点,
+   * 若未传入过滤条件, 则直接返回当前节点后面的所有兄弟节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $nextAll( filter ): Element | null;
+  /**
+   * 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
+   * 若未传入过滤条件, 则直接返回当前节点前面的所有兄弟节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $prevAll( filter ): Element | null;
+  /**
    * 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
    * @param filter 过滤条件: CSS 选择器或方法
    */
   $parent( filter?: String | Function ): Element | null;
   /**
-   * 从当前节点的父节点开始,
-   * 一层一层向上查找到符合过滤条件的父节点,
+   * 获取当前节点的符合过滤条件的父节点, 未查找到会一直继续向上查找,
    * 若未传入过滤条件, 则直接返回当前节点的父节点
    * @param filter 过滤条件: CSS 选择器或方法
    * @param checkSelf 是否从当前节点开始检测, 不从当前节点的父节点开始

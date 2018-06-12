@@ -1,4 +1,4 @@
-import isString from "../../shared/util/isString";
+import isString from "../shared/util/isString";
 
 /**
  * 

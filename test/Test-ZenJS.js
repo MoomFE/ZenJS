@@ -223,7 +223,7 @@ Object.defineProperty( window, 'a', {
       }, {
         name: '$parent',
         it: function(){
-          
+
           var div = window.div,
               div_div = div.appendChild( window.div ),
               div_span = div.appendChild( span ),

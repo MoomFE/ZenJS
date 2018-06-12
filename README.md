@@ -21,10 +21,10 @@
 ## 大小 - 版本详解
 |               | Default | Gzip   |  -  | Module    | Use in  |
 | :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 36.87kb | 9.53kb | \|  | UMD       | Browser |
-| zen.min.js    | 12.80kb | 5.05kb | \|  | UMD       | Browser |
-| zen.common.js | 34.19kb | 9.34kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 34.17kb | 9.32kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js        | 37.40kb | 9.68kb | \|  | UMD       | Browser |
+| zen.min.js    | 13.06kb | 5.16kb | \|  | UMD       | Browser |
+| zen.common.js | 34.68kb | 9.48kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js    | 34.67kb | 9.47kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 
 <br>
@@ -74,6 +74,10 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $queryFirst
   - $parent
   - $parents
+  - $next
+  - $prev
+  - $nextAll
+  - $prevAll
 
 - EventTarget.prototype
   - $data

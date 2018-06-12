@@ -324,6 +324,32 @@
     } : filter);
   }
 
+  function dir(elem, handle) {
+    var matched = [];
+
+    while (elem = elem[handle]) {
+      matched.push(elem);
+    }
+
+    return matched;
+  }
+
+  inBrowser && [['$next', 'nextElementSibling'], ['$prev', 'previousElementSibling']].forEach(function (arr) {
+
+    var name = arr[1],
+        fn = arr[1];
+    var options = {};
+
+    options[name] = function () {
+      return Filter(this, filter, fn);
+    };
+    options[name + 'All'] = function () {
+      return Filter(dir(this, fn), filter);
+    };
+
+    defineValue(ElementProto, options);
+  });
+
   inBrowser && defineValue(ElementProto, {
     $parent: function (filter, checkSelf) {
       return Filter(this.parentElement, filter, null, true);
