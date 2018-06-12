@@ -27,14 +27,17 @@ Object.defineProperty( window, 'a', {
   function isUndef( obj ){
     return obj === undefined;
   }
+  function isNull( obj ){
+    return obj === null;
+  }
+  function isLikeNull( obj ){
+    return obj == null;
+  }
   function isEqual( first, second ){
     return first === second;
   }
   function isElement( elem ){
     return toString( elem ) === '[object HTMLDivElement]';
-  }
-  function isNull( obj ){
-    return obj === null;
   }
   function isWindow( obj ){
     return obj != null && obj === obj.window;
@@ -220,16 +223,41 @@ Object.defineProperty( window, 'a', {
       }, {
         name: '$parent',
         it: function(){
+          
+          var div = window.div,
+              div_div = div.appendChild( window.div ),
+              div_span = div.appendChild( span ),
+              div_span_a = div_span.appendChild( a );
 
-          isUndef( div.$parent() ).should.true;
+          isLikeNull( div.$parent() ).should.true;
+          div_div.$parent().should.equals( div );
+          div_span.$parent().should.equals( div );
+          div_span_a.$parent().should.equals( div_span );
 
-          var div1 = div,
-              span1 = div1.appendChild( span ),
-              a1 = span1.appendChild( a );
+          isLikeNull( div.$parent('div') ).should.true;
+          isLikeNull( div_span_a.$parent('div') ).should.true;
+          div_div.$parent('div').should.equals( div );
+          div_span.$parent('div').should.equals( div );
 
-          a1.$parent().should.equal( span1 );
-          a1.$parent('span').should.equal( span1 );
-          isUndef( a1.$parent('div') ).should.true;
+        }
+      }, {
+        name: '$parents',
+        it: function(){
+
+          var div = window.div,
+              div_div = div.appendChild( window.div ),
+              div_div_div = div_div.appendChild( window.div );
+
+          div.id = 'div';
+          div_div.id = 'div_div';
+
+          isLikeNull( div.$parents() ).should.true;
+          isLikeNull( div_div.$parents('span') ).should.true;
+
+          div_div.$parents().should.equals( div );
+          div_div.$parents('div').should.equals( div );
+          div_div_div.$parents('div').should.equals( div_div );
+          div_div_div.$parents('#div').should.equals( div );
 
         }
       }, {
