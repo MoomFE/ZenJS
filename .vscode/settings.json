@@ -13,7 +13,6 @@
 
     "**/ZenJS.code-workspace": true,
 
-    "**/LICENSE": true,
-    "**/README.md": true,
+    "**/LICENSE": true
   }
 }
