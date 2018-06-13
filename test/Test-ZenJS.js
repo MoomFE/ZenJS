@@ -195,6 +195,75 @@ Object.defineProperty( window, 'a', {
     name: 'Element.prototype',
     describe: [
       {
+        name: '$addClass',
+        it: function(){
+
+          var div = window.div;
+
+          div.$addClass('test1').should.equals( div );
+          div.className.should.equals('test1');
+          div.$addClass('test1').className.should.equals('test1');
+          div.$addClass('test2').className.should.equals('test1 test2');
+
+          div.className = '';
+          div.$addClass('test1 test2').className.should.equals('test1 test2');
+          div.$addClass('test3').className.should.equals('test1 test2 test3');
+          div.$addClass().className.should.equals('test1 test2 test3');
+        }
+      }, {
+        name: '$removeClass',
+        it: function(){
+
+          var div = window.div;
+
+          div.$addClass('test1');
+          div.$removeClass('test1').should.equals( div );
+
+          div.$addClass('test1 test2');
+          div.$removeClass('test2').className.should.equals('test1');
+
+          div.$addClass('test2');
+          div.$removeClass('').className.should.equals('test1 test2');
+
+        }
+      }, {
+        name: '$hasClass',
+        it: function(){
+
+          var div = window.div;
+
+          div.$hasClass().should.false;
+          div.$hasClass('').should.false;
+          div.$hasClass('test1').should.false;
+
+          div.$addClass('test1');
+          div.$hasClass('test1').should.true;
+          div.$hasClass('test2').should.false;
+
+          div.$addClass('test2');
+          div.$hasClass('test1 test2').should.true;
+          div.$hasClass('test1 test3').should.false;
+
+        }
+      }, {
+        name: '$toggleClass',
+        it: function(){
+
+          var div = window.div;
+
+          div.$toggleClass().className.should.equals('');
+          div.$toggleClass('test1').className.should.equals('test1');
+          div.$toggleClass('test1').className.should.equals('');
+          div.$toggleClass('test1 test2').className.should.equals('test1 test2');
+          div.$removeClass('test1').$toggleClass('test1 test2').className.should.equals('test1');
+
+          div.$toggleClass('test1',true).className.should.equals('test1');
+          div.$toggleClass('test2',true).className.should.equals('test1 test2');
+          div.$toggleClass('test2',false).className.should.equals('test1');
+          div.$toggleClass('test2 test3',true).className.should.equals('test1 test2 test3');
+
+        }
+      }, {
         name: '$is',
         it: function(){
           var div1 = div;

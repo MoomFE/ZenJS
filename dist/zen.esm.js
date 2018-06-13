@@ -258,6 +258,64 @@ inBrowser && defineValue(document, '$ready', function (func, data) {
 
 var ElementProto = inBrowser ? Element.prototype : undefined;
 
+var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
+
+/**
+ * 
+ * @param {Element} elem 
+ * @param {String} className 
+ * @param {String} handle 
+ * @param {Boolean} isToggle
+ */
+function access(elem, _className, handle, isToggle) {
+
+  var classList = elem.classList,
+      className = (_className || '').match(rnothtmlwhite) || [];
+
+  if (handle === 'has') {
+    var index = 0,
+        length = className.length;
+
+    for (; index < length; index++) {
+      if (classList.contains(className[index]) === false) return false;
+    }
+
+    return length !== 0;
+  }
+
+  // 强制引导渲染元素
+  elem.offsetHeight;
+
+  if (isToggle) {
+    className.forEach(function (_class) {
+      classList.contains(_class) ? classList.remove(_class) : classList.add(_class);
+    });
+  } else {
+    className.forEach(function (_class) {
+      classList[handle](_class);
+    });
+  }
+
+  return elem;
+}
+
+inBrowser && defineValue(ElementProto, {
+  $addClass: function (className) {
+    return access(this, className, 'add');
+  },
+  $removeClass: function (className) {
+    return access(this, className, 'remove');
+  },
+  $hasClass: function (className) {
+    return access(this, className, 'has');
+  },
+  $toggleClass: function (className, tSwitch) {
+    var notSwitch = !(arguments.length > 1);
+
+    return access(this, className, notSwitch ? null : tSwitch ? 'add' : 'remove', notSwitch);
+  }
+});
+
 /**
  * 判断传入对象是否是字符串
  * @param {Object} obj 需要判断的对象
@@ -815,8 +873,6 @@ function dispatch(nativeEvent) {
 
   return result;
 }
-
-var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
 /**
  * 事件处理 => 移除事件2: 移除事件

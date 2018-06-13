@@ -110,6 +110,27 @@ interface Document {
 
 interface Element {
   /**
+   * 向元素添加一个或多个类
+   * @param className 类名
+   */
+  $addClass( className: Stirng ): Element;
+  /**
+   * 向元素移除一个或多个类
+   * @param className 类名
+   */
+  $removeClass( className: Stirng ): Element;
+  /**
+   * 判断元素是否有一个或多个类
+   * @param className 类名
+   */
+  $hasClass( className: Stirng ): Boolean;
+  /**
+   * 设置或移除元素的一个或多个类进行切换
+   * @param className 类名
+   * @param toggle 若值为 true, 则规定只添加类, 反之只移除
+   */
+  $toggleClass( className: Stirng, toggle: Boolean ): Element;
+  /**
    * 对当前节点进行判断是否符合传入的要求
    * @param selector CSS 选择器或选择器
    */

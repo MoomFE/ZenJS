@@ -21,10 +21,10 @@
 ## 大小 - 版本详解
 |               | Default | Gzip   |  -  | Module    | Use in  |
 | :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 37.42kb | 9.69kb | \|  | UMD       | Browser |
-| zen.min.js    | 13.06kb | 5.15kb | \|  | UMD       | Browser |
-| zen.common.js | 34.70kb | 9.49kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 34.68kb | 9.47kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js        | 38.79kb | 10.12kb | \|  | UMD       | Browser |
+| zen.min.js    | 13.57kb | 5.30kb | \|  | UMD       | Browser |
+| zen.common.js | 35.98kb | 9.79kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js    | 35.97kb | 9.78kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 
 <br>
@@ -70,6 +70,10 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $queryFirst
 
 - Element.prototype
+  - $addClass
+  - $removeClass
+  - $hasClass
+  - $toggleClass
   - $is
   - $not
   - $query
