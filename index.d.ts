@@ -96,6 +96,16 @@ interface Document {
    * @param data 需要传入方法的数据
    */
   $ready( func: () => void, data?: any ): void;
+  /**
+   * 调用原生 querySelectorAll 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $query( selectors ): NodeListOf<HTMLElementTagNameMap[K]>;
+  /**
+   * 调用原生  querySelector 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $queryFirst( selectors ): HTMLElementTagNameMap[K] | null;
 }
 
 interface Element {
