@@ -13,19 +13,19 @@ interface Array<T> {
    * @param index 添加在数组中的位置
    * @param args 需要添加的对象, 可以是多个
    */
-  $add( index: Number, ...args: any[] ): this;
+  $add( index: Number, ...args: any[] ): any[];
   /**
    * 在数组指定位置删除若干对象
    * @param index 需要删除的下标
    * @param num 需要从该下标开始删除几个对象 - default: 1
    */
-  $delete( index: Number, num: Number = 1 ): this;
+  $delete( index: Number, num: Number = 1 ): any[];
   /**
    * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
    * @param congruence 是否使用全等进行判断 - default: true
    */
-  $deleteValue( value: any, congruence?: true ): this;
+  $deleteValue( value: any, congruence?: true ): any[];
   /**
    * 查找数组内是否有此传入值
    * -- 弱检测
@@ -33,7 +33,7 @@ interface Array<T> {
    * 
    * @param obj 需要检测的值
    */
-  $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): this;
+  $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
   /**
    * 判断传入数组或类数组的内容是否和当前数组相同
    * @param obj 需要检测的值
@@ -61,30 +61,30 @@ interface Array<T> {
    * 遍历数组, 并调用传入方法
    * @param callback 遍历数组时调用的方法, 方法返回 false 时, 退出遍历
    */
-  $set( index: Number, value: any ): this;
+  $set( index: Number, value: any ): any[];
   /**
    * 修改数组内指定下标的值
    * @param obj 批量修改数组内指定下标的值
    */
-  $set( obj: { index: Number, value: any } ): this;
+  $set( obj: { index: Number, value: any } ): any[];
   /**
    * 调用原生 push 方法, 返回 this
    * @param args 需要插入到数组末尾的对象
    */
-  $push( ...args: T[] ): this;
+  $push( ...args: T[] ): any[];
   /**
    * 调用原生 unshift 方法, 返回 this
    * @param args 需要插入到数组开头的对象
    */
-  $unshift( ...args: T[] ): this;
+  $unshift( ...args: T[] ): any[];
   /**
    * 调用原生 pop 方法, 返回 this
    */
-  $pop(): this;
+  $pop(): any[];
   /**
    * 调用原生 shift 方法, 返回 this
    */
-  $shift(): this;
+  $shift(): any[];
 }
 
 interface Document {
@@ -100,12 +100,12 @@ interface Document {
    * 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $query( selectors ): NodeListOf<HTMLElementTagNameMap[K]>;
+  $query( selectors ): NodeListOf<Element>;
   /**
    * 调用原生  querySelector 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $queryFirst( selectors ): HTMLElementTagNameMap[K] | null;
+  $queryFirst( selectors ): Element | null;
 }
 
 interface Element {
@@ -157,13 +157,13 @@ interface Element {
    * 若未传入过滤条件, 则直接返回当前节点后面的所有兄弟节点
    * @param filter 过滤条件: CSS 选择器或方法
    */
-  $nextAll( filter ): Array[ Element ];
+  $nextAll( filter ): Element[];
   /**
    * 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点前面的所有兄弟节点
    * @param filter 过滤条件: CSS 选择器或方法
    */
-  $prevAll( filter ): Array[ Element ];
+  $prevAll( filter ): Element[];
   /**
    * 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
    * @param filter 过滤条件: CSS 选择器或方法
@@ -180,12 +180,12 @@ interface Element {
    * 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $query( selectors ): NodeListOf<HTMLElementTagNameMap[K]>;
+  $query( selectors ): NodeListOf<Element>;
   /**
    * 调用原生  querySelector 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $queryFirst( selectors ): HTMLElementTagNameMap[K] | null;
+  $queryFirst( selectors ): Element;
 }
 
 
@@ -483,13 +483,13 @@ interface Object {
    * 删除对象中指定值
    * @param keys 可传入多个
    */
-  $delete( ...keys: any[] ): this;
+  $delete( ...keys: any[] ): any;
   /**
    * 从对象中删除与传入值相同的对象
    * @param value 需要删除的对象
    * @param congruence 是否使用全等进行判断 - default: true
    */
-  $deleteValue( value: any, congruence?: true ): this;
+  $deleteValue( value: any, congruence?: true ): any;
   /**
    * 获取对象的某个值
    * @param key 需要获取的 key
@@ -500,20 +500,20 @@ interface Object {
    * @param key 需要设置的 key
    * @param value 需要设置的 value
    */
-  $set( key: String, value: any ): this;
+  $set( key: String, value: any ): any;
   /**
    * 批量给对象设置值
    * @param obj 批量修改对象内的值
    */
-  $set( obj: any ): this;
+  $set( obj: any ): any;
   /**
    * 返回当前对象
    */
-  $self(): this;
+  $self(): any;
   /**
    * 返回当前对象
    */
-  readonly __self__: this;
+  readonly __self__: any;
 }
 
 interface ObjectConstructor {
@@ -533,7 +533,7 @@ interface ObjectConstructor {
    * @param obj 需要遍历的对象
    * @param callback 遍历对象时调用的方法, 方法返回 false 时, 退出遍历
    */
-  $each( obj: any, callback: ( key: String, value: any, obj: any ) => Boolean ): obj;
+  $each( obj: any, callback: ( key: String, value: any, obj: any ) => Boolean ): any;
   /**
    * 判断两个对象的类型是否相同然后判断两个对象的各个属性是否相同. 如果属性也有属性, 也会继续进行判断.
    * 目前可判断原生类型以及提供了 toString 接口的对象.
