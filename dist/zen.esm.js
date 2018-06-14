@@ -839,8 +839,7 @@ function dispatch(nativeEvent) {
   event.handleOptions = this;
 
   var type = event.type;
-  var selector = this.selector,
-      needsContext = this.needsContext;
+  var selector = this.selector;
 
   // 如果有事件委托
 
@@ -963,7 +962,7 @@ function remove(elem, types, listener, selector) {
  * @param {Element} elem 
  * @param {String} types 
  */
-function emit(elem, types) {
+function emit(elem, types, data) {
 
   if (!elem.$hasData('events')) {
     return;
@@ -1011,7 +1010,7 @@ function emit(elem, types) {
       if (!tmp || tmp.test(handleOptions.namespaceStr)) {
         // 检查事件委托
         if (!handleOptions.selector) {
-          handleOptions.handle(type);
+          handleOptions.handle.apply(null, data.$add(0, type));
         }
       }
     }
@@ -1221,7 +1220,9 @@ inBrowser && defineValue(EventTarget, {
   $off: off,
 
   $emit: function (types) {
-    return ZenJS.EventListener.emit(this, types), this;
+    var data = parametersRest(arguments, 1);
+
+    return ZenJS.EventListener.emit(this, types, data), this;
   }
 });
 

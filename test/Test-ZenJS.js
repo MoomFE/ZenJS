@@ -882,6 +882,18 @@ Object.defineProperty( window, 'a', {
               event.stopImmediatePropagation();
             })
             .$emit( 'Test-Event' );
+
+          div.$on( 'Test-Data', function( event, num1 ){
+            num1.should.equals( 1 );
+          });
+          div.$emit( 'Test-Data', 1 );
+          
+          div.$on( 'Test-Data2', function( event, num1, num2, num3 ){
+            num1.should.equals( 1 );
+            num2.should.equals( 3 );
+            num3.should.equals( 5 );
+          });
+          div.$emit( 'Test-Data2', 1, 3, 5 );
         }
       }, {
         name: '$on / $one / $once / $off / $emit',

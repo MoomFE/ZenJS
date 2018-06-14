@@ -4,6 +4,7 @@ import off from './access/off';
 import EventTarget from '../../shared/global/EventTarget/index';
 import ZenJS from '../../shared/global/ZenJS/index';
 import inBrowser from '../../shared/const/inBrowser';
+import parametersRest from '../../shared/util/parametersRest';
 
 function $one( types, selector, listener, options ){
   return on.call( true, this, types, selector, listener, options );
@@ -27,7 +28,9 @@ inBrowser && defineValue( EventTarget, {
   $off: off,
 
   $emit: function( types ){
-    return ZenJS.EventListener.emit( this, types ),
+    const data = parametersRest( arguments, 1 );
+
+    return ZenJS.EventListener.emit( this, types, data ),
       this;
   }
 });

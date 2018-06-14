@@ -7,7 +7,7 @@ import rtypenamespace from "../../shared/const/rtypenamespace";
  * @param {Element} elem 
  * @param {String} types 
  */
-export default function emit( elem, types ){
+export default function emit( elem, types, data ){
 
   if( !elem.$hasData( 'events' ) ){
     return;
@@ -56,7 +56,10 @@ export default function emit( elem, types ){
       if( !tmp || tmp.test( handleOptions.namespaceStr ) ){
         // 检查事件委托
         if( !handleOptions.selector ){
-          handleOptions.handle( type );
+          handleOptions.handle.apply(
+            null,
+            data.$add( 0, type )
+          );
         }
       }
     }

@@ -22,7 +22,7 @@ export default function dispatch( nativeEvent ){
   event.handleOptions = this;
 
   const type = event.type;
-  const { selector, needsContext } = this;
+  const { selector/*, needsContext */ } = this;
 
   // 如果有事件委托
   if( selector && !( type === 'click' && event.button >= 1 ) ){

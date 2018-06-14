@@ -428,8 +428,9 @@ interface EventTarget{
   /**
    * 触发绑定在元素上的事件( 只触发事件 )
    * @param types 触发的事件名
+   * @param data 向方法传递的数据, 可为多个
    */
-  $emit( types ): this;
+  $emit( types, ...data?: any[] ): this;
 }
 
 interface Math {
