@@ -6,27 +6,6 @@
 </div>
 
 <br>
-
-## 浏览器支持
-
-* Chrome：23+
-* Edge：12+
-* Firefox：21+
-* Internet Explorer：9+
-* Safari：6+
-* Android: 4.4+
-
-<br>
-
-## 大小 - 版本详解
-|               | Default | Gzip   |  -  | Module    | Use in  |
-| :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 39.16kb | 10.22kb | \|  | UMD       | Browser |
-| zen.min.js    | 13.76kb | 5.35kb | \|  | UMD       | Browser |
-| zen.common.js | 36.32kb | 9.90kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 36.31kb | 9.89kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
-
-
 <br>
 
 ## 使用
@@ -40,6 +19,60 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   <script src="--- Include your polyfill ---"></script>
   <script src="Zen.min.js"></script>
 ```
+
+<br>
+
+## 浏览器支持
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Chrome</th>
+      <th>Firefox</th>
+      <th>Safari</th>
+      <th>Android</th>
+      <th>Edge</th>
+      <th>Internet Explorer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Use polyfill</strong>
+      </td>
+      <td>23+</td>
+      <td>21+</td>
+      <td>6+</td>
+      <td>4.4+</td>
+      <td>12+</td>
+      <td>9+</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>No polyfill</strong>
+      </td>
+      <td>45+</td>
+      <td>34+</td>
+      <td>9+</td>
+      <td>5+</td>
+      <td>12+</td>
+      <td>No support</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<br>
+
+## 大小 - 版本详解
+|               | Default | Gzip   |  -  | Module    | Use in  |
+| :-            | :-      | :-     | :-: | :-        | :-      |
+| zen.js        | 39.16kb | 10.22kb | \|  | UMD       | Browser |
+| zen.min.js    | 13.76kb | 5.35kb | \|  | UMD       | Browser |
+| zen.common.js | 36.32kb | 9.90kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js    | 36.31kb | 9.89kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+
 
 <br>
 
