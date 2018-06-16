@@ -15,7 +15,7 @@ interface Array<T> {
    */
   $add( index: Number, ...args: any[] ): any[];
   /**
-   * 类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组后
+   * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组后
    * @param args 需要添加到数组后的数据
    */
   $concat( ...args: any[] ): any[];
