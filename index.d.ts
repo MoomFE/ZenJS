@@ -9,11 +9,16 @@ interface ArrayConstructor {
 
 interface Array<T> {
   /**
-   * 在数组指定位置添加对象
-   * @param index 添加在数组中的位置
-   * @param args 需要添加的对象, 可以是多个
+   * 在数组指定位置插入对象
+   * @param index 插入在数组中的位置, 如果为负数, 则从末尾开始逆序计算插入位置
+   * @param args 需要插入的对象, 可以是多个
    */
   $add( index: Number, ...args: any[] ): any[];
+  /**
+   * 类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组后
+   * @param args 需要添加到数组后的数据
+   */
+  $concat( ...args: any[] ): any[];
   /**
    * 在数组指定位置删除若干对象
    * @param index 需要删除的下标
