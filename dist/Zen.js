@@ -121,19 +121,31 @@
     return [];
   }
 
-  defineValue(ArrayProto, '$add', function (index) {
-    var i = 0;
-    var args = parametersRest(arguments, 1),
-        len = args.length;
+  function $add(self, index, args) {
+
+    var len = args.length;
 
     if (index < 0) {
-      index = this.length + index + 1;
+      index = self.length + index + 1;
     }
 
-    for (; i < len; i++) {
-      this.splice(index++, 0, args[i]);
+    for (var i = 0; i < len; i++) {
+      self.splice(index++, 0, args[i]);
     }
 
+    return self;
+  }
+
+  defineValue(ArrayProto, '$add', function (index) {
+    return $add(this, index, parametersRest(arguments, 1));
+  });
+
+  defineValue(ArrayProto, '$concat', function () {
+    var _this = this;
+
+    Array.from(arguments).forEach(function (arg) {
+      $add(_this, -1, isArray(arg) ? arg : [arg]);
+    });
     return this;
   });
 
