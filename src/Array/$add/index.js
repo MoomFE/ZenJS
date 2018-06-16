@@ -8,8 +8,12 @@ defineValue( ArrayProto, '$add', function( index ){
   const
     args = parametersRest( arguments, 1 ),
     len = args.length;
+  
+  if( index < 0 ){
+    index = this.length + index + 1;
+  }
 
-  for( ; i < len; i++){
+  for( ; i < len; i++ ){
     this.splice( index++, 0, args[ i ] );
   }
 
