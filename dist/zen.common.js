@@ -535,8 +535,28 @@ var ObjectProto = Object.prototype;
 
 var toString = ObjectProto.toString;
 
+var getPrototypeOf = Object.getPrototypeOf;
+
+var hasOwnProperty = Object.hasOwnProperty;
+
+var fnToString = hasOwnProperty.toString,
+    ObjectFunctionString = fnToString.call(Object);
+
 function $isPlainObject(obj) {
-  return toString.call(obj) === '[object Object]';
+
+  if (!obj || toString.call(obj) !== '[object Object]') {
+    return false;
+  }
+
+  var proto = getPrototypeOf(obj);
+
+  if (!proto) {
+    return true;
+  }
+
+  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+
+  return isFunction(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
 }
 
 defineValue(Object, '$isPlainObject', $isPlainObject);

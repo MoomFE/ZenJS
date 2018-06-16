@@ -175,6 +175,7 @@ Object.defineProperty( window, 'a', {
           Object.$isPlainObject( div ).should.false;
           Object.$isPlainObject( Element ).should.false;
           Object.$isPlainObject( Element.prototype ).should.false;
+          Object.$isPlainObject( new function(){} ).should.false;
         }
       }
     ]
