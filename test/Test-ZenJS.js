@@ -971,6 +971,20 @@ Object.defineProperty( window, 'a', {
           childDiv.click();
           num.should.equals( 6 );
         }
+      }, {
+        name: 'Functionality namespace',
+        it: function(){
+
+          var div = window.div;
+          var num = 0;
+
+          // .once
+          div.$on( 'click.once', function(){ num++ } );
+          div.$on( 'click.once', function(){ num++ } );
+          div.$emit( 'click.once' );
+          num.should.equals( 1 );
+
+        }
       }
     ]
   });

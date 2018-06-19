@@ -24,54 +24,22 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
 
 ## 浏览器支持
 
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th>Chrome</th>
-      <th>Firefox</th>
-      <th>Safari</th>
-      <th>Android</th>
-      <th>Edge</th>
-      <th>Internet Explorer</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Use polyfill</strong>
-      </td>
-      <td>23+</td>
-      <td>21+</td>
-      <td>6+</td>
-      <td>4.4+</td>
-      <td>12+</td>
-      <td>9+</td>
-    </tr>
-    <tr>
-      <td>
-        <strong>No polyfill</strong>
-      </td>
-      <td>45+</td>
-      <td>34+</td>
-      <td>9+</td>
-      <td>5+</td>
-      <td>12+</td>
-      <td>No support</td>
-    </tr>
-  </tbody>
-</table>
+|                     | Chrome | Firefox | Safari | Android | Edge | Internet Explorer |
+| :-                  | :-     | :-      | :-     | :-      | :-   | :-                |
+| <b>Use polyfill</b> | 23+    | 21+     | 6+     | 4.4+    | 12+  | 9+                |
+| <b>No polyfill</b>  | 45+    | 34+     | 9+     | 5+      | 12+  | No support        |
 
 
 <br>
 
 ## 大小 - 版本详解
+
 |               | Default | Gzip   |  -  | Module    | Use in  |
 | :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 39.15kb | 10.22kb | \|  | UMD       | Browser |
-| zen.min.js    | 13.75kb | 5.35kb | \|  | UMD       | Browser |
-| zen.common.js | 36.31kb | 9.90kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 36.30kb | 9.88kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js        | 40.66kb | 10.60kb | \|  | UMD       | Browser |
+| zen.min.js    | 14.15kb | 5.51kb | \|  | UMD       | Browser |
+| zen.common.js | 37.72kb | 10.39kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js    | 37.70kb | 10.38kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 
 <br>

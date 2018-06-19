@@ -653,6 +653,65 @@ if (inBrowser) {
 }
 
 /**
+ * 根据传入命名空间, 调用一些功能或做一些判断
+ * @param {String} name 需要解析哪一块的功能命名空间
+ * @param {Array} namespace 元素的命名空间列表
+ * @param {Element} elem 绑定事件的元素
+ * @param {String} type 绑定的事件
+ * @param {Object} events 当前元素下的所有事件
+ */
+function namespaceHandler(name, namespace, elem, type, events) {
+  // 没有命名空间
+  if (namespace.length === 0) return;
+
+  var _handlers = handlers[name];
+  var _namespace = namespace.filter(function (name) {
+    return name in _handlers;
+  });
+  var length = _namespace.length;
+
+  // 没有功能命名空间
+  if (length === 0) return;
+
+  var i = 0,
+      handlerName,
+      handler;
+
+  for (; i < length; i++) {
+    handlerName = _namespace[i];
+    handler = _handlers[handlerName];
+
+    if (handler.type === 'check') {
+      if (handler.handler(elem, type, namespace, events) === false) {
+        return false;
+      }
+    }
+  }
+}
+
+var handlers = {
+  add: {
+    once: {
+      type: 'check',
+      handler: function (elem, type, namespace, events) {
+        // 没有绑定过事件
+        if (!(events = events[type])) return;
+
+        var i = 0,
+            len = events.length;
+
+        for (; i < len; i++) {
+          // 如果绑定了相同的命名空间的事件, 则当前事件不会再进行绑定
+          if (namespace.$equals(events[i].namespace)) {
+            return false;
+          }
+        }
+      }
+    }
+  }
+};
+
+/**
  * 事件处理 => 添加事件3: 绑定事件
  * @param {Element} elem 需要绑定事件的对象
  * @param {Array} types 需要绑定的事件集
@@ -688,6 +747,10 @@ function add(elem, types, selector, listener, options) {
 
     /** 命名空间 */
     namespace = (tmp[2] || '').split('.').sort();
+
+    if (namespaceHandler('add', namespace, elem, type, events) === false) {
+      continue;
+    }
 
     /** 该事件的所有参数 */
     handleOptions = {
@@ -1039,7 +1102,8 @@ var EventListener = $create$1(true, {
   add: add,
   dispatch: dispatch,
   remove: remove,
-  emit: emit
+  emit: emit,
+  namespaceHandler: namespaceHandler
 });
 
 if (inBrowser) {
@@ -1336,6 +1400,9 @@ defineValue(ObjectProto, '$deleteValue', function $deleteValue(value) {
 });
 
 function $each(obj, callback) {
+
+  if (obj == null) return obj;
+
   var key,
       value;
 
