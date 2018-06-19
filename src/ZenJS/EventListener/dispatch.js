@@ -1,7 +1,7 @@
 import "../../Object/$set/index";
 import Event from "../Event/index";
-import from from "../../shared/global/Array/from";
 import ZenJS from "../../shared/global/ZenJS/index";
+
 
 /**
  * 事件处理 => 触发事件

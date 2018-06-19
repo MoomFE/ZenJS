@@ -1,8 +1,7 @@
 import rtypenamespace from '../../shared/const/rtypenamespace';
-import concat from '../../shared/global/Array/prototype/concat';
-import isEmptyObject from '../../Object/$isEmptyObject/index';
 import ZenJS from '../../shared/global/ZenJS/index';
 import { addEventListenerPrivate } from '../../shared/const/event';
+
 
 /**
  * 事件处理 => 添加事件3: 绑定事件

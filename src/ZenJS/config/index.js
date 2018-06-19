@@ -4,6 +4,7 @@ import inject from "./inject/index";
 import keys from "../../shared/global/Object/keys";
 import event from "./event/index";
 
+
 const config = ZenJS.config = $create( true );
 
 

@@ -419,7 +419,7 @@ inBrowser && [['$next', 'nextElementSibling'], ['$prev', 'previousElementSibling
 });
 
 inBrowser && defineValue(ElementProto, {
-  $parent: function (filter, checkSelf) {
+  $parent: function (filter) {
     return Filter(this.parentElement, filter, null, true);
   },
   $parents: function (filter, checkSelf) {

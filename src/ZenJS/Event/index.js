@@ -3,10 +3,9 @@ import returnFalse from '../../shared/util/returnFalse';
 import returnTrue from '../../shared/util/returnTrue';
 import $assign from "../../Object/$assign";
 import defineProperty from "../../shared/global/Object/defineProperty";
-import assign from "../../shared/global/Object/assign";
-import { defineGetPropertyOptions } from "../../shared/const/definePropertyOptions";
 import inBrowser from "../../shared/const/inBrowser";
 import isFunction from "../../shared/util/isFunction";
+
 
 /*
  * event.target : 触发事件的元素

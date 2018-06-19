@@ -1,4 +1,3 @@
-import "../../Array/$each/index";
 import defineValue from "../../shared/util/defineValue";
 import ObjectProto from "../../shared/global/Object/prototype/index";
 

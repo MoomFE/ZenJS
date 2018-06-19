@@ -1,6 +1,6 @@
-import hasOwnProperty from "../../shared/global/Object/hasOwnProperty";
 import rnothtmlwhite from "../../shared/const/rnothtmlwhite";
 import rtypenamespace from "../../shared/const/rtypenamespace";
+
 
 /**
  * 触发绑定在元素上的事件( 只触发事件 )

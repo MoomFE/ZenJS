@@ -2,8 +2,8 @@ import defineValue from '../../shared/util/defineValue';
 import isEmptyObject from'../../Object/$isEmptyObject/index';
 import isObject from '../../shared/util/isObject';
 import EventTarget from '../../shared/global/EventTarget/index';
-import defineProperty from '../../shared/global/Object/defineProperty';
 import inBrowser from '../../shared/const/inBrowser';
+
 
 const DATA = '__ZENJS_DATA__';
 

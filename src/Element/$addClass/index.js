@@ -3,6 +3,7 @@ import ElementProto from "../../shared/global/Element/prototype/index";
 import rnothtmlwhite from "../../shared/const/rnothtmlwhite";
 import inBrowser from "../../shared/const/inBrowser";
 
+
 /**
  * 
  * @param {Element} elem 
@@ -43,6 +44,7 @@ function access( elem, _className, handle, isToggle ){
 
   return elem;
 }
+
 
 inBrowser && defineValue( ElementProto, {
   $addClass( className ){

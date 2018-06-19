@@ -5,6 +5,7 @@ import isFunction from '../../shared/util/isFunction';
 import Object from '../../shared/global/Object/index';
 import defineValue from '../../shared/util/defineValue';
 
+
 const
   fnToString = hasOwnProperty.toString,
   ObjectFunctionString = fnToString.call( Object );

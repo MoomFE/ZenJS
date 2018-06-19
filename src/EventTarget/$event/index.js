@@ -6,6 +6,7 @@ import ZenJS from '../../shared/global/ZenJS/index';
 import inBrowser from '../../shared/const/inBrowser';
 import parametersRest from '../../shared/util/parametersRest';
 
+
 function $one( types, selector, listener, options ){
   return on.call( true, this, types, selector, listener, options );
 }

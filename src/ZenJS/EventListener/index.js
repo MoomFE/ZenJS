@@ -6,6 +6,7 @@ import ZenJS from '../../shared/global/ZenJS/index';
 import $create from '../../Object/$create/index';
 import inBrowser from '../../shared/const/inBrowser';
 
+
 const EventListener = $create( true, {
   add,
   dispatch,

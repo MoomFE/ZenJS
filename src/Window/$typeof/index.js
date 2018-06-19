@@ -1,7 +1,6 @@
 import isArray from '../../shared/global/Array/isArray';
 import defineValue from '../../shared/util/defineValue';
 import inBrowser from '../../shared/const/inBrowser';
-import ZenJS from '../../shared/global/ZenJS/index';
 
 
 export default function $typeof( obj ){

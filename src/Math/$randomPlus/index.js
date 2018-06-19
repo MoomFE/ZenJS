@@ -3,6 +3,7 @@ import defineValue from "../../shared/util/defineValue";
 import Math from "../../shared/global/Math/index";
 import { _random, _randomParameters } from "../$random/util";
 
+
 export default function $randomPlus(){
   let cache = _randomParameters( arguments );
   const

@@ -3,8 +3,9 @@ import ElementProto from "../../shared/global/Element/prototype/index";
 import inBrowser from "../../shared/const/inBrowser";
 import { Filter } from "../util";
 
+
 inBrowser && defineValue( ElementProto, {
-  $parent( filter, checkSelf ){
+  $parent( filter ){
     return Filter( this.parentElement, filter, null, true );
   },
   $parents( filter, checkSelf ){
