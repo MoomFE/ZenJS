@@ -3,6 +3,9 @@ import Object from '../../shared/global/Object';
 
 
 export default function $each( obj, callback ){
+
+  if( obj == null ) return obj;
+
   let key,
       value;
 
