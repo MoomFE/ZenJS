@@ -688,22 +688,27 @@ function namespaceHandler(name, namespace, elem, type, events) {
 }
 
 var handlers = {
-  add: {
-    once: {
-      type: 'check',
-      handler: function (elem, type, namespace, events) {
-        // 没有绑定过事件
-        if (!(events = events[type])) return;
+  add: {}
+};
 
-        var i = 0,
-            len = events.length;
+/**
+ * .once || .one
+ * 当命名空间有 .once 或 .one, 则会去已绑定的事件中进行查找,
+ * 如果之前绑定过相同的命名空间 ( 也同样有 .once 或 .one ), 则本次绑定无效
+ */
+handlers.add.once = handlers.add.one = {
+  type: 'check',
+  handler: function (elem, type, namespace, events) {
+    // 没有绑定过事件
+    if (!(events = events[type])) return;
 
-        for (; i < len; i++) {
-          // 如果绑定了相同的命名空间的事件, 则当前事件不会再进行绑定
-          if (namespace.$equals(events[i].namespace)) {
-            return false;
-          }
-        }
+    var i = 0,
+        len = events.length;
+
+    for (; i < len; i++) {
+      // 如果绑定了相同的命名空间的事件, 则当前事件不会再进行绑定
+      if (namespace.$equals(events[i].namespace)) {
+        return false;
       }
     }
   }
