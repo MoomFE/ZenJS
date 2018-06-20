@@ -56,10 +56,7 @@ export default function emit( elem, types, data ){
       if( !tmp || tmp.test( handleOptions.namespaceStr ) ){
         // 检查事件委托
         if( !handleOptions.selector ){
-          handleOptions.handle.apply(
-            null,
-            data.$add( 0, type )
-          );
+          handleOptions.handle.apply( null, [ type, data ] );
         }
       }
     }

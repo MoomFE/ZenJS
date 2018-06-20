@@ -1104,7 +1104,7 @@ function emit(elem, types, data) {
       if (!tmp || tmp.test(handleOptions.namespaceStr)) {
         // 检查事件委托
         if (!handleOptions.selector) {
-          handleOptions.handle.apply(null, data.$add(0, type));
+          handleOptions.handle.apply(null, [type, data]);
         }
       }
     }
@@ -1314,9 +1314,7 @@ inBrowser && defineValue(EventTarget, {
    */
   $off: off,
 
-  $emit: function (types) {
-    var data = parametersRest(arguments, 1);
-
+  $emit: function (types, data) {
     return ZenJS.EventListener.emit(this, types, data), this;
   }
 });
