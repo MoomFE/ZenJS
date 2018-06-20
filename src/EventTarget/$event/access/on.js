@@ -20,7 +20,8 @@ import ZenJS from '../../../shared/global/ZenJS/index';
  * @param {Object} options 事件绑定参数
  */
 export default function on( elem, types, selector, listener, options ){
-  let events;
+  let events,
+      data;
 
   // on( elem, { type: listener || Boolean } )
   // on( elem, { type: listener || Boolean }, options )
@@ -93,6 +94,11 @@ export default function on( elem, types, selector, listener, options ){
 
   options = options || {};
 
+  if( options.data ){
+    data = options.data;
+    delete options.data;
+  }
+
   Object.keys( options ).forEach( key => {
     options[ key ] ? options[ key ] = true
                    : delete options[ key ];
@@ -118,6 +124,6 @@ export default function on( elem, types, selector, listener, options ){
     delete options.passive;
   }
 
-  return EventListener.add( elem, types, selector, listener, options ),
+  return EventListener.add( elem, types, selector, listener, options, data ),
          elem;
 }

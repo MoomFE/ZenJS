@@ -970,6 +970,14 @@ Object.defineProperty( window, 'a', {
           div.$off('**');
           childDiv.click();
           num.should.equals( 6 );
+
+          // 向事件传递数据
+          div.$on( 'Test-Data', function( event ){
+            event.data.should.equals( 123 );
+          }, {
+            data: 123
+          });
+          div.$emit( 'Test-Data' );
         }
       }, {
         name: 'Functionality namespace',

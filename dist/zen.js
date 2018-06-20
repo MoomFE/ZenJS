@@ -730,8 +730,9 @@
    * @param {String} selector 事件委托的选择器
    * @param {Function} listener 绑定的事件
    * @param {Object} options 事件绑定参数
+   * @param {Object} data 绑定事件时向方法传入的数据
    */
-  function add(elem, types, selector, listener, options) {
+  function add(elem, types, selector, listener, options, data) {
 
     var
     /** 存放当前元素下的所有事件 */
@@ -769,6 +770,7 @@
         elem: elem,
         type: type,
         guid: guid,
+        data: data,
         listener: listener,
         selector: selector,
         options: options,
@@ -930,6 +932,7 @@
 
     event.delegateTarget = self;
     event.handleOptions = this;
+    event.data = this.data;
 
     var type = event.type;
     var selector = this.selector;
@@ -1110,7 +1113,7 @@
         if (!tmp || tmp.test(handleOptions.namespaceStr)) {
           // 检查事件委托
           if (!handleOptions.selector) {
-            handleOptions.handle.apply(null, data.$add(0, type));
+            handleOptions.handle.apply(null, data.$unshift(type));
           }
         }
       }
@@ -1151,7 +1154,8 @@
    * @param {Object} options 事件绑定参数
    */
   function on(elem, types, selector, listener, options) {
-    var events;
+    var events,
+        data;
 
     // on( elem, { type: listener || Boolean } )
     // on( elem, { type: listener || Boolean }, options )
@@ -1225,6 +1229,11 @@
 
     options = options || {};
 
+    if (options.data) {
+      data = options.data;
+      delete options.data;
+    }
+
     Object.keys(options).forEach(function (key) {
       options[key] ? options[key] = true : delete options[key];
     });
@@ -1247,7 +1256,7 @@
       delete options.passive;
     }
 
-    return EventListener.add(elem, types, selector, listener, options), elem;
+    return EventListener.add(elem, types, selector, listener, options, data), elem;
   }
 
   /**

@@ -20,14 +20,14 @@ export default function dispatch( nativeEvent ){
 
   event.delegateTarget = self;
   event.handleOptions = this;
+  event.data = this.data;
 
   const type = event.type;
   const { selector/*, needsContext */ } = this;
 
   // 如果有事件委托
   if( selector && !( type === 'click' && event.button >= 1 ) ){
-    let cur = event.target,
-        selectors;
+    let cur = event.target;
 
     // 从被点击的元素开始, 一层一层往上找
     for( ; cur !== self; cur = cur.parentNode || self ){

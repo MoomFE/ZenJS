@@ -11,8 +11,9 @@ import namespaceHandler from './namespace';
  * @param {String} selector 事件委托的选择器
  * @param {Function} listener 绑定的事件
  * @param {Object} options 事件绑定参数
+ * @param {Object} data 绑定事件时向方法传入的数据
  */
-export default function add( elem, types, selector, listener, options ){
+export default function add( elem, types, selector, listener, options, data ){
 
   let
     /** 存放当前元素下的所有事件 */
@@ -52,6 +53,7 @@ export default function add( elem, types, selector, listener, options ){
       elem,
       type,
       guid,
+      data,
       listener,
       selector,
       options,
