@@ -688,6 +688,9 @@ function namespaceHandler(name, namespace, elem, type, events) {
 }
 
 var handlers = {
+  /**
+   * 添加事件时
+   */
   add: {}
 };
 
@@ -944,6 +947,13 @@ function dispatch(nativeEvent) {
 
     if (event.delegateTarget === self) {
       return;
+    }
+  } else {
+    if (!event.currentTarget) {
+      event.currentTarget = self;
+    }
+    if (!event.target) {
+      event.target = self;
     }
   }
 

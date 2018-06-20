@@ -694,6 +694,9 @@
   }
 
   var handlers = {
+    /**
+     * 添加事件时
+     */
     add: {}
   };
 
@@ -950,6 +953,13 @@
 
       if (event.delegateTarget === self) {
         return;
+      }
+    } else {
+      if (!event.currentTarget) {
+        event.currentTarget = self;
+      }
+      if (!event.target) {
+        event.target = self;
       }
     }
 

@@ -35,6 +35,9 @@ function namespaceHandler( name, namespace, elem, type, events ){
 }
 
 const handlers = {
+  /**
+   * 添加事件时
+   */
   add: {}
 };
 

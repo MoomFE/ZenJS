@@ -44,6 +44,13 @@ export default function dispatch( nativeEvent ){
     if( event.delegateTarget === self ){
       return;
     }
+  }else{
+    if( !event.currentTarget ){
+      event.currentTarget = self;
+    }
+    if( !event.target ){
+      event.target = self;
+    }
   }
 
   const result = this.listener.apply( self, args );
