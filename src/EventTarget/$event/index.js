@@ -28,7 +28,9 @@ inBrowser && defineValue( EventTarget, {
    */
   $off: off,
 
-  $emit: function( types, data ){
+  $emit: function( types ){
+    const data = parametersRest( arguments, 1 );
+
     return ZenJS.EventListener.emit( this, types, data ),
       this;
   }
