@@ -1,20 +1,49 @@
-Object.defineProperty( window, 'div', {
-  get: function(){
-    return document.createElement('div');
-  }
-});
+!function(){
 
-Object.defineProperty( window, 'span', {
-  get: function(){
-    return document.createElement('span');
-  }
-});
+  var isLowBrowser = true;
+  var div = document.createElement('div');
 
-Object.defineProperty( window, 'a', {
-  get: function(){
-    return document.createElement('a');
+  div.addEventListener( 'click', function(){
+    isLowBrowser = false;
+  });
+  div.click();
+
+  if( isLowBrowser ){
+    Object.defineProperty( window, '$div', {
+      get: function(){
+        var parent = document.createElement('mark');
+        var div = document.createElement('div');
+        return parent.appendChild( div );
+      }
+    });
+  }else{
+    Object.defineProperty( window, '$div', {
+      get: function(){
+        return document.createElement('div');
+      }
+    });
   }
-});
+
+  Object.defineProperty( window, 'div', {
+    get: function(){
+      return document.createElement('div');
+    }
+  });
+
+  Object.defineProperty( window, 'span', {
+    get: function(){
+      return document.createElement('span');
+    }
+  });
+
+  Object.defineProperty( window, 'a', {
+    get: function(){
+      return document.createElement('a');
+    }
+  });
+
+}();
+
 
 !function(){
 
@@ -864,10 +893,11 @@ Object.defineProperty( window, 'a', {
           Object.$equals( div.$data('events'), {} ).should.true;
 
           // 正常移除
+          div = window.$div;
           div.$on( 'click', function click(){
             this.$off( 'click', click );
           });
-          div.$emit('click');
+          div.click();
           isUndef( div.$data( 'events' ).click ).should.true;
         }
       }, {
@@ -915,36 +945,22 @@ Object.defineProperty( window, 'a', {
         name: '$on / $one / $once / $off / $emit',
         it: function(){
 
-          var div = window.div,
-              num = 0,
-              isIE = false;
+          var div = window.$div,
+              num = 0;
 
           div.$on( 'click', function(){ num++ } )
              .click();
-          if( num === 0 ) isIE = true;
-          if( isIE ){
-            div.$emit('click');
-          }
           num.should.equals( 1 );
 
           div.$on( 'click', function(){ num++ } )
              .click();
-          if( isIE ){
-            div.$emit('click');
-          }
           num.should.equals( 3 );
 
           div.$one( 'click', function(){ num++ } )
              .click();
-          if( isIE ){
-            div.$emit('click');
-          }
           num.should.equals( 6 );
 
           div.click();
-          if( isIE ){
-            div.$emit('click');
-          }
           num.should.equals( 8 );
 
           num = 0;
@@ -983,14 +999,31 @@ Object.defineProperty( window, 'a', {
         name: 'Functionality namespace',
         it: function(){
 
-          var div = window.div;
+          var div = window.$div,
+              childDiv;
           var num = 0;
 
+          function numadd(){
+            num++;
+          }
+
           // .once
-          div.$on( 'click.once', function(){ num++ } );
-          div.$on( 'click.once', function(){ num++ } );
-          div.$emit( 'click.once' );
+          div.$on( 'click.once', numadd );
+          div.$on( 'click.once', numadd );
+          div.click();
           num.should.equals( 1 );
+
+          // .self
+          div = window.div;
+          childDiv = div.appendChild( window.div );
+
+          div.$on( 'click.self', numadd );
+          childDiv.$on( 'click', numadd );
+
+          childDiv.click();
+          num.should.equals( 2 );
+          div.click();
+          num.should.equals( 3 );
 
         }
       }

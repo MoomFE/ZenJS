@@ -1,6 +1,7 @@
 import "../../Object/$set/index";
 import Event from "../Event/index";
 import ZenJS from "../../shared/global/ZenJS/index";
+import namespaceHandler from "./namespace";
 
 
 /**
@@ -51,6 +52,10 @@ export default function dispatch( nativeEvent ){
     if( !event.target ){
       event.target = self;
     }
+  }
+
+  if( namespaceHandler( 'dispatch', this.namespace, self, type, event ) === false ){
+    return;
   }
 
   const result = this.listener.apply( self, args );

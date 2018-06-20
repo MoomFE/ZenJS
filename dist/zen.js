@@ -662,9 +662,13 @@
    * @param {Array} namespace 元素的命名空间列表
    * @param {Element} elem 绑定事件的元素
    * @param {String} type 绑定的事件
-   * @param {Object} events 当前元素下的所有事件
+   * @param {Object} options 其他属性
    */
-  function namespaceHandler(name, namespace, elem, type, events) {
+  function namespaceHandler(
+  // Self use
+  name, namespace,
+  // Handler use
+  elem, type, options) {
     // 没有命名空间
     if (namespace.length === 0) return;
 
@@ -686,7 +690,7 @@
       handler = _handlers[handlerName];
 
       if (handler.type === 'check') {
-        if (handler.handler(elem, type, namespace, events) === false) {
+        if (handler.handler(elem, type, namespace, options) === false) {
           return false;
         }
       }
@@ -697,7 +701,23 @@
     /**
      * 添加事件时
      */
-    add: {}
+    add: {},
+    /**
+     * 触发事件时
+     */
+    dispatch: {
+      /**
+       * 
+       */
+      self: {
+        type: 'check',
+        handler: function (elem, type, namespace, event) {
+          if (event.target !== event.currentTarget) {
+            return false;
+          }
+        }
+      }
+    }
   };
 
   /**
@@ -964,6 +984,10 @@
       if (!event.target) {
         event.target = self;
       }
+    }
+
+    if (namespaceHandler('dispatch', this.namespace, self, type, event) === false) {
+      return;
     }
 
     var result = this.listener.apply(self, args);
