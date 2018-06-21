@@ -22,6 +22,16 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
 
 <br>
 
+## 下载 / 获取
+
+你可以点击 [这里](https://github.com/MoomFE/ZenJS/releases) 下载最新稳定版或使用 npm 进行获取 :
+
+```bash
+  npm install @moomfe/zenjs
+```
+
+<br>
+
 ## 浏览器支持
 
 |                     | Chrome | Firefox | Safari | Android | Edge | Internet Explorer |
