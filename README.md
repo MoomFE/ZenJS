@@ -17,7 +17,7 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
 
 ```html
   <script src="--- Include your polyfill ---"></script>
-  <script src="Zen.min.js"></script>
+  <script src="zen.min.js"></script>
 ```
 
 <br>
