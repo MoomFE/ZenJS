@@ -45,7 +45,9 @@
       return;
     }
 
-    defineProperty(obj, name, Object.assign({}, options, options2));
+    name.split(' ').forEach(function (name) {
+      defineProperty(obj, name, Object.assign({}, options, options2));
+    });
   }
 
   var definePropertyOptions = {
@@ -346,15 +348,6 @@
     return typeof obj === 'string';
   }
 
-  inBrowser && defineValue(ElementProto, {
-    $is: function (selector) {
-      return selector.nodeType ? this === selector : isString(selector) ? this.matches(selector) : false;
-    },
-    $not: function (selector) {
-      return !this.$is(selector);
-    }
-  });
-
   /**
    * 
    * @param {Element} node 当前 DOM 元素, 也可是 DOM 元素数组
@@ -408,6 +401,28 @@
     return matched;
   }
 
+  inBrowser && defineValue(ElementProto, '$child $children', function (filter) {
+    return Filter(Array.from(this.children), filter);
+  });
+
+  inBrowser && defineValue(ElementProto, {
+    '$first $firstChild': function (filter) {
+      return Filter(this.firstElementChild, filter, 'nextElementSibling', true);
+    },
+    '$last $lastChild': function (filter) {
+      return Filter(this.lastElementChild, filter, 'previousElementSibling', true);
+    }
+  });
+
+  inBrowser && defineValue(ElementProto, {
+    $is: function (selector) {
+      return selector.nodeType ? this === selector : isString(selector) ? this.matches(selector) : false;
+    },
+    $not: function (selector) {
+      return !this.$is(selector);
+    }
+  });
+
   inBrowser && [['$next', 'nextElementSibling'], ['$prev', 'previousElementSibling']].forEach(function (arr) {
 
     var name = arr[0],
@@ -436,6 +451,10 @@
   inBrowser && [document, ElementProto].forEach(function (elem) {
     defineValue(elem, '$query', elem.querySelectorAll);
     defineValue(elem, '$queryFirst', elem.querySelector);
+  });
+
+  inBrowser && defineValue(ElementProto, '$siblings', function (filter) {
+    return Filter(Array.from(this.parentElement.children).$deleteValue(this), filter);
   });
 
   function $isEmptyObject(obj) {

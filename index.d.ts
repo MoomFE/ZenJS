@@ -136,6 +136,42 @@ interface Element {
    */
   $toggleClass( className: Stirng, toggle: Boolean ): Element;
   /**
+   * 获取当前节点下的所有匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回所有子节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $child( filter?: String | Function ): Element[];
+  /**
+   * 获取当前节点下的所有匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回所有子节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $children( filter?: String | Function ): Element[];
+  /**
+   * 获取当前节点下首个匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回首个子节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $first( filter?: String | Function ): Element | null;
+  /**
+   * 获取当前节点下首个匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回首个子节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $firstChild( filter?: String | Function ): Element | null;
+  /**
+   * 获取当前节点下最后一个匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回最后一个子节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $last( filter?: String | Function ): Element | null;
+  /**
+   * 获取当前节点下最后一个匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回最后一个子节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $lastChild( filter?: String | Function ): Element | null;
+  /**
    * 对当前节点进行判断是否符合传入的要求
    * @param selector CSS 选择器或选择器
    */
@@ -150,25 +186,25 @@ interface Element {
    * 若未传入过滤条件, 则直接返回当前节点的下一个节点
    * @param filter 过滤条件: CSS 选择器或方法
    */
-  $next( filter ): Element | null;
+  $next( filter?: String | Function ): Element | null;
   /**
    * 获取当前节点的上一个匹配过滤条件的节点,
    * 若未传入过滤条件, 则直接返回当前节点的上一个节点
    * @param filter 过滤条件: CSS 选择器或方法
    */
-  $prev( filter ): Element | null;
+  $prev( filter?: String | Function ): Element | null;
   /**
    * 获取从当前节点后面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点后面的所有兄弟节点
    * @param filter 过滤条件: CSS 选择器或方法
    */
-  $nextAll( filter ): Element[];
+  $nextAll( filter?: String | Function ): Element[];
   /**
    * 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点前面的所有兄弟节点
    * @param filter 过滤条件: CSS 选择器或方法
    */
-  $prevAll( filter ): Element[];
+  $prevAll( filter?: String | Function ): Element[];
   /**
    * 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
    * @param filter 过滤条件: CSS 选择器或方法
@@ -191,8 +227,13 @@ interface Element {
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $queryFirst( selectors ): Element;
+  /**
+   * 获取当前节点的所有符合过滤条件的兄弟节点
+   * 若未传入过滤条件, 则直接返回当前节点的所有兄弟节点
+   * @param filter 过滤条件: CSS 选择器或方法
+   */
+  $siblings( filter?: String | Function ): Element | null;
 }
-
 
 interface EventTarget{
   /**

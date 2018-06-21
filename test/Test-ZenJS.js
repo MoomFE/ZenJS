@@ -442,6 +442,54 @@
 
         }
       }, {
+        name: '$child / $children',
+        it: function(){
+
+          var div = window.div;
+          var span = div.appendChild( window.span );
+          var a = div.appendChild( window.a );
+
+          div.$child().$equals([ span, a ]).should.true;
+          div.$child('span').$equals([ span ]).should.true;
+          div.$child('a').$equals([ a ]).should.true;
+          div.$child('div').$equals([]).should.true;
+
+          ( div.$child === div.$children ).should.true;
+
+        }
+      }, {
+        name: '$first / $firstChild',
+        it: function(){
+
+          var div = window.div;
+          var span = div.appendChild( window.span );
+          var a = div.appendChild( window.a );
+
+          div.$first().should.equals( span );
+          div.$first('span').should.equals( span );
+          div.$first('a').should.equals( a );
+          isNull( div.$first('div') ).should.true;
+
+          ( div.$first === div.$firstChild ).should.true;
+
+        }
+      }, {
+        name: '$last / $lastChild',
+        it: function(){
+
+          var div = window.div;
+          var span = div.appendChild( window.span );
+          var a = div.appendChild( window.a );
+
+          div.$last().should.equals( a );
+          div.$last('span').should.equals( span );
+          div.$last('a').should.equals( a );
+          isNull( div.$last('div') ).should.true;
+
+          ( div.$last === div.$lastChild ).should.true;
+
+        }
+      }, {
         name: '$is',
         it: function(){
           var div1 = div;
@@ -585,6 +633,27 @@
         name: '$queryFirst',
         it: function(){
           div.$queryFirst.should.equal( div.querySelector );
+        }
+      }, {
+        name: '$siblings',
+        it: function(){
+
+          var div = window.div;
+          var div1 = div.appendChild( window.div );
+          var div2 = div.appendChild( window.div );
+          var span = div.appendChild( window.span );
+          var a = div.appendChild( window.a );
+
+          div1.$siblings().$equals([ div2, span, a ]).should.true;
+          div1.$siblings('div').$equals([ div2 ]).should.true;
+          div1.$siblings('span').$equals([ span ]).should.true;
+          div1.$siblings('a').$equals([ a ]).should.true;
+
+          span.$siblings().$equals([ div1, div2, a ]).should.true;
+          span.$siblings('div').$equals([ div1, div2 ]).should.true;
+          span.$siblings('span').$equals([]).should.true;
+          span.$siblings('a').$equals([ a ]).should.true;
+
         }
       }
     ]

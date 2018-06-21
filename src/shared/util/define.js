@@ -24,9 +24,11 @@ export default function define( obj, name, options, options2 ){
     return;
   }
 
-  defineProperty(
-    obj, name, Object.assign(
-      {}, options, options2
-    )
-  );
+  name.split(' ').forEach( name => {
+    defineProperty(
+      obj, name, Object.assign(
+        {}, options, options2
+      )
+    );
+  });
 }

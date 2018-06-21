@@ -46,10 +46,10 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
 
 |               | Default | Gzip   |  -  | Module    | Use in  |
 | :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 42.18kb | 11.11kb | \|  | UMD       | Browser |
-| zen.min.js    | 14.65kb | 5.68kb | \|  | UMD       | Browser |
-| zen.common.js | 39.11kb | 10.87kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 39.09kb | 10.86kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js        | 42.85kb | 11.23kb | \|  | UMD       | Browser |
+| zen.min.js    | 15.06kb | 5.80kb | \|  | UMD       | Browser |
+| zen.common.js | 39.74kb | 10.98kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js    | 39.73kb | 10.96kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 
 <br>
@@ -86,6 +86,12 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $removeClass
   - $hasClass
   - $toggleClass
+  - $child
+  - $children
+  - $first
+  - $firstChild
+  - $last
+  - $lastChild
   - $is
   - $not
   - $query
@@ -96,6 +102,7 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $prev
   - $nextAll
   - $prevAll
+  - $siblings
 
 - EventTarget.prototype
   - $data
