@@ -685,7 +685,8 @@ elem, type, options) {
     handlerName = _namespace[i];
     handler = _handlers[handlerName];
 
-    if (handler.type === 'check') {
+    // check
+    if (handler.type === undefined) {
       if (handler.handler(elem, type, namespace, options) === false) {
         return false;
       }
@@ -703,10 +704,9 @@ var handlers = {
    */
   dispatch: {
     /**
-     * 
+     * 当事件是从绑定的元素本身触发时才触发回调
      */
     self: {
-      type: 'check',
       handler: function (elem, type, namespace, event) {
         if (event.target !== event.currentTarget) {
           return false;
@@ -716,13 +716,15 @@ var handlers = {
   }
 };
 
+var add = handlers.add,
+    dispatch = handlers.dispatch;
+
 /**
  * .once || .one
  * 当命名空间有 .once 或 .one, 则会去已绑定的事件中进行查找,
  * 如果之前绑定过相同的命名空间 ( 也同样有 .once 或 .one ), 则本次绑定无效
  */
-handlers.add.once = handlers.add.one = {
-  type: 'check',
+add.once = add.one = {
   handler: function (elem, type, namespace, events) {
     // 没有绑定过事件
     if (!(events = events[type])) return;
@@ -740,6 +742,30 @@ handlers.add.once = handlers.add.one = {
 };
 
 /**
+ * .ctrl || .shift || .alt || .meta
+ * 当按下了对应键盘按键时才触发回调
+ */
+['ctrl', 'shift', 'alt', 'meta'].forEach(function (key) {
+  dispatch[key] = {
+    handler: function (elem, type, namespace, event) {
+      if (!event[key + 'Key']) return false;
+    }
+  };
+});
+
+/**
+ * .left || .middle || .right
+ * 当按下了对应鼠标按键时才触发回调
+ */
+['left', 'middle', 'right'].forEach(function (button, index) {
+  dispatch[button] = {
+    handler: function (elem, type, namespace, event) {
+      if ('button' in event && event.button !== index) return false;
+    }
+  };
+});
+
+/**
  * 事件处理 => 添加事件3: 绑定事件
  * @param {Element} elem 需要绑定事件的对象
  * @param {Array} types 需要绑定的事件集
@@ -748,7 +774,7 @@ handlers.add.once = handlers.add.one = {
  * @param {Object} options 事件绑定参数
  * @param {Object} data 绑定事件时向方法传入的数据
  */
-function add(elem, types, selector, listener, options, data) {
+function add$1(elem, types, selector, listener, options, data) {
 
   var
   /** 存放当前元素下的所有事件 */
@@ -936,7 +962,7 @@ addProp('which', function (event) {
  * 事件处理 => 触发事件
  * @param {DocumentEventMap} nativeEvent 当前触发的事件对象
  */
-function dispatch(nativeEvent) {
+function dispatch$1(nativeEvent) {
 
   var self = this.elem;
 
@@ -1141,8 +1167,8 @@ function emit(elem, types, data) {
 }
 
 var EventListener = $create$1(true, {
-  add: add,
-  dispatch: dispatch,
+  add: add$1,
+  dispatch: dispatch$1,
   remove: remove,
   emit: emit,
   namespaceHandler: namespaceHandler

@@ -33,7 +33,8 @@ function namespaceHandler(
     handlerName = _namespace[ i ];
     handler = _handlers[ handlerName ];
 
-    if( handler.type === 'check' ){
+    // check
+    if( handler.type === undefined ){
       if( handler.handler( elem, type, namespace, options ) === false ){
         return false;
       }
@@ -52,10 +53,9 @@ const handlers = {
    */
   dispatch: {
     /**
-     * 
+     * 当事件是从绑定的元素本身触发时才触发回调
      */
     self: {
-      type: 'check',
       handler( elem, type, namespace, event ){
         if( event.target !== event.currentTarget ){
           return false;
@@ -65,14 +65,15 @@ const handlers = {
   }
 };
 
+const add = handlers.add,
+      dispatch = handlers.dispatch;
 
 /**
  * .once || .one
  * 当命名空间有 .once 或 .one, 则会去已绑定的事件中进行查找,
  * 如果之前绑定过相同的命名空间 ( 也同样有 .once 或 .one ), 则本次绑定无效
  */
-handlers.add.once = handlers.add.one = {
-  type: 'check',
+add.once = add.one = {
   handler( elem, type, namespace, events ){
     // 没有绑定过事件
     if( !( events = events[ type ] ) ) return;
@@ -87,6 +88,30 @@ handlers.add.once = handlers.add.one = {
       }
   }
 };
+
+/**
+ * .ctrl || .shift || .alt || .meta
+ * 当按下了对应键盘按键时才触发回调
+ */
+[ 'ctrl', 'shift', 'alt', 'meta' ].forEach( key => {
+  dispatch[ key ] = {
+    handler( elem, type, namespace, event ){
+      if( !event[ key + 'Key' ] ) return false;
+    }
+  }
+});
+
+/**
+ * .left || .middle || .right
+ * 当按下了对应鼠标按键时才触发回调
+ */
+[ 'left', 'middle', 'right' ].forEach(( button, index ) => {
+  dispatch[ button ] = {
+    handler( elem, type, namespace, event ){
+      if( 'button' in event && event.button !== index ) return false;
+    }
+  };
+});
 
 
 
