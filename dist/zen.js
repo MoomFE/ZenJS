@@ -249,12 +249,6 @@
     return true;
   });
 
-  'push_unshift_pop_shift'.split('_').forEach(function (key) {
-    defineValue(ArrayProto, "$" + key, function () {
-      return this[key].apply(this, arguments), this;
-    });
-  });
-
   defineValue(ArrayProto, '$inArray', function (obj) {
     var i = 0,
         len = this.length;
@@ -263,6 +257,42 @@
       if (this[i] == obj) return true;
     }return false;
   });
+
+  'push_unshift_pop_shift'.split('_').forEach(function (key) {
+    defineValue(ArrayProto, "$" + key, function () {
+      return this[key].apply(this, arguments), this;
+    });
+  });
+
+  var slice = ArrayProto.slice;
+
+  /**
+   * 判断传入对象是否是字符串
+   * @param {Object} obj 需要判断的对象
+   */
+  function isString(obj) {
+    return typeof obj === 'string';
+  }
+
+  var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
+
+  var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
+
+  function $toArray(value) {
+    if (!value) {
+      return [];
+    }
+    if (isString(value)) {
+      if (reHasUnicode.test(value)) {
+        return value.match(reUnicode) || [];
+      } else {
+        return value.split('');
+      }
+    }
+    return slice.call(value);
+  }
+
+  defineValue(Array, '$toArray', $toArray);
 
   var addEventListener = 'addEventListener';
   var addEventListenerPrivate = '__ZENJS_EVENT_ADD__';
@@ -366,14 +396,6 @@
       return access(this, className, notSwitch ? null : tSwitch ? 'add' : 'remove', notSwitch);
     }
   });
-
-  /**
-   * 判断传入对象是否是字符串
-   * @param {Object} obj 需要判断的对象
-   */
-  function isString(obj) {
-    return typeof obj === 'string';
-  }
 
   /**
    * 

@@ -5,6 +5,11 @@ interface ArrayConstructor {
    * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index
    */
   $create( length: Number, insert: any ): any[];
+  /**
+   * 将传入参数转为数组
+   * @param value 需要转为数组的值
+   */
+  $toArray( value: any ): Array;
 }
 
 interface Array<T> {

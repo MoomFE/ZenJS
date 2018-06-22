@@ -6,5 +6,6 @@ import './$deleteValue/index';
 import './$each/index';
 import './$equals/index';
 import './$get/index';
-import './$push_$unshift_$pop_$shift/index';
 import './$inArray/index';
+import './$push_$unshift_$pop_$shift/index';
+import './$toArray/index';

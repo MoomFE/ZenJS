@@ -228,6 +228,33 @@
             [ 9 ]
             .should.equals( 'ZenJS-9' )
         }
+      }, {
+        name: '$toArray',
+        it: function(){
+
+          Array.$toArray( null ).$equals( [] ).should.true;
+          Array.$toArray( undefined ).$equals( [] ).should.true;
+          Array.$toArray( '' ).$equals( [] ).should.true;
+          Array.$toArray( false ).$equals( [] ).should.true;
+          Array.$toArray( true ).$equals( [] ).should.true;
+          Array.$toArray( NaN ).$equals( [] ).should.true;
+          Array.$toArray( undefined ).$equals( [] ).should.true;
+          Array.$toArray( 0 ).$equals( [] ).should.true;
+          Array.$toArray( 1 ).$equals( [] ).should.true;
+          Array.$toArray( Infinity ).$equals( [] ).should.true;
+
+          Array.$toArray( '135' ).$equals( [ '1', '3', '5' ] ).should.true;
+          Array.$toArray( '💪' ).$equals( [ '💪' ] ).should.true;
+          Array.$toArray( '💪💪' ).$equals( [ '💪', '💪' ] ).should.true;
+
+          var div = window.div;
+          var div1 = div.appendChild( window.div );
+          var div2 = div.appendChild( window.div );
+          var div3 = div.appendChild( window.div );
+
+          Array.$toArray( div.querySelectorAll('div') ).$equals( [ div1, div2, div3 ] ).should.true;
+
+        }
       }
     ]
   });
