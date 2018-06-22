@@ -145,6 +145,10 @@
     return this;
   });
 
+  defineValue(Array, '$copy', function (source, array) {
+    return array ? array.concat(source) : source.concat();
+  });
+
   function isFunction(obj) {
     return typeof obj === 'function';
   }

@@ -1,5 +1,6 @@
 import './$add/index';
 import './$concat/index';
+import './$copy/index';
 import './$create/index';
 import './$delete/index';
 import './$deleteValue/index';

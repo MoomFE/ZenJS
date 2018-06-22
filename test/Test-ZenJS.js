@@ -255,6 +255,13 @@
           Array.$toArray( div.querySelectorAll('div') ).$equals( [ div1, div2, div3 ] ).should.true;
 
         }
+      }, {
+        name: '$copy',
+        it: function(){
+
+          var arr = [ 1, 2, 3 ];
+
+        }
       }
     ]
   });
