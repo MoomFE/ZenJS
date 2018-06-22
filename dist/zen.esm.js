@@ -92,15 +92,35 @@ function parametersDefault(args, index, defaultValue) {
   return defaultValue;
 }
 
-defineValue(ArrayProto, '$get', function () {
-  var index = parametersDefault(arguments, 0, 0),
-      num = arguments[1];
+var slice = ArrayProto.slice;
 
-  if (num == null) {
-    return this[index];
+/**
+ * 判断传入对象是否是字符串
+ * @param {Object} obj 需要判断的对象
+ */
+function isString(obj) {
+  return typeof obj === 'string';
+}
+
+var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
+
+var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
+
+function $toArray(value) {
+  if (!value) {
+    return [];
   }
-  return this.slice(index, num + index);
-});
+  if (isString(value)) {
+    if (reHasUnicode.test(value)) {
+      return value.match(reUnicode) || [];
+    } else {
+      return value.split('');
+    }
+  }
+  return slice.call(value);
+}
+
+defineValue(Array, '$toArray', $toArray);
 
 /**
  * 获取方法从指定位开始的剩余参数
@@ -112,7 +132,7 @@ function parametersRest(args) {
   var length = args.length;
 
   if (length > index) {
-    return Array.from(args).$get(index, length);
+    return $toArray(args).$get(index, length);
   }
   return [];
 }
@@ -139,7 +159,7 @@ defineValue(ArrayProto, '$add', function (index) {
 defineValue(ArrayProto, '$concat', function () {
   var _this = this;
 
-  Array.from(arguments).forEach(function (arg) {
+  $toArray(arguments).forEach(function (arg) {
     $add(_this, -1, isArray(arg) ? arg : [arg]);
   });
   return this;
@@ -243,6 +263,16 @@ defineValue(ArrayProto, '$equals', function (obj) {
   return true;
 });
 
+defineValue(ArrayProto, '$get', function () {
+  var index = parametersDefault(arguments, 0, 0),
+      num = arguments[1];
+
+  if (num == null) {
+    return this[index];
+  }
+  return this.slice(index, num + index);
+});
+
 defineValue(ArrayProto, '$inArray', function (obj) {
   var i = 0,
       len = this.length;
@@ -257,36 +287,6 @@ defineValue(ArrayProto, '$inArray', function (obj) {
     return this[key].apply(this, arguments), this;
   });
 });
-
-var slice = ArrayProto.slice;
-
-/**
- * 判断传入对象是否是字符串
- * @param {Object} obj 需要判断的对象
- */
-function isString(obj) {
-  return typeof obj === 'string';
-}
-
-var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
-
-var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
-
-function $toArray(value) {
-  if (!value) {
-    return [];
-  }
-  if (isString(value)) {
-    if (reHasUnicode.test(value)) {
-      return value.match(reUnicode) || [];
-    } else {
-      return value.split('');
-    }
-  }
-  return slice.call(value);
-}
-
-defineValue(Array, '$toArray', $toArray);
 
 var addEventListener = 'addEventListener';
 var addEventListenerPrivate = '__ZENJS_EVENT_ADD__';
@@ -445,7 +445,7 @@ function dir(elem, handle) {
 }
 
 inBrowser && defineValue(ElementProto, '$child $children', function (filter) {
-  return Filter(Array.from(this.children), filter);
+  return Filter($toArray(this.children), filter);
 });
 
 inBrowser && defineValue(ElementProto, {
@@ -499,7 +499,7 @@ inBrowser && [document, ElementProto].forEach(function (elem) {
 inBrowser && defineValue(ElementProto, '$siblings', function (filter) {
   var parent = this.parentElement;
 
-  return parent ? Filter(Array.from(parent.children).$deleteValue(this), filter) : [];
+  return parent ? Filter($toArray(parent.children).$deleteValue(this), filter) : [];
 });
 
 function $isEmptyObject(obj) {
@@ -1038,7 +1038,7 @@ function dispatch$1(nativeEvent) {
   var event = nativeEvent instanceof Event ? nativeEvent : new Event(nativeEvent);
 
   // 创建新的 argument
-  var args = Array.from(arguments).$set(0, event);
+  var args = $toArray(arguments).$set(0, event);
 
   event.delegateTarget = self;
   event.handleOptions = this;
@@ -1452,7 +1452,7 @@ inBrowser && defineValue(EventTarget, {
 
 function $mean() {
 
-  return Array.from(arguments).reduce(function (count, next) {
+  return $toArray(arguments).reduce(function (count, next) {
     return count + next;
   }) / arguments.length;
 }
@@ -1522,7 +1522,7 @@ defineValue(Number, '$isNumber', $isNumber);
 defineValue(ObjectProto, '$delete', function $delete() {
   var _this = this;
 
-  Array.from(arguments).$each(function (key) {
+  $toArray(arguments).$each(function (key) {
     delete _this[key];
   });
   return this;

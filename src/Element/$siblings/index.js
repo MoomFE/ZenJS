@@ -2,6 +2,7 @@ import inBrowser from "../../shared/const/inBrowser";
 import defineValue from "../../shared/util/defineValue";
 import ElementProto from "../../shared/global/Element/prototype/index";
 import { Filter } from "../util";
+import $toArray from "../../Array/$toArray/index";
 
 
 inBrowser && defineValue( ElementProto, '$siblings', function( filter ){
@@ -9,7 +10,7 @@ inBrowser && defineValue( ElementProto, '$siblings', function( filter ){
 
   return parent
     ? Filter(
-      Array.from( parent.children ).$deleteValue( this ),
+      $toArray( parent.children ).$deleteValue( this ),
       filter
     )
     : [];

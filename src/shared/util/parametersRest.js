@@ -1,5 +1,5 @@
-import "../../Array/$get/index";
 import parametersDefault from "./parametersDefault";
+import $toArray from "../../Array/$toArray/index";
 
 /**
  * 获取方法从指定位开始的剩余参数
@@ -11,7 +11,7 @@ export default function parametersRest( args ){
   const length = args.length;
 
   if( length > index ){
-    return Array.from( args ).$get( index, length );
+    return $toArray( args ).$get( index, length );
   }
   return [];
 }

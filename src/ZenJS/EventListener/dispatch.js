@@ -2,6 +2,7 @@ import "../../Object/$set/index";
 import Event from "../Event/index";
 import ZenJS from "../../shared/global/ZenJS/index";
 import namespaceHandler from "./namespace";
+import $toArray from "../../Array/$toArray/index";
 
 
 /**
@@ -17,7 +18,7 @@ export default function dispatch( nativeEvent ){
                                              : new Event( nativeEvent );
 
   // 创建新的 argument
-  const args = Array.from( arguments ).$set( 0, event );
+  const args = $toArray( arguments ).$set( 0, event );
 
   event.delegateTarget = self;
   event.handleOptions = this;
