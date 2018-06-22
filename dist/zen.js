@@ -14,10 +14,6 @@
 
   var defineProperty = Object.defineProperty;
 
-  /**
-   * 判断传入对象是否是对象且不为null
-   * @param {Object} obj 需要判断的对象
-   */
   function isObject(obj) {
     return obj !== null && typeof obj === 'object';
   }
@@ -61,13 +57,6 @@
     enumerable: false // 枚举
   };
 
-  /**
-   * 定义对象属性, 快捷定义 value 选项
-   * @param {Object} obj 需要添加属性的元素
-   * @param {String} name 属性名
-   * @param {Function} value 添加到 value 选项的方法
-   * @param {Object} options 属性选项
-   */
   function defineValue(obj, name, value, options) {
     var key;
 
@@ -83,31 +72,16 @@
 
   var ArrayProto = Array.prototype;
 
-  /**
-   * 判断方法指定位参数是否传值
-   * @param {IArguments} args arguments
-   * @param {Number} index 需要在 arguments 中判断默认值得下标
-   */
   function parametersHasDefault(args, index) {
     return args.length > index && args[index] !== undefined;
   }
 
-  /**
-   * 获取方法指定位参数, 若未传入参数, 则取默认值
-   * @param {IArguments} args arguments
-   * @param {Number} index 需要在 arguments 中取得默认值的下标
-   * @param {Object} defaultValue 若未传入值时取得默认值
-   */
   function parametersDefault(args, index, defaultValue) {
     return parametersHasDefault(args, index) ? args[index] : defaultValue;
   }
 
   var slice = ArrayProto.slice;
 
-  /**
-   * 判断传入对象是否是字符串
-   * @param {Object} obj 需要判断的对象
-   */
   function isString(obj) {
     return typeof obj === 'string';
   }
@@ -132,11 +106,6 @@
 
   defineValue(Array, '$toArray', $toArray);
 
-  /**
-   * 获取方法从指定位开始的剩余参数
-   * @param {IArguments} args arguments
-   * @param {Number} index 需要在 arguments 中开始取参数的下标 - default: 0
-   */
   function parametersRest(args) {
     var index = parametersDefault(arguments, 1, 0);
     var length = args.length;
@@ -175,10 +144,6 @@
     return this;
   });
 
-  /**
-   * 判断传入对象是否是方法
-   * @param {Object} obj 需要判断的对象
-   */
   function isFunction(obj) {
     return typeof obj === 'function';
   }
@@ -202,16 +167,10 @@
     return this.splice(index, num), this;
   });
 
-  /**
-   * 判断两个参数是否全等
-   */
   function congruence(one, two) {
     return one === two;
   }
 
-  /**
-   * 判断两个参数是否相等
-   */
   function equals(one, two) {
     return one == two;
   }
@@ -345,13 +304,6 @@
 
   var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
-  /**
-   * 
-   * @param {Element} elem 
-   * @param {String} className 
-   * @param {String} handle 
-   * @param {Boolean} isToggle
-   */
   function access(elem, _className, handle, isToggle) {
 
     var classList = elem.classList,
@@ -698,10 +650,6 @@
 
   var create = Object.create;
 
-  /**
-   * 判断传入对象是否是逻辑值
-   * @param {Object} obj 需要判断的对象
-   */
   function isBoolean(obj) {
     return typeof obj === 'boolean';
   }
@@ -924,16 +872,10 @@
     return this;
   });
 
-  /**
-   * @returns {Boolean} false
-   */
   function returnFalse() {
     return false;
   }
 
-  /**
-   * @returns {Boolean} true
-   */
   function returnTrue() {
     return true;
   }
@@ -1510,10 +1452,6 @@
 
   defineValue(Math, '$randomPlus', $randomPlus);
 
-  /**
-   * 判断传入对象是否是数字
-   * @param {Object} obj 需要判断的对象
-   */
   function isNumber(obj) {
     return toString.call(obj) === '[object Number]';
   }
@@ -1640,13 +1578,6 @@
     return this[key];
   });
 
-  /**
-   * 定义对象属性, 快捷定义 get 选项
-   * @param {Object} obj 需要添加属性的元素
-   * @param {String} name 属性名
-   * @param {Function} get 添加到 get 选项的方法
-   * @param {Object} options 属性选项
-   */
   function defineGet(obj, name, get, options) {
     var key;
 
@@ -1677,10 +1608,6 @@
 
   defineValue(String, '$random', string$random);
 
-  /**
-   * 判断传入对象是否是正则
-   * @param {Object} obj 需要判断的对象
-   */
   function isRegExp(obj) {
     return toString.call(obj) === '[object RegExp]';
   }

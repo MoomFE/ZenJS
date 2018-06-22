@@ -777,6 +777,12 @@ interface ZenJS {
      */
     parameters: {
       /**
+       * 判断方法指定位参数是否传值
+       * @param args arguments
+       * @param index 需要在 arguments 中判断默认值得下标
+       */
+      has( args: IArguments, index: Number ): any;
+      /**
        * 获取方法指定位参数, 若未传入参数, 则取默认值
        * @param args arguments
        * @param index 需要在 argument 中取得默认值的下标

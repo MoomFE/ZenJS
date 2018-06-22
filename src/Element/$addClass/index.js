@@ -4,13 +4,6 @@ import rnothtmlwhite from "../../shared/const/rnothtmlwhite";
 import inBrowser from "../../shared/const/inBrowser";
 
 
-/**
- * 
- * @param {Element} elem 
- * @param {String} className 
- * @param {String} handle 
- * @param {Boolean} isToggle
- */
 function access( elem, _className, handle, isToggle ){
 
   const classList = elem.classList,
