@@ -66,12 +66,13 @@ function defineValue(obj, name, value, options) {
 
 var ArrayProto = Array.prototype;
 
-function parametersHasDefault(args, index) {
-  return args.length > index && args[index] !== undefined;
-}
-
 function parametersDefault(args, index, defaultValue) {
-  return parametersHasDefault(args, index) ? args[index] : defaultValue;
+  var arg;
+
+  if (args.length > index && (arg = args[index]) !== undefined) {
+    return arg;
+  }
+  return defaultValue;
 }
 
 var slice = ArrayProto.slice;
@@ -1836,7 +1837,6 @@ util.types = $create$1(true, {
 });
 
 util.parameters = $create$1(true, {
-  has: parametersHasDefault,
   default: parametersDefault,
   rest: parametersRest
 });

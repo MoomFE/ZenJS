@@ -9,7 +9,6 @@ import isNumber from "../../shared/util/isNumber";
 import isObject from "../../shared/util/isObject";
 import isRegExp from "../../shared/util/isRegexp";
 import isString from "../../shared/util/isString";
-import parametersHasDefault from "../../shared/util/parametersHasDefault";
 import parametersDefault from "../../shared/util/parametersDefault";
 import parametersRest from "../../shared/util/parametersRest";
 import returnTrue from "../../shared/util/returnTrue";
@@ -39,7 +38,6 @@ util.types = $create( true, {
 });
 
 util.parameters = $create( true, {
-  has: parametersHasDefault,
   default: parametersDefault,
   rest: parametersRest
 });
