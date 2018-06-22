@@ -83,6 +83,7 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $queryFirst
 
 - Element.prototype
+  - \_index
   - $addClass
   - $removeClass
   - $hasClass
