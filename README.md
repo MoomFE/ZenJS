@@ -46,10 +46,10 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
 
 |               | Default | Gzip   |  -  | Module    | Use in  |
 | :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 44.45kb | 11.69kb | \|  | UMD       | Browser |
-| zen.min.js    | 15.96kb | 6.10kb | \|  | UMD       | Browser |
-| zen.common.js | 41.27kb | 11.41kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 41.25kb | 11.40kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js        | 44.66kb | 11.72kb | \|  | UMD       | Browser |
+| zen.min.js    | 15.99kb | 6.11kb | \|  | UMD       | Browser |
+| zen.common.js | 41.47kb | 11.45kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js    | 41.45kb | 11.44kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 
 <br>

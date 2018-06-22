@@ -84,18 +84,22 @@
   var ArrayProto = Array.prototype;
 
   /**
+   * 判断方法指定位参数是否传值
+   * @param {IArguments} args arguments
+   * @param {Number} index 需要在 arguments 中判断默认值得下标
+   */
+  function parametersHasDefault(args, index) {
+    return args.length > index && args[index] !== undefined;
+  }
+
+  /**
    * 获取方法指定位参数, 若未传入参数, 则取默认值
    * @param {IArguments} args arguments
    * @param {Number} index 需要在 arguments 中取得默认值的下标
    * @param {Object} defaultValue 若未传入值时取得默认值
    */
   function parametersDefault(args, index, defaultValue) {
-    var arg;
-
-    if (args.length > index && (arg = args[index]) !== undefined) {
-      return arg;
-    }
-    return defaultValue;
+    return parametersHasDefault(args, index) ? args[index] : defaultValue;
   }
 
   var slice = ArrayProto.slice;
@@ -1911,6 +1915,7 @@
   });
 
   util.parameters = $create$1(true, {
+    has: parametersHasDefault,
     default: parametersDefault,
     rest: parametersRest
   });

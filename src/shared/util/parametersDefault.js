@@ -1,3 +1,5 @@
+import parametersHasDefault from "./parametersHasDefault";
+
 /**
  * 获取方法指定位参数, 若未传入参数, 则取默认值
  * @param {IArguments} args arguments
@@ -5,10 +7,6 @@
  * @param {Object} defaultValue 若未传入值时取得默认值
  */
 export default function parametersDefault( args, index, defaultValue ){
-  let arg;
-
-  if( args.length > index && ( arg = args[ index ] ) !== undefined ){
-    return arg;
-  }
-  return defaultValue;
+  return parametersHasDefault( args, index ) ? args[ index ]
+                                             : defaultValue;
 }
