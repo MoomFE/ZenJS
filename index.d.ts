@@ -115,6 +115,11 @@ interface Document {
 
 interface Element {
   /**
+   * 读取时获取元素在父元素的下标
+   * 写入时将元素的下标设置为写入值 ( 将会移动元素 )
+   */
+  _index: Number;
+  /**
    * 向元素添加一个或多个类
    * @param className 类名
    */

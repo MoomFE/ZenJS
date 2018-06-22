@@ -5,8 +5,12 @@ import { Filter } from "../util";
 
 
 inBrowser && defineValue( ElementProto, '$siblings', function( filter ){
-  return Filter(
-    Array.from( this.parentElement.children ).$deleteValue( this ),
-    filter
-  );
+  const parent = this.parentElement;
+
+  return parent
+    ? Filter(
+      Array.from( parent.children ).$deleteValue( this ),
+      filter
+    )
+    : [];
 });

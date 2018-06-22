@@ -282,6 +282,33 @@
 
   var ElementProto = inBrowser ? Element.prototype : undefined;
 
+  var min = Math.min;
+
+  inBrowser && define(ElementProto, '_index', {
+    get: function () {
+      return this.parentElement ? this.$prevAll().length : -1;
+    },
+    set: function (toIndex) {
+      var parent = this.parentElement;
+
+      if (parent == null) {
+        return;
+      }
+
+      var siblings = parent.children;
+      var selfIndex = this._index;
+      var currentIndex = min(siblings.length - 1, toIndex);
+
+      if (selfIndex === currentIndex) {
+        return;
+      }
+
+      var currentElem = siblings[currentIndex];
+
+      parent.insertBefore(this, selfIndex < currentIndex ? currentElem.nextElementSibling : currentElem);
+    }
+  });
+
   var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
   /**
@@ -454,7 +481,9 @@
   });
 
   inBrowser && defineValue(ElementProto, '$siblings', function (filter) {
-    return Filter(Array.from(this.parentElement.children).$deleteValue(this), filter);
+    var parent = this.parentElement;
+
+    return parent ? Filter(Array.from(parent.children).$deleteValue(this), filter) : [];
   });
 
   function $isEmptyObject(obj) {
