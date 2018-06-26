@@ -8,17 +8,12 @@
 <br>
 <br>
 
-## 使用
+## 浏览器支持
 
-ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，polyfill 则需要自行添加。
+| Chrome | Firefox | Safari | Android | Edge | Internet Explorer |
+| :-     | :-      | :-     | :-      | :-   | :-                |
+| 23+    | 21+     | 6+     | 4.4+    | 12+  | 9+                |
 
-* [babel-polyfill](https://babeljs.io/docs/usage/polyfill/)
-* [polyfill.io](https://cdn.polyfill.io/v2/docs/)
-
-```html
-  <script src="--- Include your polyfill ---"></script>
-  <script src="zen.min.js"></script>
-```
 
 <br>
 
@@ -32,13 +27,15 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
 
 <br>
 
-## 浏览器支持
+## 使用
 
-|                     | Chrome | Firefox | Safari | Android | Edge | Internet Explorer |
-| :-                  | :-     | :-      | :-     | :-      | :-   | :-                |
-| <b>Use polyfill</b> | 23+    | 21+     | 6+     | 4.4+    | 12+  | 9+                |
-| <b>No polyfill</b>  | 45+    | 34+     | 9+     | 5+      | 12+  | No support        |
+```html
+  <script src="zen.min.js"></script>
+```
 
+> 在 v2.1.0 版本之间, ZenJS 需要 polyfill 作为依赖项 :
+* [babel-polyfill](https://babeljs.io/docs/usage/polyfill/)
+* [polyfill.io](https://cdn.polyfill.io/v2/docs/)
 
 <br>
 
