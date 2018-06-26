@@ -11,12 +11,18 @@ export default function $create( isNoProto ){
   const args = parametersRest( arguments, 1 );
 
   if( isBoolean( isNoProto ) || !isNoProto ){
-    args.unshift( isNoProto ? create( null ) : {} );
+    isNoProto = !!isNoProto;
   }else{
-    args.unshift( {}, isNoProto );
+    args.unshift( isNoProto );
+    isNoProto = false;
   }
 
-  return $assign.apply( null, args );
+  args.unshift(
+    isNoProto ? create( null )
+              : {}
+  );
+
+  return $assign.apply( isNoProto, args );
 };
 
 defineValue( Object, '$create', $create );

@@ -3,6 +3,7 @@ import Object from '../../shared/global/Object/index';
 import defineValue from '../../shared/util/defineValue';
 import $isPlainObject from '../$isPlainObject/index';
 import isArray from '../../shared/global/Array/isArray';
+import create from '../../shared/global/Object/create';
 
 
 export default function $assign(){
@@ -41,7 +42,7 @@ export default function $assign(){
             copyIsArray = false;
             clone = src && isArray( src ) ? src : [];
           }else{
-            clone = src && $isPlainObject( src ) ? src : {};
+            clone = src && $isPlainObject( src ) ? src : this === true ? create( null ) : {};
           }
 
           target[ name ] = $assign( clone, copy );

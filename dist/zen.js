@@ -618,6 +618,8 @@
 
   defineValue(Object, '$isPlainObject', $isPlainObject);
 
+  var create = Object.create;
+
   function $assign() {
 
     var i = 1,
@@ -658,7 +660,7 @@
               copyIsArray = false;
               clone = src && isArray(src) ? src : [];
             } else {
-              clone = src && $isPlainObject(src) ? src : {};
+              clone = src && $isPlainObject(src) ? src : this === true ? create(null) : {};
             }
 
             target[name] = $assign(clone, copy);
@@ -675,8 +677,6 @@
   }
   defineValue(Object, '$assign', $assign);
 
-  var create = Object.create;
-
   function isBoolean(obj) {
     return typeof obj === 'boolean';
   }
@@ -685,12 +685,15 @@
     var args = parametersRest(arguments, 1);
 
     if (isBoolean(isNoProto) || !isNoProto) {
-      args.unshift(isNoProto ? create(null) : {});
+      isNoProto = !!isNoProto;
     } else {
-      args.unshift({}, isNoProto);
+      args.unshift(isNoProto);
+      isNoProto = false;
     }
 
-    return $assign.apply(null, args);
+    args.unshift(isNoProto ? create(null) : {});
+
+    return $assign.apply(isNoProto, args);
   }
   defineValue(Object, '$create', $create$1);
 
