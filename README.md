@@ -46,10 +46,10 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
 
 |               | Default | Gzip   |  -  | Module    | Use in  |
 | :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 43.21kb | 11.27kb | \|  | UMD       | Browser |
-| zen.min.js    | 16.02kb | 6.12kb | \|  | UMD       | Browser |
-| zen.common.js | 40.16kb | 11.04kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 40.15kb | 11.02kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js        | 43.83kb | 11.46kb | \|  | UMD       | Browser |
+| zen.min.js    | 16.36kb | 6.24kb | \|  | UMD       | Browser |
+| zen.common.js | 40.74kb | 11.20kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js    | 40.72kb | 11.19kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 
 <br>
@@ -106,6 +106,7 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $nextAll
   - $prevAll
   - $siblings
+  - $selectText
 
 - EventTarget.prototype
   - $data

@@ -463,6 +463,28 @@
     defineValue(elem, '$queryFirst', elem.querySelector);
   });
 
+  inBrowser && defineValue(ElementProto, '$selectText', function () {
+    var range;
+
+    // input
+    if (this.select) {
+      this.select();
+    }
+    // contenteditable
+    else if (this.hasAttribute('contenteditable')) {
+        if (document.selection) {
+          range = document.body.createTextRange();
+          range.moveToElementText(this);
+          range.select();
+        } else if (window.getSelection) {
+          range = document.createRange();
+          range.selectNodeContents(this);
+          window.getSelection().removeAllRanges();
+          window.getSelection().addRange(range);
+        }
+      }
+  });
+
   inBrowser && defineValue(ElementProto, '$siblings', function (filter) {
     var parent = this.parentElement;
 

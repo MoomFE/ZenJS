@@ -249,6 +249,10 @@ interface Element {
    * @param filter 过滤条件: CSS 选择器或方法
    */
   $siblings( filter?: String | Function ): Element | null;
+  /**
+   * 对当前元素下的文本进行全选操作
+   */
+  selectText();
 }
 
 interface EventTarget{
