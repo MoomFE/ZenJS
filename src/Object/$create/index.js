@@ -1,5 +1,5 @@
 import Object from '../../shared/global/Object/index';
-import $assign from '../$assign/index';
+import $assign from '../$assign/util';
 import create from '../../shared/global/Object/create';
 
 import defineValue from '../../shared/util/defineValue';
