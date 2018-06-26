@@ -591,8 +591,9 @@ interface Object {
 interface ObjectConstructor {
   /**
    * Object.assign 的深拷贝版本
+   * @param shallow 是否使用浅拷贝
    */
-  $assign( ...args?: any[] ): any;
+  $assign( shallow? = false, ...args?: any[] ): any;
   /**
    * 创建一个新的对象
    * 可传入多个参数, 参数会使用深拷贝进行继承

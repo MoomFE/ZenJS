@@ -90,7 +90,7 @@
               obj2 = { asd: 123 },
               obj3 = { asd: 1234 };
 
-          Object.$assign( obj1 ).should.equals( obj1 )
+          Object.$assign( obj1 ).should.equals( obj1 );
           Object.$isEmptyObject( Object.$assign( obj1 ) ).should.true;
 
           Object.$assign( obj1, obj2 ).should.equals( obj1 );
@@ -103,6 +103,17 @@
               obj5 = { infiniteLoop: obj4 };
 
           isUndef( Object.$assign( obj4, obj5 ).infiniteLoop ).should.true;
+
+
+          // Shallow Mode
+          var obj6 = {},
+              obj7 = { obj: { asd: 1 } },
+              obj8 = { obj: { asd: 1 } };
+
+          Object.$assign( true, obj6, obj7 ).should.equals( obj6 );
+          Object.$assign( true, obj6, obj8 ).should.equals( obj6 );
+
+          obj6.obj.should.equals( obj8.obj );      
         }
       }, {
         name: '$create',

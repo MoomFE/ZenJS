@@ -1,9 +1,9 @@
 import Object from '../../shared/global/Object/index';
-
 import defineValue from '../../shared/util/defineValue';
 import $isPlainObject from '../$isPlainObject/index';
 import isArray from '../../shared/global/Array/isArray';
 import create from '../../shared/global/Object/create';
+import isBoolean from '../../shared/util/isBoolean';
 
 
 export default function $assign(){
@@ -14,7 +14,16 @@ export default function $assign(){
       target = arguments[ 0 ] || {},
 
       options,
-      name, src, copy, copyIsArray, clone;
+      name, src, copy, copyIsArray, clone,
+
+      /** 浅拷贝 */
+      shallow = false;
+
+	if ( isBoolean( target ) ) {
+		shallow = target;
+		target = arguments[ i ] || {};
+		i++;
+	}
 
   // 遍历所有的传入参数
   for( ; i < length; i++ ){
@@ -34,7 +43,7 @@ export default function $assign(){
         src = target[ name ];
 
         // 如果被该属性是原生对象或数组, 则进循环拷贝
-        if( copy && ( $isPlainObject( copy ) || ( copyIsArray = isArray( copy ) ) ) ){
+        if( !shallow && copy && ( $isPlainObject( copy ) || ( copyIsArray = isArray( copy ) ) ) ){
 
           // 目标对象的当前属性是否和该属性类型相同
           // 不是的话, 则进行覆盖

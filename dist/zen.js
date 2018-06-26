@@ -636,6 +636,10 @@
 
   var create = Object.create;
 
+  function isBoolean(obj) {
+    return typeof obj === 'boolean';
+  }
+
   function $assign() {
 
     var i = 1,
@@ -648,7 +652,17 @@
         src,
         copy,
         copyIsArray,
-        clone;
+        clone,
+
+
+    /** 浅拷贝 */
+    shallow = false;
+
+    if (isBoolean(target)) {
+      shallow = target;
+      target = arguments[i] || {};
+      i++;
+    }
 
     // 遍历所有的传入参数
     for (; i < length; i++) {
@@ -668,7 +682,7 @@
           src = target[name];
 
           // 如果被该属性是原生对象或数组, 则进循环拷贝
-          if (copy && ($isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
+          if (!shallow && copy && ($isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
 
             // 目标对象的当前属性是否和该属性类型相同
             // 不是的话, 则进行覆盖
@@ -692,10 +706,6 @@
     return target;
   }
   defineValue(Object, '$assign', $assign);
-
-  function isBoolean(obj) {
-    return typeof obj === 'boolean';
-  }
 
   function $create$1(isNoProto) {
     var args = parametersRest(arguments, 1);
