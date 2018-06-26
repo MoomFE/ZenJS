@@ -8,5 +8,6 @@ import './$each/index';
 import './$equals/index';
 import './$get/index';
 import './$inArray/index';
+import './$isArrayLike/index';
 import './$push_$unshift_$pop_$shift/index';
 import './$toArray/index';

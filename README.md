@@ -46,10 +46,10 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
 
 |               | Default | Gzip   |  -  | Module    | Use in  |
 | :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 43.84kb | 11.47kb | \|  | UMD       | Browser |
-| zen.min.js    | 16.34kb | 6.24kb | \|  | UMD       | Browser |
-| zen.common.js | 40.75kb | 11.21kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 40.73kb | 11.19kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js        | 44.15kb | 11.57kb | \|  | UMD       | Browser |
+| zen.min.js    | 16.46kb | 6.29kb | \|  | UMD       | Browser |
+| zen.common.js | 41.03kb | 11.31kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js    | 41.01kb | 11.29kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 
 <br>
@@ -62,6 +62,7 @@ ZenJS 使用了最新的语法与方法，语法使用 babel 进行转义，poly
   - $create
   - $toArray
   - $copy
+  - $isArrayLike
 
 - Array.prototype
   - $add

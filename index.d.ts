@@ -16,6 +16,11 @@ interface ArrayConstructor {
    * @param array 复制到这个数组中, 返回的依旧是一个新的数组
    */
   $copy( source: any[], array: any[] ): any[];
+  /**
+   * 判断传入对象是否是一个类数组对象
+   * @param value 需要判断的对象
+   */
+  $isArrayLike( value: any ): Array;
 }
 
 interface Array<T> {

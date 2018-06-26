@@ -252,6 +252,22 @@ defineValue(ArrayProto, '$inArray', function (obj) {
   }return false;
 });
 
+function isNumber(obj) {
+  return typeof obj === 'number';
+}
+
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+defineValue(Array, '$isArrayLike', function (obj) {
+  if (obj != null && !isFunction(obj)) {
+    var length = obj.length;
+    if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
+      return true;
+    }
+  }
+  return false;
+});
+
 'push_unshift_pop_shift'.split('_').forEach(function (key) {
   defineValue(ArrayProto, "$" + key, function () {
     return this[key].apply(this, arguments), this;
@@ -1477,10 +1493,6 @@ function $randomPlus() {
 }
 
 defineValue(Math, '$randomPlus', $randomPlus);
-
-function isNumber(obj) {
-  return toString.call(obj) === '[object Number]';
-}
 
 function $isNumber(obj) {
   if (isNumber(obj) || typeof obj === 'string') {

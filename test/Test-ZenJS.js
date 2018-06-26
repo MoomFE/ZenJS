@@ -273,6 +273,21 @@
           isEqual( result, arr1 ).should.false;
 
         }
+      }, {
+        name: '$isArrayLike',
+        it: function(){
+
+          Array.$isArrayLike( null ).should.false;
+          Array.$isArrayLike( undefined ).should.false;
+          Array.$isArrayLike( NaN ).should.false;
+          Array.$isArrayLike( Infinity ).should.false;
+          Array.$isArrayLike( function(){} ).should.false;
+          Array.$isArrayLike( 123 ).should.false;
+
+          Array.$isArrayLike( '123' ).should.true;
+          Array.$isArrayLike( [] ).should.true;
+
+        }
       }
     ]
   });
