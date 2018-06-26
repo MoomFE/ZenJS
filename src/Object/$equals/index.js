@@ -48,7 +48,7 @@ export default function $equals( obj, obj2, parent ){
         }
       }
     }
-  }else if( isFunction( obj.toString ) && !( oString = obj.toString() ).startsWith('[object ') ){
+  }else if( isFunction( obj.toString ) && !( oString = obj.toString() ).substr(0,8) === '[object ' ){
     if( obj2.toString() !== oString ){
       return false;
     }
