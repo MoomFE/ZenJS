@@ -10,6 +10,12 @@ interface ArrayConstructor {
    * @param value 需要转为数组的值
    */
   $toArray( value: any ): Array;
+  /**
+   * 传入一个数组, 返回一个新的数组 ( 浅拷贝 ),
+   * @param source 需要复制的数组
+   * @param array 复制到这个数组中, 返回的依旧是一个新的数组
+   */
+  $copy( source: any[], array: any[] ): any[];
 }
 
 interface Array<T> {

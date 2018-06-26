@@ -259,7 +259,18 @@
         name: '$copy',
         it: function(){
 
-          var arr = [ 1, 2, 3 ];
+          var arr = [ 1, 2, 3 ], arr1;
+          var result;
+
+          result = Array.$copy( arr );
+          result.$equals( arr ).should.true;
+          isEqual( result, arr ).should.false;
+
+          arr1 = [ 4, 5, 6 ];
+          result = Array.$copy( arr1, arr );
+          result.$equals([ 1, 2, 3, 4, 5, 6 ]).should.true;
+          isEqual( result, arr ).should.false;
+          isEqual( result, arr1 ).should.false;
 
         }
       }
