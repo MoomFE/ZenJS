@@ -33,7 +33,8 @@
   <script src="zen.min.js"></script>
 ```
 
-> 在 v2.1.0 版本之间, ZenJS 需要 polyfill 作为依赖项 :
+<br>
+> 在 v2.1.0 版本之前, ZenJS 需要 polyfill 作为依赖项 :
 * [babel-polyfill](https://babeljs.io/docs/usage/polyfill/)
 * [polyfill.io](https://cdn.polyfill.io/v2/docs/)
 
