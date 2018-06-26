@@ -1850,39 +1850,35 @@ defineProperty(ZenJS, 'guid', {
   }
 });
 
-var util = ZenJS.util = $create$1(true);
-
-util.is = $create$1(true, {
-  equals: equals,
-  congruence: congruence
-});
-
-util.types = $create$1(true, {
-  isArray: isArray,
-  isBoolean: isBoolean,
-  isFunction: isFunction,
-  isNumber: isNumber,
-  isObject: isObject,
-  isRegExp: isRegExp,
-  isString: isString
-});
-
-util.parameters = $create$1(true, {
-  default: parametersDefault,
-  rest: parametersRest
-});
-
-util.fn = $create$1(true, {
-  define: define,
-  defineGet: defineGet,
-  defineValue: defineValue,
-  returnTrue: returnTrue,
-  returnFalse: returnFalse
-});
-
-util.supports = $create$1(true, {
-  passiveEvent: supportsPassiveEvent,
-  EventTarget: supportsEventTarget
+ZenJS.util = $create$1(true, {
+  is: {
+    equals: equals,
+    congruence: congruence
+  },
+  types: {
+    isArray: isArray,
+    isBoolean: isBoolean,
+    isFunction: isFunction,
+    isNumber: isNumber,
+    isObject: isObject,
+    isRegExp: isRegExp,
+    isString: isString
+  },
+  parameters: {
+    default: parametersDefault,
+    rest: parametersRest
+  },
+  fn: {
+    define: define,
+    defineGet: defineGet,
+    defineValue: defineValue,
+    returnTrue: returnTrue,
+    returnFalse: returnFalse
+  },
+  supports: {
+    passiveEvent: supportsPassiveEvent,
+    EventTarget: supportsEventTarget
+  }
 });
 
 module.exports = ZenJS;
