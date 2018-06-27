@@ -4,6 +4,7 @@
   "description": "ZenJS 是一个高性能的 JavaScript 工具库。",
   "main": "dist/zen.common.js",
   "module": "dist/zen.esm.js",
+  "unpkg": "dist/zen.js",
   "jsdelivr": "dist/zen.js",
   "typings": "index.d.ts",
   "dependencies": {},
