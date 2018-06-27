@@ -17,21 +17,23 @@
 
 <br>
 
-## 下载 / 获取
+## 安装
 
-你可以点击 [这里](https://github.com/MoomFE/ZenJS/releases) 下载最新稳定版或使用 npm 进行获取 :
-
+### npm 安装
 ```bash
   npm install @moomfe/zenjs
 ```
 
-<br>
-
-## 使用
-
+### CDN
 ```html
-  <script src="zen.min.js"></script>
+  <!-- jsdelivr -->
+  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@2.1.0/dist/zen.min.js"></script>
 ```
+```html
+  <!-- unpkg -->
+  <script src="https://unpkg.com/@moomfe/zenjs@2.1.0/dist/zen.min.js"></script>
+```
+
 
 <br>
 
