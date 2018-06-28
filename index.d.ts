@@ -48,11 +48,8 @@ interface Array<T> {
    */
   $deleteValue( value: any, congruence?: true ): any[];
   /**
-   * 查找数组内是否有此传入值
-   * -- 弱检测
-   * -- 强检测使用 Array.prototype.includes
-   * 
-   * @param obj 需要检测的值
+   * 遍历数组, 并调用传入方法
+   * @param callback 遍历数组时调用的方法, 方法返回 false 时, 退出遍历
    */
   $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
   /**
@@ -73,14 +70,17 @@ interface Array<T> {
    */
   $get( index: Number = 0, num: Number ): any[];
   /**
-   * 修改数组内指定下标的值
-   * @param index 需要修改的下标
-   * @param value 值
+   * 查找数组内是否有此传入值
+   * -- 弱检测
+   * -- 强检测使用 Array.prototype.includes
+   * 
+   * @param obj 需要检测的值
    */
   $inArray( obj: any ): Boolean;
   /**
-   * 遍历数组, 并调用传入方法
-   * @param callback 遍历数组时调用的方法, 方法返回 false 时, 退出遍历
+   * 修改数组内指定下标的值
+   * @param index 需要修改的下标
+   * @param value 值
    */
   $set( index: Number, value: any ): any[];
   /**
