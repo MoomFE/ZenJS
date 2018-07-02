@@ -1,7 +1,7 @@
 import "../../Object/$set/index";
 import Event from "../Event/index";
 import ZenJS from "../../shared/global/ZenJS/index";
-import namespaceHandler from "./namespace";
+import modifiers from "./modifiers";
 import $toArray from "../../Array/$toArray/index";
 
 
@@ -55,7 +55,7 @@ export default function dispatch( nativeEvent ){
     }
   }
 
-  if( namespaceHandler( 'dispatch', this.namespace, self, type, event ) === false ){
+  if( ZenJS.config.event.modifiers && modifiers( 'dispatch', this.namespace, self, type, event ) === false ){
     return;
   }
 

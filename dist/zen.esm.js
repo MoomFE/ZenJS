@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.1.0
+ * Zen.js v2.1.1
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -728,7 +728,7 @@ defineValue(Object, '$create', $create$1);
  * ZenJS
  */
 var ZenJS = $create$1(true, {
-  version: '2.1.0'
+  version: '2.1.1'
 });
 
 if (inBrowser) {
@@ -743,7 +743,7 @@ if (inBrowser) {
  * @param {String} type 绑定的事件
  * @param {Object} options 其他属性
  */
-function namespaceHandler(
+function modifiers(
 // Self use
 name, namespace,
 // Handler use
@@ -886,7 +886,7 @@ function add$1(elem, types, selector, listener, options, data) {
     /** 命名空间 */
     namespace = (tmp[2] || '').split('.').sort();
 
-    if (namespaceHandler('add', namespace, elem, type, events) === false) {
+    if (ZenJS.config.event.modifiers && modifiers('add', namespace, elem, type, events) === false) {
       continue;
     }
 
@@ -1085,7 +1085,7 @@ function dispatch$1(nativeEvent) {
     }
   }
 
-  if (namespaceHandler('dispatch', this.namespace, self, type, event) === false) {
+  if (ZenJS.config.event.modifiers && modifiers('dispatch', this.namespace, self, type, event) === false) {
     return;
   }
 
@@ -1248,7 +1248,7 @@ var EventListener = $create$1(true, {
   dispatch: dispatch$1,
   remove: remove,
   emit: emit,
-  namespaceHandler: namespaceHandler
+  modifiers: modifiers
 });
 
 if (inBrowser) {
@@ -1857,7 +1857,11 @@ var event$1 = $create$1(true, {
    * 当事件绑定的方法返回 false 时,
    * 是否阻止浏览器默认行为且停止事件冒泡
    */
-  returnFalse: false
+  returnFalse: false,
+  /**
+   * 绑定事件时, 是否允许使用修饰符
+   */
+  modifiers: true
 });
 
 var config = ZenJS.config = $create$1(true);

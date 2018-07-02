@@ -6,7 +6,7 @@
  * @param {String} type 绑定的事件
  * @param {Object} options 其他属性
  */
-function namespaceHandler(
+function modifiers(
   // Self use
   name,
   namespace,
@@ -115,4 +115,4 @@ add.once = add.one = {
 
 
 
-export default namespaceHandler;
+export default modifiers;

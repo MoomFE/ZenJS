@@ -1,7 +1,7 @@
 import rtypenamespace from '../../shared/const/rtypenamespace';
 import ZenJS from '../../shared/global/ZenJS/index';
 import { addEventListenerPrivate } from '../../shared/const/event';
-import namespaceHandler from './namespace';
+import modifiers from './modifiers';
 
 
 /**
@@ -44,7 +44,7 @@ export default function add( elem, types, selector, listener, options, data ){
     /** 命名空间 */
     namespace = ( tmp[ 2 ] || '' ).split( '.' ).sort();
 
-    if( namespaceHandler( 'add', namespace, elem, type, events ) === false ){
+    if( ZenJS.config.event.modifiers && modifiers( 'add', namespace, elem, type, events ) === false ){
       continue;
     }
 
