@@ -262,7 +262,7 @@ function $create(length, insert) {
 
 defineValue(Array, '$create', $create);
 
-defineValue(ArrayProto, '$delete', function (index) {
+defineValue(ArrayProto, '$delete $remove', function (index) {
   var num = parametersDefault(arguments, 1, 1);
 
   return this.splice(index, num), this;
@@ -276,7 +276,7 @@ function equals(one, two) {
   return one == two;
 }
 
-defineValue(ArrayProto, '$deleteValue', function (value) {
+defineValue(ArrayProto, '$deleteValue $removeValue', function (value) {
   var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
   var index = 0,
       length = this.length;
@@ -465,7 +465,7 @@ function $create$1(isNoProto) {
 }
 defineValue(Object, '$create', $create$1);
 
-defineValue(ObjectProto, '$delete', function $delete() {
+defineValue(ObjectProto, '$delete $remove', function $delete() {
   var _this = this;
 
   $toArray(arguments).$each(function (key) {
@@ -474,7 +474,7 @@ defineValue(ObjectProto, '$delete', function $delete() {
   return this;
 });
 
-defineValue(ObjectProto, '$deleteValue', function $deleteValue(value) {
+defineValue(ObjectProto, '$deleteValue $removeValue', function $deleteValue(value) {
   var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
   var name;
 

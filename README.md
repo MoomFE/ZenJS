@@ -48,18 +48,18 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 44.58kb | 11.69kb | \|  | UMD       | Browser |
-| zen.min.js         | 16.67kb | 6.39kb  | \|  | UMD       | Browser |
-| zen.common.js      | 41.45kb | 11.47kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 41.43kb | 11.45kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 44.65kb | 11.72kb | \|  | UMD       | Browser |
+| zen.min.js         | 16.74kb | 6.42kb | \|  | UMD       | Browser |
+| zen.common.js      | 41.51kb | 11.49kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 41.50kb | 11.48kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.slim.js        | 18.79kb | 5.06kb  | \|  | UMD       | Browser |
-| zen.slim.min.js    | 8.14kb  | 3.21kb  | \|  | UMD       | Browser |
-| zen.common.slim.js | 17.36kb | 4.93kb  | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.slim.js    | 17.34kb | 4.92kb  | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.slim.js        | 18.83kb | 5.07kb | \|  | UMD       | Browser |
+| zen.slim.min.js    | 8.18kb | 3.22kb | \|  | UMD       | Browser |
+| zen.common.slim.js | 17.40kb | 4.94kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.slim.js    | 17.38kb | 4.93kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -76,8 +76,8 @@
 - Array.prototype
   - $add
   - $concat
-  - $delete
-  - $deleteValue
+  - $delete / $remove
+  - $deleteValue / $removeValue
   - $each
   - $equals
   - $get
@@ -96,15 +96,12 @@
 - Element.prototype
   - \_index
   - $addClass
-  - $removeClass
+  - $removeClass / $deleteClass
   - $hasClass
   - $toggleClass
-  - $child
-  - $children
-  - $first
-  - $firstChild
-  - $last
-  - $lastChild
+  - $child / $children
+  - $first / $firstChild
+  - $last / $lastChild
   - $is
   - $not
   - $query
@@ -121,10 +118,9 @@
 - EventTarget.prototype
   - $data
   - $hasData
-  - $deleteData
+  - $deleteData / $removeData
   - $on
-  - $one
-  - $once
+  - $one / $once
   - $off
   - $emit
 
@@ -145,8 +141,8 @@
   - $isPlainObject
 
 - Object.prototype
-  - $delete
-  - $deleteValue
+  - $delete / $remove
+  - $deleteValue / $removeValue
   - $get
   - $set
   - $self

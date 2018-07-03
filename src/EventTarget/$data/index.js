@@ -62,7 +62,7 @@ if( inBrowser ){
     return name in Data;
   });
   
-  defineValue( EventTarget, '$deleteData', function( names ){
+  defineValue( EventTarget, '$deleteData $removeData', function( names ){
     const self = this || window;
   
     if( names == null ){

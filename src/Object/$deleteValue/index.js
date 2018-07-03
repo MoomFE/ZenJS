@@ -5,7 +5,7 @@ import defineValue from "../../shared/util/defineValue";
 import ObjectProto from "../../shared/global/Object/prototype/index";
 
 
-defineValue( ObjectProto, '$deleteValue', function $deleteValue( value ){
+defineValue( ObjectProto, '$deleteValue $removeValue', function $deleteValue( value ){
   const
     isEqual = parametersDefault( arguments, 1, true )
       ? congruence
