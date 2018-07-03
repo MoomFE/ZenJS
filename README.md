@@ -191,4 +191,4 @@ npm run watch
 
 ## License
 
-ZenJS.js is licensed under a [MIT  License](./LICENSE).
+ZenJS is licensed under a [MIT  License](./LICENSE).
