@@ -225,6 +225,21 @@
     name: 'Array',
     describe: [
       {
+        name: '$chunk',
+        it: function(){
+          Object.$equals( Array.$chunk(), [] ).should.true;
+          Object.$equals( Array.$chunk( null ), [] ).should.true;
+          Object.$equals( Array.$chunk( [], 0 ), [] ).should.true;
+          Object.$equals( Array.$chunk( [], -1 ), [] ).should.true;
+
+          
+          Object.$equals( Array.$chunk( [ 1, 2, 3 ], 1 ), [ [1], [2], [3] ] ).should.true;
+          Object.$equals( Array.$chunk( [ 1, 2, 3 ], 2 ), [ [ 1, 2 ], [ 3 ] ] ).should.true;
+          Object.$equals( Array.$chunk( [ 1, 2, 3 ], 3 ), [ [ 1, 2, 3 ] ] ).should.true;
+          Object.$equals( Array.$chunk( [ 1, 2, 3 ], 4 ), [ [ 1, 2, 3 ] ] ).should.true;
+        }
+      },
+      {
         name: '$create',
         it: function(){
           Array.$create( 10 ).length.should.equals( 10 );

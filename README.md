@@ -68,6 +68,7 @@
 
 
 - Array
+  - $chunk
   - $create
   - $toArray
   - $copy
