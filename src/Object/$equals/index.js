@@ -6,12 +6,8 @@ import $isPlainObject from "../$isPlainObject/util";
 import isArray from "../../shared/global/Array/isArray";
 import stringify from "../../shared/global/JSON/stringify";
 import isFunction from "../../shared/util/isFunction";
+import unFunctionObject from "../../shared/util/unFunctionObject";
 
-
-function unFunctionObject( obj ){
-  var type = typeof obj;
-  return type !== 'object' && type !== 'function';
-}
 
 export default function $equals( obj, obj2, parent ){
   let index, length, key,
