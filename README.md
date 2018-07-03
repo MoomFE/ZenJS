@@ -45,13 +45,16 @@
 
 ## 大小 - 版本详解
 
-|               | Default | Gzip   |  -  | Module    | Use in  |
-| :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 44.58kb | 11.69kb | \|  | UMD       | Browser |
-| zen.min.js    | 16.67kb | 6.39kb | \|  | UMD       | Browser |
-| zen.common.js | 41.45kb | 11.47kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 41.43kb | 11.45kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
-
+|                    | Default | Gzip    |  -  | Module    | Use in  |
+| :-                 | :-      | :-      | :-: | :-        | :-      |
+| zen.js             | 44.58kb | 11.69kb | \|  | UMD       | Browser |
+| zen.min.js         | 16.67kb | 6.39kb  | \|  | UMD       | Browser |
+| zen.common.js      | 41.45kb | 11.47kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 41.43kb | 11.45kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.slim.js        | 18.79kb | 5.06kb  | \|  | UMD       | 'zen.js'        : No DOM API |
+| zen.slim.min.js    | 8.14kb  | 3.21kb  | \|  | UMD       | 'zen.min.js'    : No DOM API |
+| zen.common.slim.js | 17.36kb | 4.93kb  | \|  | CommonJS  | 'zen.common.js' : No DOM API |
+| zen.esm.slim.js    | 17.34kb | 4.92kb  | \|  | ES Module | 'zen.esm.js'    : No DOM API |
 
 <br>
 
