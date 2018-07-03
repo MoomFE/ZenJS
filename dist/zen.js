@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.1.1
+ * Zen.js v2.2.0-bata
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -734,7 +734,7 @@
    * ZenJS
    */
   var ZenJS = $create$1(true, {
-    version: '2.1.1'
+    version: '2.2.0-bata'
   });
 
   if (inBrowser) {
@@ -1892,30 +1892,27 @@
   });
 
   ZenJS.util = $create$1(true, {
-    is: {
-      equals: equals,
-      congruence: congruence
-    },
-    types: {
-      isArray: isArray,
-      isBoolean: isBoolean,
-      isFunction: isFunction,
-      isNumber: isNumber,
-      isObject: isObject,
-      isRegExp: isRegExp,
-      isString: isString
-    },
-    parameters: {
-      default: parametersDefault,
-      rest: parametersRest
-    },
-    fn: {
-      define: define,
-      defineGet: defineGet,
-      defineValue: defineValue,
-      returnTrue: returnTrue,
-      returnFalse: returnFalse
-    },
+
+    isEquals: equals,
+    isCongruence: congruence,
+
+    isArray: isArray,
+    isBoolean: isBoolean,
+    isFunction: isFunction,
+    isNumber: isNumber,
+    isObject: isObject,
+    isRegExp: isRegExp,
+    isString: isString,
+
+    parametersDefault: parametersDefault,
+    parametersRest: parametersRest,
+
+    define: define,
+    defineGet: defineGet,
+    defineValue: defineValue,
+    returnTrue: returnTrue,
+    returnFalse: returnFalse,
+
     supports: {
       passiveEvent: supportsPassiveEvent,
       EventTarget: supportsEventTarget
