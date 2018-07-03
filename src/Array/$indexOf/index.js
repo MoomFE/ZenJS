@@ -5,6 +5,8 @@ import keys from "../../shared/global/Object/keys";
 import $equals from "../../Object/$equals/index";
 import $toArray from "../$toArray/index";
 import unFunctionObject from "../../shared/util/unFunctionObject";
+import $isArrayLike from "../$isArrayLike/index";
+import $chunk from "../$chunk/index";
 
 // $indexOf( 'a' )
 // $indexOf( 'a', 1 )
@@ -22,6 +24,10 @@ defineValue( ArrayProto, '$indexOf', function( key, value ){
     key = $toArray( arguments );
   }
 
+  if( $isArrayLike( key ) ){
+    key = $chunk( key, 2 );
+  }
+
   let index = 0;
   const predicate = getPredicate( key );
   for( ; index < length; i++ ){
@@ -30,7 +36,7 @@ defineValue( ArrayProto, '$indexOf', function( key, value ){
 
 });
 
-function getPredicate( func ){
+function getPredicate( key ){// fn array object
   if( isFunction( func ) ){
     return func;
   }

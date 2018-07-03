@@ -255,7 +255,7 @@
 
   var ceil = Math.ceil;
 
-  defineValue(Array, '$chunk', function (array, size) {
+  function $chunk(array, size) {
     var length;
 
     if (!array || size < 1 || !(length = array.length)) {
@@ -266,7 +266,9 @@
       var start = index * size;
       return array.slice(start, start + size);
     });
-  });
+  }
+
+  defineValue(Array, '$chunk', $chunk);
 
   defineValue(ArrayProto, '$concat', function () {
     var _this = this;
@@ -436,26 +438,6 @@
 
   defineValue(Object, '$equals', $equals);
 
-  // $indexOf( 'a' )
-  // $indexOf( 'a', 1 )
-  // $indexOf( 'a', 1, 'b', 2 )
-  // $indexOf( { a: 1 } )
-  // $indexOf( [ 'a', 1, 'b', 2 ] )
-  defineValue(ArrayProto, '$indexOf', function (key, value) {
-    var length;
-
-    if (key == null || !(length = this.length)) {
-      return -1;
-    }
-
-    if (unFunctionObject(key)) {
-      key = $toArray(arguments);
-    }
-
-    var index = 0;
-    for (; index < length; i++) {}
-  });
-
   function isNumber(obj) {
     return typeof obj === 'number';
   }
@@ -473,6 +455,30 @@
   }
 
   defineValue(Array, '$isArrayLike', $isArrayLike);
+
+  // $indexOf( 'a' )
+  // $indexOf( 'a', 1 )
+  // $indexOf( 'a', 1, 'b', 2 )
+  // $indexOf( { a: 1 } )
+  // $indexOf( [ 'a', 1, 'b', 2 ] )
+  defineValue(ArrayProto, '$indexOf', function (key, value) {
+    var length;
+
+    if (key == null || !(length = this.length)) {
+      return -1;
+    }
+
+    if (unFunctionObject(key)) {
+      key = $toArray(arguments);
+    }
+
+    if ($isArrayLike(key)) {
+      key = $chunk(key, 2);
+    }
+
+    var index = 0;
+    for (; index < length; i++) {}
+  });
 
   'push_unshift_pop_shift'.split('_').forEach(function (key) {
     defineValue(ArrayProto, "$" + key, function () {

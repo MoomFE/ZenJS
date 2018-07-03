@@ -234,19 +234,6 @@ defineValue(ArrayProto, '$add', function (index) {
   return $add(this, index, parametersRest(arguments, 1));
 });
 
-defineValue(ArrayProto, '$concat', function () {
-  var _this = this;
-
-  $toArray(arguments).forEach(function (arg) {
-    $add(_this, -1, isArray(arg) ? arg : [arg]);
-  });
-  return this;
-});
-
-defineValue(Array, '$copy', function (source, array) {
-  return array ? array.concat(source) : source.concat();
-});
-
 function $create(length, insert) {
   var i = 0,
       result = [];
@@ -259,6 +246,36 @@ function $create(length, insert) {
 }
 
 defineValue(Array, '$create', $create);
+
+var ceil = Math.ceil;
+
+function $chunk(array, size) {
+  var length;
+
+  if (!array || size < 1 || !(length = array.length)) {
+    return [];
+  }
+
+  return $create(ceil(length / size), function (index) {
+    var start = index * size;
+    return array.slice(start, start + size);
+  });
+}
+
+defineValue(Array, '$chunk', $chunk);
+
+defineValue(ArrayProto, '$concat', function () {
+  var _this = this;
+
+  $toArray(arguments).forEach(function (arg) {
+    $add(_this, -1, isArray(arg) ? arg : [arg]);
+  });
+  return this;
+});
+
+defineValue(Array, '$copy', function (source, array) {
+  return array ? array.concat(source) : source.concat();
+});
 
 defineValue(ArrayProto, '$delete $remove', function (index) {
   var num = parametersDefault(arguments, 1, 1);
@@ -350,13 +367,78 @@ defineValue(ArrayProto, '$inArray', function (obj) {
   }return false;
 });
 
+var keys = Object.keys;
+
+var stringify = JSON.stringify;
+
+function unFunctionObject(obj) {
+  var type = typeof obj;
+  return type !== 'object' && type !== 'function';
+}
+
+function $equals(obj, obj2, parent) {
+  var index,
+      length,
+      key,
+      oIsArray,
+      oString;
+
+  if (obj === obj2) {
+    return true;
+  }
+
+  if (!obj || parent && parent === obj) {
+    return false;
+  } else if (toString.call(obj) !== toString.call(obj2)) {
+    return false;
+  } else if (unFunctionObject(obj)) {
+    return false;
+  } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
+    if (oIsArray) {
+      if (obj.length !== obj2.length) {
+        return false;
+      }
+      for (index = 0, length = obj.length; index < length; index++) {
+        if (!$equals(obj[index], obj2[index], obj)) {
+          return false;
+        }
+      }
+    } else {
+      if (keys(obj).length !== keys(obj2).length) {
+        return false;
+      }
+      for (key in obj) {
+        if (!$equals(obj[key], obj2[key], obj)) {
+          return false;
+        }
+      }
+    }
+  } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
+    if (obj2.toString() !== oString) {
+      return false;
+    }
+  } else {
+    try {
+      if (stringify(obj) !== stringify(obj2)) {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+defineValue(Object, '$equals', $equals);
+
 function isNumber(obj) {
   return typeof obj === 'number';
 }
 
 var MAX_SAFE_INTEGER = 9007199254740991;
 
-defineValue(Array, '$isArrayLike', function (obj) {
+function $isArrayLike(obj) {
   if (obj != null && !isFunction(obj)) {
     var length = obj.length;
     if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
@@ -364,6 +446,32 @@ defineValue(Array, '$isArrayLike', function (obj) {
     }
   }
   return false;
+}
+
+defineValue(Array, '$isArrayLike', $isArrayLike);
+
+// $indexOf( 'a' )
+// $indexOf( 'a', 1 )
+// $indexOf( 'a', 1, 'b', 2 )
+// $indexOf( { a: 1 } )
+// $indexOf( [ 'a', 1, 'b', 2 ] )
+defineValue(ArrayProto, '$indexOf', function (key, value) {
+  var length;
+
+  if (key == null || !(length = this.length)) {
+    return -1;
+  }
+
+  if (unFunctionObject(key)) {
+    key = $toArray(arguments);
+  }
+
+  if ($isArrayLike(key)) {
+    key = $chunk(key, 2);
+  }
+
+  var index = 0;
+  for (; index < length; i++) {}
 });
 
 'push_unshift_pop_shift'.split('_').forEach(function (key) {
@@ -1563,71 +1671,6 @@ function $each(obj, callback) {
 }
 
 defineValue(Object, '$each', $each);
-
-var keys = Object.keys;
-
-var stringify = JSON.stringify;
-
-function unFunctionObject(obj) {
-  var type = typeof obj;
-  return type !== 'object' && type !== 'function';
-}
-
-function $equals(obj, obj2, parent) {
-  var index,
-      length,
-      key,
-      oIsArray,
-      oString;
-
-  if (obj === obj2) {
-    return true;
-  }
-
-  if (!obj || parent && parent === obj) {
-    return false;
-  } else if (toString.call(obj) !== toString.call(obj2)) {
-    return false;
-  } else if (unFunctionObject(obj)) {
-    return false;
-  } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
-    if (oIsArray) {
-      if (obj.length !== obj2.length) {
-        return false;
-      }
-      for (index = 0, length = obj.length; index < length; index++) {
-        if (!$equals(obj[index], obj2[index], obj)) {
-          return false;
-        }
-      }
-    } else {
-      if (keys(obj).length !== keys(obj2).length) {
-        return false;
-      }
-      for (key in obj) {
-        if (!$equals(obj[key], obj2[key], obj)) {
-          return false;
-        }
-      }
-    }
-  } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
-    if (obj2.toString() !== oString) {
-      return false;
-    }
-  } else {
-    try {
-      if (stringify(obj) !== stringify(obj2)) {
-        return false;
-      }
-    } catch (error) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-defineValue(Object, '$equals', $equals);
 
 defineValue(ObjectProto, '$get', function (key) {
   return this[key];

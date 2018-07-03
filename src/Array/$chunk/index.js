@@ -4,7 +4,7 @@ import $create from "../$create/index";
 import ceil from "../../shared/global/Math/ceil";
 
 
-defineValue( Array, '$chunk', ( array, size ) => {
+export default function $chunk( array, size ){
   let length;
   
   if( !array || size < 1 || !( length = array.length ) ){
@@ -15,4 +15,6 @@ defineValue( Array, '$chunk', ( array, size ) => {
     const start = index * size;
     return array.slice( start, start + size );
   });
-});
+}
+
+defineValue( Array, '$chunk', $chunk );
