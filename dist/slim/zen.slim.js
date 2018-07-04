@@ -253,6 +253,8 @@
         result[i] = insert;
       }
     }
+
+    return result;
   }
 
   defineValue(Array, '$create', $create);
@@ -377,71 +379,6 @@
     }return false;
   });
 
-  var keys = Object.keys;
-
-  var stringify = JSON.stringify;
-
-  function unFunctionObject(obj) {
-    var type = typeof obj;
-    return type !== 'object' && type !== 'function';
-  }
-
-  function $equals(obj, obj2, parent) {
-    var index,
-        length,
-        key,
-        oIsArray,
-        oString;
-
-    if (obj === obj2) {
-      return true;
-    }
-
-    if (!obj || parent && parent === obj) {
-      return false;
-    } else if (toString.call(obj) !== toString.call(obj2)) {
-      return false;
-    } else if (unFunctionObject(obj)) {
-      return false;
-    } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
-      if (oIsArray) {
-        if (obj.length !== obj2.length) {
-          return false;
-        }
-        for (index = 0, length = obj.length; index < length; index++) {
-          if (!$equals(obj[index], obj2[index], obj)) {
-            return false;
-          }
-        }
-      } else {
-        if (keys(obj).length !== keys(obj2).length) {
-          return false;
-        }
-        for (key in obj) {
-          if (!$equals(obj[key], obj2[key], obj)) {
-            return false;
-          }
-        }
-      }
-    } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
-      if (obj2.toString() !== oString) {
-        return false;
-      }
-    } else {
-      try {
-        if (stringify(obj) !== stringify(obj2)) {
-          return false;
-        }
-      } catch (error) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  defineValue(Object, '$equals', $equals);
-
   function isNumber(obj) {
     return typeof obj === 'number';
   }
@@ -459,27 +396,6 @@
   }
 
   defineValue(Array, '$isArrayLike', $isArrayLike);
-
-  // $indexOf( 'a' )
-  // $indexOf( 'a', 1 )
-  // $indexOf( 'a', 1, 'b', 2 )
-  // $indexOf( { a: 1 } )
-  // $indexOf( [ 'a', 1, 'b', 2 ] )
-  defineValue(ArrayProto, '$indexOf', function (key, value) {
-    var length;
-
-    if (key == null || !(length = this.length)) {
-      return -1;
-    }
-
-    if (unFunctionObject(key)) {
-      key = $toArray(arguments);
-    }
-
-    if ($isArrayLike(key)) {
-      key = $chunk(key, 2);
-    }
-  });
 
   'push_unshift_pop_shift'.split('_').forEach(function (key) {
     defineValue(ArrayProto, "$" + key, function () {
@@ -619,6 +535,71 @@
   }
 
   defineValue(Object, '$each', $each);
+
+  var keys = Object.keys;
+
+  var stringify = JSON.stringify;
+
+  function unFunctionObject(obj) {
+    var type = typeof obj;
+    return type !== 'object' && type !== 'function';
+  }
+
+  function $equals(obj, obj2, parent) {
+    var index,
+        length,
+        key,
+        oIsArray,
+        oString;
+
+    if (obj === obj2) {
+      return true;
+    }
+
+    if (!obj || parent && parent === obj) {
+      return false;
+    } else if (toString.call(obj) !== toString.call(obj2)) {
+      return false;
+    } else if (unFunctionObject(obj)) {
+      return false;
+    } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
+      if (oIsArray) {
+        if (obj.length !== obj2.length) {
+          return false;
+        }
+        for (index = 0, length = obj.length; index < length; index++) {
+          if (!$equals(obj[index], obj2[index], obj)) {
+            return false;
+          }
+        }
+      } else {
+        if (keys(obj).length !== keys(obj2).length) {
+          return false;
+        }
+        for (key in obj) {
+          if (!$equals(obj[key], obj2[key], obj)) {
+            return false;
+          }
+        }
+      }
+    } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
+      if (obj2.toString() !== oString) {
+        return false;
+      }
+    } else {
+      try {
+        if (stringify(obj) !== stringify(obj2)) {
+          return false;
+        }
+      } catch (error) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  defineValue(Object, '$equals', $equals);
 
   defineValue(ObjectProto, '$get', function (key) {
     return this[key];

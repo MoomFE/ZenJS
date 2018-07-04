@@ -14,6 +14,8 @@ export default function $create( length, insert ){
     for( ; i < length; i++ )
       result[ i ] = insert;
   }
+
+  return result;
 }
 
 defineValue( Array, '$create', $create );
