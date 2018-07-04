@@ -7,6 +7,7 @@ import $toArray from "../$toArray/index";
 import unFunctionObject from "../../shared/util/unFunctionObject";
 import $isArrayLike from "../$isArrayLike/index";
 import $chunk from "../$chunk/index";
+import isArray from "../../shared/global/Array/isArray";
 
 // $indexOf( 'a' )
 // $indexOf( 'a', 1 )
@@ -28,16 +29,21 @@ defineValue( ArrayProto, '$indexOf', function( key, value ){
     key = $chunk( key, 2 );
   }
 
+  if( isArray ){
+    // key = 
+  }
+
   let index = 0;
   const predicate = getPredicate( key );
-  for( ; index < length; i++ ){
+  for( ; index < length; index++ ){
     
   }
 
 });
 
 function getPredicate( key ){// fn array object
-  if( isFunction( func ) ){
-    return func;
+  if( isFunction( key ) ){
+    return key;
   }
+
 }

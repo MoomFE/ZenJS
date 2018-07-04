@@ -4,16 +4,16 @@ import Array from '../../shared/global/Array/index';
 
 
 export default function $create( length, insert ){
-  let i = 0,
-      result = [];
+  let i = 0;
+  const result = Array( length >>= 0 );
 
-  length >>= 0;
-
-  for( ; i < length; i++ ) result.push(
-    insert && isFunction( insert ) ? insert( i ) : insert
-  );
-
-  return result;
+  if( isFunction( insert ) ){
+    for( ; i < length; i++ )
+      result[ i ] = insert( i );
+  }else{
+    for( ; i < length; i++ )
+      result[ i ] = insert;
+  }
 }
 
 defineValue( Array, '$create', $create );

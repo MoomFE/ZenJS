@@ -235,14 +235,18 @@ defineValue(ArrayProto, '$add', function (index) {
 });
 
 function $create(length, insert) {
-  var i = 0,
-      result = [];
+  var i = 0;
+  var result = Array(length >>= 0);
 
-  length >>= 0;
-
-  for (; i < length; i++) {
-    result.push(insert && isFunction(insert) ? insert(i) : insert);
-  }return result;
+  if (isFunction(insert)) {
+    for (; i < length; i++) {
+      result[i] = insert(i);
+    }
+  } else {
+    for (; i < length; i++) {
+      result[i] = insert;
+    }
+  }
 }
 
 defineValue(Array, '$create', $create);
@@ -469,9 +473,6 @@ defineValue(ArrayProto, '$indexOf', function (key, value) {
   if ($isArrayLike(key)) {
     key = $chunk(key, 2);
   }
-
-  var index = 0;
-  for (; index < length; i++) {}
 });
 
 'push_unshift_pop_shift'.split('_').forEach(function (key) {
