@@ -446,6 +446,18 @@
           [].$set({ 0: 0, 1: 1, 2: 2 }).length.should.equals( 3 );
         }
       }, {
+        name: '$move',
+        it: function(){
+          Object.$equals( [ 1, 2, 3 ].$move( 0, 1 ), [ 2, 1, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 0, 2 ), [ 2, 3, 1 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 1, 2 ), [ 1, 3, 2 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( -1, 0 ), [ 3, 1, 2 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( -2, 0 ), [ 2, 1, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 0, -1 ), [ 2, 3, 1 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 0, -2 ), [ 2, 1, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 1, -1 ), [ 1, 3, 2 ] ).should.true;
+        }
+      }, {
         name: '$push',
         it: function(){
           [ 1 ].$push( 2 ).length.should.equals( 2 );

@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 46.59kb | 12.29kb | \|  | UMD       | Browser |
-| zen.min.js         | 17.47kb | 6.66kb | \|  | UMD       | Browser |
-| zen.common.js      | 43.30kb | 11.97kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 43.28kb | 11.96kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 46.75kb | 12.33kb | \|  | UMD       | Browser |
+| zen.min.js         | 17.56kb | 6.68kb | \|  | UMD       | Browser |
+| zen.common.js      | 43.44kb | 12.01kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 43.43kb | 12.00kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
@@ -85,6 +85,7 @@
   - $inArray
   - $indexOf
   - $set
+  - $move
   - $push
   - $unshift
   - $pop

@@ -536,6 +536,11 @@ function checkObject(source, object) {
   return true;
 }
 
+defineValue(ArrayProto, '$move', function (from, to) {
+  this.splice(to < 0 ? this.length + to : to, 0, this.splice(from, 1)[0]);
+  return this;
+});
+
 'push_unshift_pop_shift'.split('_').forEach(function (key) {
   defineValue(ArrayProto, "$" + key, function () {
     return this[key].apply(this, arguments), this;

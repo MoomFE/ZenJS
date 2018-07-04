@@ -111,6 +111,12 @@ interface Array<T> {
    */
   $set( obj: { index: Number, value: any } ): any[];
   /**
+   * 移动数组内的某个元素到指定的位置
+   * @param from 需要移动的元素下标, 可为负数
+   * @param to 需要移动到的位置下标, 可为负数
+   */
+  $move( from: Number, to: Number ): any[];
+  /**
    * 调用原生 push 方法, 返回 this
    * @param args 需要插入到数组末尾的对象
    */
