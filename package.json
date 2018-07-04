@@ -7,7 +7,6 @@
   "unpkg": "dist/zen.js",
   "jsdelivr": "dist/zen.js",
   "typings": "index.d.ts",
-  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-check-es2015-constants": "^6.22.0",
@@ -39,7 +38,11 @@
   },
   "keywords": [
     "zen",
-    "zenjs"
+    "zenjs",
+    "javascript",
+    "utilities",
+    "util",
+    "prototype"
   ],
   "title": "Zen.js",
   "author": "Zhang_Wei",
