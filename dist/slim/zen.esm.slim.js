@@ -355,12 +355,14 @@ defineValue(ArrayProto, '$equals', function (obj) {
 });
 
 defineValue(ArrayProto, '$get', function () {
-  var index = parametersDefault(arguments, 0, 0),
-      num = arguments[1];
+  var index = parametersDefault(arguments, 0, 0);
 
-  if (num == null) {
+  if (arguments.length <= 1) {
     return this[index];
   }
+
+  var num = arguments[1] || 1;
+
   return this.slice(index, num + index);
 });
 

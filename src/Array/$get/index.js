@@ -4,12 +4,13 @@ import parametersDefault from "../../shared/util/parametersDefault";
 
 
 defineValue( ArrayProto, '$get', function(){
-  const
-    index = parametersDefault( arguments, 0, 0 ),
-    num = arguments[ 1 ];
+  const index = parametersDefault( arguments, 0, 0 );
 
-  if( num == null ){
+  if( arguments.length <= 1 ){
     return this[ index ];
   }
+
+  const num = arguments[ 1 ] || 1;
+
   return this.slice( index, num + index );
 });

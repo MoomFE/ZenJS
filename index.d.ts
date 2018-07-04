@@ -72,9 +72,9 @@ interface Array<T> {
   /**
    * 获取指定下标开始的若干个对象
    * @param index 需要获取的对象的下标 - default: 0
-   * @param num 需要从该下标开始获取几个对象
+   * @param num 需要从该下标开始获取几个对象 - default: 1
    */
-  $get( index: Number = 0, num: Number ): any[];
+  $get( index: Number = 0, num: Number = 1 ): any[];
   /**
    * 查找数组内是否有此传入值
    * -- 弱检测

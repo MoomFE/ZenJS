@@ -395,6 +395,7 @@
         it: function(){
           [ 0, 1, 2, 3, 4, 5 ].$get().should.equals( 0 );
           [ 0, 1, 2, 3, 4, 5 ].$get( 2 ).should.equals( 2 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( 2, undefined ).length.should.equals( 1 );
           [ 0, 1, 2, 3, 4, 5 ].$get( 0, 3 ).length.should.equals( 3 );
           [ 0, 1, 2, 3, 4, 5 ].$get( 2, 3 ).length.should.equals( 3 );
         }
