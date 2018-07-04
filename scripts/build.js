@@ -28,24 +28,24 @@ const allConfig = [
   {
     input: 'src/slim.js',
     output: {
-      file: 'dist/zen.slim.js'
+      file: 'dist/slim/zen.slim.js'
     }
   }, {
     input: 'src/slim.js',
     output: {
-      file: 'dist/zen.slim.min.js'
+      file: 'dist/slim/zen.slim.min.js'
     }
   }, {
     input: 'src/slim.js',
     output: {
-      file: 'dist/zen.common.slim.js',
+      file: 'dist/slim/zen.common.slim.js',
       format: 'cjs',
       footer: '\nmodule.exports = ZenJS;'
     }
   }, {
     input: 'src/slim.js',
     output: {
-      file: 'dist/zen.esm.slim.js',
+      file: 'dist/slim/zen.esm.slim.js',
       format: 'es',
       footer: '\nexport default ZenJS;'
     }
