@@ -238,8 +238,7 @@
           Object.$equals( Array.$chunk( [ 1, 2, 3 ], 3 ), [ [ 1, 2, 3 ] ] ).should.true;
           Object.$equals( Array.$chunk( [ 1, 2, 3 ], 4 ), [ [ 1, 2, 3 ] ] ).should.true;
         }
-      },
-      {
+      }, {
         name: '$create',
         it: function(){
           Array.$create( 10 ).length.should.equals( 10 );
@@ -406,6 +405,36 @@
           [ 1, 2, 3 ].$inArray( 0 ).should.false;
           [ '' ].$inArray( false ).should.true;
           [ undefined ].$inArray( null ).should.true;
+        }
+      }, {
+        name: '$indexOf',
+        it: function(){
+          var keys = [
+            { name: 'zen' },
+            { name: 'zenjs' },
+            { name: 'zenjs', type: 'js' },
+            { name: 'zenui', type: 'ui' }
+          ];
+
+          keys.$indexOf( 'name' ).should.equals( 0 );
+          keys.$indexOf( 'name', 'zenjs' ).should.equals( 1 );
+          keys.$indexOf( 'name', 'zenjs', 'type', 'js' ).should.equals( 2 );
+          keys.$indexOf( 'type' ).should.equals( 2 );
+          keys.$indexOf( 'type', 'js' ).should.equals( 2 );
+          keys.$indexOf( 'type', 'ui' ).should.equals( 3 );
+
+          keys.$indexOf( [ 'name' ] ).should.equals( 0 );
+          keys.$indexOf( [ 'name', 'zenjs' ] ).should.equals( 1 );
+          keys.$indexOf( [ 'name', 'zenjs', 'type', 'js' ] ).should.equals( 2 );
+          keys.$indexOf( [ 'type' ] ).should.equals( 2 );
+          keys.$indexOf( [ 'type', 'js' ] ).should.equals( 2 );
+          keys.$indexOf( [ 'type', 'ui' ] ).should.equals( 3 );
+
+          keys.$indexOf( { name: 'zen' } ).should.equals( 0 );
+          keys.$indexOf( { name: 'zenjs' } ).should.equals( 1 );
+          keys.$indexOf( { name: 'zenjs', type: 'js' } ).should.equals( 2 );
+          keys.$indexOf( { type: 'js' } ).should.equals( 2 );
+          keys.$indexOf( { type: 'ui' } ).should.equals( 3 );
         }
       }, {
         name: '$set',

@@ -84,6 +84,22 @@ interface Array<T> {
    */
   $inArray( obj: any ): Boolean;
   /**
+   * 检测数组内对象的属性是否符合传入规则
+   * @param key 需要检测的字段名
+   * @param value 需要比对的字段值, 若不传入, 则只是判断字段是否存在
+   */
+  $indexOf( key: String, value: any ): Number;
+  /**
+   * 检测数组内对象的属性是否符合传入规则
+   * @param source 需要检测的键值是数组集合
+   */
+  $indexOf( source: Array ): Number;
+  /**
+   * 检测数组内对象的属性是否符合传入规则
+   * @param source 需要检测的键值对
+   */
+  $indexOf( source: any ): Number
+  /**
    * 修改数组内指定下标的值
    * @param index 需要修改的下标
    * @param value 值

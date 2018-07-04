@@ -379,6 +379,11 @@
     }return false;
   });
 
+  function unFunctionObject(obj) {
+    var type = typeof obj;
+    return type !== 'object' && type !== 'function';
+  }
+
   function isNumber(obj) {
     return typeof obj === 'number';
   }
@@ -396,6 +401,144 @@
   }
 
   defineValue(Array, '$isArrayLike', $isArrayLike);
+
+  var keys = Object.keys;
+
+  var stringify = JSON.stringify;
+
+  function $equals(obj, obj2, parent) {
+    var index,
+        length,
+        key,
+        oIsArray,
+        oString;
+
+    if (obj === obj2) {
+      return true;
+    }
+
+    if (!obj || parent && parent === obj) {
+      return false;
+    } else if (toString.call(obj) !== toString.call(obj2)) {
+      return false;
+    } else if (unFunctionObject(obj)) {
+      return false;
+    } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
+      if (oIsArray) {
+        if (obj.length !== obj2.length) {
+          return false;
+        }
+        for (index = 0, length = obj.length; index < length; index++) {
+          if (!$equals(obj[index], obj2[index], obj)) {
+            return false;
+          }
+        }
+      } else {
+        if (keys(obj).length !== keys(obj2).length) {
+          return false;
+        }
+        for (key in obj) {
+          if (!$equals(obj[key], obj2[key], obj)) {
+            return false;
+          }
+        }
+      }
+    } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
+      if (obj2.toString() !== oString) {
+        return false;
+      }
+    } else {
+      try {
+        if (stringify(obj) !== stringify(obj2)) {
+          return false;
+        }
+      } catch (error) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  defineValue(Object, '$equals', $equals);
+
+  defineValue(ArrayProto, '$indexOf', function (key, value) {
+    var length;
+
+    if (key == null || !(length = this.length)) {
+      return -1;
+    }
+
+    // 第一个参数不是数组或对象
+    // 将所有传入参数转为数组
+    if (unFunctionObject(key)) {
+      key = $toArray(arguments);
+    }
+
+    // 将类数组类型的按照键值对进行分割
+    if ($isArrayLike(key)) {
+      key = $chunk(key, 2);
+    }
+
+    // 获取检测方法
+    var predicate = getPredicate(key);
+
+    // 遍历数组内的对象, 交给检测方法进行检测
+    for (var index = 0; index < length; index++) {
+      if (predicate(this[index])) {
+        return index;
+      }
+    }
+    return -1;
+  });
+
+  function getPredicate(key) {
+    // fn array object
+    // 用户传的检测方法
+    if (isFunction(key)) {
+      return key;
+    }
+
+    var keyIsArray = isArray(key);
+
+    return function (object) {
+      if (object == null || !keys(object).length) {
+        return false;
+      }
+      return (keyIsArray ? checkArray : checkObject)(key, object);
+    };
+  }
+
+  function checkArray(source, object) {
+    var index = 0,
+        chunk,
+        key;
+    var length = source.length;
+
+    // 遍历检测对象
+    for (; index < length; index++) {
+      chunk = source[index];
+      key = chunk[0];
+
+      if (!(key in object && (chunk.length === 1 || $equals(chunk[1], object[key])))) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function checkObject(source, object) {
+    var key;
+
+    for (key in source) {
+      if (!(key in object && $equals(source[key], object[key]))) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   'push_unshift_pop_shift'.split('_').forEach(function (key) {
     defineValue(ArrayProto, "$" + key, function () {
@@ -535,71 +678,6 @@
   }
 
   defineValue(Object, '$each', $each);
-
-  var keys = Object.keys;
-
-  var stringify = JSON.stringify;
-
-  function unFunctionObject(obj) {
-    var type = typeof obj;
-    return type !== 'object' && type !== 'function';
-  }
-
-  function $equals(obj, obj2, parent) {
-    var index,
-        length,
-        key,
-        oIsArray,
-        oString;
-
-    if (obj === obj2) {
-      return true;
-    }
-
-    if (!obj || parent && parent === obj) {
-      return false;
-    } else if (toString.call(obj) !== toString.call(obj2)) {
-      return false;
-    } else if (unFunctionObject(obj)) {
-      return false;
-    } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
-      if (oIsArray) {
-        if (obj.length !== obj2.length) {
-          return false;
-        }
-        for (index = 0, length = obj.length; index < length; index++) {
-          if (!$equals(obj[index], obj2[index], obj)) {
-            return false;
-          }
-        }
-      } else {
-        if (keys(obj).length !== keys(obj2).length) {
-          return false;
-        }
-        for (key in obj) {
-          if (!$equals(obj[key], obj2[key], obj)) {
-            return false;
-          }
-        }
-      }
-    } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
-      if (obj2.toString() !== oString) {
-        return false;
-      }
-    } else {
-      try {
-        if (stringify(obj) !== stringify(obj2)) {
-          return false;
-        }
-      } catch (error) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  defineValue(Object, '$equals', $equals);
 
   defineValue(ObjectProto, '$get', function (key) {
     return this[key];
