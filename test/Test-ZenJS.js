@@ -323,15 +323,15 @@
       {
         name: '$add',
         it: function(){
-          [ 1 ].$add( 0, 0 )[ 0 ].should.equals( 0 );
-          [ 1 ].$add( 0, 0 )[ 1 ].should.equals( 1 );
-          [ 1 ].$add( 0, 0 ).length.should.equals( 2 );
-          [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equals( 5 );
-
+          Object.$equals( [ 1 ].$add( 0, 0 ), [ 0, 1 ] ).should.true;
+          Object.$equals( [ 1 ].$add( 0, 1 ), [ 1, 1 ] ).should.true;
+          Object.$equals( [ 5 ].$add( 1, 4, 3, 2, 1 ), [ 5, 4, 3, 2, 1 ] ).should.true;
           Object.$equals( [ 1 ].$add( 0, 0 ), [ 0, 1 ] ).should.true;
           Object.$equals( [ 1 ].$add( 1, 2 ), [ 1, 2 ] ).should.true;
           Object.$equals( [ 1 ].$add( -1, 2 ), [ 1, 2 ] ).should.true;
           Object.$equals( [ 1, 2 ].$add( -1, 3 ), [ 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2 ].$add( -2, 0 ), [ 1, 0, 2 ] ).should.true;
+          Object.$equals( [ 1, 2 ].$add( -3, 0 ), [ 0, 1, 2 ] ).should.true;
         }
       }, {
         name: '$concat',
@@ -483,7 +483,7 @@
       }, {
         name: '$moveRange',
         it: function(){
-          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 0 ), [ 3, 1, 2, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 0 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
           Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 1 ), [ 3, 1, 2, 4, 5, 6 ] ).should.true;
           Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 2 ), [ 3, 4, 1, 2, 5, 6 ] ).should.true;
           Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 3 ), [ 3, 4, 5, 1, 2, 6 ] ).should.true;

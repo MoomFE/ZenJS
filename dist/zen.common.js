@@ -221,8 +221,8 @@ function $add(self, index, args) {
 
   var len = args.length;
 
-  if (index < 0) {
-    index = self.length + index + 1;
+  if (index < 0 && (index = self.length + index + 1) < 0) {
+    index = 0;
   }
 
   for (var i = 0; i < len; i++) {
