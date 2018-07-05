@@ -286,7 +286,7 @@
   });
 
   defineValue(Array, '$copy', function (source, array) {
-    return array ? array.concat(source) : source.concat();
+    return array ? array.concat(source) : source.slice();
   });
 
   defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted) {

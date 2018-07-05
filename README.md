@@ -51,7 +51,7 @@
 | zen.js             | 47.16kb | 12.41kb | \|  | UMD       | Browser |
 | zen.min.js         | 17.68kb | 6.71kb | \|  | UMD       | Browser |
 | zen.common.js      | 43.84kb | 12.12kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 43.83kb | 12.11kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.esm.js         | 43.82kb | 12.11kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
