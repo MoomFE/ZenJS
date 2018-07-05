@@ -289,10 +289,11 @@
     return array ? array.concat(source) : source.concat();
   });
 
-  defineValue(ArrayProto, '$delete $remove', function (index) {
+  defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted) {
     var num = parametersDefault(arguments, 1, 1);
+    var deleted = this.splice(index, num);
 
-    return this.splice(index, num), this;
+    return returnDeleted ? deleted : this;
   });
 
   function congruence(one, two) {
@@ -550,19 +551,6 @@
     this.splice(to < 0 ? this.length + to : to, 0, this.splice(from, 1)[0]);
     return this;
   });
-
-  // $moveRange( 0, 2, 3 )
-  defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
-    var length = this.length;
-
-    start = start < 0 ? length + start : start;
-
-    console.log(start);
-  });
-
-  // defineValue( ArrayProto, '$moveRange2', function( start, moveCount, toIndex ){
-
-  // });
 
   'push_unshift_pop_shift'.split('_').forEach(function (key) {
     defineValue(ArrayProto, "$" + key, function () {

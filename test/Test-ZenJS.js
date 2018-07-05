@@ -355,6 +355,8 @@
           Object.$equals( [ 0, 1, 2 ].$delete( -3, 2 ), [ 2 ] ).should.true;
           Object.$equals( [ 0, 1, 2 ].$delete( -3, 3 ), [ ] ).should.true;
           Object.$equals( [ 0, 1, 2 ].$delete( -4, 3 ), [ ] ).should.true;
+          // 返回删除的数据
+          Object.$equals( [ 1, 2, 3, 4, 5 ].$delete( 3, 2, true ), [ 4, 5 ] ).should.true;
         }
       }, {
         name: '$deleteValue',
