@@ -357,11 +357,15 @@ defineValue(ArrayProto, '$equals', function (obj) {
 defineValue(ArrayProto, '$get', function () {
   var index = parametersDefault(arguments, 0, 0);
 
+  if (index < 0 && (index = this.length + index) < 0) {
+    index = 0;
+  }
+
   if (arguments.length <= 1) {
     return this[index];
   }
 
-  var num = arguments[1] || 1;
+  var num = parametersDefault(arguments, 1, 1);
 
   return this.slice(index, num + index);
 });
@@ -540,6 +544,19 @@ defineValue(ArrayProto, '$move', function (from, to) {
   this.splice(to < 0 ? this.length + to : to, 0, this.splice(from, 1)[0]);
   return this;
 });
+
+// $moveRange( 0, 2, 3 )
+defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
+  var length = this.length;
+
+  start = start < 0 ? length + start : start;
+
+  console.log(start);
+});
+
+// defineValue( ArrayProto, '$moveRange2', function( start, moveCount, toIndex ){
+
+// });
 
 'push_unshift_pop_shift'.split('_').forEach(function (key) {
   defineValue(ArrayProto, "$" + key, function () {
