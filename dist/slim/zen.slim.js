@@ -552,6 +552,14 @@
     return this;
   });
 
+  defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
+    return $add(this, toIndex, this.splice(start, moveCount));
+  });
+
+  // defineValue( ArrayProto, '$moveRange2', function( start, moveCount, toIndex ){
+
+  // });
+
   'push_unshift_pop_shift'.split('_').forEach(function (key) {
     defineValue(ArrayProto, "$" + key, function () {
       return this[key].apply(this, arguments), this;
