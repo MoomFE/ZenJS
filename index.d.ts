@@ -32,7 +32,7 @@ interface ArrayConstructor {
 interface Array<T> {
   /**
    * 在数组指定位置插入对象
-   * @param index 插入在数组中的位置, 如果为负数, 则从末尾开始逆序计算插入位置
+   * @param index 插入在数组中的位置, 可为负数
    * @param args 需要插入的对象, 可以是多个
    */
   $add( index: Number, ...args: any[] ): any[];
@@ -43,7 +43,7 @@ interface Array<T> {
   $concat( ...args: any[] ): any[];
   /**
    * 在数组指定位置删除若干对象
-   * @param index 需要删除的下标
+   * @param index 需要删除的下标, 可为负数
    * @param num 需要从该下标开始删除几个对象 - default: 1
    */
   $delete( index: Number, num: Number = 1 ): any[];
@@ -71,7 +71,7 @@ interface Array<T> {
   $get( index: Number = 0 ): any;
   /**
    * 获取指定下标开始的若干个对象
-   * @param index 需要获取的对象的下标 - default: 0
+   * @param index 需要获取的对象的下标, 可为负数 - default: 0
    * @param num 需要从该下标开始获取几个对象 - default: 1
    */
   $get( index: Number = 0, num: Number = 1 ): any[];

@@ -346,10 +346,15 @@
       }, {
         name: '$delete',
         it: function(){
-          [ 1 ].$delete( 0 ).length.should.equals( 0 );
-          [ 0, 1 ].$delete( 0, 2 ).length.should.equals( 0 );
-          [ 0, 1, 2 ].$delete( 0, 2 ).length.should.equals( 1 );
-          [ 0, 1, 2 ].$delete( 0, 2 )[ 0 ].should.equals( 2 );
+          Object.$equals( [ 1 ].$delete( 0 ), [ ] ).should.true;
+          Object.$equals( [ 0, 1 ].$delete( 0, 2 ), [ ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( 0, 2 ), [ 2 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -1, 1 ), [ 0, 1 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -1, 2 ), [ 0, 1 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -2, 2 ), [ 0 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -3, 2 ), [ 2 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -3, 3 ), [ ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -4, 3 ), [ ] ).should.true;
         }
       }, {
         name: '$deleteValue',
