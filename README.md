@@ -45,13 +45,21 @@
 
 ## 大小 - 版本详解
 
-|               | Default | Gzip   |  -  | Module    | Use in  |
-| :-            | :-      | :-     | :-: | :-        | :-      |
-| zen.js        | 44.65kb | 11.70kb | \|  | UMD       | Browser |
-| zen.min.js    | 16.67kb | 6.40kb | \|  | UMD       | Browser |
-| zen.common.js | 41.50kb | 11.47kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js    | 41.48kb | 11.46kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+### Default
+|                    | Default | Gzip    |  -  | Module    | Use in  |
+| :-                 | :-      | :-      | :-: | :-        | :-      |
+| zen.js             | 48.10kb | 12.64kb | \|  | UMD       | Browser |
+| zen.min.js         | 18.04kb | 6.82kb | \|  | UMD       | Browser |
+| zen.common.js      | 44.72kb | 12.35kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 44.70kb | 12.34kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
+### Slim : No DOM API
+|                    | Default | Gzip    |  -  | Module    | Use in  |
+| :-                 | :-      | :-      | :-: | :-        | :-      |
+| zen.slim.js        | 19.69kb | 5.28kb | \|  | UMD       | Browser |
+| zen.slim.min.js    | 8.49kb | 3.33kb | \|  | UMD       | Browser |
+| zen.common.slim.js | 18.19kb | 5.15kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.slim.js    | 18.17kb | 5.14kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -60,6 +68,7 @@
 
 
 - Array
+  - $chunk
   - $create
   - $toArray
   - $copy
@@ -68,13 +77,17 @@
 - Array.prototype
   - $add
   - $concat
-  - $delete
-  - $deleteValue
+  - $concatTo
+  - $delete / $remove
+  - $deleteValue / $removeValue
   - $each
   - $equals
   - $get
   - $inArray
+  - $findIndex / $indexOf
   - $set
+  - $move
+  - $moveRange
   - $push
   - $unshift
   - $pop
@@ -88,15 +101,12 @@
 - Element.prototype
   - \_index
   - $addClass
-  - $removeClass
+  - $removeClass / $deleteClass
   - $hasClass
   - $toggleClass
-  - $child
-  - $children
-  - $first
-  - $firstChild
-  - $last
-  - $lastChild
+  - $child / $children
+  - $first / $firstChild
+  - $last / $lastChild
   - $is
   - $not
   - $query
@@ -113,10 +123,9 @@
 - EventTarget.prototype
   - $data
   - $hasData
-  - $deleteData
+  - $deleteData / $removeData
   - $on
-  - $one
-  - $once
+  - $one / $once
   - $off
   - $emit
 
@@ -137,8 +146,8 @@
   - $isPlainObject
 
 - Object.prototype
-  - $delete
-  - $deleteValue
+  - $delete / $remove
+  - $deleteValue / $removeValue
   - $get
   - $set
   - $self
@@ -178,3 +187,9 @@ npm run build
 ```bash
 npm run watch
 ```
+
+<br>
+
+## License
+
+ZenJS is licensed under a [MIT  License](./LICENSE).

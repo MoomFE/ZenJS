@@ -1,4 +1,5 @@
 import './$add/index';
+import './$chunk/index';
 import './$concat/index';
 import './$copy/index';
 import './$create/index';
@@ -6,8 +7,12 @@ import './$delete/index';
 import './$deleteValue/index';
 import './$each/index';
 import './$equals/index';
+import './$findIndex/index';
 import './$get/index';
 import './$inArray/index';
 import './$isArrayLike/index';
+import './$move/index';
+import './$moveRange/index';
 import './$push_$unshift_$pop_$shift/index';
+import './$set/index';
 import './$toArray/index';

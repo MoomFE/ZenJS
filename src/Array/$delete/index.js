@@ -3,9 +3,10 @@ import ArrayProto from "../../shared/global/Array/prototype/index";
 import parametersDefault from "../../shared/util/parametersDefault";
 
 
-defineValue( ArrayProto, '$delete', function( index ){
+defineValue( ArrayProto, '$delete $remove', function( index, noop, returnDeleted ){
   const num = parametersDefault( arguments, 1, 1 );
+  const deleted = this.splice( index, num );
 
-  return this.splice( index, num ),
-         this;
+  return returnDeleted ? deleted
+                       : this;
 });

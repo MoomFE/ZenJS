@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.1.1
+ * Zen.js v2.2.0-bata
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -215,13 +215,18 @@ function parametersRest(args) {
   return [];
 }
 
+function fixArrayIndex(array, index, add) {
+  if (index < 0 && (index = array.length + index + (add || 0)) < 0) {
+    index = 0;
+  }
+  return index;
+}
+
 function $add(self, index, args) {
 
   var len = args.length;
 
-  if (index < 0) {
-    index = self.length + index + 1;
-  }
+  index = fixArrayIndex(self, index, 1);
 
   for (var i = 0; i < len; i++) {
     self.splice(index++, 0, args[i]);
@@ -234,36 +239,84 @@ defineValue(ArrayProto, '$add', function (index) {
   return $add(this, index, parametersRest(arguments, 1));
 });
 
+function $create(length, insert) {
+  var i = 0;
+  var result = Array(length >>= 0);
+
+  if (isFunction(insert)) {
+    for (; i < length; i++) {
+      result[i] = insert(i);
+    }
+  } else {
+    for (; i < length; i++) {
+      result[i] = insert;
+    }
+  }
+
+  return result;
+}
+
+defineValue(Array, '$create', $create);
+
+var ceil = Math.ceil;
+
+function $chunk(array, size) {
+  var length;
+
+  if (!array || size < 1 || !(length = array.length)) {
+    return [];
+  }
+
+  return $create(ceil(length / size), function (index) {
+    var start = index * size;
+    return array.slice(start, start + size);
+  });
+}
+
+defineValue(Array, '$chunk', $chunk);
+
 defineValue(ArrayProto, '$concat', function () {
   var _this = this;
 
   $toArray(arguments).forEach(function (arg) {
     $add(_this, -1, isArray(arg) ? arg : [arg]);
   });
+
+  return this;
+});
+
+defineValue(ArrayProto, '$concatTo', function (index) {
+  var _this2 = this;
+
+  var args = parametersRest(arguments, 1);
+
+  if (!args.length) {
+    return this;
+  }
+
+  var originLength = this.length;
+  var increasedLength = 0;
+
+  index = fixArrayIndex(this, index, 1);
+
+  args.forEach(function (arg) {
+    $add(_this2, increasedLength + index, isArray(arg) ? arg : [arg]);
+    // 用于修正 index, 后续的 arg 需要插入到前面的 arg 后面
+    increasedLength = _this2.length - originLength;
+  });
+
   return this;
 });
 
 defineValue(Array, '$copy', function (source, array) {
-  return array ? array.concat(source) : source.concat();
+  return array ? array.concat(source) : source.slice();
 });
 
-function $create(length, insert) {
-  var i = 0,
-      result = [];
-
-  length >>= 0;
-
-  for (; i < length; i++) {
-    result.push(insert && isFunction(insert) ? insert(i) : insert);
-  }return result;
-}
-
-defineValue(Array, '$create', $create);
-
-defineValue(ArrayProto, '$delete', function (index) {
+defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted) {
   var num = parametersDefault(arguments, 1, 1);
+  var deleted = this.splice(index, num);
 
-  return this.splice(index, num), this;
+  return returnDeleted ? deleted : this;
 });
 
 function congruence(one, two) {
@@ -274,7 +327,7 @@ function equals(one, two) {
   return one == two;
 }
 
-defineValue(ArrayProto, '$deleteValue', function (value) {
+defineValue(ArrayProto, '$deleteValue $removeValue', function (value) {
   var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
   var index = 0,
       length = this.length;
@@ -331,13 +384,176 @@ defineValue(ArrayProto, '$equals', function (obj) {
   return true;
 });
 
-defineValue(ArrayProto, '$get', function () {
-  var index = parametersDefault(arguments, 0, 0),
-      num = arguments[1];
+function unFunctionObject(obj) {
+  var type = typeof obj;
+  return type !== 'object' && type !== 'function';
+}
 
-  if (num == null) {
+function isNumber(obj) {
+  return typeof obj === 'number';
+}
+
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+function $isArrayLike(obj) {
+  if (obj != null && !isFunction(obj)) {
+    var length = obj.length;
+    if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
+      return true;
+    }
+  }
+  return false;
+}
+
+defineValue(Array, '$isArrayLike', $isArrayLike);
+
+var keys = Object.keys;
+
+var stringify = JSON.stringify;
+
+function $equals(obj, obj2, parent) {
+  var index,
+      length,
+      key,
+      oIsArray,
+      oString;
+
+  if (obj === obj2) {
+    return true;
+  }
+
+  if (!obj || parent && parent === obj) {
+    return false;
+  } else if (toString.call(obj) !== toString.call(obj2)) {
+    return false;
+  } else if (unFunctionObject(obj)) {
+    return false;
+  } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
+    if (oIsArray) {
+      if (obj.length !== obj2.length) {
+        return false;
+      }
+      for (index = 0, length = obj.length; index < length; index++) {
+        if (!$equals(obj[index], obj2[index], obj)) {
+          return false;
+        }
+      }
+    } else {
+      if (keys(obj).length !== keys(obj2).length) {
+        return false;
+      }
+      for (key in obj) {
+        if (!$equals(obj[key], obj2[key], obj)) {
+          return false;
+        }
+      }
+    }
+  } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
+    if (obj2.toString() !== oString) {
+      return false;
+    }
+  } else {
+    try {
+      if (stringify(obj) !== stringify(obj2)) {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+defineValue(Object, '$equals', $equals);
+
+defineValue(ArrayProto, '$findIndex $indexOf', function (key) {
+  var length;
+
+  if (key == null || !(length = this.length)) {
+    return -1;
+  }
+
+  // 第一个参数不是数组或对象
+  // 将所有传入参数转为数组
+  if (unFunctionObject(key)) {
+    key = $toArray(arguments);
+  }
+
+  // 将类数组类型的按照键值对进行分割
+  if ($isArrayLike(key)) {
+    key = $chunk(key, 2);
+  }
+
+  // 获取检测方法
+  var predicate = getPredicate(key);
+
+  // 遍历数组内的对象, 交给检测方法进行检测
+  for (var index = 0; index < length; index++) {
+    if (predicate(this[index])) {
+      return index;
+    }
+  }
+  return -1;
+});
+
+function getPredicate(key) {
+  // fn array object
+  // 用户传的检测方法
+  if (isFunction(key)) {
+    return key;
+  }
+
+  var keyIsArray = isArray(key);
+
+  return function (object) {
+    if (object == null || !keys(object).length) {
+      return false;
+    }
+    return (keyIsArray ? checkArray : checkObject)(key, object);
+  };
+}
+
+function checkArray(source, object) {
+  var index = 0,
+      chunk,
+      key;
+  var length = source.length;
+
+  // 遍历检测对象
+  for (; index < length; index++) {
+    chunk = source[index];
+    key = chunk[0];
+
+    if (!(key in object && (chunk.length === 1 || $equals(chunk[1], object[key])))) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function checkObject(source, object) {
+  var key;
+
+  for (key in source) {
+    if (!(key in object && $equals(source[key], object[key]))) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+defineValue(ArrayProto, '$get', function () {
+  var index = fixArrayIndex(this, parametersDefault(arguments, 0, 0));
+
+  if (arguments.length <= 1) {
     return this[index];
   }
+
+  var num = parametersDefault(arguments, 1, 1);
+
   return this.slice(index, num + index);
 });
 
@@ -350,27 +566,45 @@ defineValue(ArrayProto, '$inArray', function (obj) {
   }return false;
 });
 
-function isNumber(obj) {
-  return typeof obj === 'number';
-}
-
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-defineValue(Array, '$isArrayLike', function (obj) {
-  if (obj != null && !isFunction(obj)) {
-    var length = obj.length;
-    if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
-      return true;
-    }
-  }
-  return false;
+defineValue(ArrayProto, '$move', function (from, to) {
+  this.splice(to < 0 ? this.length + to : to, 0, this.splice(from, 1)[0]);
+  return this;
 });
+
+defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
+  return $add(this, toIndex, this.splice(start, moveCount));
+});
+
+// defineValue( ArrayProto, '$moveRange2', function( start, moveCount, toIndex ){
+
+// });
 
 'push_unshift_pop_shift'.split('_').forEach(function (key) {
   defineValue(ArrayProto, "$" + key, function () {
     return this[key].apply(this, arguments), this;
   });
 });
+
+defineValue(ArrayProto, '$set', function (index, value) {
+
+  if (typeof index === 'object') {
+    var key;
+    for (key in index) {
+      $set(this, key, index[key]);
+    }
+  } else {
+    $set(this, index, value);
+  }
+
+  return this;
+});
+
+function $set(array, index, value) {
+
+  index = fixArrayIndex(array, index);
+
+  array[index] = value;
+}
 
 var addEventListener = 'addEventListener';
 var addEventListenerPrivate = '__ZENJS_EVENT_ADD__';
@@ -455,7 +689,7 @@ inBrowser && defineValue(ElementProto, {
   $addClass: function (className) {
     return access(this, className, 'add');
   },
-  $removeClass: function (className) {
+  '$removeClass $deleteClass': function (className) {
     return access(this, className, 'remove');
   },
   $hasClass: function (className) {
@@ -638,7 +872,7 @@ var DATA = '__ZENJS_DATA__';
 
 /**
  * 获取存储在元素上的整个数据集, 如数据集不存在则创建
- * @param {Element} elem 
+ * @param {Element} elem
  * @returns {Object}
  */
 function $_GetDatas(elem) {
@@ -688,7 +922,7 @@ if (inBrowser) {
     return name in Data;
   });
 
-  defineValue(EventTarget, '$deleteData', function (names) {
+  defineValue(EventTarget, '$deleteData $removeData', function (names) {
     var self = this || window;
 
     if (names == null) {
@@ -728,7 +962,7 @@ defineValue(Object, '$create', $create$1);
  * ZenJS
  */
 var ZenJS = $create$1(true, {
-  version: '2.1.1'
+  version: '2.2.0-bata'
 });
 
 if (inBrowser) {
@@ -942,7 +1176,7 @@ function returnTrue() {
  * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
  * event.delegateTarget : 绑定事件的元素
  * event.relatedTarget : 事件的相关节点, mouseover 时移出的节点, mouseout 时移入的节点
- * 
+ *
  * event.preventDefault() : 阻止浏览器默认行为
  * event.stopPropagation() : 停止将事件冒泡到父节点
  * event.stopImmediatePropagation() : 停止将事件冒泡到父节点且停止当前元素后续事件执行
@@ -1185,8 +1419,8 @@ function remove(elem, types, listener, selector) {
 
 /**
  * 触发绑定在元素上的事件( 只触发事件 )
- * @param {Element} elem 
- * @param {String} types 
+ * @param {Element} elem
+ * @param {String} types
  */
 function emit(elem, types, data) {
 
@@ -1522,7 +1756,7 @@ defineValue(Number, '$isNumber', $isNumber);
 
 defineValue(Object, '$assign', $assign);
 
-defineValue(ObjectProto, '$delete', function $delete() {
+defineValue(ObjectProto, '$delete $remove', function $delete() {
   var _this = this;
 
   $toArray(arguments).$each(function (key) {
@@ -1531,7 +1765,7 @@ defineValue(ObjectProto, '$delete', function $delete() {
   return this;
 });
 
-defineValue(ObjectProto, '$deleteValue', function $deleteValue(value) {
+defineValue(ObjectProto, '$deleteValue $removeValue', function $deleteValue(value) {
   var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
   var name;
 
@@ -1563,71 +1797,6 @@ function $each(obj, callback) {
 }
 
 defineValue(Object, '$each', $each);
-
-var keys = Object.keys;
-
-var stringify = JSON.stringify;
-
-function unFunctionObject(obj) {
-  var type = typeof obj;
-  return type !== 'object' && type !== 'function';
-}
-
-function $equals(obj, obj2, parent) {
-  var index,
-      length,
-      key,
-      oIsArray,
-      oString;
-
-  if (obj === obj2) {
-    return true;
-  }
-
-  if (!obj || parent && parent === obj) {
-    return false;
-  } else if (toString.call(obj) !== toString.call(obj2)) {
-    return false;
-  } else if (unFunctionObject(obj)) {
-    return false;
-  } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
-    if (oIsArray) {
-      if (obj.length !== obj2.length) {
-        return false;
-      }
-      for (index = 0, length = obj.length; index < length; index++) {
-        if (!$equals(obj[index], obj2[index], obj)) {
-          return false;
-        }
-      }
-    } else {
-      if (keys(obj).length !== keys(obj2).length) {
-        return false;
-      }
-      for (key in obj) {
-        if (!$equals(obj[key], obj2[key], obj)) {
-          return false;
-        }
-      }
-    }
-  } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
-    if (obj2.toString() !== oString) {
-      return false;
-    }
-  } else {
-    try {
-      if (stringify(obj) !== stringify(obj2)) {
-        return false;
-      }
-    } catch (error) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-defineValue(Object, '$equals', $equals);
 
 defineValue(ObjectProto, '$get', function (key) {
   return this[key];
@@ -1886,30 +2055,27 @@ defineProperty(ZenJS, 'guid', {
 });
 
 ZenJS.util = $create$1(true, {
-  is: {
-    equals: equals,
-    congruence: congruence
-  },
-  types: {
-    isArray: isArray,
-    isBoolean: isBoolean,
-    isFunction: isFunction,
-    isNumber: isNumber,
-    isObject: isObject,
-    isRegExp: isRegExp,
-    isString: isString
-  },
-  parameters: {
-    default: parametersDefault,
-    rest: parametersRest
-  },
-  fn: {
-    define: define,
-    defineGet: defineGet,
-    defineValue: defineValue,
-    returnTrue: returnTrue,
-    returnFalse: returnFalse
-  },
+
+  isEquals: equals,
+  isCongruence: congruence,
+
+  isArray: isArray,
+  isBoolean: isBoolean,
+  isFunction: isFunction,
+  isNumber: isNumber,
+  isObject: isObject,
+  isRegExp: isRegExp,
+  isString: isString,
+
+  parametersDefault: parametersDefault,
+  parametersRest: parametersRest,
+
+  define: define,
+  defineGet: defineGet,
+  defineValue: defineValue,
+  returnTrue: returnTrue,
+  returnFalse: returnFalse,
+
   supports: {
     passiveEvent: supportsPassiveEvent,
     EventTarget: supportsEventTarget

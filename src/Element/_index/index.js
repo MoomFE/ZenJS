@@ -9,7 +9,7 @@ inBrowser && define( ElementProto, '_index', {
   },
   set( toIndex ){
     const parent = this.parentElement;
-    
+
     if( parent == null ){
       return;
     }

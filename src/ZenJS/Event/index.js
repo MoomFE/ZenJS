@@ -12,7 +12,7 @@ import isFunction from "../../shared/util/isFunction";
  * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
  * event.delegateTarget : 绑定事件的元素
  * event.relatedTarget : 事件的相关节点, mouseover 时移出的节点, mouseout 时移入的节点
- * 
+ *
  * event.preventDefault() : 阻止浏览器默认行为
  * event.stopPropagation() : 停止将事件冒泡到父节点
  * event.stopImmediatePropagation() : 停止将事件冒泡到父节点且停止当前元素后续事件执行

@@ -6,7 +6,7 @@ import isFunction from "../../shared/util/isFunction";
 
 const MAX_SAFE_INTEGER = 9007199254740991;
 
-defineValue( Array, '$isArrayLike', obj => {
+export default function $isArrayLike( obj ){
   if( obj != null && !isFunction( obj ) ){
     const length = obj.length;
     if( isNumber( length ) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER ){
@@ -14,4 +14,6 @@ defineValue( Array, '$isArrayLike', obj => {
     }
   }
   return false;
-});
+}
+
+defineValue( Array, '$isArrayLike', $isArrayLike );

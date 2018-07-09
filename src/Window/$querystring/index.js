@@ -70,7 +70,7 @@ export function parse( str ){
 
     result[ key ] = value;
   }
-  
+
   return result;
 }
 

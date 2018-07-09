@@ -43,7 +43,7 @@ inBrowser && defineValue( ElementProto, {
   $addClass( className ){
     return access( this, className, 'add' );
   },
-  $removeClass( className ){
+  '$removeClass $deleteClass'( className ){
     return access( this, className, 'remove' );
   },
   $hasClass( className ){

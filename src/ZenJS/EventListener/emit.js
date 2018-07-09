@@ -4,8 +4,8 @@ import rtypenamespace from "../../shared/const/rtypenamespace";
 
 /**
  * 触发绑定在元素上的事件( 只触发事件 )
- * @param {Element} elem 
- * @param {String} types 
+ * @param {Element} elem
+ * @param {String} types
  */
 export default function emit( elem, types, data ){
 
@@ -48,7 +48,7 @@ export default function emit( elem, types, data ){
 
     tmp = tmp[ 2 ] &&
           new RegExp( '^' + namespace + '$' );
-    
+
     while( handlersLength-- ){
       handleOptions = handlers[ handlersLength ];
 

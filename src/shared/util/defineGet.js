@@ -18,4 +18,4 @@ export default function defineGet( obj, name, get, options ){
     options || defineGetPropertyOptions
   ),
          get;
-} 
+}

@@ -1,13 +1,12 @@
 {
   "name": "@moomfe/zenjs",
-  "version": "2.1.1",
+  "version": "2.2.0-bata",
   "description": "ZenJS 是一个高性能的 JavaScript 工具库。",
   "main": "dist/zen.common.js",
   "module": "dist/zen.esm.js",
   "unpkg": "dist/zen.js",
   "jsdelivr": "dist/zen.js",
   "typings": "index.d.ts",
-  "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-check-es2015-constants": "^6.22.0",
@@ -39,7 +38,11 @@
   },
   "keywords": [
     "zen",
-    "zenjs"
+    "zenjs",
+    "javascript",
+    "utilities",
+    "util",
+    "prototype"
   ],
   "title": "Zen.js",
   "author": "Zhang_Wei",

@@ -1,15 +1,14 @@
 import defineValue from '../../shared/util/defineValue';
 import ArrayProto from '../../shared/global/Array/prototype/index';
 import parametersRest from '../../shared/util/parametersRest';
+import fixArrayIndex from '../../shared/util/fixArrayIndex';
 
 
-function $add( self, index, args ){
+export default function $add( self, index, args ){
 
   const len = args.length;
 
-  if( index < 0 ){
-    index = self.length + index + 1;
-  }
+  index = fixArrayIndex( self, index, 1 );
 
   for( let i = 0; i < len; i++ ){
     self.splice( index++, 0, args[ i ] );
@@ -21,5 +20,3 @@ function $add( self, index, args ){
 defineValue( ArrayProto, '$add', function( index ){
   return $add( this, index, parametersRest( arguments, 1 ) );
 });
-
-export default $add;

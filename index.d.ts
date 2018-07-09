@@ -1,5 +1,11 @@
 interface ArrayConstructor {
   /**
+   * 创建一个新的数组, 将传入数组按照指定的长度进行分割, 如果数组不能均分, 则最后的数组中是数组剩余的元素
+   * @param array 需要进行分割的数组
+   * @param size 分割的长度
+   */
+  $chunk( array: any[], size: Number ): any[];
+  /**
    * 快捷创建数组
    * @param length 需要创建的数组的长度
    * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index
@@ -26,7 +32,7 @@ interface ArrayConstructor {
 interface Array<T> {
   /**
    * 在数组指定位置插入对象
-   * @param index 插入在数组中的位置, 如果为负数, 则从末尾开始逆序计算插入位置
+   * @param index 插入在数组中的位置, 可为负数
    * @param args 需要插入的对象, 可以是多个
    */
   $add( index: Number, ...args: any[] ): any[];
@@ -36,11 +42,18 @@ interface Array<T> {
    */
   $concat( ...args: any[] ): any[];
   /**
-   * 在数组指定位置删除若干对象
-   * @param index 需要删除的下标
-   * @param num 需要从该下标开始删除几个对象 - default: 1
+   * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组指定下标位置
+   * @param index 需要插入到数组位置的下标
+   * @param args 需要添加的数据
    */
-  $delete( index: Number, num: Number = 1 ): any[];
+  $concatTo( index: Number, ...args: any[] ): any[];
+  /**
+   * 在数组指定位置删除若干对象
+   * @param index 需要删除的下标, 可为负数
+   * @param num 需要从该下标开始删除几个对象 - default: 1
+   * @param returnDeleted 是否返回删除的数据
+   */
+  $delete( index: Number, num: Number = 1, returnDeleted?: Boolean ): any[];
   /**
    * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
@@ -65,10 +78,10 @@ interface Array<T> {
   $get( index: Number = 0 ): any;
   /**
    * 获取指定下标开始的若干个对象
-   * @param index 需要获取的对象的下标 - default: 0
-   * @param num 需要从该下标开始获取几个对象
+   * @param index 需要获取的对象的下标, 可为负数 - default: 0
+   * @param num 需要从该下标开始获取几个对象 - default: 1
    */
-  $get( index: Number = 0, num: Number ): any[];
+  $get( index: Number = 0, num: Number = 1 ): any[];
   /**
    * 查找数组内是否有此传入值
    * -- 弱检测
@@ -78,8 +91,24 @@ interface Array<T> {
    */
   $inArray( obj: any ): Boolean;
   /**
+   * 检测数组内对象的属性是否符合传入规则
+   * @param key 需要检测的字段名
+   * @param value 需要比对的字段值, 若不传入, 则只是判断字段是否存在
+   */
+  $indexOf( key: String, value: any ): Number;
+  /**
+   * 检测数组内对象的属性是否符合传入规则
+   * @param source 需要检测的键值是数组集合
+   */
+  $indexOf( source: Array ): Number;
+  /**
+   * 检测数组内对象的属性是否符合传入规则
+   * @param source 需要检测的键值对
+   */
+  $indexOf( source: any ): Number
+  /**
    * 修改数组内指定下标的值
-   * @param index 需要修改的下标
+   * @param index 需要修改的下标, 可为负数
    * @param value 值
    */
   $set( index: Number, value: any ): any[];
@@ -88,6 +117,19 @@ interface Array<T> {
    * @param obj 批量修改数组内指定下标的值
    */
   $set( obj: { index: Number, value: any } ): any[];
+  /**
+   * 移动数组内的某个元素到指定的位置
+   * @param from 需要移动的元素下标, 可为负数
+   * @param to 需要移动到的位置下标, 可为负数
+   */
+  $move( from: Number, to: Number ): any[];
+  /**
+   * 提取数组一个范围内的元素, 移动到指定下标中 ( 指定下标是按照需要移动的元素移除后的下标进行计算 )
+   * @param start 需要移动的位置的起始下标, 可为负数
+   * @param moveCount 从起始下标开始, 取几位进行移动
+   * @param toIndex 需要移动到数组的目标下标
+   */
+  $moveRange( start, moveCount, toIndex ): any[];
   /**
    * 调用原生 push 方法, 返回 this
    * @param args 需要插入到数组末尾的对象

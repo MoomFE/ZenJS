@@ -20,30 +20,27 @@ import defineGet from "../../shared/util/defineGet";
 import defineValue from "../../shared/util/defineValue";
 
 ZenJS.util = $create( true, {
-  is: {
-    equals,
-    congruence
-  },
-  types: {
-    isArray,
-    isBoolean,
-    isFunction,
-    isNumber,
-    isObject,
-    isRegExp,
-    isString
-  },
-  parameters: {
-    default: parametersDefault,
-    rest: parametersRest
-  },
-  fn: {
-    define,
-    defineGet,
-    defineValue,
-    returnTrue,
-    returnFalse
-  },
+
+  isEquals: equals,
+  isCongruence: congruence,
+
+  isArray,
+  isBoolean,
+  isFunction,
+  isNumber,
+  isObject,
+  isRegExp,
+  isString,
+
+  parametersDefault,
+  parametersRest,
+
+  define,
+  defineGet,
+  defineValue,
+  returnTrue,
+  returnFalse,
+
   supports: {
     passiveEvent: supportsPassiveEvent,
     EventTarget: supportsEventTarget

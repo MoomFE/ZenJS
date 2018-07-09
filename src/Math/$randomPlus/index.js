@@ -15,7 +15,7 @@ export default function $randomPlus(){
   }else{
     cache = _random( 0, to + abs( from ) );
 
-    return cache > to ? to - cache 
+    return cache > to ? to - cache
                       : cache;
   }
 }

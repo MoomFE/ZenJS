@@ -23,6 +23,32 @@ const allConfig = [
       format: 'es',
       footer: '\nexport default ZenJS;'
     }
+  },
+  // slim
+  {
+    input: 'src/slim.js',
+    output: {
+      file: 'dist/slim/zen.slim.js'
+    }
+  }, {
+    input: 'src/slim.js',
+    output: {
+      file: 'dist/slim/zen.slim.min.js'
+    }
+  }, {
+    input: 'src/slim.js',
+    output: {
+      file: 'dist/slim/zen.common.slim.js',
+      format: 'cjs',
+      footer: '\nmodule.exports = ZenJS;'
+    }
+  }, {
+    input: 'src/slim.js',
+    output: {
+      file: 'dist/slim/zen.esm.slim.js',
+      format: 'es',
+      footer: '\nexport default ZenJS;'
+    }
   }
 ];
 

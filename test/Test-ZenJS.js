@@ -113,7 +113,7 @@
           Object.$assign( true, obj6, obj7 ).should.equals( obj6 );
           Object.$assign( true, obj6, obj8 ).should.equals( obj6 );
 
-          obj6.obj.should.equals( obj8.obj );      
+          obj6.obj.should.equals( obj8.obj );
         }
       }, {
         name: '$create',
@@ -139,7 +139,7 @@
           var test1 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
             switch( key ){
               case "3": obj[ key ] = 3; break;
-              case "1": obj[ key ] = 1; break; 
+              case "1": obj[ key ] = 1; break;
             }
           });
 
@@ -148,8 +148,8 @@
 
           var test2 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
             switch( key ){
-              case "3": obj[ key ] = 3; break; 
-              case "1": obj[ key ] = 1; 
+              case "3": obj[ key ] = 3; break;
+              case "1": obj[ key ] = 1;
                         return false;
             }
           });
@@ -225,6 +225,20 @@
     name: 'Array',
     describe: [
       {
+        name: '$chunk',
+        it: function(){
+          Object.$equals( Array.$chunk(), [] ).should.true;
+          Object.$equals( Array.$chunk( null ), [] ).should.true;
+          Object.$equals( Array.$chunk( [], 0 ), [] ).should.true;
+          Object.$equals( Array.$chunk( [], -1 ), [] ).should.true;
+
+
+          Object.$equals( Array.$chunk( [ 1, 2, 3 ], 1 ), [ [1], [2], [3] ] ).should.true;
+          Object.$equals( Array.$chunk( [ 1, 2, 3 ], 2 ), [ [ 1, 2 ], [ 3 ] ] ).should.true;
+          Object.$equals( Array.$chunk( [ 1, 2, 3 ], 3 ), [ [ 1, 2, 3 ] ] ).should.true;
+          Object.$equals( Array.$chunk( [ 1, 2, 3 ], 4 ), [ [ 1, 2, 3 ] ] ).should.true;
+        }
+      }, {
         name: '$create',
         it: function(){
           Array.$create( 10 ).length.should.equals( 10 );
@@ -309,15 +323,15 @@
       {
         name: '$add',
         it: function(){
-          [ 1 ].$add( 0, 0 )[ 0 ].should.equals( 0 );
-          [ 1 ].$add( 0, 0 )[ 1 ].should.equals( 1 );
-          [ 1 ].$add( 0, 0 ).length.should.equals( 2 );
-          [ 5 ].$add( 1, 4, 3, 2, 1 ).length.should.equals( 5 );
-
+          Object.$equals( [ 1 ].$add( 0, 0 ), [ 0, 1 ] ).should.true;
+          Object.$equals( [ 1 ].$add( 0, 1 ), [ 1, 1 ] ).should.true;
+          Object.$equals( [ 5 ].$add( 1, 4, 3, 2, 1 ), [ 5, 4, 3, 2, 1 ] ).should.true;
           Object.$equals( [ 1 ].$add( 0, 0 ), [ 0, 1 ] ).should.true;
           Object.$equals( [ 1 ].$add( 1, 2 ), [ 1, 2 ] ).should.true;
           Object.$equals( [ 1 ].$add( -1, 2 ), [ 1, 2 ] ).should.true;
           Object.$equals( [ 1, 2 ].$add( -1, 3 ), [ 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2 ].$add( -2, 0 ), [ 1, 0, 2 ] ).should.true;
+          Object.$equals( [ 1, 2 ].$add( -3, 0 ), [ 0, 1, 2 ] ).should.true;
         }
       }, {
         name: '$concat',
@@ -330,12 +344,70 @@
           Object.$equals( [ 1 ].$concat( 2, [ 3, 4, [ 5 ] ], 6 ), [ 1, 2, 3, 4, [ 5 ], 6 ] ).should.true;
         }
       }, {
+        name: '$concatTo',
+        it: function(){
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, 4 ), [ 4, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, 4, 5 ), [ 4, 5, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 1, 4, 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 2, 4, 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 3, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -1, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -2, 4, 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -3, 4, 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -4, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -5, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ] ), [ 4, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4, 5 ] ), [ 4, 5, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4, 5, 6 ] ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 1, [ 4, 5, 6 ] ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 2, [ 4, 5, 6 ] ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 3, [ 4, 5, 6 ] ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -1, [ 4, 5, 6 ] ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -2, [ 4, 5, 6 ] ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -3, [ 4, 5, 6 ] ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -4, [ 4, 5, 6 ] ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -5, [ 4, 5, 6 ] ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ] ), [ 4, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ], 5 ), [ 4, 5, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ], 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 1, [ 4 ], 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 2, [ 4 ], 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 3, [ 4 ], 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -1, [ 4 ], 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -2, [ 4 ], 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -3, [ 4 ], 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -4, [ 4 ], 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -5, [ 4 ], 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ] ), [ 4, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ], 5 ), [ 4, 5, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ], 5, [ 6, 7 ] ), [ 4, 5, 6, 7, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 1, [ 4 ], 5, [ 6, 7 ] ), [ 1, 4, 5, 6, 7, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 2, [ 4 ], 5, [ 6, 7 ] ), [ 1, 2, 4, 5, 6, 7, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 3, [ 4 ], 5, [ 6, 7 ] ), [ 1, 2, 3, 4, 5, 6, 7 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -1, [ 4 ], 5, [ 6, 7 ] ), [ 1, 2, 3, 4, 5, 6, 7 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -2, [ 4 ], 5, [ 6, 7 ] ), [ 1, 2, 4, 5, 6, 7, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -3, [ 4 ], 5, [ 6, 7 ] ), [ 1, 4, 5, 6, 7, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -4, [ 4 ], 5, [ 6, 7 ] ), [ 4, 5, 6, 7, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -5, [ 4 ], 5, [ 6, 7 ] ), [ 4, 5, 6, 7, 1, 2, 3 ] ).should.true;
+        }
+      }, {
         name: '$delete',
         it: function(){
-          [ 1 ].$delete( 0 ).length.should.equals( 0 );
-          [ 0, 1 ].$delete( 0, 2 ).length.should.equals( 0 );
-          [ 0, 1, 2 ].$delete( 0, 2 ).length.should.equals( 1 );
-          [ 0, 1, 2 ].$delete( 0, 2 )[ 0 ].should.equals( 2 );
+          Object.$equals( [ 1 ].$delete( 0 ), [ ] ).should.true;
+          Object.$equals( [ 0, 1 ].$delete( 0, 2 ), [ ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( 0, 2 ), [ 2 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -1, 1 ), [ 0, 1 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -1, 2 ), [ 0, 1 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -2, 2 ), [ 0 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -3, 2 ), [ 2 ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -3, 3 ), [ ] ).should.true;
+          Object.$equals( [ 0, 1, 2 ].$delete( -4, 3 ), [ ] ).should.true;
+          // 返回删除的数据
+          Object.$equals( [ 1, 2, 3, 4, 5 ].$delete( 3, 2, true ), [ 4, 5 ] ).should.true;
         }
       }, {
         name: '$deleteValue',
@@ -381,8 +453,25 @@
         it: function(){
           [ 0, 1, 2, 3, 4, 5 ].$get().should.equals( 0 );
           [ 0, 1, 2, 3, 4, 5 ].$get( 2 ).should.equals( 2 );
-          [ 0, 1, 2, 3, 4, 5 ].$get( 0, 3 ).length.should.equals( 3 );
-          [ 0, 1, 2, 3, 4, 5 ].$get( 2, 3 ).length.should.equals( 3 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( -1 ).should.equals( 5 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( -2 ).should.equals( 4 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( -3 ).should.equals( 3 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( -4 ).should.equals( 2 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( -5 ).should.equals( 1 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( -6 ).should.equals( 0 );
+          [ 0, 1, 2, 3, 4, 5 ].$get( -7 ).should.equals( 0 );
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( 2, undefined ), [ 2 ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( 0, 3 ), [ 0, 1, 2 ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( 2, 3 ), [ 2, 3, 4 ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -1, 0 ), [ ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -3, 2 ), [ 3, 4 ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -1, 99 ), [ 5 ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -2, 99 ), [ 4, 5 ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -3, 99 ), [ 3, 4, 5 ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -4, 99 ), [ 2, 3, 4, 5 ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -5, 99 ), [ 1, 2, 3, 4, 5  ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -6, 99 ), [ 0, 1, 2, 3, 4, 5 ] ).should.true;
+          Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -7, 99 ), [ 0, 1, 2, 3, 4, 5 ] ).should.true;
         }
       }, {
         name: '$inArray',
@@ -393,12 +482,93 @@
           [ undefined ].$inArray( null ).should.true;
         }
       }, {
+        name: '$indexOf',
+        it: function(){
+          var keys = [
+            { name: 'zen' },
+            { name: 'zenjs' },
+            { name: 'zenjs', type: 'js' },
+            { name: 'zenui', type: 'ui' }
+          ];
+
+          keys.$indexOf( 'name' ).should.equals( 0 );
+          keys.$indexOf( 'name', 'zenjs' ).should.equals( 1 );
+          keys.$indexOf( 'name', 'zenjs', 'type', 'js' ).should.equals( 2 );
+          keys.$indexOf( 'type' ).should.equals( 2 );
+          keys.$indexOf( 'type', 'js' ).should.equals( 2 );
+          keys.$indexOf( 'type', 'ui' ).should.equals( 3 );
+
+          keys.$indexOf( [ 'name' ] ).should.equals( 0 );
+          keys.$indexOf( [ 'name', 'zenjs' ] ).should.equals( 1 );
+          keys.$indexOf( [ 'name', 'zenjs', 'type', 'js' ] ).should.equals( 2 );
+          keys.$indexOf( [ 'type' ] ).should.equals( 2 );
+          keys.$indexOf( [ 'type', 'js' ] ).should.equals( 2 );
+          keys.$indexOf( [ 'type', 'ui' ] ).should.equals( 3 );
+
+          keys.$indexOf( { name: 'zen' } ).should.equals( 0 );
+          keys.$indexOf( { name: 'zenjs' } ).should.equals( 1 );
+          keys.$indexOf( { name: 'zenjs', type: 'js' } ).should.equals( 2 );
+          keys.$indexOf( { type: 'js' } ).should.equals( 2 );
+          keys.$indexOf( { type: 'ui' } ).should.equals( 3 );
+        }
+      }, {
         name: '$set',
         it: function(){
-          [ 1, 2, 3 ].$set( 1, 4 )[ 1 ].should.equals( 4 );
-          [ 1 ].$set( 1, 2 )[ 1 ].should.equals( 2 );
-          [].$set( 1, 1 )[ 1 ].should.equals( 1 );
-          [].$set({ 0: 0, 1: 1, 2: 2 }).length.should.equals( 3 );
+          Object.$equals( [ 1, 2, 3 ].$set( 0, 4 ), [ 4, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( 1, 4 ), [ 1, 4, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( 2, 4 ), [ 1, 2, 4 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( -1, 4 ), [ 1, 2, 4 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( -2, 4 ), [ 1, 4, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( -3, 4 ), [ 4, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( -4, 4 ), [ 4, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set({ 0: 5, 1: 6, 2: 7 }), [ 5, 6, 7 ] ).should.true;
+        }
+      }, {
+        name: '$move',
+        it: function(){
+          Object.$equals( [ 1, 2, 3 ].$move( 0, 1 ), [ 2, 1, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 0, 2 ), [ 2, 3, 1 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 1, 2 ), [ 1, 3, 2 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( -1, 0 ), [ 3, 1, 2 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( -2, 0 ), [ 2, 1, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 0, -1 ), [ 2, 3, 1 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 0, -2 ), [ 2, 1, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$move( 1, -1 ), [ 1, 3, 2 ] ).should.true;
+        }
+      }, {
+        name: '$moveRange',
+        it: function(){
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 0 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 1 ), [ 3, 1, 2, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 2 ), [ 3, 4, 1, 2, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 3 ), [ 3, 4, 5, 1, 2, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 4 ), [ 3, 4, 5, 6, 1, 2 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 5 ), [ 3, 4, 5, 6, 1, 2 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -1 ), [ 3, 4, 5, 6, 1, 2 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -2 ), [ 3, 4, 5, 1, 2, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -3 ), [ 3, 4, 1, 2, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -4 ), [ 3, 1, 2, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -5 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( -2, 2, 0 ), [ 5, 6, 1, 2, 3, 4 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( -2, 2, 1 ), [ 1, 5, 6, 2, 3, 4 ] ).should.true;
+          Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( -2, 2, -2 ), [ 1, 2, 3, 5, 6, 4 ] ).should.true;
+        }
+      }, {
+        name: '$moveRange2',
+        it: function(){
+          // // 放到自己选取内则不进行移动
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 0, 2, 2 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 3, 1 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 3, 2 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 3, 3 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 3, 4 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          // // 正确的移动
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 0, 2, 3 ), [ 3, 1, 2, 4, 5, 6 ] ).should.true;
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 2, 4 ), [ 3, 4, 1, 2, 5, 6 ] ).should.true;
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 2, -1 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( -2, 2, 0 ), [ 5, 6, 1, 2, 3, 4 ] ).should.true;
+          // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( -2, 2, 3 ), [ 1, 2, 3, 5, 6, 4 ] ).should.true;
         }
       }, {
         name: '$push',
@@ -1091,7 +1261,7 @@
       }, {
         name: '$emit',
         it: function(){
-          
+
           var div = window.div,
               num = 0;
 
@@ -1121,7 +1291,7 @@
             num1.should.equals( 1 );
           });
           div.$emit( 'Test-Data', 1 );
-          
+
           div.$on( 'Test-Data2', function( event, num1, num2, num3 ){
             num1.should.equals( 1 );
             num2.should.equals( 3 );
