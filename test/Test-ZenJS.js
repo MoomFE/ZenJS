@@ -113,7 +113,7 @@
           Object.$assign( true, obj6, obj7 ).should.equals( obj6 );
           Object.$assign( true, obj6, obj8 ).should.equals( obj6 );
 
-          obj6.obj.should.equals( obj8.obj );      
+          obj6.obj.should.equals( obj8.obj );
         }
       }, {
         name: '$create',
@@ -139,7 +139,7 @@
           var test1 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
             switch( key ){
               case "3": obj[ key ] = 3; break;
-              case "1": obj[ key ] = 1; break; 
+              case "1": obj[ key ] = 1; break;
             }
           });
 
@@ -148,8 +148,8 @@
 
           var test2 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
             switch( key ){
-              case "3": obj[ key ] = 3; break; 
-              case "1": obj[ key ] = 1; 
+              case "3": obj[ key ] = 3; break;
+              case "1": obj[ key ] = 1;
                         return false;
             }
           });
@@ -232,7 +232,7 @@
           Object.$equals( Array.$chunk( [], 0 ), [] ).should.true;
           Object.$equals( Array.$chunk( [], -1 ), [] ).should.true;
 
-          
+
           Object.$equals( Array.$chunk( [ 1, 2, 3 ], 1 ), [ [1], [2], [3] ] ).should.true;
           Object.$equals( Array.$chunk( [ 1, 2, 3 ], 2 ), [ [ 1, 2 ], [ 3 ] ] ).should.true;
           Object.$equals( Array.$chunk( [ 1, 2, 3 ], 3 ), [ [ 1, 2, 3 ] ] ).should.true;
@@ -342,6 +342,57 @@
           Object.$equals( [ 1 ].$concat( [ 2 ] ), [ 1, 2 ] ).should.true;
           Object.$equals( [ 1 ].$concat( 2, [ 3, 4 ], 5 ), [ 1, 2, 3, 4, 5 ] ).should.true;
           Object.$equals( [ 1 ].$concat( 2, [ 3, 4, [ 5 ] ], 6 ), [ 1, 2, 3, 4, [ 5 ], 6 ] ).should.true;
+        }
+      }, {
+        name: '$concatTo',
+        it: function(){
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, 4 ), [ 4, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, 4, 5 ), [ 4, 5, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 1, 4, 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 2, 4, 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 3, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -1, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -2, 4, 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -3, 4, 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -4, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -5, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ] ), [ 4, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4, 5 ] ), [ 4, 5, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4, 5, 6 ] ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 1, [ 4, 5, 6 ] ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 2, [ 4, 5, 6 ] ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 3, [ 4, 5, 6 ] ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -1, [ 4, 5, 6 ] ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -2, [ 4, 5, 6 ] ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -3, [ 4, 5, 6 ] ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -4, [ 4, 5, 6 ] ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -5, [ 4, 5, 6 ] ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ] ), [ 4, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ], 5 ), [ 4, 5, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ], 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 1, [ 4 ], 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 2, [ 4 ], 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 3, [ 4 ], 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -1, [ 4 ], 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -2, [ 4 ], 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -3, [ 4 ], 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -4, [ 4 ], 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -5, [ 4 ], 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ] ), [ 4, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ], 5 ), [ 4, 5, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 0, [ 4 ], 5, [ 6, 7 ] ), [ 4, 5, 6, 7, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 1, [ 4 ], 5, [ 6, 7 ] ), [ 1, 4, 5, 6, 7, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 2, [ 4 ], 5, [ 6, 7 ] ), [ 1, 2, 4, 5, 6, 7, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( 3, [ 4 ], 5, [ 6, 7 ] ), [ 1, 2, 3, 4, 5, 6, 7 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -1, [ 4 ], 5, [ 6, 7 ] ), [ 1, 2, 3, 4, 5, 6, 7 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -2, [ 4 ], 5, [ 6, 7 ] ), [ 1, 2, 4, 5, 6, 7, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -3, [ 4 ], 5, [ 6, 7 ] ), [ 1, 4, 5, 6, 7, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -4, [ 4 ], 5, [ 6, 7 ] ), [ 4, 5, 6, 7, 1, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$concatTo( -5, [ 4 ], 5, [ 6, 7 ] ), [ 4, 5, 6, 7, 1, 2, 3 ] ).should.true;
         }
       }, {
         name: '$delete',
@@ -1210,7 +1261,7 @@
       }, {
         name: '$emit',
         it: function(){
-          
+
           var div = window.div,
               num = 0;
 
@@ -1240,7 +1291,7 @@
             num1.should.equals( 1 );
           });
           div.$emit( 'Test-Data', 1 );
-          
+
           div.$on( 'Test-Data2', function( event, num1, num2, num3 ){
             num1.should.equals( 1 );
             num2.should.equals( 3 );

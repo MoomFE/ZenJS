@@ -276,6 +276,32 @@ defineValue(ArrayProto, '$concat', function () {
   $toArray(arguments).forEach(function (arg) {
     $add(_this, -1, isArray(arg) ? arg : [arg]);
   });
+
+  return this;
+});
+
+defineValue(ArrayProto, '$concatTo', function (index) {
+  var _this2 = this;
+
+  var args = parametersRest(arguments, 1);
+
+  if (!args.length) {
+    return this;
+  }
+
+  var originLength = this.length;
+  var increasedLength = 0;
+
+  if (index < 0 && (index = originLength + index + 1) < 0) {
+    index = 0;
+  }
+
+  args.forEach(function (arg) {
+    $add(_this2, increasedLength + index, isArray(arg) ? arg : [arg]);
+    // 用于修正 index, 后续的 arg 需要插入到前面的 arg 后面
+    increasedLength = _this2.length - originLength;
+  });
+
   return this;
 });
 
