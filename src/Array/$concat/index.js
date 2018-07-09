@@ -4,6 +4,7 @@ import isArray from "../../shared/global/Array/isArray";
 import $add from "../$add/index";
 import $toArray from "../$toArray/index";
 import parametersRest from "../../shared/util/parametersRest";
+import fixArrayIndex from "../../shared/util/fixArrayIndex";
 
 
 defineValue( ArrayProto, '$concat', function(){
@@ -29,9 +30,7 @@ defineValue( ArrayProto, '$concatTo', function( index ){
   const originLength = this.length;
   let increasedLength = 0;
 
-  if( index < 0 && ( index = originLength + index + 1 ) < 0 ){
-    index = 0;
-  }
+  index = fixArrayIndex( this, index, 1 );
 
   args.forEach( arg => {
     $add(

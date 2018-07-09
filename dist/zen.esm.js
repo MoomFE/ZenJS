@@ -215,13 +215,18 @@ function parametersRest(args) {
   return [];
 }
 
+function fixArrayIndex(array, index, add) {
+  if (index < 0 && (index = array.length + index + (add || 0)) < 0) {
+    index = 0;
+  }
+  return index;
+}
+
 function $add(self, index, args) {
 
   var len = args.length;
 
-  if (index < 0 && (index = self.length + index + 1) < 0) {
-    index = 0;
-  }
+  index = fixArrayIndex(self, index, 1);
 
   for (var i = 0; i < len; i++) {
     self.splice(index++, 0, args[i]);
@@ -292,9 +297,7 @@ defineValue(ArrayProto, '$concatTo', function (index) {
   var originLength = this.length;
   var increasedLength = 0;
 
-  if (index < 0 && (index = originLength + index + 1) < 0) {
-    index = 0;
-  }
+  index = fixArrayIndex(this, index, 1);
 
   args.forEach(function (arg) {
     $add(_this2, increasedLength + index, isArray(arg) ? arg : [arg]);
@@ -382,11 +385,7 @@ defineValue(ArrayProto, '$equals', function (obj) {
 });
 
 defineValue(ArrayProto, '$get', function () {
-  var index = parametersDefault(arguments, 0, 0);
-
-  if (index < 0 && (index = this.length + index) < 0) {
-    index = 0;
-  }
+  var index = fixArrayIndex(this, parametersDefault(arguments, 0, 0));
 
   if (arguments.length <= 1) {
     return this[index];
@@ -602,9 +601,7 @@ defineValue(ArrayProto, '$set', function (index, value) {
 
 function $set(array, index, value) {
 
-  if (index < 0 && (index = array.length + index) < 0) {
-    index = 0;
-  }
+  index = fixArrayIndex(array, index);
 
   array[index] = value;
 }

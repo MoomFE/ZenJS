@@ -1,5 +1,6 @@
 import defineValue from "../../shared/util/defineValue";
 import ArrayProto from "../../shared/global/Array/prototype/index";
+import fixArrayIndex from "../../shared/util/fixArrayIndex";
 
 
 defineValue( ArrayProto, '$set', function( index, value ){
@@ -18,9 +19,7 @@ defineValue( ArrayProto, '$set', function( index, value ){
 
 function $set( array, index, value ){
 
-  if( index < 0 && ( index = array.length + index ) < 0 ){
-    index = 0;
-  }
+  index = fixArrayIndex( array, index );
 
   array[ index ] = value;
 
