@@ -384,27 +384,6 @@ defineValue(ArrayProto, '$equals', function (obj) {
   return true;
 });
 
-defineValue(ArrayProto, '$get', function () {
-  var index = fixArrayIndex(this, parametersDefault(arguments, 0, 0));
-
-  if (arguments.length <= 1) {
-    return this[index];
-  }
-
-  var num = parametersDefault(arguments, 1, 1);
-
-  return this.slice(index, num + index);
-});
-
-defineValue(ArrayProto, '$inArray', function (obj) {
-  var i = 0,
-      len = this.length;
-
-  for (; i < len; i++) {
-    if (this[i] == obj) return true;
-  }return false;
-});
-
 function unFunctionObject(obj) {
   var type = typeof obj;
   return type !== 'object' && type !== 'function';
@@ -488,7 +467,7 @@ function $equals(obj, obj2, parent) {
 
 defineValue(Object, '$equals', $equals);
 
-defineValue(ArrayProto, '$indexOf', function (key, value) {
+defineValue(ArrayProto, '$findIndex $indexOf', function (key) {
   var length;
 
   if (key == null || !(length = this.length)) {
@@ -565,6 +544,27 @@ function checkObject(source, object) {
 
   return true;
 }
+
+defineValue(ArrayProto, '$get', function () {
+  var index = fixArrayIndex(this, parametersDefault(arguments, 0, 0));
+
+  if (arguments.length <= 1) {
+    return this[index];
+  }
+
+  var num = parametersDefault(arguments, 1, 1);
+
+  return this.slice(index, num + index);
+});
+
+defineValue(ArrayProto, '$inArray', function (obj) {
+  var i = 0,
+      len = this.length;
+
+  for (; i < len; i++) {
+    if (this[i] == obj) return true;
+  }return false;
+});
 
 defineValue(ArrayProto, '$move', function (from, to) {
   this.splice(to < 0 ? this.length + to : to, 0, this.splice(from, 1)[0]);
