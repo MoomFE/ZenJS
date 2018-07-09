@@ -11,6 +11,6 @@ defineValue( ObjectProto, '$set', function( key, value ){
       this[ _key ] = key[ _key ];
   else
     this[ key ] = value;
-  
+
   return this;
 });

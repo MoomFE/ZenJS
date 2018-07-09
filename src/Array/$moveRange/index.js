@@ -12,5 +12,5 @@ defineValue( ArrayProto, '$moveRange', function( start, moveCount, toIndex ){
 });
 
 // defineValue( ArrayProto, '$moveRange2', function( start, moveCount, toIndex ){
-  
+
 // });

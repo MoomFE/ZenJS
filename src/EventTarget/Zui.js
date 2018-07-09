@@ -275,7 +275,7 @@ var event = Zui.Event.event = {
         if ( special.preDispatch && special.preDispatch.call( this, _event ) === false ) {
             return;
         }
-        
+
         // 组装事件处理包{elem, handlerObjs}(这里是各种不同元素)的队列
         handlerQueue = event.handlers.call( this, _event, handlers );
 
@@ -342,11 +342,11 @@ var event = Zui.Event.event = {
             delegateCount = handlers.delegateCount,
             // 当前事件触发元素
             cur = event.target;
-        
+
         // 如果有 delegateCount，代表该事件是 delegate 类型的绑定
         // 找出所有delegate的处理函数列队
         if ( delegateCount && cur.nodeType && !( event.type === "click" && event.button >= 1 ) ) {
-            
+
             // 遍历元素及元素父级节点
             for ( ; cur !== this; cur = cur.parentNode || this ) {
 
@@ -438,7 +438,7 @@ var event = Zui.Event.event = {
             events, t, handleObj,
             special, handlers, type, namespaces, origType,
             elemData = elem.hasData() && elem.data();
-        
+
         // 如果没有相关缓存数据，或者缓存中没有相关处理列表，则这个对象没事件可删除
         if ( !elemData || !( events = elemData.events ) ) {
             return;
@@ -529,7 +529,7 @@ var event = Zui.Event.event = {
     trigger: function( _event, data, elem, onlyHandlers ){
 
         var i, cur, tmp, bubbleType, ontype, handle, special,
-            // 需要触发事件的所有元素队列    
+            // 需要触发事件的所有元素队列
             eventPath = [ elem || document ],
             // 指定事件类型
             type = hasOwn.call( _event, "type" ) ? _event.type : _event,

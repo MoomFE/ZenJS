@@ -35,7 +35,7 @@ defineValue( ArrayProto, '$indexOf', function( key, value ){
   for( let index = 0; index < length; index++ ){
     if( predicate( this[ index ] ) ){
       return index;
-    }    
+    }
   }
   return -1;
 });

@@ -6,11 +6,11 @@ import ceil from "../../shared/global/Math/ceil";
 
 export default function $chunk( array, size ){
   let length;
-  
+
   if( !array || size < 1 || !( length = array.length ) ){
     return [];
   }
-  
+
   return $create( ceil( length / size ), index => {
     const start = index * size;
     return array.slice( start, start + size );

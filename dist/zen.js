@@ -881,7 +881,7 @@
 
   /**
    * 获取存储在元素上的整个数据集, 如数据集不存在则创建
-   * @param {Element} elem 
+   * @param {Element} elem
    * @returns {Object}
    */
   function $_GetDatas(elem) {
@@ -1185,7 +1185,7 @@
    * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
    * event.delegateTarget : 绑定事件的元素
    * event.relatedTarget : 事件的相关节点, mouseover 时移出的节点, mouseout 时移入的节点
-   * 
+   *
    * event.preventDefault() : 阻止浏览器默认行为
    * event.stopPropagation() : 停止将事件冒泡到父节点
    * event.stopImmediatePropagation() : 停止将事件冒泡到父节点且停止当前元素后续事件执行
@@ -1428,8 +1428,8 @@
 
   /**
    * 触发绑定在元素上的事件( 只触发事件 )
-   * @param {Element} elem 
-   * @param {String} types 
+   * @param {Element} elem
+   * @param {String} types
    */
   function emit(elem, types, data) {
 

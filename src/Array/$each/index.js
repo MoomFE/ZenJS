@@ -6,7 +6,7 @@ defineValue( ArrayProto, '$each', function( callback ){
   let index = 0,
       length = this.length,
       value;
-    
+
   for( ; index < length; index++ ){
     value = this[ index ];
 

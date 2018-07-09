@@ -23,7 +23,7 @@ ZenJS.util = $create( true, {
 
   isEquals: equals,
   isCongruence: congruence,
-  
+
   isArray,
   isBoolean,
   isFunction,
@@ -31,7 +31,7 @@ ZenJS.util = $create( true, {
   isObject,
   isRegExp,
   isString,
-  
+
   parametersDefault,
   parametersRest,
 

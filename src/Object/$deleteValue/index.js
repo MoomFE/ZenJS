@@ -11,7 +11,7 @@ defineValue( ObjectProto, '$deleteValue $removeValue', function $deleteValue( va
       ? congruence
       : equals;
   let name;
-  
+
   for( name in this ){
     if( isEqual( this[ name ], value ) ){
       delete this[ name ];
