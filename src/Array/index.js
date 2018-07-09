@@ -14,4 +14,5 @@ import './$isArrayLike/index';
 import './$move/index';
 import './$moveRange/index';
 import './$push_$unshift_$pop_$shift/index';
+import './$set/index';
 import './$toArray/index';

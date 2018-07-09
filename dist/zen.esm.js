@@ -560,6 +560,29 @@ defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
   });
 });
 
+defineValue(ArrayProto, '$set', function (index, value) {
+
+  if (typeof index === 'object') {
+    var key;
+    for (key in index) {
+      $set(this, key, index[key]);
+    }
+  } else {
+    $set(this, index, value);
+  }
+
+  return this;
+});
+
+function $set(array, index, value) {
+
+  if (index < 0 && (index = array.length + index) < 0) {
+    index = 0;
+  }
+
+  array[index] = value;
+}
+
 var addEventListener = 'addEventListener';
 var addEventListenerPrivate = '__ZENJS_EVENT_ADD__';
 

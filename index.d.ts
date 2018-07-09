@@ -102,7 +102,7 @@ interface Array<T> {
   $indexOf( source: any ): Number
   /**
    * 修改数组内指定下标的值
-   * @param index 需要修改的下标
+   * @param index 需要修改的下标, 可为负数
    * @param value 值
    */
   $set( index: Number, value: any ): any[];

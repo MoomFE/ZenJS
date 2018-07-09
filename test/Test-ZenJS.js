@@ -463,10 +463,14 @@
       }, {
         name: '$set',
         it: function(){
-          [ 1, 2, 3 ].$set( 1, 4 )[ 1 ].should.equals( 4 );
-          [ 1 ].$set( 1, 2 )[ 1 ].should.equals( 2 );
-          [].$set( 1, 1 )[ 1 ].should.equals( 1 );
-          [].$set({ 0: 0, 1: 1, 2: 2 }).length.should.equals( 3 );
+          Object.$equals( [ 1, 2, 3 ].$set( 0, 4 ), [ 4, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( 1, 4 ), [ 1, 4, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( 2, 4 ), [ 1, 2, 4 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( -1, 4 ), [ 1, 2, 4 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( -2, 4 ), [ 1, 4, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( -3, 4 ), [ 4, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set( -4, 4 ), [ 4, 2, 3 ] ).should.true;
+          Object.$equals( [ 1, 2, 3 ].$set({ 0: 5, 1: 6, 2: 7 }), [ 5, 6, 7 ] ).should.true;
         }
       }, {
         name: '$move',
