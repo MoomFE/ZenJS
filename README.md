@@ -27,11 +27,11 @@
 ### CDN
 ```html
   <!-- jsdelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@2.1.0/dist/zen.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@2.2.0/dist/zen.min.js"></script>
 ```
 ```html
   <!-- unpkg -->
-  <script src="https://unpkg.com/@moomfe/zenjs@2.1.0/dist/zen.min.js"></script>
+  <script src="https://unpkg.com/@moomfe/zenjs@2.2.0/dist/zen.min.js"></script>
 ```
 
 
@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 48.10kb | 12.64kb | \|  | UMD       | Browser |
-| zen.min.js         | 18.04kb | 6.82kb | \|  | UMD       | Browser |
-| zen.common.js      | 44.72kb | 12.35kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 44.70kb | 12.34kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 48.09kb | 12.63kb | \|  | UMD       | Browser |
+| zen.min.js         | 18.03kb | 6.82kb | \|  | UMD       | Browser |
+| zen.common.js      | 44.71kb | 12.34kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 44.69kb | 12.33kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |

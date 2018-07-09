@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.2.0-bata
+ * Zen.js v2.2.0
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -949,7 +949,7 @@ inBrowser && defineValue(window, '$typeof', $typeof);
  * ZenJS
  */
 var ZenJS = $create$1(true, {
-  version: '2.2.0-bata'
+  version: '2.2.0'
 });
 
 if (inBrowser) {
