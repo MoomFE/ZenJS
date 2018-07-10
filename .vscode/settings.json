@@ -10,6 +10,7 @@
 
     "**/dist": true,
     "**/src": true,
+    "**/test": true,
 
     "**/ZenJS.code-workspace": true,
 
