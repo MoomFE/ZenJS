@@ -482,7 +482,7 @@
           [ undefined ].$inArray( null ).should.true;
         }
       }, {
-        name: '$indexOf',
+        name: '$findIndex',
         it: function(){
           var keys = [
             { name: 'zen' },
@@ -491,25 +491,25 @@
             { name: 'zenui', type: 'ui' }
           ];
 
-          keys.$indexOf( 'name' ).should.equals( 0 );
-          keys.$indexOf( 'name', 'zenjs' ).should.equals( 1 );
-          keys.$indexOf( 'name', 'zenjs', 'type', 'js' ).should.equals( 2 );
-          keys.$indexOf( 'type' ).should.equals( 2 );
-          keys.$indexOf( 'type', 'js' ).should.equals( 2 );
-          keys.$indexOf( 'type', 'ui' ).should.equals( 3 );
+          keys.$findIndex( 'name' ).should.equals( 0 );
+          keys.$findIndex( 'name', 'zenjs' ).should.equals( 1 );
+          keys.$findIndex( 'name', 'zenjs', 'type', 'js' ).should.equals( 2 );
+          keys.$findIndex( 'type' ).should.equals( 2 );
+          keys.$findIndex( 'type', 'js' ).should.equals( 2 );
+          keys.$findIndex( 'type', 'ui' ).should.equals( 3 );
 
-          keys.$indexOf( [ 'name' ] ).should.equals( 0 );
-          keys.$indexOf( [ 'name', 'zenjs' ] ).should.equals( 1 );
-          keys.$indexOf( [ 'name', 'zenjs', 'type', 'js' ] ).should.equals( 2 );
-          keys.$indexOf( [ 'type' ] ).should.equals( 2 );
-          keys.$indexOf( [ 'type', 'js' ] ).should.equals( 2 );
-          keys.$indexOf( [ 'type', 'ui' ] ).should.equals( 3 );
+          keys.$findIndex( [ 'name' ] ).should.equals( 0 );
+          keys.$findIndex( [ 'name', 'zenjs' ] ).should.equals( 1 );
+          keys.$findIndex( [ 'name', 'zenjs', 'type', 'js' ] ).should.equals( 2 );
+          keys.$findIndex( [ 'type' ] ).should.equals( 2 );
+          keys.$findIndex( [ 'type', 'js' ] ).should.equals( 2 );
+          keys.$findIndex( [ 'type', 'ui' ] ).should.equals( 3 );
 
-          keys.$indexOf( { name: 'zen' } ).should.equals( 0 );
-          keys.$indexOf( { name: 'zenjs' } ).should.equals( 1 );
-          keys.$indexOf( { name: 'zenjs', type: 'js' } ).should.equals( 2 );
-          keys.$indexOf( { type: 'js' } ).should.equals( 2 );
-          keys.$indexOf( { type: 'ui' } ).should.equals( 3 );
+          keys.$findIndex( { name: 'zen' } ).should.equals( 0 );
+          keys.$findIndex( { name: 'zenjs' } ).should.equals( 1 );
+          keys.$findIndex( { name: 'zenjs', type: 'js' } ).should.equals( 2 );
+          keys.$findIndex( { type: 'js' } ).should.equals( 2 );
+          keys.$findIndex( { type: 'ui' } ).should.equals( 3 );
         }
       }, {
         name: '$set',

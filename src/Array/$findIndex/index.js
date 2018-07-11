@@ -10,7 +10,7 @@ import keys from "../../shared/global/Object/keys";
 import $equals from "../../Object/$equals/index";
 
 
-defineValue( ArrayProto, '$findIndex $indexOf', function( key ){
+defineValue( ArrayProto, '$findIndex', function( key ){
   let length;
 
   if( key == null || !( length = this.length ) ){

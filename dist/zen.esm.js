@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.2.0
+ * Zen.js v2.3.0
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -467,7 +467,7 @@ function $equals(obj, obj2, parent) {
 
 defineValue(Object, '$equals', $equals);
 
-defineValue(ArrayProto, '$findIndex $indexOf', function (key) {
+defineValue(ArrayProto, '$findIndex', function (key) {
   var length;
 
   if (key == null || !(length = this.length)) {
@@ -962,7 +962,7 @@ defineValue(Object, '$create', $create$1);
  * ZenJS
  */
 var ZenJS = $create$1(true, {
-  version: '2.2.0'
+  version: '2.3.0'
 });
 
 if (inBrowser) {
