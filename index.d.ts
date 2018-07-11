@@ -199,15 +199,25 @@ interface Element {
    */
   $toggleClass( className: Stirng, toggle: Boolean ): Element;
   /**
+   * 添加元素到当前元素内的尾部
+   * @param elem 需要添加的元素
+   */
+  $append( elem: Element ): Element;
+  /**
+   * 添加元素到当前元素内的头部
+   * @param elem 需要添加的元素
+   */
+  $prepend( elem: Element ): Element;
+  /**
    * 将元素插入到当前元素前面
    * @param elem 需要插入的元素
    */
-  $before( elem: Element );
+  $before( elem: Element ): Element;
   /**
    * 将元素插入到当前元素后面
    * @param elem 需要插入的元素
    */
-  $after( elem: Element );
+  $after( elem: Element ): Element;
   /**
    * 获取当前节点下的所有匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回所有子节点

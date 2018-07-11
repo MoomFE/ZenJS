@@ -705,6 +705,15 @@ inBrowser && defineValue(ElementProto, {
 });
 
 defineValue(ElementProto, {
+  $append: function (elem) {
+    return this.appendChild(elem), this;
+  },
+  $prepend: function (elem) {
+    return this.insertBefore(elem, this.firstElementChild), this;
+  }
+});
+
+defineValue(ElementProto, {
   $before: function (elem) {
     if (this.parentNode) {
       this.parentNode.insertBefore(elem, this);

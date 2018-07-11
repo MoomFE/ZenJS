@@ -1,5 +1,6 @@
 import './_index/index';
 import './$addClass/index';
+import './$append/index';
 import './$before/index';
 import './$children/index';
 import './$first/index';
