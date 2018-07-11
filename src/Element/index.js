@@ -6,5 +6,6 @@ import './$is/index';
 import './$next/index';
 import './$parent/index';
 import './$query/index';
+import './$remove/index';
 import './$selectText/index';
 import './$siblings/index';

@@ -823,6 +823,12 @@
     defineValue(elem, '$queryFirst', elem.querySelector);
   });
 
+  defineValue(ElementProto, '$delete $remove', function () {
+    if (this.parentNode) {
+      this.parentNode.removeChild(this);
+    }
+  });
+
   inBrowser && defineValue(ElementProto, '$selectText', function () {
     var range;
 

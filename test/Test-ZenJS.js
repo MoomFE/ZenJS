@@ -924,6 +924,16 @@
           div.$queryFirst.should.equal( div.querySelector );
         }
       }, {
+        name: '$delete / $remove',
+        it: function(){
+          var div = window.div;
+          var childDiv = div.appendChild( window.div );
+
+          div.children.length.should.equals( 1 );
+          childDiv.$remove();
+          div.children.length.should.equals( 0 );
+        }
+      }, {
         name: '$siblings',
         it: function(){
 

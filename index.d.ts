@@ -286,10 +286,18 @@ interface Element {
    */
   $query( selectors ): NodeListOf<Element>;
   /**
-   * 调用原生  querySelector 方法
+   * 调用原生 querySelector 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $queryFirst( selectors ): Element;
+  /**
+   * 移除当前节点
+   */
+  $delete();
+  /**
+   * 移除当前节点
+   */
+  $remove();
   /**
    * 获取当前节点的所有符合过滤条件的兄弟节点
    * 若未传入过滤条件, 则直接返回当前节点的所有兄弟节点
