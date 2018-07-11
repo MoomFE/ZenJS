@@ -731,6 +731,28 @@
 
         }
       }, {
+        name: '$before',
+        it: function(){
+          var div = window.div;
+          var div1 = div.appendChild( window.div );
+
+          div.children.length.should.equals( 1 );
+          div1.$before( window.div );
+          div1._index.should.equals( 1 );
+          div.children.length.should.equals( 2 );
+        }
+      }, {
+        name: '$after',
+        it: function(){
+          var div = window.div;
+          var div1 = div.appendChild( window.div );
+
+          div.children.length.should.equals( 1 );
+          div1.$after( window.div );
+          div1._index.should.equals( 0 );
+          div.children.length.should.equals( 2 );
+        }
+      }, {
         name: '$child / $children',
         it: function(){
 

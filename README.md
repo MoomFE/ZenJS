@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 48.22kb | 12.64kb | \|  | UMD       | Browser |
-| zen.min.js         | 18.10kb | 6.83kb | \|  | UMD       | Browser |
-| zen.common.js      | 44.83kb | 12.35kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 44.81kb | 12.34kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 48.56kb | 12.69kb | \|  | UMD       | Browser |
+| zen.min.js         | 18.30kb | 6.86kb | \|  | UMD       | Browser |
+| zen.common.js      | 45.14kb | 12.44kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 45.12kb | 12.42kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
@@ -104,6 +104,8 @@
   - $removeClass / $deleteClass
   - $hasClass
   - $toggleClass
+  - $before
+  - $after
   - $child / $children
   - $first / $firstChild
   - $last / $lastChild

@@ -704,6 +704,21 @@ inBrowser && defineValue(ElementProto, {
   }
 });
 
+defineValue(ElementProto, {
+  $before: function (elem) {
+    if (this.parentNode) {
+      this.parentNode.insertBefore(elem, this);
+    }
+    return this;
+  },
+  $after: function (elem) {
+    if (this.parentNode) {
+      this.parentNode.insertBefore(elem, this.nextElementSibling);
+    }
+    return this;
+  }
+});
+
 /**
  * 
  * @param {Element} node 当前 DOM 元素, 也可是 DOM 元素数组
