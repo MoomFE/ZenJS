@@ -26,7 +26,7 @@ function add( num1, num2 ){
 export function handler( num1, num2, handlerFn ){
   const decimal1 = getDecimalLength( num1 );
   const decimal2 = getDecimalLength( num2 );
-  const exponent = pow( 10, max( decimal1, decimal2 ) );
+  const exponent = pow( 10, max( decimal1, decimal2 ) + 1 );
 
   return handlerFn( num1 * exponent, num2 * exponent ) / exponent
 }
@@ -38,7 +38,7 @@ export function handlerPlus( args, reduceFn ){
     max.apply(
       null,
       nums.map( num => getDecimalLength( num ) )
-    )
+    ) + 1
   );
 
   return nums.map( num => num * exponent )

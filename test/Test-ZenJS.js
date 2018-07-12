@@ -1495,6 +1495,7 @@
           Math.$minus( 10086, 10010 ).should.equals( 76 );
           Math.$minus( 0.3, 0.1 ).should.equals( 0.2 );
           Math.$minus( 0.7, 0.2 ).should.equals( 0.5 );
+          Math.$minus( 1.000007, 0.1 ).should.equals( 0.900007 );
         }
       }, {
         name: '$minusPlus',
@@ -1505,6 +1506,7 @@
           Math.$minusPlus( 10086, 10010 ).should.equals( 76 );
           Math.$minusPlus( 0.3, 0.1 ).should.equals( 0.2 );
           Math.$minusPlus( 0.7, 0.2 ).should.equals( 0.5 );
+          Math.$minusPlus( 1.000007, 0.1 ).should.equals( 0.900007 );
 
           Math.$minusPlus.apply( null, nums ).should.equals( -11.9 );
         }
