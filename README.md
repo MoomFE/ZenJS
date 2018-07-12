@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 48.77kb | 12.72kb | \|  | UMD       | Browser |
-| zen.min.js         | 18.43kb | 6.89kb | \|  | UMD       | Browser |
-| zen.common.js      | 45.34kb | 12.48kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 45.32kb | 12.47kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 48.93kb | 12.75kb | \|  | UMD       | Browser |
+| zen.min.js         | 18.53kb | 6.92kb | \|  | UMD       | Browser |
+| zen.common.js      | 45.48kb | 12.51kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 45.47kb | 12.49kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
@@ -116,6 +116,7 @@
   - $query
   - $queryFirst
   - $delete / $remove
+  - $replaceWith / $replace
   - $parent
   - $parents
   - $next

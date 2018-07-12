@@ -9,5 +9,6 @@ import './$next/index';
 import './$parent/index';
 import './$query/index';
 import './$remove/index';
+import './$replaceWith/index';
 import './$selectText/index';
 import './$siblings/index';

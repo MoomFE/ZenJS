@@ -849,6 +849,12 @@ defineValue(ElementProto, '$delete $remove', function () {
   }
 });
 
+defineValue(ElementProto, '$replaceWith $replace', function (elem) {
+  if (this.parentNode) {
+    this.parentNode.replaceChild(elem, this);
+  }
+});
+
 inBrowser && defineValue(ElementProto, '$selectText', function () {
   var range;
 

@@ -319,6 +319,16 @@ interface Element {
    */
   $remove();
   /**
+   * 将当前元素替换为新的元素
+   * @param elem 
+   */
+  $replaceWith( elem: Element );
+  /**
+   * 将当前元素替换为新的元素
+   * @param elem 
+   */
+  $replace( elem: Element );
+  /**
    * 获取当前节点的所有符合过滤条件的兄弟节点
    * 若未传入过滤条件, 则直接返回当前节点的所有兄弟节点
    * @param filter 过滤条件: CSS 选择器或方法

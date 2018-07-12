@@ -978,6 +978,17 @@
           div.children.length.should.equals( 0 );
         }
       }, {
+        name: '$replaceWith / $replace',
+        it: function(){
+          var div = window.div;
+          var div1 = div.appendChild( window.div );
+          var div2 = window.div;
+
+          div.$first().should.equals( div1 );
+          div1.$replaceWith( div2 );
+          div.$first().should.equals( div2 );
+        }
+      }, {
         name: '$siblings',
         it: function(){
 
