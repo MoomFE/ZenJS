@@ -1782,6 +1782,23 @@ function $mean() {
 
 defineValue(Math, '$mean', $mean);
 
+function $minus(num1, num2) {
+  return handler(num1, num2, minus);
+}
+
+function $minusPlus() {
+  return handlerPlus(arguments, minus);
+}
+
+defineValue(Math, {
+  $minus: $minus,
+  $minusPlus: $minusPlus
+});
+
+function minus(num1, num2) {
+  return num1 - num2;
+}
+
 var random = Math.random;
 
 var floor = Math.floor;

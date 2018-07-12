@@ -1488,6 +1488,26 @@
           Math.$mean( -1, 1 ).should.equals( 0 );
           Math.$mean( -1, 3 ).should.equals( 1 );
         }
+      }, {
+        name: '$minus',
+        it: function(){
+          Math.$minus( 2, 1 ).should.equals( 1 );
+          Math.$minus( 10086, 10010 ).should.equals( 76 );
+          Math.$minus( 0.3, 0.1 ).should.equals( 0.2 );
+          Math.$minus( 0.7, 0.2 ).should.equals( 0.5 );
+        }
+      }, {
+        name: '$minusPlus',
+        it: function(){
+          var nums = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ].reverse();
+
+          Math.$minusPlus( 2, 1 ).should.equals( 1 );
+          Math.$minusPlus( 10086, 10010 ).should.equals( 76 );
+          Math.$minusPlus( 0.3, 0.1 ).should.equals( 0.2 );
+          Math.$minusPlus( 0.7, 0.2 ).should.equals( 0.5 );
+
+          Math.$minusPlus.apply( null, nums ).should.equals( -11.9 );
+        }
       },
       function(){
         function compare( num, min, max ){

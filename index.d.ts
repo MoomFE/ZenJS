@@ -602,6 +602,17 @@ interface Math {
    */
   $mean( ...args?: Number[] ): Number;
   /**
+   * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $minus( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的所有数字进行相减, 不会发生浮点数精度不准的问题
+   * @param args 任意个数数字
+   */
+  $minusPlus( ...args?: Number[] ): Number;
+  /**
    * 在 0 和 9 之间随机一个数字
    */
   $random(): Number;
