@@ -1731,17 +1731,17 @@ inBrowser && defineValue(EventTarget, {
   }
 });
 
+function getDecimalLength(num) {
+  return (('' + num).split('.')[1] || '').length;
+}
+
 var pow = Math.pow;
 
 var max = Math.max;
 
-function GetDecimalLength(num) {
-  return (('' + num).split('.')[1] || '').length;
-}
-
 function $add$1(num1, num2) {
-  var decimal1 = GetDecimalLength(num1);
-  var decimal2 = GetDecimalLength(num2);
+  var decimal1 = getDecimalLength(num1);
+  var decimal2 = getDecimalLength(num2);
   var exponent = pow(10, max(decimal1, decimal2));
 
   return (num1 * exponent + num2 * exponent) / exponent;
@@ -1750,7 +1750,7 @@ function $add$1(num1, num2) {
 function $addPlus() {
   var nums = slice.call(arguments);
   var exponent = pow(10, max.apply(null, nums.map(function (num) {
-    return GetDecimalLength(num);
+    return getDecimalLength(num);
   })));
 
   return nums.map(function (num) {
