@@ -624,6 +624,26 @@
     });
   });
 
+  function $add$1(num1, num2) {
+    return (num1 * 10 + num2 * 10) / 10;
+  }
+
+  function $addPlus() {
+    var args = slice.call(arguments).map(function (num) {
+      return num * 10;
+    });
+    var count = args.reduce(function (count, next) {
+      return count + next;
+    });
+
+    return count / 10;
+  }
+
+  defineValue(Math, {
+    $add: $add$1,
+    $addPlus: $addPlus
+  });
+
   function $mean() {
 
     return $toArray(arguments).reduce(function (count, next) {

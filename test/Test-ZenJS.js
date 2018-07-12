@@ -1457,6 +1457,17 @@
     name: 'Math',
     describe: [
       {
+        name: '$add',
+        it: function(){
+          Math.$add( 1, 2 ).should.equals( 3 );
+          Math.$add( 10010, 10086 ).should.equals( 20096 );
+          Math.$add( 0.2, 0.1 ).should.equals( 0.3 );
+          Math.$add( 0.7, 0.2 ).should.equals( 0.9 );
+          // Math.$add( 22.77, 10 ).should.equals( 32.77 );// 正在尝试解决
+          // Math.$add( 2.777, 10 ).should.equals( 12.777 );// 正在尝试解决
+        }
+      },
+      {
         name: '$mean',
         it: function(){
           Math.$mean( 2, 4, 6 ).should.equals( 4 );
