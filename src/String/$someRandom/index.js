@@ -1,5 +1,5 @@
 import string$random from "../$random/index";
-import $random from "../../Math/$random/index";
+import { $random } from "../../Math/$random/index";
 import defineValue from "../../shared/util/defineValue";
 import String from "../../shared/global/String/index";
 import parametersDefault from "../../shared/util/parametersDefault";

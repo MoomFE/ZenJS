@@ -1782,26 +1782,13 @@
 
   var floor = Math.floor;
 
-  function _randomParameters(args) {
-    var from = parametersDefault(args, 0, 9),
-        to = parametersDefault(args, 1, 0);
-
-    return from > to ? [to, from] : [from, to];
-  }
-
-  function _random(from, to) {
-    return floor(random() * (to - from + 1) + from);
-  }
+  var abs = Math.abs;
 
   function $random() {
     var cache = _randomParameters(arguments);
 
     return _random(cache[0], cache[1]);
   }
-
-  defineValue(Math, '$random', $random);
-
-  var abs = Math.abs;
 
   function $randomPlus() {
     var cache = _randomParameters(arguments);
@@ -1817,7 +1804,21 @@
     }
   }
 
-  defineValue(Math, '$randomPlus', $randomPlus);
+  defineValue(Math, {
+    $random: $random,
+    $randomPlus: $randomPlus
+  });
+
+  function _randomParameters(args) {
+    var from = parametersDefault(args, 0, 9),
+        to = parametersDefault(args, 1, 0);
+
+    return from > to ? [to, from] : [from, to];
+  }
+
+  function _random(from, to) {
+    return floor(random() * (to - from + 1) + from);
+  }
 
   function $isNumber(obj) {
     if (isNumber(obj) || typeof obj === 'string') {
