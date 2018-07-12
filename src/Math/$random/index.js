@@ -14,7 +14,6 @@ export function $random(){
   );
 }
 
-
 export function $randomPlus(){
   let cache = _randomParameters( arguments );
   const
