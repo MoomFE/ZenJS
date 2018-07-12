@@ -1735,19 +1735,33 @@
     }
   });
 
+  var pow = Math.pow;
+
+  var max = Math.max;
+
+  function GetDecimalLength(num) {
+    return (('' + num).split('.')[1] || '').length;
+  }
+
   function $add$1(num1, num2) {
-    return (num1 * 10 + num2 * 10) / 10;
+    var decimal1 = GetDecimalLength(num1);
+    var decimal2 = GetDecimalLength(num2);
+    var exponent = pow(10, max(decimal1, decimal2));
+
+    return (num1 * exponent + num2 * exponent) / exponent;
   }
 
   function $addPlus() {
-    var args = slice.call(arguments).map(function (num) {
-      return num * 10;
-    });
-    var count = args.reduce(function (count, next) {
-      return count + next;
-    });
+    var nums = slice.call(arguments);
+    var exponent = pow(10, max.apply(null, nums.map(function (num) {
+      return GetDecimalLength(num);
+    })));
 
-    return count / 10;
+    return nums.map(function (num) {
+      return num * exponent;
+    }).reduce(function (count, next) {
+      return count + next;
+    }) / exponent;
   }
 
   defineValue(Math, {

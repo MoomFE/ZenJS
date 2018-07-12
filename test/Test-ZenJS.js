@@ -1463,11 +1463,25 @@
           Math.$add( 10010, 10086 ).should.equals( 20096 );
           Math.$add( 0.2, 0.1 ).should.equals( 0.3 );
           Math.$add( 0.7, 0.2 ).should.equals( 0.9 );
-          // Math.$add( 22.77, 10 ).should.equals( 32.77 );// 正在尝试解决
-          // Math.$add( 2.777, 10 ).should.equals( 12.777 );// 正在尝试解决
+          Math.$add( 1.000007, 0.1 ).should.equals( 1.100007 );
+          Math.$add( 22.77, 10 ).should.equals( 32.77 );
+          Math.$add( 2.777, 10 ).should.equals( 12.777 );
         }
-      },
-      {
+      }, {
+        name: '$addPlus',
+        it: function(){
+          var nums = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ];
+
+          Math.$addPlus( 1, 2 ).should.equals( 3 );
+          Math.$addPlus( 10010, 10086 ).should.equals( 20096 );
+          Math.$addPlus( 0.2, 0.1 ).should.equals( 0.3 );
+          Math.$addPlus( 0.7, 0.2 ).should.equals( 0.9 );
+          Math.$addPlus( 1.000007, 0.1 ).should.equals( 1.100007 );
+          Math.$addPlus( 22.77, 10 ).should.equals( 32.77 );
+          Math.$addPlus( 2.777, 10 ).should.equals( 12.777 );
+          Math.$addPlus.apply( null, nums ).should.equals( 15.3 );
+        }
+      }, {
         name: '$mean',
         it: function(){
           Math.$mean( 2, 4, 6 ).should.equals( 4 );
