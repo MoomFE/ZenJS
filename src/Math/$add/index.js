@@ -7,15 +7,32 @@ import max from "../../shared/global/Math/max";
 
 
 export function $add( num1, num2 ){
-  const decimal1 = getDecimalLength( num1 );
-  const decimal2 = getDecimalLength( num2 );
-  const exponent = pow( 10, max( decimal1, decimal2 ) );
-  
-  return ( num1 * exponent + num2 * exponent ) / exponent;
+  return handler( num1, num2, add );
 }
 
 export function $addPlus(){
-  const nums = slice.call( arguments );
+  return handlerPlus( arguments, add );
+}
+
+defineValue( Math, {
+  $add,
+  $addPlus
+});
+
+function add( num1, num2 ){
+  return num1 + num2;
+}
+
+export function handler( num1, num2, handlerFn ){
+  const decimal1 = getDecimalLength( num1 );
+  const decimal2 = getDecimalLength( num2 );
+  const exponent = pow( 10, max( decimal1, decimal2 ) );
+
+  return handlerFn( num1 * exponent, num2 * exponent ) / exponent
+}
+
+export function handlerPlus( args, reduceFn ){
+  const nums = slice.call( args );
   const exponent = pow(
     10,
     max.apply(
@@ -25,12 +42,7 @@ export function $addPlus(){
   );
 
   return nums.map( num => num * exponent )
-             .reduce(( count, next ) => count + next )
+             .reduce( reduceFn )
          /
          exponent;
 }
-
-defineValue( Math, {
-  $add,
-  $addPlus
-});

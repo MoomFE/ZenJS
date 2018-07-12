@@ -1740,30 +1740,40 @@ var pow = Math.pow;
 var max = Math.max;
 
 function $add$1(num1, num2) {
-  var decimal1 = getDecimalLength(num1);
-  var decimal2 = getDecimalLength(num2);
-  var exponent = pow(10, max(decimal1, decimal2));
-
-  return (num1 * exponent + num2 * exponent) / exponent;
+  return handler(num1, num2, add$2);
 }
 
 function $addPlus() {
-  var nums = slice.call(arguments);
-  var exponent = pow(10, max.apply(null, nums.map(function (num) {
-    return getDecimalLength(num);
-  })));
-
-  return nums.map(function (num) {
-    return num * exponent;
-  }).reduce(function (count, next) {
-    return count + next;
-  }) / exponent;
+  return handlerPlus(arguments, add$2);
 }
 
 defineValue(Math, {
   $add: $add$1,
   $addPlus: $addPlus
 });
+
+function add$2(num1, num2) {
+  return num1 + num2;
+}
+
+function handler(num1, num2, handlerFn) {
+  var decimal1 = getDecimalLength(num1);
+  var decimal2 = getDecimalLength(num2);
+  var exponent = pow(10, max(decimal1, decimal2));
+
+  return handlerFn(num1 * exponent, num2 * exponent) / exponent;
+}
+
+function handlerPlus(args, reduceFn) {
+  var nums = slice.call(args);
+  var exponent = pow(10, max.apply(null, nums.map(function (num) {
+    return getDecimalLength(num);
+  })));
+
+  return nums.map(function (num) {
+    return num * exponent;
+  }).reduce(reduceFn) / exponent;
+}
 
 function $mean() {
 
