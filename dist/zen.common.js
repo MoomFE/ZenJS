@@ -1790,7 +1790,7 @@ function handlerPlus(args, reduceFn, lastHandlerFn) {
     });
   }
 
-  return (lastHandlerFn || returnArg)(nums.reduce(reduceFn) / exponent, exponent, nums.length);
+  return (lastHandlerFn || returnArg)(nums.reduce(reduceFn) / exponent, exponent, nums);
 }
 
 function integer(num, decimal, maxDecimal) {
@@ -1820,9 +1820,12 @@ function multiply(num1, num2) {
   return num1 * num2;
 }
 
-function lastHandler(num, exponent, numCount) {
-  var dividend = numCount ? pow(exponent, numCount - 1) : exponent;
-  return num / dividend;
+function lastHandler(num, exponent, nums) {
+  return num / getDividend(exponent, nums);
+}
+
+function getDividend(exponent, nums) {
+  return nums ? pow(exponent, nums.length - 1) : exponent;
 }
 
 function $divide(num1, num2) {
@@ -1842,9 +1845,10 @@ function divide(num1, num2) {
   return num1 / num2;
 }
 
-function lastHandler$1(num, exponent, numCount) {
-  var dividend = numCount ? pow(exponent, numCount - 1) : exponent;
-  return $multiply(num, dividend);
+function lastHandler$1(num, exponent, nums) {
+  var dividend = getDividend(exponent, nums);
+
+  return getDecimalLength(num) > 0 ? $multiply(num, dividend) : num * dividend;
 }
 
 function $mean() {

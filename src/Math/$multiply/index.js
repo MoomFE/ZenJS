@@ -21,8 +21,12 @@ function multiply( num1, num2 ){
   return num1 * num2;
 }
 
-function lastHandler( num, exponent, numCount ){
-  const dividend = numCount ? pow( exponent, numCount - 1 )
-                            : exponent;
-  return num / dividend;
+function lastHandler( num, exponent, nums ){
+  return num /
+         getDividend( exponent, nums );
+}
+
+export function getDividend( exponent, nums ){
+  return nums ? pow( exponent, nums.length - 1 )
+              : exponent;
 }

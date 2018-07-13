@@ -59,7 +59,7 @@ export function handlerPlus( args, reduceFn, lastHandlerFn ){
   return ( lastHandlerFn || returnArg )(
     nums.reduce( reduceFn ) / exponent,
     exponent,
-    nums.length
+    nums
   );
 }
 
