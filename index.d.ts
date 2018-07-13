@@ -597,11 +597,6 @@ interface Math {
    */
   $addPlus( ...args?: Number[] ): Number;
   /**
-   * 传入多个数字, 求出传入参数的平均值
-   * @param args 任意个数数字
-   */
-  $mean( ...args?: Number[] ): Number;
-  /**
    * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
@@ -612,6 +607,77 @@ interface Math {
    * @param args 任意个数数字
    */
   $minusPlus( ...args?: Number[] ): Number;
+  /**
+   * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $multiply( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的所有数字进行相乘, 不会发生浮点数精度不准的问题
+   * @param args 任意个数数字
+   */
+  $multiplyPlus( ...args?: Number[] ): Number;
+  /**
+   * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $divide( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的所有数字进行相除, 不会发生浮点数精度不准的问题
+   * @param args 任意个数数字
+   */
+  $dividePlus( ...args?: Number[] ): Number;
+  /**
+   * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $jia( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的所有数字进行相加, 不会发生浮点数精度不准的问题
+   * @param args 任意个数数字
+   */
+  $jiaPlus( ...args?: Number[] ): Number;
+  /**
+   * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $jian( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的所有数字进行相减, 不会发生浮点数精度不准的问题
+   * @param args 任意个数数字
+   */
+  $jianPlus( ...args?: Number[] ): Number;
+  /**
+   * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $cheng( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的所有数字进行相乘, 不会发生浮点数精度不准的问题
+   * @param args 任意个数数字
+   */
+  $chengPlus( ...args?: Number[] ): Number;
+  /**
+   * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $chu( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的所有数字进行相除, 不会发生浮点数精度不准的问题
+   * @param args 任意个数数字
+   */
+  $chuPlus( ...args?: Number[] ): Number;
+  /**
+   * 传入多个数字, 求出传入参数的平均值
+   * @param args 任意个数数字
+   */
+  $mean( ...args?: Number[] ): Number;
   /**
    * 在 0 和 9 之间随机一个数字
    */
