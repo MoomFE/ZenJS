@@ -1755,8 +1755,8 @@ function add$2(num1, num2) {
 }
 
 function handler(num1, num2, handlerFn) {
-  var decimal1 = getDecimalLength(num1);
-  var decimal2 = getDecimalLength(num2);
+  var decimal1 = getDecimalLength(num1 = num1 || 0);
+  var decimal2 = getDecimalLength(num2 = num2 || 0);
   var maxDecimal = max(decimal1, decimal2);
   var exponent = maxDecimal ? pow(10, maxDecimal) : 1;
 
@@ -1765,11 +1765,13 @@ function handler(num1, num2, handlerFn) {
     num2 = integer(num2, decimal2, maxDecimal);
   }
 
-  return handlerFn(num1, num2) / exponent;
+  return handlerFn(num1, num2, exponent) / exponent;
 }
 
 function handlerPlus(args, reduceFn) {
-  var nums = slice.call(args);
+  var nums = slice.call(args).map(function (num) {
+    return num || 0;
+  });
   var decimals = nums.map(function (num) {
     return getDecimalLength(num);
   });
@@ -1782,7 +1784,9 @@ function handlerPlus(args, reduceFn) {
     });
   }
 
-  return nums.reduce(reduceFn) / exponent;
+  return nums.reduce(function (count, next) {
+    return reduceFn(count, next, exponent);
+  }) / exponent;
 }
 
 function integer(num, decimal, maxDecimal) {

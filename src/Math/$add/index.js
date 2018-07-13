@@ -25,8 +25,8 @@ function add( num1, num2 ){
 }
 
 export function handler( num1, num2, handlerFn ){
-  const decimal1 = getDecimalLength( num1 );
-  const decimal2 = getDecimalLength( num2 );
+  const decimal1 = getDecimalLength( num1 = num1 || 0 );
+  const decimal2 = getDecimalLength( num2 = num2 || 0 );
   const maxDecimal = max( decimal1, decimal2 );
   const exponent = maxDecimal ? pow( 10, maxDecimal )
                               : 1;
@@ -36,11 +36,11 @@ export function handler( num1, num2, handlerFn ){
     num2 = integer( num2, decimal2, maxDecimal );
   }
 
-  return handlerFn( num1, num2 ) / exponent;
+  return handlerFn( num1, num2, exponent ) / exponent;
 }
 
 export function handlerPlus( args, reduceFn ){
-  let nums = slice.call( args );
+  let nums = slice.call( args ).map( num => num || 0 );
   const decimals = nums.map( num => getDecimalLength( num ) );
   const maxDecimal = max.apply( null, decimals );
   const exponent = maxDecimal ? pow( 10, maxDecimal )
@@ -52,7 +52,11 @@ export function handlerPlus( args, reduceFn ){
     });
   }
 
-  return nums.reduce( reduceFn ) / exponent;
+  return nums.reduce(( count, next ) => {
+    return reduceFn( count, next, exponent );
+  })
+         /
+         exponent;
 }
 
 function integer( num, decimal, maxDecimal ){
