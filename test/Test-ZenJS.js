@@ -1513,6 +1513,26 @@
           var nums = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ].reverse();
           Math.$minusPlus.apply( null, nums ).should.equals( -11.9 );
         }
+      }, {
+        name: '$multiply',
+        it: function(){
+          Math.$multiply( 32.77, 10 ).should.equals( 327.7 );
+          Math.$multiply( 12.32, 7 ).should.equals( 86.24 );
+          Math.$multiply( 1.1, 56 ).should.equals( 61.6 );
+        }
+      }, {
+        name: '$multiplyPlus',
+        it: function(){
+          Math.$multiplyPlus( 32.77, 10 ).should.equals( 327.7 );
+          Math.$multiplyPlus( 12.32, 7 ).should.equals( 86.24 );
+          Math.$multiplyPlus( 1.1, 56 ).should.equals( 61.6 );
+
+          var nums = [ 1, 2, 3, 4, 5, 6, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6 ];
+          Math.$multiplyPlus.apply( null, nums ).should.equals( 4151.3472 );
+
+          nums = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ];
+          Math.$multiplyPlus.apply( null, nums ).should.equals( 0.00355687428096 );
+        }
       },
       function(){
         function compare( num, min, max ){

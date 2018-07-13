@@ -5,6 +5,7 @@ import slice from "../../shared/global/Array/prototype/slice";
 import pow from "../../shared/global/Math/pow";
 import max from "../../shared/global/Math/max";
 import Number from "../../shared/global/Number/index";
+import returnArg from "../../shared/util/returnArg";
 
 
 export function $add( num1, num2 ){
@@ -24,7 +25,7 @@ function add( num1, num2 ){
   return num1 + num2;
 }
 
-export function handler( num1, num2, handlerFn ){
+export function handler( num1, num2, handlerFn, lastHandlerFn ){
   const decimal1 = getDecimalLength( num1 = num1 || 0 );
   const decimal2 = getDecimalLength( num2 = num2 || 0 );
   const maxDecimal = max( decimal1, decimal2 );
@@ -36,10 +37,13 @@ export function handler( num1, num2, handlerFn ){
     num2 = integer( num2, decimal2, maxDecimal );
   }
 
-  return handlerFn( num1, num2, exponent ) / exponent;
+  return ( lastHandlerFn || returnArg )(
+    handlerFn( num1, num2 ) / exponent,
+    exponent
+  );
 }
 
-export function handlerPlus( args, reduceFn ){
+export function handlerPlus( args, reduceFn, lastHandlerFn ){
   let nums = slice.call( args ).map( num => num || 0 );
   const decimals = nums.map( num => getDecimalLength( num ) );
   const maxDecimal = max.apply( null, decimals );
@@ -52,11 +56,11 @@ export function handlerPlus( args, reduceFn ){
     });
   }
 
-  return nums.reduce(( count, next ) => {
-    return reduceFn( count, next, exponent );
-  })
-         /
-         exponent;
+  return ( lastHandlerFn || returnArg )(
+    nums.reduce( reduceFn ) / exponent,
+    exponent,
+    nums.length
+  );
 }
 
 function integer( num, decimal, maxDecimal ){

@@ -632,6 +632,10 @@
 
   var max = Math.max;
 
+  function returnArg(arg) {
+    return arg;
+  }
+
   function $add$1(num1, num2) {
     return handler(num1, num2, add);
   }
@@ -649,7 +653,7 @@
     return num1 + num2;
   }
 
-  function handler(num1, num2, handlerFn) {
+  function handler(num1, num2, handlerFn, lastHandlerFn) {
     var decimal1 = getDecimalLength(num1 = num1 || 0);
     var decimal2 = getDecimalLength(num2 = num2 || 0);
     var maxDecimal = max(decimal1, decimal2);
@@ -660,10 +664,10 @@
       num2 = integer(num2, decimal2, maxDecimal);
     }
 
-    return handlerFn(num1, num2, exponent) / exponent;
+    return (lastHandlerFn || returnArg)(handlerFn(num1, num2) / exponent, exponent);
   }
 
-  function handlerPlus(args, reduceFn) {
+  function handlerPlus(args, reduceFn, lastHandlerFn) {
     var nums = slice.call(args).map(function (num) {
       return num || 0;
     });
@@ -679,9 +683,7 @@
       });
     }
 
-    return nums.reduce(function (count, next) {
-      return reduceFn(count, next, exponent);
-    }) / exponent;
+    return (lastHandlerFn || returnArg)(nums.reduce(reduceFn) / exponent, exponent, nums.length);
   }
 
   function integer(num, decimal, maxDecimal) {
@@ -718,6 +720,28 @@
 
   function minus(num1, num2) {
     return num1 - num2;
+  }
+
+  function $multiply(num1, num2) {
+    return handler(num1, num2, multiply, lastHandler);
+  }
+
+  function $multiplyPlus() {
+    return handlerPlus(arguments, multiply, lastHandler);
+  }
+
+  defineValue(Math, {
+    $multiply: $multiply,
+    $multiplyPlus: $multiplyPlus
+  });
+
+  function multiply(num1, num2) {
+    return num1 * num2;
+  }
+
+  function lastHandler(num, exponent, numCount) {
+    var dividend = numCount ? pow(exponent, numCount - 1) : exponent;
+    return num / dividend;
   }
 
   var random = Math.random;

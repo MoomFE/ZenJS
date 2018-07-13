@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 50.80kb | 13.16kb | \|  | UMD       | Browser |
-| zen.min.js         | 19.26kb | 7.17kb | \|  | UMD       | Browser |
-| zen.common.js      | 47.22kb | 12.91kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 47.21kb | 12.90kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 51.38kb | 13.29kb | \|  | UMD       | Browser |
+| zen.min.js         | 19.47kb | 7.23kb | \|  | UMD       | Browser |
+| zen.common.js      | 47.76kb | 13.04kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 47.74kb | 13.03kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
@@ -141,6 +141,8 @@
   - $mean
   - $minus
   - $minusPlus
+  - $multiply
+  - $multiplyPlus
   - $random
   - $randomPlus
 
