@@ -17,8 +17,8 @@ export function $addPlus(){
 }
 
 defineValue( Math, {
-  $add,
-  $addPlus
+  '$add $jia': $add,
+  '$addPlus $jiaPlus': $addPlus
 });
 
 function add( num1, num2 ){

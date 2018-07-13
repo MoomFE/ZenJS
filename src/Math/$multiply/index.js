@@ -13,8 +13,8 @@ export function $multiplyPlus(){
 }
 
 defineValue( Math, {
-  $multiply,
-  $multiplyPlus
+  '$multiply $cheng': $multiply,
+  '$multiplyPlus $chengPlus': $multiplyPlus
 });
 
 function multiply( num1, num2 ){

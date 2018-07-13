@@ -11,8 +11,8 @@ export function $minusPlus(){
 }
 
 defineValue( Math, {
-  $minus,
-  $minusPlus
+  '$minus $jian': $minus,
+  '$minusPlus $jianPlus': $minusPlus
 });
 
 function minus( num1, num2 ){

@@ -14,8 +14,8 @@ export function $dividePlus(){
 }
 
 defineValue( Math, {
-  $divide,
-  $dividePlus
+  '$divide $chu': $divide,
+  '$dividePlus $chuPlus': $dividePlus
 });
 
 function divide( num1, num2 ){

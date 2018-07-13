@@ -1752,8 +1752,8 @@ function $addPlus() {
 }
 
 defineValue(Math, {
-  $add: $add$1,
-  $addPlus: $addPlus
+  '$add $jia': $add$1,
+  '$addPlus $jiaPlus': $addPlus
 });
 
 function add$2(num1, num2) {
@@ -1812,8 +1812,8 @@ function $multiplyPlus() {
 }
 
 defineValue(Math, {
-  $multiply: $multiply,
-  $multiplyPlus: $multiplyPlus
+  '$multiply $cheng': $multiply,
+  '$multiplyPlus $chengPlus': $multiplyPlus
 });
 
 function multiply(num1, num2) {
@@ -1837,8 +1837,8 @@ function $dividePlus() {
 }
 
 defineValue(Math, {
-  $divide: $divide,
-  $dividePlus: $dividePlus
+  '$divide $chu': $divide,
+  '$dividePlus $chuPlus': $dividePlus
 });
 
 function divide(num1, num2) {
@@ -1869,8 +1869,8 @@ function $minusPlus() {
 }
 
 defineValue(Math, {
-  $minus: $minus,
-  $minusPlus: $minusPlus
+  '$minus $jian': $minus,
+  '$minusPlus $jianPlus': $minusPlus
 });
 
 function minus(num1, num2) {

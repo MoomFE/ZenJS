@@ -645,8 +645,8 @@
   }
 
   defineValue(Math, {
-    $add: $add$1,
-    $addPlus: $addPlus
+    '$add $jia': $add$1,
+    '$addPlus $jiaPlus': $addPlus
   });
 
   function add(num1, num2) {
@@ -705,8 +705,8 @@
   }
 
   defineValue(Math, {
-    $multiply: $multiply,
-    $multiplyPlus: $multiplyPlus
+    '$multiply $cheng': $multiply,
+    '$multiplyPlus $chengPlus': $multiplyPlus
   });
 
   function multiply(num1, num2) {
@@ -730,8 +730,8 @@
   }
 
   defineValue(Math, {
-    $divide: $divide,
-    $dividePlus: $dividePlus
+    '$divide $chu': $divide,
+    '$dividePlus $chuPlus': $dividePlus
   });
 
   function divide(num1, num2) {
@@ -762,8 +762,8 @@
   }
 
   defineValue(Math, {
-    $minus: $minus,
-    $minusPlus: $minusPlus
+    '$minus $jian': $minus,
+    '$minusPlus $jianPlus': $minusPlus
   });
 
   function minus(num1, num2) {
