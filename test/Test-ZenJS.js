@@ -1486,13 +1486,6 @@
           Math.$addPlus.apply( null, nums ).should.equals( 15.3 );
         }
       }, {
-        name: '$mean',
-        it: function(){
-          Math.$mean( 2, 4, 6 ).should.equals( 4 );
-          Math.$mean( -1, 1 ).should.equals( 0 );
-          Math.$mean( -1, 3 ).should.equals( 1 );
-        }
-      }, {
         name: '$minus',
         it: function(){
           Math.$minus( 2, 1 ).should.equals( 1 );
@@ -1532,6 +1525,30 @@
 
           nums = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ];
           Math.$multiplyPlus.apply( null, nums ).should.equals( 0.00355687428096 );
+        }
+      }, {
+        name: '$divide',
+        it: function(){
+          Math.$divide( 32.77, 10 ).should.equals( 3.277 );
+          Math.$divide( 12.32, 7 ).should.equals( 1.76 );
+          Math.$divide( 1.1, 10 ).should.equals( 0.11 );
+        }
+      }, {
+        name: '$dividePlus',
+        it: function(){
+          Math.$dividePlus( 32.77, 10 ).should.equals( 3.277 );
+          Math.$dividePlus( 12.32, 7 ).should.equals( 1.76 );
+          Math.$dividePlus( 1.1, 10 ).should.equals( 0.11 );
+
+          var nums = [ 6, 5, 4, 3, 2, 1 ];
+          Math.$dividePlus.apply( null, nums ).should.equals( 0.05 );
+        }
+      }, {
+        name: '$mean',
+        it: function(){
+          Math.$mean( 2, 4, 6 ).should.equals( 4 );
+          Math.$mean( -1, 1 ).should.equals( 0 );
+          Math.$mean( -1, 3 ).should.equals( 1 );
         }
       },
       function(){

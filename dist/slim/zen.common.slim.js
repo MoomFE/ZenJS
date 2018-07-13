@@ -692,6 +692,50 @@ function integer(num, decimal, maxDecimal) {
   return Number(num);
 }
 
+function $multiply(num1, num2) {
+  return handler(num1, num2, multiply, lastHandler);
+}
+
+function $multiplyPlus() {
+  return handlerPlus(arguments, multiply, lastHandler);
+}
+
+defineValue(Math, {
+  $multiply: $multiply,
+  $multiplyPlus: $multiplyPlus
+});
+
+function multiply(num1, num2) {
+  return num1 * num2;
+}
+
+function lastHandler(num, exponent, numCount) {
+  var dividend = numCount ? pow(exponent, numCount - 1) : exponent;
+  return num / dividend;
+}
+
+function $divide(num1, num2) {
+  return handler(num1, num2, divide, lastHandler$1);
+}
+
+function $dividePlus() {
+  return handlerPlus(arguments, divide, lastHandler$1);
+}
+
+defineValue(Math, {
+  $divide: $divide,
+  $dividePlus: $dividePlus
+});
+
+function divide(num1, num2) {
+  return num1 / num2;
+}
+
+function lastHandler$1(num, exponent, numCount) {
+  var dividend = numCount ? pow(exponent, numCount - 1) : exponent;
+  return $multiply(num, dividend);
+}
+
 function $mean() {
 
   return $toArray(arguments).reduce(function (count, next) {
@@ -716,28 +760,6 @@ defineValue(Math, {
 
 function minus(num1, num2) {
   return num1 - num2;
-}
-
-function $multiply(num1, num2) {
-  return handler(num1, num2, multiply, lastHandler);
-}
-
-function $multiplyPlus() {
-  return handlerPlus(arguments, multiply, lastHandler);
-}
-
-defineValue(Math, {
-  $multiply: $multiply,
-  $multiplyPlus: $multiplyPlus
-});
-
-function multiply(num1, num2) {
-  return num1 * num2;
-}
-
-function lastHandler(num, exponent, numCount) {
-  var dividend = numCount ? pow(exponent, numCount - 1) : exponent;
-  return num / dividend;
 }
 
 var random = Math.random;
