@@ -648,20 +648,42 @@ function add(num1, num2) {
 function handler(num1, num2, handlerFn) {
   var decimal1 = getDecimalLength(num1);
   var decimal2 = getDecimalLength(num2);
-  var exponent = pow(10, max(decimal1, decimal2) + 1);
+  var maxDecimal = max(decimal1, decimal2);
+  var exponent = maxDecimal ? pow(10, maxDecimal) : 1;
 
-  return handlerFn(num1 * exponent, num2 * exponent) / exponent;
+  if (maxDecimal) {
+    num1 = integer(num1, decimal1, maxDecimal);
+    num2 = integer(num2, decimal2, maxDecimal);
+  }
+
+  return handlerFn(num1, num2) / exponent;
 }
 
 function handlerPlus(args, reduceFn) {
   var nums = slice.call(args);
-  var exponent = pow(10, max.apply(null, nums.map(function (num) {
+  var decimals = nums.map(function (num) {
     return getDecimalLength(num);
-  })) + 1);
+  });
+  var maxDecimal = max.apply(null, decimals);
+  var exponent = maxDecimal ? pow(10, maxDecimal) : 1;
 
-  return nums.map(function (num) {
-    return num * exponent;
-  }).reduce(reduceFn) / exponent;
+  if (maxDecimal) {
+    nums = nums.map(function (num, index) {
+      return integer(num, decimals[index], maxDecimal);
+    });
+  }
+
+  return nums.reduce(reduceFn) / exponent;
+}
+
+function integer(num, decimal, maxDecimal) {
+  num = ('' + num).replace('.', '');
+
+  if (decimal !== maxDecimal) {
+    num += '0'.repeat(maxDecimal - decimal);
+  }
+
+  return Number(num);
 }
 
 function $mean() {

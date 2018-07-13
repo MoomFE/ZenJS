@@ -4,6 +4,7 @@ import Math from "../../shared/global/Math/index";
 import slice from "../../shared/global/Array/prototype/slice";
 import pow from "../../shared/global/Math/pow";
 import max from "../../shared/global/Math/max";
+import Number from "../../shared/global/Number/index";
 
 
 export function $add( num1, num2 ){
@@ -26,23 +27,40 @@ function add( num1, num2 ){
 export function handler( num1, num2, handlerFn ){
   const decimal1 = getDecimalLength( num1 );
   const decimal2 = getDecimalLength( num2 );
-  const exponent = pow( 10, max( decimal1, decimal2 ) + 1 );
+  const maxDecimal = max( decimal1, decimal2 );
+  const exponent = maxDecimal ? pow( 10, maxDecimal )
+                              : 1;
+  
+  if( maxDecimal ){
+    num1 = integer( num1, decimal1, maxDecimal );
+    num2 = integer( num2, decimal2, maxDecimal );
+  }
 
-  return handlerFn( num1 * exponent, num2 * exponent ) / exponent
+  return handlerFn( num1, num2 ) / exponent;
 }
 
 export function handlerPlus( args, reduceFn ){
-  const nums = slice.call( args );
-  const exponent = pow(
-    10,
-    max.apply(
-      null,
-      nums.map( num => getDecimalLength( num ) )
-    ) + 1
-  );
+  let nums = slice.call( args );
+  const decimals = nums.map( num => getDecimalLength( num ) );
+  const maxDecimal = max.apply( null, decimals );
+  const exponent = maxDecimal ? pow( 10, maxDecimal )
+                              : 1;
 
-  return nums.map( num => num * exponent )
-             .reduce( reduceFn )
-         /
-         exponent;
+  if( maxDecimal ){
+    nums = nums.map(( num, index ) => {
+      return integer( num, decimals[ index ], maxDecimal );
+    });
+  }
+
+  return nums.reduce( reduceFn ) / exponent;
+}
+
+function integer( num, decimal, maxDecimal ){
+  num = ( '' + num ).replace( '.', '' );
+
+  if( decimal !== maxDecimal ){
+    num += '0'.repeat( maxDecimal - decimal );
+  }
+
+  return Number( num );
 }

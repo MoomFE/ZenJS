@@ -1459,26 +1459,30 @@
       {
         name: '$add',
         it: function(){
-          Math.$add( 1, 2 ).should.equals( 3 );
-          Math.$add( 10010, 10086 ).should.equals( 20096 );
+          Math.$add( 1, 2 ).should.equals( 1 + 2 );
+          Math.$add( 10010, 10086 ).should.equals( 10010 + 10086 );
           Math.$add( 0.2, 0.1 ).should.equals( 0.3 );
           Math.$add( 0.7, 0.2 ).should.equals( 0.9 );
           Math.$add( 1.000007, 0.1 ).should.equals( 1.100007 );
           Math.$add( 22.77, 10 ).should.equals( 32.77 );
           Math.$add( 2.777, 10 ).should.equals( 12.777 );
+          Math.$add( 9007199254740990, 1 ).should.equals( 9007199254740990 + 1 );
+          Math.$add( 90071992547409, 0.9007199254740991 ).should.equals( 90071992547409 + 0.9007199254740991 );
         }
       }, {
         name: '$addPlus',
         it: function(){
-          var nums = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ];
-
-          Math.$addPlus( 1, 2 ).should.equals( 3 );
-          Math.$addPlus( 10010, 10086 ).should.equals( 20096 );
+          Math.$addPlus( 1, 2 ).should.equals( 1 + 2 );
+          Math.$addPlus( 10010, 10086 ).should.equals( 10010 + 10086 );
           Math.$addPlus( 0.2, 0.1 ).should.equals( 0.3 );
           Math.$addPlus( 0.7, 0.2 ).should.equals( 0.9 );
           Math.$addPlus( 1.000007, 0.1 ).should.equals( 1.100007 );
           Math.$addPlus( 22.77, 10 ).should.equals( 32.77 );
           Math.$addPlus( 2.777, 10 ).should.equals( 12.777 );
+          Math.$addPlus( 9007199254740990, 1 ).should.equals( 9007199254740990 + 1 );
+          Math.$addPlus( 90071992547409, 0.9007199254740991 ).should.equals( 90071992547409 + 0.9007199254740991 );
+
+          var nums = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ];
           Math.$addPlus.apply( null, nums ).should.equals( 15.3 );
         }
       }, {
@@ -1500,14 +1504,13 @@
       }, {
         name: '$minusPlus',
         it: function(){
-          var nums = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ].reverse();
-
           Math.$minusPlus( 2, 1 ).should.equals( 1 );
           Math.$minusPlus( 10086, 10010 ).should.equals( 76 );
           Math.$minusPlus( 0.3, 0.1 ).should.equals( 0.2 );
           Math.$minusPlus( 0.7, 0.2 ).should.equals( 0.5 );
           Math.$minusPlus( 1.000007, 0.1 ).should.equals( 0.900007 );
 
+          var nums = [ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7 ].reverse();
           Math.$minusPlus.apply( null, nums ).should.equals( -11.9 );
         }
       },
