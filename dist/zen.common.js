@@ -615,7 +615,7 @@ function $set(array, index, value) {
 
   index = fixArrayIndex(array, index);
 
-  array[index] = value;
+  array.splice(index, 1, value);
 }
 
 var addEventListener = 'addEventListener';
