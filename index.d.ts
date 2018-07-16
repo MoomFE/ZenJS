@@ -72,6 +72,22 @@ interface Array<T> {
    */
   $equals( obj: any[], congruence?: true ): Boolean;
   /**
+   * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param obj 需要筛选的一组 key: value 键值对
+   */
+  $find( obj: any ) : Number;
+  /**
+   * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
+   */
+  $find( arr: any[] ) : Number;
+  /**
+   * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param key 需要匹配的 key 值
+   * @param value 需要匹配的 value 值
+   */
+  $find( key: any, value: any ) : Number;
+  /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
    * @param obj 需要筛选的一组 key: value 键值对
    */

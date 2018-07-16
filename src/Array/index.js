@@ -7,6 +7,7 @@ import './$delete/index';
 import './$deleteValue/index';
 import './$each/index';
 import './$equals/index';
+import './$find/index';
 import './$findIndex/index';
 import './$get/index';
 import './$inArray/index';

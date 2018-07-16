@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 51.99kb | 13.41kb | \|  | UMD       | Browser |
-| zen.min.js         | 19.77kb | 7.32kb | \|  | UMD       | Browser |
-| zen.common.js      | 48.34kb | 13.15kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 48.32kb | 13.14kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 52.22kb | 13.45kb | \|  | UMD       | Browser |
+| zen.min.js         | 19.91kb | 7.36kb | \|  | UMD       | Browser |
+| zen.common.js      | 48.56kb | 13.19kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 48.54kb | 13.18kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
@@ -84,6 +84,7 @@
   - $equals
   - $get
   - $inArray
+  - $find
   - $findIndex
   - $set
   - $move

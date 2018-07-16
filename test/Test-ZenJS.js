@@ -482,6 +482,36 @@
           [ undefined ].$inArray( null ).should.true;
         }
       }, {
+        name: '$find',
+        it: function(){
+          var keys = [
+            { name: 'zen' },
+            { name: 'zenjs' },
+            { name: 'zenjs', type: 'js' },
+            { name: 'zenui', type: 'ui' }
+          ];
+
+          Object.$equals( keys.$find( 'name' ), keys[0] ).should.true;
+          Object.$equals( keys.$find( 'name', 'zenjs' ), keys[1] ).should.true;
+          Object.$equals( keys.$find( 'name', 'zenjs', 'type', 'js' ), keys[2] ).should.true;
+          Object.$equals( keys.$find( 'type' ), keys[2] ).should.true;
+          Object.$equals( keys.$find( 'type', 'js' ), keys[2] ).should.true;
+          Object.$equals( keys.$find( 'type', 'ui' ), keys[3] ).should.true;
+
+          Object.$equals( keys.$find( [ 'name' ] ), keys[0] ).should.true;
+          Object.$equals( keys.$find( [ 'name', 'zenjs' ] ), keys[1] ).should.true;
+          Object.$equals( keys.$find( [ 'name', 'zenjs', 'type', 'js' ] ), keys[2] ).should.true;
+          Object.$equals( keys.$find( [ 'type' ] ), keys[2] ).should.true;
+          Object.$equals( keys.$find( [ 'type', 'js' ] ), keys[2] ).should.true;
+          Object.$equals( keys.$find( [ 'type', 'ui' ] ), keys[3] ).should.true;
+
+          Object.$equals( keys.$find( { name: 'zen' } ), keys[0] ).should.true;
+          Object.$equals( keys.$find( { name: 'zenjs' } ), keys[1] ).should.true;
+          Object.$equals( keys.$find( { name: 'zenjs', type: 'js' } ), keys[2] ).should.true;
+          Object.$equals( keys.$find( { type: 'js' } ), keys[2] ).should.true;
+          Object.$equals( keys.$find( { type: 'ui' } ), keys[3] ).should.true;
+        }
+      }, {
         name: '$findIndex',
         it: function(){
           var keys = [

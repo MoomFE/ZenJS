@@ -470,16 +470,20 @@ function $equals(obj, obj2, parent) {
 defineValue(Object, '$equals', $equals);
 
 defineValue(ArrayProto, '$findIndex', function (key) {
+  return findIndex(this, key, arguments);
+});
+
+function findIndex(self, key, args) {
   var length;
 
-  if (key == null || !(length = this.length)) {
+  if (key == null || !(length = self.length)) {
     return -1;
   }
 
   // 第一个参数不是数组或对象
   // 将所有传入参数转为数组
   if (unFunctionObject(key)) {
-    key = $toArray(arguments);
+    key = $toArray(args);
   }
 
   // 将类数组类型的按照键值对进行分割
@@ -492,12 +496,12 @@ defineValue(ArrayProto, '$findIndex', function (key) {
 
   // 遍历数组内的对象, 交给检测方法进行检测
   for (var index = 0; index < length; index++) {
-    if (predicate(this[index])) {
+    if (predicate(self[index])) {
       return index;
     }
   }
   return -1;
-});
+}
 
 function getPredicate(key) {
   // fn array object
@@ -546,6 +550,12 @@ function checkObject(source, object) {
 
   return true;
 }
+
+defineValue(ArrayProto, '$find', function (key) {
+  var index = findIndex(this, key, arguments);
+
+  return index === -1 ? null : this[index];
+});
 
 defineValue(ArrayProto, '$get', function () {
   var index = fixArrayIndex(this, parametersDefault(arguments, 0, 0));

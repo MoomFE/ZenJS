@@ -11,16 +11,20 @@ import $equals from "../../Object/$equals/index";
 
 
 defineValue( ArrayProto, '$findIndex', function( key ){
+  return findIndex( this, key, arguments );
+});
+
+export default function findIndex( self, key, args ){
   let length;
 
-  if( key == null || !( length = this.length ) ){
+  if( key == null || !( length = self.length ) ){
     return -1;
   }
 
   // 第一个参数不是数组或对象
   // 将所有传入参数转为数组
   if( unFunctionObject( key ) ){
-    key = $toArray( arguments );
+    key = $toArray( args );
   }
 
   // 将类数组类型的按照键值对进行分割
@@ -33,12 +37,12 @@ defineValue( ArrayProto, '$findIndex', function( key ){
 
   // 遍历数组内的对象, 交给检测方法进行检测
   for( let index = 0; index < length; index++ ){
-    if( predicate( this[ index ] ) ){
+    if( predicate( self[ index ] ) ){
       return index;
     }
   }
   return -1;
-});
+}
 
 function getPredicate( key ){// fn array object
   // 用户传的检测方法
