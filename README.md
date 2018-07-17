@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 52.47kb | 13.49kb | \|  | UMD       | Browser |
-| zen.min.js         | 19.99kb | 7.39kb | \|  | UMD       | Browser |
-| zen.common.js      | 48.79kb | 13.24kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 48.78kb | 13.23kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 52.54kb | 13.51kb | \|  | UMD       | Browser |
+| zen.min.js         | 20.04kb | 7.41kb | \|  | UMD       | Browser |
+| zen.common.js      | 48.86kb | 13.26kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 48.85kb | 13.25kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
@@ -95,6 +95,7 @@
   - $shift
 
 - document
+  - $id
   - $ready
   - $query
   - $queryFirst

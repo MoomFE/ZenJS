@@ -622,13 +622,15 @@
     array.splice(index, 1, value);
   }
 
+  var inBrowser = typeof window !== 'undefined';
+
+  inBrowser && defineValue(document, '$id', document.getElementById);
+
   var addEventListener = 'addEventListener';
   var addEventListenerPrivate = '__ZENJS_EVENT_ADD__';
 
   var removeEventListener = 'removeEventListener';
   var removeEventListenerPrivate = '__ZENJS_EVENT_REMOVE__';
-
-  var inBrowser = typeof window !== 'undefined';
 
   inBrowser && defineValue(document, '$ready', function (func, data) {
     if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);

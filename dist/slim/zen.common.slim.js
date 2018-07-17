@@ -618,9 +618,11 @@ function $set(array, index, value) {
   array.splice(index, 1, value);
 }
 
-var addEventListener = 'addEventListener';
-
 var inBrowser = typeof window !== 'undefined';
+
+inBrowser && defineValue(document, '$id', document.getElementById);
+
+var addEventListener = 'addEventListener';
 
 inBrowser && defineValue(document, '$ready', function (func, data) {
   if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
