@@ -824,23 +824,22 @@ inBrowser && defineValue(ElementProto, {
 });
 
 if (inBrowser) {
-
   ElementProto.matches || ['webkit', 'o', 'ms', 'moz'].$each(function (core) {
     var matches = core + 'MatchesSelector';
     if (ElementProto[matches]) {
       return !(ElementProto.matches = ElementProto[matches]);
     }
   });
-
-  defineValue(ElementProto, {
-    $is: function (selector) {
-      return selector.nodeType ? this === selector : isString(selector) ? this.matches(selector) : false;
-    },
-    $not: function (selector) {
-      return !this.$is(selector);
-    }
-  });
 }
+
+inBrowser && defineValue(ElementProto, {
+  $is: function (selector) {
+    return selector.nodeType ? this === selector : isString(selector) ? this.matches(selector) : false;
+  },
+  $not: function (selector) {
+    return !this.$is(selector);
+  }
+});
 
 inBrowser && [['$next', 'nextElementSibling'], ['$prev', 'previousElementSibling']].forEach(function (arr) {
 
