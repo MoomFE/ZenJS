@@ -56,10 +56,10 @@
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.slim.js        | 19.69kb | 5.28kb | \|  | UMD       | Browser |
-| zen.slim.min.js    | 8.49kb | 3.33kb | \|  | UMD       | Browser |
-| zen.common.slim.js | 18.19kb | 5.15kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.slim.js    | 18.17kb | 5.14kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.slim.js        | 24.49kb | 6.40kb | \|  | UMD       | Browser |
+| zen.slim.min.js    | 10.23kb | 3.85kb | \|  | UMD       | Browser |
+| zen.common.slim.js | 22.65kb | 6.25kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.slim.js    | 22.63kb | 6.24kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
