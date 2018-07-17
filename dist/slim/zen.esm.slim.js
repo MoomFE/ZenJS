@@ -998,6 +998,10 @@ defineValue(StringProto, '$toCapitalize', function $toCapitalize() {
   return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
 });
 
+var inNode = typeof global !== 'undefined';
+
+var root = inBrowser ? window : inNode ? global : undefined;
+
 var rBackSlant = /\+/g;
 
 function toString$1(obj) {
@@ -1064,7 +1068,7 @@ function parse(str) {
   return result;
 }
 
-inBrowser && defineValue(window, '$querystring', {
+defineValue(root, '$querystring', {
   stringify: stringify$1,
   parse: parse
 });
@@ -1089,7 +1093,7 @@ function $typeof(obj) {
   return type;
 }
 
-inBrowser && defineValue(window, '$typeof', $typeof);
+defineValue(root, '$typeof', $typeof);
 
 /**
  * ZenJS

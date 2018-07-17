@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 52.39kb | 13.46kb | \|  | UMD       | Browser |
-| zen.min.js         | 19.95kb | 7.37kb | \|  | UMD       | Browser |
-| zen.common.js      | 48.72kb | 13.21kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 48.70kb | 13.20kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 52.47kb | 13.49kb | \|  | UMD       | Browser |
+| zen.min.js         | 19.99kb | 7.39kb | \|  | UMD       | Browser |
+| zen.common.js      | 48.79kb | 13.24kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 48.78kb | 13.23kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |

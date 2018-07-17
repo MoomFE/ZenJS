@@ -1,6 +1,6 @@
 import isArray from '../../shared/global/Array/isArray';
 import defineValue from '../../shared/util/defineValue';
-import inBrowser from '../../shared/const/inBrowser';
+import root from '../../shared/const/root';
 
 
 export default function $typeof( obj ){
@@ -14,4 +14,4 @@ export default function $typeof( obj ){
   return type;
 }
 
-inBrowser && defineValue( window, '$typeof', $typeof );
+defineValue( root, '$typeof', $typeof );

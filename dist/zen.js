@@ -2082,6 +2082,10 @@
     return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
   });
 
+  var inNode = typeof global !== 'undefined';
+
+  var root = inBrowser ? window : inNode ? global : undefined;
+
   var rBackSlant = /\+/g;
 
   function toString$1(obj) {
@@ -2148,7 +2152,7 @@
     return result;
   }
 
-  inBrowser && defineValue(window, '$querystring', {
+  defineValue(root, '$querystring', {
     stringify: stringify$1,
     parse: parse
   });
@@ -2173,7 +2177,7 @@
     return type;
   }
 
-  inBrowser && defineValue(window, '$typeof', $typeof);
+  defineValue(root, '$typeof', $typeof);
 
   var inject = $create$1(true);
 
