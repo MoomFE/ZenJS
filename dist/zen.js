@@ -669,56 +669,58 @@
 
   var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
-  function access(elem, _className, handle, isToggle) {
+  if (inBrowser) {
+    var access = function (elem, _className, handle, isToggle) {
 
-    var classList = elem.classList,
-        className = (_className || '').match(rnothtmlwhite) || [];
+      var classList = elem.classList,
+          className = (_className || '').match(rnothtmlwhite) || [];
 
-    if (handle === 'has') {
-      var index = 0,
-          length = className.length;
+      if (handle === 'has') {
+        var index = 0,
+            length = className.length;
 
-      for (; index < length; index++) {
-        if (classList.contains(className[index]) === false) return false;
+        for (; index < length; index++) {
+          if (classList.contains(className[index]) === false) return false;
+        }
+
+        return length !== 0;
       }
 
-      return length !== 0;
-    }
+      // 强制引导渲染元素
+      elem.offsetHeight;
 
-    // 强制引导渲染元素
-    elem.offsetHeight;
+      if (isToggle) {
+        className.forEach(function (_class) {
+          classList.contains(_class) ? classList.remove(_class) : classList.add(_class);
+        });
+      } else {
+        className.forEach(function (_class) {
+          classList[handle](_class);
+        });
+      }
 
-    if (isToggle) {
-      className.forEach(function (_class) {
-        classList.contains(_class) ? classList.remove(_class) : classList.add(_class);
-      });
-    } else {
-      className.forEach(function (_class) {
-        classList[handle](_class);
-      });
-    }
+      return elem;
+    };
 
-    return elem;
+    defineValue(ElementProto, {
+      $addClass: function (className) {
+        return access(this, className, 'add');
+      },
+      '$removeClass $deleteClass': function (className) {
+        return access(this, className, 'remove');
+      },
+      $hasClass: function (className) {
+        return access(this, className, 'has');
+      },
+      $toggleClass: function (className, tSwitch) {
+        var notSwitch = !(arguments.length > 1);
+
+        return access(this, className, notSwitch ? null : tSwitch ? 'add' : 'remove', notSwitch);
+      }
+    });
   }
 
   inBrowser && defineValue(ElementProto, {
-    $addClass: function (className) {
-      return access(this, className, 'add');
-    },
-    '$removeClass $deleteClass': function (className) {
-      return access(this, className, 'remove');
-    },
-    $hasClass: function (className) {
-      return access(this, className, 'has');
-    },
-    $toggleClass: function (className, tSwitch) {
-      var notSwitch = !(arguments.length > 1);
-
-      return access(this, className, notSwitch ? null : tSwitch ? 'add' : 'remove', notSwitch);
-    }
-  });
-
-  defineValue(ElementProto, {
     $append: function (elem) {
       return this.appendChild(elem), this;
     },
@@ -727,7 +729,7 @@
     }
   });
 
-  defineValue(ElementProto, {
+  inBrowser && defineValue(ElementProto, {
     $before: function (elem) {
       if (this.parentNode) {
         this.parentNode.insertBefore(elem, this);
@@ -857,13 +859,13 @@
     defineValue(elem, '$queryFirst', elem.querySelector);
   });
 
-  defineValue(ElementProto, '$delete $remove', function () {
+  inBrowser && defineValue(ElementProto, '$delete $remove', function () {
     if (this.parentNode) {
       this.parentNode.removeChild(this);
     }
   });
 
-  defineValue(ElementProto, '$replaceWith $replace', function (elem) {
+  inBrowser && defineValue(ElementProto, '$replaceWith $replace', function (elem) {
     if (this.parentNode) {
       this.parentNode.replaceChild(elem, this);
     }
@@ -1205,7 +1207,7 @@
     }
   }
 
-  defineValue(ObjectProto, '$set', function (key, value) {
+  defineValue(ObjectProto, '$set $edit', function (key, value) {
     var _key;
 
     if (isObject(key)) for (_key in key) {

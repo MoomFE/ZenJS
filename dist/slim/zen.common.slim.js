@@ -924,7 +924,7 @@ function $self() {
 defineValue(ObjectProto, '$self', $self);
 defineGet(ObjectProto, '__self__', $self);
 
-defineValue(ObjectProto, '$set', function (key, value) {
+defineValue(ObjectProto, '$set $edit', function (key, value) {
   var _key;
 
   if (isObject(key)) for (_key in key) {

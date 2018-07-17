@@ -4,59 +4,62 @@ import rnothtmlwhite from "../../shared/const/rnothtmlwhite";
 import inBrowser from "../../shared/const/inBrowser";
 
 
-function access( elem, _className, handle, isToggle ){
+if( inBrowser ){
 
-  const classList = elem.classList,
-        className = ( _className || '' ).match( rnothtmlwhite ) || [];
+  function access( elem, _className, handle, isToggle ){
 
-  if( handle === 'has' ){
-    let index = 0,
-        length = className.length;
-
-    for( ; index < length; index++ ){
-      if( classList.contains( className[ index ] ) === false )
-        return false;
+    const classList = elem.classList,
+          className = ( _className || '' ).match( rnothtmlwhite ) || [];
+  
+    if( handle === 'has' ){
+      let index = 0,
+          length = className.length;
+  
+      for( ; index < length; index++ ){
+        if( classList.contains( className[ index ] ) === false )
+          return false;
+      }
+  
+      return length !== 0;
     }
-
-    return length !== 0;
+  
+    // 强制引导渲染元素
+    elem.offsetHeight;
+  
+    if( isToggle ){
+      className.forEach( _class => {
+        classList.contains( _class ) ? classList.remove( _class )
+                                     : classList.add( _class );
+      });
+    }else{
+      className.forEach( _class => {
+        classList[ handle ]( _class );
+      });
+    }
+  
+    return elem;
   }
-
-  // 强制引导渲染元素
-  elem.offsetHeight;
-
-  if( isToggle ){
-    className.forEach( _class => {
-      classList.contains( _class ) ? classList.remove( _class )
-                                   : classList.add( _class );
-    });
-  }else{
-    className.forEach( _class => {
-      classList[ handle ]( _class );
-    });
-  }
-
-  return elem;
+  
+  
+  defineValue( ElementProto, {
+    $addClass( className ){
+      return access( this, className, 'add' );
+    },
+    '$removeClass $deleteClass'( className ){
+      return access( this, className, 'remove' );
+    },
+    $hasClass( className ){
+      return access( this, className, 'has' );
+    },
+    $toggleClass( className, tSwitch ){
+      let notSwitch = !( arguments.length > 1 );
+  
+      return access(
+        this, className,
+        notSwitch ? null
+                  : tSwitch ? 'add' : 'remove',
+        notSwitch
+      );
+    }
+  });
 }
-
-
-inBrowser && defineValue( ElementProto, {
-  $addClass( className ){
-    return access( this, className, 'add' );
-  },
-  '$removeClass $deleteClass'( className ){
-    return access( this, className, 'remove' );
-  },
-  $hasClass( className ){
-    return access( this, className, 'has' );
-  },
-  $toggleClass( className, tSwitch ){
-    let notSwitch = !( arguments.length > 1 );
-
-    return access(
-      this, className,
-      notSwitch ? null
-                : tSwitch ? 'add' : 'remove',
-      notSwitch
-    );
-  }
-});
