@@ -6,6 +6,7 @@ import pow from "../../shared/global/Math/pow";
 import max from "../../shared/global/Math/max";
 import Number from "../../shared/global/Number/index";
 import returnArg from "../../shared/util/returnArg";
+import repeat from "../../shared/polyfill/repeat";
 
 
 export function $add( num1, num2 ){
@@ -67,7 +68,7 @@ function integer( num, decimal, maxDecimal ){
   num = ( '' + num ).replace( '.', '' );
 
   if( decimal !== maxDecimal ){
-    num += '0'.repeat( maxDecimal - decimal );
+    num += repeat( '0', maxDecimal - decimal );
   }
 
   return Number( num );

@@ -1895,6 +1895,18 @@ function returnArg(arg) {
   return arg;
 }
 
+// String.prototype.repeat
+function repeat(str, count) {
+  var result = '';
+  var i = 0;
+
+  for (; i < count; i++) {
+    result += str;
+  }
+
+  return result;
+}
+
 function $add$1(num1, num2) {
   return handler(num1, num2, add$2);
 }
@@ -1949,7 +1961,7 @@ function integer(num, decimal, maxDecimal) {
   num = ('' + num).replace('.', '');
 
   if (decimal !== maxDecimal) {
-    num += '0'.repeat(maxDecimal - decimal);
+    num += repeat('0', maxDecimal - decimal);
   }
 
   return Number(num);
