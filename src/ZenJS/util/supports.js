@@ -3,7 +3,7 @@ import { supportsPassiveEvent } from "../../shared/supports/passive-event";
 import { supportsEventTarget } from "../../shared/supports/event-target";
 
 
-ZenJS.util.supports = Object.create( true, {
+ZenJS.util.supports = Object.$create( true, {
   passiveEvent: supportsPassiveEvent,
   EventTarget: supportsEventTarget
 });

@@ -2275,7 +2275,7 @@
     returnFalse: returnFalse
   });
 
-  ZenJS.util.supports = Object.create(true, {
+  ZenJS.util.supports = Object.$create(true, {
     passiveEvent: supportsPassiveEvent,
     EventTarget: supportsEventTarget
   });
