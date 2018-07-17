@@ -618,20 +618,6 @@ function $set(array, index, value) {
   array.splice(index, 1, value);
 }
 
-var inBrowser = typeof window !== 'undefined';
-
-inBrowser && defineValue(document, '$id', document.getElementById);
-
-var addEventListener = 'addEventListener';
-
-inBrowser && defineValue(document, '$ready', function (func, data) {
-  if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
-  this[addEventListener]('DOMContentLoaded', function callback(event) {
-    this.removeEventListener(event.type, callback);
-    func.apply(window, data);
-  });
-});
-
 function getDecimalLength(num) {
   return (('' + num).split('.')[1] || '').length;
 }
@@ -1002,6 +988,8 @@ defineValue(StringProto, '$toCapitalize', function $toCapitalize() {
   return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
 });
 
+var inBrowser = typeof window !== 'undefined';
+
 var inNode = typeof global !== 'undefined';
 
 var root = inBrowser ? window : inNode ? global : undefined;
@@ -1077,16 +1065,6 @@ defineValue(root, '$querystring', {
   parse: parse
 });
 
-inBrowser && defineValue(window, '$ready', function (func, data) {
-  var self = this || window;
-
-  if (self.document.readyState === 'complete') return func.apply(self, data);
-  self[addEventListener]('load', function callback(event) {
-    self.removeEventListener(event.type, callback);
-    func.apply(self, data);
-  });
-});
-
 function $typeof(obj) {
   var type;
 
@@ -1126,21 +1104,6 @@ function returnFalse() {
   return false;
 }
 
-var supportsPassiveEvent = false;
-
-try {
-
-  var options = defineProperty({}, 'passive', {
-    get: function () {
-      supportsPassiveEvent = true;
-    }
-  });
-
-  window[addEventListener]('test', null, options);
-} catch (e) {}
-
-var supportsEventTarget = inBrowser && 'EventTarget' in window;
-
 ZenJS.util = $create$1(true, {
 
   isEquals: equals,
@@ -1161,12 +1124,7 @@ ZenJS.util = $create$1(true, {
   defineGet: defineGet,
   defineValue: defineValue,
   returnTrue: returnTrue,
-  returnFalse: returnFalse,
-
-  supports: {
-    passiveEvent: supportsPassiveEvent,
-    EventTarget: supportsEventTarget
-  }
+  returnFalse: returnFalse
 });
 
 module.exports = ZenJS;

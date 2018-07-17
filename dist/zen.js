@@ -2272,12 +2272,12 @@
     defineGet: defineGet,
     defineValue: defineValue,
     returnTrue: returnTrue,
-    returnFalse: returnFalse,
+    returnFalse: returnFalse
+  });
 
-    supports: {
-      passiveEvent: supportsPassiveEvent,
-      EventTarget: supportsEventTarget
-    }
+  ZenJS.util.supports = Object.create(true, {
+    passiveEvent: supportsPassiveEvent,
+    EventTarget: supportsEventTarget
   });
 
 })));

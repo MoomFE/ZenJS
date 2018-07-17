@@ -2266,12 +2266,12 @@ ZenJS.util = $create$1(true, {
   defineGet: defineGet,
   defineValue: defineValue,
   returnTrue: returnTrue,
-  returnFalse: returnFalse,
+  returnFalse: returnFalse
+});
 
-  supports: {
-    passiveEvent: supportsPassiveEvent,
-    EventTarget: supportsEventTarget
-  }
+ZenJS.util.supports = Object.create(true, {
+  passiveEvent: supportsPassiveEvent,
+  EventTarget: supportsEventTarget
 });
 
 export default ZenJS;

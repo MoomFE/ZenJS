@@ -13,8 +13,6 @@ import parametersDefault from "../../shared/util/parametersDefault";
 import parametersRest from "../../shared/util/parametersRest";
 import returnTrue from "../../shared/util/returnTrue";
 import returnFalse from "../../shared/util/returnFalse";
-import { supportsPassiveEvent } from "../../shared/supports/passive-event";
-import { supportsEventTarget } from "../../shared/supports/event-target";
 import define from "../../shared/util/define";
 import defineGet from "../../shared/util/defineGet";
 import defineValue from "../../shared/util/defineValue";
@@ -39,10 +37,5 @@ ZenJS.util = $create( true, {
   defineGet,
   defineValue,
   returnTrue,
-  returnFalse,
-
-  supports: {
-    passiveEvent: supportsPassiveEvent,
-    EventTarget: supportsEventTarget
-  }
+  returnFalse
 });
