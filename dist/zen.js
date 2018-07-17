@@ -847,6 +847,10 @@
     defineValue(ElementProto, options);
   });
 
+  inBrowser && defineValue(ElementProto, '$nodeName', function () {
+    return this.nodeName.toLowerCase();
+  });
+
   inBrowser && defineValue(ElementProto, {
     $parent: function (filter) {
       return Filter(this.parentElement, filter, null, true);

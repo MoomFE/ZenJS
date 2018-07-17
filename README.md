@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 52.56kb | 13.51kb | \|  | UMD       | Browser |
-| zen.min.js         | 20.07kb | 7.42kb | \|  | UMD       | Browser |
-| zen.common.js      | 48.89kb | 13.27kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 48.87kb | 13.26kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 52.68kb | 13.54kb | \|  | UMD       | Browser |
+| zen.min.js         | 20.13kb | 7.43kb | \|  | UMD       | Browser |
+| zen.common.js      | 48.99kb | 13.29kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 48.98kb | 13.28kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
@@ -126,6 +126,7 @@
   - $nextAll
   - $prevAll
   - $siblings
+  - $nodeName
   - $selectText
 
 - EventTarget.prototype
