@@ -1,8 +1,8 @@
 import inBrowser from "../../shared/const/inBrowser";
-import defineValue from "../../shared/util/defineValue";
+import defineGet from "../../shared/util/defineGet";
 import ElementProto from "../../shared/global/Element/prototype/index";
 
 
-inBrowser && defineValue( ElementProto, '$nodeName', function(){
+inBrowser && defineGet( ElementProto, '_nodeName', function(){
   return this.nodeName.toLowerCase();
 });
