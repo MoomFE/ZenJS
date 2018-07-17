@@ -3,7 +3,7 @@ import ArrayProto from "../../shared/global/Array/prototype/index";
 import fixArrayIndex from "../../shared/util/fixArrayIndex";
 
 
-defineValue( ArrayProto, '$set', function( index, value ){
+defineValue( ArrayProto, '$set $edit', function( index, value ){
 
   if( typeof index === 'object' ){
     let key;

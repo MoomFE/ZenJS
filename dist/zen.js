@@ -601,7 +601,7 @@
     });
   });
 
-  defineValue(ArrayProto, '$set', function (index, value) {
+  defineValue(ArrayProto, '$set $edit', function (index, value) {
 
     if (typeof index === 'object') {
       var key;

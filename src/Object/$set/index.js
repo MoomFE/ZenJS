@@ -3,7 +3,7 @@ import defineValue from "../../shared/util/defineValue";
 import ObjectProto from "../../shared/global/Object/prototype/index";
 
 
-defineValue( ObjectProto, '$set', function( key, value ){
+defineValue( ObjectProto, '$set $edit', function( key, value ){
   let _key;
 
   if( isObject( key ) )

@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 52.23kb | 13.45kb | \|  | UMD       | Browser |
+| zen.js             | 52.24kb | 13.46kb | \|  | UMD       | Browser |
 | zen.min.js         | 19.92kb | 7.36kb | \|  | UMD       | Browser |
 | zen.common.js      | 48.57kb | 13.20kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 48.55kb | 13.18kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.esm.js         | 48.56kb | 13.19kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
@@ -86,7 +86,7 @@
   - $inArray
   - $find
   - $findIndex
-  - $set
+  - $set / $edit
   - $move
   - $moveRange
   - $push
@@ -164,7 +164,7 @@
   - $delete / $remove
   - $deleteValue / $removeValue
   - $get
-  - $set
+  - $set / $edit
   - $self
   - \_\_self\_\_
 
