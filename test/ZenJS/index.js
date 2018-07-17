@@ -42,6 +42,24 @@
     }
   });
 
+  Object.defineProperty( window, 'input', {
+    get: function(){
+      return document.createElement('input');
+    }
+  });
+
+  Object.defineProperty( window, 'select', {
+    get: function(){
+      return document.createElement('select');
+    }
+  });
+
+  Object.defineProperty( window, 'option', {
+    get: function(){
+      return document.createElement('option');
+    }
+  });
+
 }();
 
 var toString = function( obj ){

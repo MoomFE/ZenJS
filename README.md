@@ -48,10 +48,10 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 52.68kb | 13.54kb | \|  | UMD       | Browser |
-| zen.min.js         | 20.13kb | 7.43kb | \|  | UMD       | Browser |
-| zen.common.js      | 48.99kb | 13.29kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 48.98kb | 13.28kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 55.51kb | 14.23kb | \|  | UMD       | Browser |
+| zen.min.js         | 21.29kb | 7.86kb | \|  | UMD       | Browser |
+| zen.common.js      | 51.64kb | 13.98kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 51.62kb | 13.96kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
@@ -102,6 +102,7 @@
 
 - Element.prototype
   - \_index
+  - \_nodeName
   - $addClass
   - $removeClass / $deleteClass
   - $hasClass
@@ -128,6 +129,7 @@
   - $siblings
   - $nodeName
   - $selectText
+  - $val
 
 - EventTarget.prototype
   - $data

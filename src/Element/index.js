@@ -13,3 +13,4 @@ import './$remove/index';
 import './$replaceWith/index';
 import './$selectText/index';
 import './$siblings/index';
+import './$val/index';

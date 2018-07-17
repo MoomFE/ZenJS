@@ -665,6 +665,23 @@ inBrowser && define(ElementProto, '_index', {
   }
 });
 
+function defineGet(obj, name, get, options) {
+  var key;
+
+  if (isObject(name)) {
+    for (key in name) {
+      defineGet(obj, key, name[key], options);
+    }
+    return name;
+  }
+
+  return define(obj, name, { get: get }, options || defineGetPropertyOptions), get;
+}
+
+inBrowser && defineGet(ElementProto, '_nodeName', function () {
+  return this.nodeName.toLowerCase();
+});
+
 var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
 if (inBrowser) {
@@ -843,10 +860,6 @@ inBrowser && [['$next', 'nextElementSibling'], ['$prev', 'previousElementSibling
   defineValue(ElementProto, options);
 });
 
-inBrowser && defineValue(ElementProto, '$nodeName', function () {
-  return this.nodeName.toLowerCase();
-});
-
 inBrowser && defineValue(ElementProto, {
   $parent: function (filter) {
     return Filter(this.parentElement, filter, null, true);
@@ -900,6 +913,130 @@ inBrowser && defineValue(ElementProto, '$siblings', function (filter) {
 
   return parent ? Filter($toArray(parent.children).$deleteValue(this), filter) : [];
 });
+
+var rreturn = /\r/g;
+
+inBrowser && defineValue(ElementProto, '$val $value', function (value) {
+  var hooks,
+      result;
+
+  // 读取
+  if (!arguments.length) {
+    // 兼容性处理
+    hooks = valHooks[this.type] || valHooks[this._nodeName];
+
+    if (hooks && 'get' in hooks && (result = hooks.get(this)) !== undefined) {
+      return result;
+    }
+
+    if (isString(result = this.value)) {
+      return result.replace(rreturn, '');
+    }
+
+    return result == null ? '' : result;
+  }
+
+  // 设置
+  if (isFunction(value)) {
+    value = value.call(this, this.$val());
+  }
+
+  if (value == null) {
+    value = '';
+  } else if (isNumber(value)) {
+    value += '';
+  } else if (isArray(value)) {
+    value = value.map(function (val) {
+      return val == null ? '' : val + '';
+    });
+  }
+
+  hooks = valHooks[this.type] || valHooks[this._nodeName];
+
+  if (!hooks || !('set' in hooks) || hooks.set(this, value) === undefined) {
+    this.value = value;
+  }
+
+  return this;
+});
+
+var valHooks = {
+  option: {
+    get: function (elem) {
+      var value = elem.getAttribute('value');
+      return value == null ? (elem.textContent.match(rnothtmlwhite) || []).join(' ') : value;
+    }
+  },
+  select: {
+    get: function (elem) {
+      var options = elem.options;
+      var index = elem.selectedIndex;
+      var one = elem.type === 'select-one';
+      var max = one ? index + 1 : options.length;
+      var values = one ? null : [];
+      var value,
+          option,
+          i;
+
+      if (index < 0) {
+        i = max;
+      } else {
+        i = one ? index : 0;
+      }
+
+      for (; i < max; i++) {
+        option = options[i];
+
+        if ((option.selected || i === index) && !option.disabled && (!option.parentNode.disabled || option.parentNode._nodeName !== 'optgroup')) {
+          value = valHooks.option.get(option);
+
+          if (one) {
+            return value;
+          }
+
+          values.push(value);
+        }
+      }
+
+      return values;
+    },
+    set: function (elem, value) {
+      var options = elem.options;
+      var values = $toArray(value);
+      var i = options.length;
+      var optionSet,
+          option;
+
+      while (i--) {
+        option = options[i];
+
+        if (option.selected = values.$inArray(valHooks.option.get(option))) {
+          optionSet = true;
+        }
+      }
+
+      if (!optionSet) {
+        elem.selectedIndex = -1;
+      }
+
+      return values;
+    }
+  }
+};
+
+var input = document.createElement('input');
+input.type = 'checkbox';
+
+// checkbox 的默认值应该为 'on'
+if (input.value !== '') {
+  ['radio', 'checkbox'].forEach(function (type) {
+    valHooks[type] = {
+      get: function (elem) {
+        return elem.getAttribute('value') === null ? 'on' : elem.value;
+      }
+    };
+  });
+}
 
 function $isEmptyObject(obj) {
   for (var a in obj) {
@@ -1997,19 +2134,6 @@ defineValue(ObjectProto, '$get', function (key) {
 });
 
 defineValue(Object, '$isPlainObject', $isPlainObject);
-
-function defineGet(obj, name, get, options) {
-  var key;
-
-  if (isObject(name)) {
-    for (key in name) {
-      defineGet(obj, key, name[key], options);
-    }
-    return name;
-  }
-
-  return define(obj, name, { get: get }, options || defineGetPropertyOptions), get;
-}
 
 function $self() {
   return this;
