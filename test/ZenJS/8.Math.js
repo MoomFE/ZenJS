@@ -77,6 +77,7 @@ describes.push({
         Math.$divide( 32.77, 10 ).should.equals( 3.277 );
         Math.$divide( 12.32, 7 ).should.equals( 1.76 );
         Math.$divide( 1.1, 10 ).should.equals( 0.11 );
+        Math.$divide( 0.222222, 0.5 ).should.equals( 0.444444 );
       }
     }, {
       name: '$dividePlus',
@@ -84,6 +85,7 @@ describes.push({
         Math.$dividePlus( 32.77, 10 ).should.equals( 3.277 );
         Math.$dividePlus( 12.32, 7 ).should.equals( 1.76 );
         Math.$dividePlus( 1.1, 10 ).should.equals( 0.11 );
+        Math.$dividePlus( 0.222222, 0.5 ).should.equals( 0.444444 );
 
         var nums = [ 6, 5, 4, 3, 2, 1 ];
         Math.$dividePlus.apply( null, nums ).should.equals( 0.05 );
