@@ -1,4 +1,4 @@
-import './$add/index';
+import './$plus/index';
 import './$divide/index';
 import './$mean/index';
 import './$minus/index';

@@ -9,20 +9,20 @@ import returnArg from "../../shared/util/returnArg";
 import repeat from "../../shared/polyfill/repeat";
 
 
-export function $add( num1, num2 ){
-  return handler( num1, num2, add );
+export function $plus( num1, num2 ){
+  return handler( num1, num2, plus );
 }
 
 export function $addPlus(){
-  return handlerPlus( arguments, add );
+  return handlerPlus( arguments, plus );
 }
 
 defineValue( Math, {
-  '$add $jia': $add,
-  '$addPlus $jiaPlus': $addPlus
+  '$plus $jia': $plus,
+  '$plusPlus $jiaPlus': $addPlus
 });
 
-function add( num1, num2 ){
+function plus( num1, num2 ){
   return num1 + num2;
 }
 
@@ -64,6 +64,12 @@ export function handlerPlus( args, reduceFn, lastHandlerFn ){
   );
 }
 
+/**
+ * 将传入数字乘以一定的倍数, 不使用乘法的方式, 防止出现乘法精度不准的问题
+ * @param {Number} num 需要处理的数字
+ * @param {Number} decimal 当前数字的小数位
+ * @param {Number} maxDecimal 最大小数位
+ */
 function integer( num, decimal, maxDecimal ){
   num = ( '' + num ).replace( '.', '' );
 

@@ -8,6 +8,11 @@ var isArray = Array.isArray;
 
 var defineProperty = Object.defineProperty;
 
+/**
+ * 判断传入对象是否是 Object 类型, 并且不为 null
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isObject(obj) {
   return obj !== null && typeof obj === 'object';
 }
@@ -20,6 +25,11 @@ var getPrototypeOf = Object.getPrototypeOf;
 
 var hasOwnProperty = Object.hasOwnProperty;
 
+/**
+ * 判断传入对象是否是 Function 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isFunction(obj) {
   return typeof obj === 'function';
 }
@@ -46,6 +56,11 @@ function $isPlainObject(obj) {
 
 var create = Object.create;
 
+/**
+ * 判断传入对象是否是 Boolean 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isBoolean(obj) {
   return typeof obj === 'boolean';
 }
@@ -116,6 +131,13 @@ function $assign() {
   return target;
 }
 
+/**
+ * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
+ * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+ * @param {String} name 要定义或修改的属性的名称
+ * @param {any} options 将被定义或修改的属性描述符
+ * @param {any} options2 将被定义或修改的属性描述符, 会覆盖前一个 options
+ */
 function define(obj, name, options, options2) {
   var key;
 
@@ -155,6 +177,13 @@ var defineGetPropertyOptions = {
   enumerable: false // 枚举
 };
 
+/**
+ * 在一个对象上定义/修改一个新属性的 value 描述符
+ * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+ * @param {String} name 要定义或修改的属性的名称
+ * @param {Function} value 将被定义或修改的 value 描述符
+ * @param {any} options 将被定义或修改的属性描述符
+ */
 function defineValue(obj, name, value, options) {
   var key;
 
@@ -170,6 +199,13 @@ function defineValue(obj, name, value, options) {
 
 var ArrayProto = Array.prototype;
 
+/**
+ * 获取方法指定位参数, 若未传入参数, 则取默认值
+ * @param {IArguments} args arguments
+ * @param {Number} index 需要在 argument 中取得默认值的下标
+ * @param {any} defaultValue 若未传入值时取得默认值
+ * @returns {any}
+ */
 function parametersDefault(args, index, defaultValue) {
   var arg;
 
@@ -181,6 +217,11 @@ function parametersDefault(args, index, defaultValue) {
 
 var slice = ArrayProto.slice;
 
+/**
+ * 判断传入对象是否是 String 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isString(obj) {
   return typeof obj === 'string';
 }
@@ -205,6 +246,12 @@ function $toArray(value) {
 
 defineValue(Array, '$toArray', $toArray);
 
+/**
+ * 获取方法从指定位开始的剩余参数
+ * @param { IArguments } args arguments
+ * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
+ * @returns {any[]}
+ */
 function parametersRest(args) {
   var index = parametersDefault(arguments, 1, 0);
   var length = args.length;
@@ -215,6 +262,13 @@ function parametersRest(args) {
   return [];
 }
 
+/**
+ * 将一个传入的数组的下标修复到正确的位置上
+ * @param {Array} array 原数组
+ * @param {Number} index 传入的下标, 可为负数
+ * @param {Number} add 额外值
+ * @returns {Number}
+ */
 function fixArrayIndex(array, index, add) {
   if (index < 0 && (index = array.length + index + (add || 0)) < 0) {
     index = 0;
@@ -319,10 +373,22 @@ defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted)
   return returnDeleted ? deleted : this;
 });
 
+/**
+ * 判断传入的两个参数是否全等
+ * @param {any} one 需要判断的第一参数
+ * @param {any} two 需要判断的第二参数
+ * @returns {Boolean}
+ */
 function congruence(one, two) {
   return one === two;
 }
 
+/**
+ * 判断传入的两个参数是否相等
+ * @param {any} one 需要判断的第一参数
+ * @param {any} two 需要判断的第二参数
+ * @returns {Boolean}
+ */
 function equals(one, two) {
   return one == two;
 }
@@ -384,11 +450,20 @@ defineValue(ArrayProto, '$equals', function (obj) {
   return true;
 });
 
+/**
+ * 判断一个对象不是对象类型和方法类型
+ * @param {*} obj 需要判断的对象
+ */
 function unFunctionObject(obj) {
   var type = typeof obj;
   return type !== 'object' && type !== 'function';
 }
 
+/**
+ * 判断传入对象是否是 Number 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isNumber(obj) {
   return typeof obj === 'number';
 }
@@ -616,6 +691,9 @@ function $set(array, index, value) {
   array.splice(index, 1, value);
 }
 
+/**
+ * @type {Boolean} 当前是否是浏览器环境
+ */
 var inBrowser = typeof window !== 'undefined';
 
 inBrowser && defineValue(document, '$id', document.getElementById);
@@ -663,6 +741,13 @@ inBrowser && define(ElementProto, '_index', {
   }
 });
 
+/**
+ * 在一个对象上定义/修改一个新属性的 get 描述符
+ * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+ * @param {String} name 要定义或修改的属性的名称
+ * @param {Function} get 将被定义或修改的 get 描述符
+ * @param {any} options 将被定义或修改的属性描述符
+ */
 function defineGet(obj, name, get, options) {
   var key;
 
@@ -1044,6 +1129,9 @@ function $isEmptyObject(obj) {
 
 defineValue(Object, '$isEmptyObject', $isEmptyObject);
 
+/**
+ * @type {Boolean} 判断当前环境是否支持 EventTarget
+ */
 var supportsEventTarget = inBrowser && 'EventTarget' in window;
 
 var EventTarget = supportsEventTarget ? window.EventTarget.prototype : inBrowser ? [window, document, ElementProto] : undefined;
@@ -1353,10 +1441,16 @@ defineValue(ObjectProto, '$set $edit', function (key, value) {
   return this;
 });
 
+/**
+ * @returns {Boolean} false
+ */
 function returnFalse() {
   return false;
 }
 
+/**
+ * @returns {Boolean} true
+ */
 function returnTrue() {
   return true;
 }
@@ -1679,6 +1773,9 @@ if (inBrowser) {
   ZenJS.EventListener = EventListener;
 }
 
+/**
+ * @type {Boolean} 当前环境是否支持 addEventListener 的 passive 属性
+ */
 var supportsPassiveEvent = false;
 
 try {
@@ -1883,6 +1980,11 @@ inBrowser && defineValue(EventTarget, {
   }
 });
 
+/**
+ * 获取传入数字的小数位长度
+ * @param {Number} num
+ * @returns {Number}
+ */
 function getDecimalLength(num) {
   return (('' + num).split('.')[1] || '').length;
 }
@@ -1891,36 +1993,46 @@ var pow = Math.pow;
 
 var max = Math.max;
 
+/**
+ * 返回传入值
+ * @param {any} arg 
+ * @returns {any} arg
+ */
 function returnArg(arg) {
   return arg;
 }
 
-// String.prototype.repeat
+/**
+ * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
+ * String.prototype.repeat polyfill
+ * @param {String} str 需要重复的字符串
+ * @param {Number} count 需要重复的次数
+ */
 function repeat(str, count) {
   var result = '';
   var i = 0;
 
-  for (; i < count; i++) {
+  for (; i++ < count;) {
     result += str;
   }
 
   return result;
 }
 
-function $add$1(num1, num2) {
-  return handler(num1, num2, add$2);
+function $plus(num1, num2) {
+  return handler(num1, num2, plus);
 }
 
 function $addPlus() {
-  return handlerPlus(arguments, add$2);
+  return handlerPlus(arguments, plus);
 }
 
 defineValue(Math, {
-  '$add $jia': $add$1,
-  '$addPlus $jiaPlus': $addPlus
+  '$plus $jia': $plus,
+  '$plusPlus $jiaPlus': $addPlus
 });
 
-function add$2(num1, num2) {
+function plus(num1, num2) {
   return num1 + num2;
 }
 
@@ -1957,6 +2069,12 @@ function handlerPlus(args, reduceFn, lastHandlerFn) {
   return (lastHandlerFn || returnArg)(nums.reduce(reduceFn) / exponent, exponent, nums);
 }
 
+/**
+ * 将传入数字乘以一定的倍数, 不使用乘法的方式, 防止出现乘法精度不准的问题
+ * @param {Number} num 需要处理的数字
+ * @param {Number} decimal 当前数字的小数位
+ * @param {Number} maxDecimal 最大小数位
+ */
 function integer(num, decimal, maxDecimal) {
   num = ('' + num).replace('.', '');
 
@@ -2161,6 +2279,11 @@ function string$random() {
 
 defineValue(String, '$random', string$random);
 
+/**
+ * 判断传入对象是否是 RegExp 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isRegExp(obj) {
   return toString.call(obj) === '[object RegExp]';
 }
@@ -2217,6 +2340,9 @@ defineValue(StringProto, '$toCapitalize', function $toCapitalize() {
   return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
 });
 
+/**
+ * @type {Boolean} 当前是否是 Node 环境
+ */
 var inNode = typeof global !== 'undefined';
 
 var root = inBrowser ? window : inNode ? global : undefined;

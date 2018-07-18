@@ -1,4 +1,4 @@
-import { handler, handlerPlus } from "../$add/index";
+import { handler, handlerPlus } from "../$plus/index";
 import defineValue from "../../shared/util/defineValue";
 import Math from "../../shared/global/Math/index";
 

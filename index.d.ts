@@ -622,12 +622,12 @@ interface Math {
    * @param num1 数字1
    * @param num2 数字2
    */
-  $add( num1: Number, num2: Number ): Number;
+  $plus( num1: Number, num2: Number ): Number;
   /**
    * 将传入的所有数字进行相加, 不会发生浮点数精度不准的问题
    * @param args 任意个数数字
    */
-  $addPlus( ...args?: Number[] ): Number;
+  $plusPlus( ...args?: Number[] ): Number;
   /**
    * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
    * @param num1 数字1
