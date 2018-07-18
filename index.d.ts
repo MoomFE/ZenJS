@@ -944,11 +944,15 @@ interface ZenJS {
      */
     is: {
       /**
-       * 判断两个参数是否相等
+       * 判断传入的两个参数是否相等
+       * @param one 需要判断的第一参数
+       * @param two 需要判断的第二参数
        */
       equals( one: any, two: any ): Boolean;
       /**
-       * 判断两个参数是否全等
+       * 判断传入的两个参数是否全等
+       * @param one 需要判断的第一参数
+       * @param two 需要判断的第二参数
        */
       congruence( one: any, two: any ): Boolean;
     },
@@ -957,37 +961,37 @@ interface ZenJS {
      */
     types: {
       /**
-       * 判断传入参数是否是数组
+       * 判断传入对象是否是 Array 类型
        * @param obj 需要判断的对象
        */
       isArray( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是逻辑值
+       * 判断传入对象是否是 Boolean 类型
        * @param obj 需要判断的对象
        */
       isBoolean( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是方法
+       * 判断传入对象是否是 Function 类型
        * @param obj 需要判断的对象
        */
       isFunction( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是数字
+       * 判断传入对象是否是 Number 类型
        * @param obj 需要判断的对象
        */
       isNumber( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是对象且不为null
+       * 判断传入对象是否是 Object 类型, 并且不为 null
        * @param obj 需要判断的对象
        */
       isObject( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是正则
+       * 判断传入对象是否是 RegExp 类型
        * @param obj 需要判断的对象
        */
       isRegExp( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是字符串
+       * 判断传入对象是否是 String 类型
        * @param obj 需要判断的对象
        */
       isString( obj: any ): Boolean;
@@ -996,12 +1000,6 @@ interface ZenJS {
      * 方法参数处理
      */
     parameters: {
-      /**
-       * 判断方法指定位参数是否传值
-       * @param args arguments
-       * @param index 需要在 arguments 中判断默认值得下标
-       */
-      has( args: IArguments, index: Number ): any;
       /**
        * 获取方法指定位参数, 若未传入参数, 则取默认值
        * @param args arguments
