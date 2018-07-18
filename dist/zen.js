@@ -2029,14 +2029,7 @@
     return handler(num1, num2, plus);
   }
 
-  function $addPlus() {
-    return handlerPlus(arguments, plus);
-  }
-
-  defineValue(Math, {
-    '$plus $jia': $plus,
-    '$plusPlus $jiaPlus': $addPlus
-  });
+  defineValue(Math, '$plus $jia', $plus);
 
   function plus(num1, num2) {
     return num1 + num2;
@@ -2054,25 +2047,6 @@
     }
 
     return (lastHandlerFn || returnArg)(handlerFn(num1, num2) / exponent, exponent);
-  }
-
-  function handlerPlus(args, reduceFn, lastHandlerFn) {
-    var nums = slice.call(args).map(function (num) {
-      return num || 0;
-    });
-    var decimals = nums.map(function (num) {
-      return getDecimalLength(num);
-    });
-    var maxDecimal = max.apply(null, decimals);
-    var exponent = maxDecimal ? pow(10, maxDecimal) : 1;
-
-    if (maxDecimal) {
-      nums = nums.map(function (num, index) {
-        return integer(num, decimals[index], maxDecimal);
-      });
-    }
-
-    return (lastHandlerFn || returnArg)(nums.reduce(reduceFn) / exponent, exponent, nums);
   }
 
   /**
@@ -2095,14 +2069,7 @@
     return handler(num1, num2, multiply, lastHandler);
   }
 
-  function $multiplyPlus() {
-    return handlerPlus(arguments, multiply, lastHandler);
-  }
-
-  defineValue(Math, {
-    '$multiply $cheng': $multiply,
-    '$multiplyPlus $chengPlus': $multiplyPlus
-  });
+  defineValue(Math, '$multiply $cheng', $multiply);
 
   function multiply(num1, num2) {
     return num1 * num2;
@@ -2120,14 +2087,7 @@
     return handler(num1, num2, divide, lastHandler$1);
   }
 
-  function $dividePlus() {
-    return handlerPlus(arguments, divide, lastHandler$1);
-  }
-
-  defineValue(Math, {
-    '$divide $chu': $divide,
-    '$dividePlus $chuPlus': $dividePlus
-  });
+  defineValue(Math, '$divide $chu', $divide);
 
   function divide(num1, num2) {
     return num1 / num2;
@@ -2152,14 +2112,7 @@
     return handler(num1, num2, minus);
   }
 
-  function $minusPlus() {
-    return handlerPlus(arguments, minus);
-  }
-
-  defineValue(Math, {
-    '$minus $jian': $minus,
-    '$minusPlus $jianPlus': $minusPlus
-  });
+  defineValue(Math, '$minus $jian', $minus);
 
   function minus(num1, num2) {
     return num1 - num2;

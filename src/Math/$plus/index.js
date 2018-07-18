@@ -13,14 +13,7 @@ export function $plus( num1, num2 ){
   return handler( num1, num2, plus );
 }
 
-export function $addPlus(){
-  return handlerPlus( arguments, plus );
-}
-
-defineValue( Math, {
-  '$plus $jia': $plus,
-  '$plusPlus $jiaPlus': $addPlus
-});
+defineValue( Math, '$plus $jia', $plus );
 
 function plus( num1, num2 ){
   return num1 + num2;
@@ -41,26 +34,6 @@ export function handler( num1, num2, handlerFn, lastHandlerFn ){
   return ( lastHandlerFn || returnArg )(
     handlerFn( num1, num2 ) / exponent,
     exponent
-  );
-}
-
-export function handlerPlus( args, reduceFn, lastHandlerFn ){
-  let nums = slice.call( args ).map( num => num || 0 );
-  const decimals = nums.map( num => getDecimalLength( num ) );
-  const maxDecimal = max.apply( null, decimals );
-  const exponent = maxDecimal ? pow( 10, maxDecimal )
-                              : 1;
-
-  if( maxDecimal ){
-    nums = nums.map(( num, index ) => {
-      return integer( num, decimals[ index ], maxDecimal );
-    });
-  }
-
-  return ( lastHandlerFn || returnArg )(
-    nums.reduce( reduceFn ) / exponent,
-    exponent,
-    nums
   );
 }
 

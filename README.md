@@ -141,14 +141,10 @@
   - $emit
 
 - Math
-  - $add / $jia
-  - $addPlus / $jiaPlus
+  - $plus / $jia
   - $minus / $jian
-  - $minusPlus / $jianPlus
   - $multiply / $cheng
-  - $multiplyPlus / $chengPlus
   - $divide / $chu
-  - $dividePlus / $chuPlus
   - $mean
   - $random
   - $randomPlus
