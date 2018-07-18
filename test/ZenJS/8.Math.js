@@ -29,6 +29,8 @@ describes.push({
         Math.$multiply( 32.77, 10 ).should.equals( 327.7 );
         Math.$multiply( 12.32, 7 ).should.equals( 86.24 );
         Math.$multiply( 1.1, 56 ).should.equals( 61.6 );
+        Math.$multiply( 10, 5 ).should.equals( 50 );
+        Math.$multiply( 11, 2 ).should.equals( 22 );
       }
     }, {
       name: '$divide',
