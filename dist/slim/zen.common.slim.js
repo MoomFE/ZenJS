@@ -711,9 +711,6 @@ var max = Math.max;
  * @param {any} arg 
  * @returns {any} arg
  */
-function returnArg(arg) {
-  return arg;
-}
 
 /**
  * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
@@ -736,14 +733,7 @@ function $plus(num1, num2) {
   return handler(num1, num2, plus);
 }
 
-function $addPlus() {
-  return handlerPlus(arguments, plus);
-}
-
-defineValue(Math, {
-  '$plus $jia': $plus,
-  '$plusPlus $jiaPlus': $addPlus
-});
+defineValue(Math, '$plus $jia', $plus);
 
 function plus(num1, num2) {
   return num1 + num2;
@@ -760,26 +750,13 @@ function handler(num1, num2, handlerFn, lastHandlerFn) {
     num2 = integer(num2, decimal2, maxDecimal);
   }
 
-  return (lastHandlerFn || returnArg)(handlerFn(num1, num2) / exponent, exponent);
-}
+  var count = handlerFn(num1, num2);
 
-function handlerPlus(args, reduceFn, lastHandlerFn) {
-  var nums = slice.call(args).map(function (num) {
-    return num || 0;
-  });
-  var decimals = nums.map(function (num) {
-    return getDecimalLength(num);
-  });
-  var maxDecimal = max.apply(null, decimals);
-  var exponent = maxDecimal ? pow(10, maxDecimal) : 1;
-
-  if (maxDecimal) {
-    nums = nums.map(function (num, index) {
-      return integer(num, decimals[index], maxDecimal);
-    });
+  if (lastHandlerFn) {
+    return lastHandlerFn(count, exponent);
   }
 
-  return (lastHandlerFn || returnArg)(nums.reduce(reduceFn) / exponent, exponent, nums);
+  return count / exponent;
 }
 
 /**
@@ -798,52 +775,18 @@ function integer(num, decimal, maxDecimal) {
   return Number(num);
 }
 
-function $multiply(num1, num2) {
-  return handler(num1, num2, multiply, lastHandler);
-}
-
-function $multiplyPlus() {
-  return handlerPlus(arguments, multiply, lastHandler);
-}
-
-defineValue(Math, {
-  '$multiply $cheng': $multiply,
-  '$multiplyPlus $chengPlus': $multiplyPlus
-});
-
-function multiply(num1, num2) {
-  return num1 * num2;
-}
-
-function lastHandler(num, exponent, nums) {
-  return num / getDividend(exponent, nums);
-}
-
-function getDividend(exponent, nums) {
-  return nums ? pow(exponent, nums.length - 1) : exponent;
-}
-
 function $divide(num1, num2) {
-  return handler(num1, num2, divide, lastHandler$1);
+  return handler(num1, num2, divide, lastHandler);
 }
 
-function $dividePlus() {
-  return handlerPlus(arguments, divide, lastHandler$1);
-}
-
-defineValue(Math, {
-  '$divide $chu': $divide,
-  '$dividePlus $chuPlus': $dividePlus
-});
+defineValue(Math, '$divide $chu', $divide);
 
 function divide(num1, num2) {
   return num1 / num2;
 }
 
-function lastHandler$1(num, exponent, nums) {
-  var dividend = getDividend(exponent, nums);
-
-  return getDecimalLength(num) > 0 ? $multiply(num, dividend) : num * dividend;
+function lastHandler(count) {
+  return count;
 }
 
 function $mean() {
@@ -859,17 +802,24 @@ function $minus(num1, num2) {
   return handler(num1, num2, minus);
 }
 
-function $minusPlus() {
-  return handlerPlus(arguments, minus);
-}
-
-defineValue(Math, {
-  '$minus $jian': $minus,
-  '$minusPlus $jianPlus': $minusPlus
-});
+defineValue(Math, '$minus $jian', $minus);
 
 function minus(num1, num2) {
   return num1 - num2;
+}
+
+function $multiply(num1, num2) {
+  return handler(num1, num2, multiply, lastHandler$1);
+}
+
+defineValue(Math, '$multiply $cheng', $multiply);
+
+function multiply(num1, num2) {
+  return num1 * num2;
+}
+
+function lastHandler$1(count, exponent) {
+  return count / pow(exponent, 2);
 }
 
 var random = Math.random;

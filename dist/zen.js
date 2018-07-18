@@ -2004,9 +2004,6 @@
    * @param {any} arg 
    * @returns {any} arg
    */
-  function returnArg(arg) {
-    return arg;
-  }
 
   /**
    * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
@@ -2046,7 +2043,13 @@
       num2 = integer(num2, decimal2, maxDecimal);
     }
 
-    return (lastHandlerFn || returnArg)(handlerFn(num1, num2) / exponent, exponent);
+    var count = handlerFn(num1, num2);
+
+    if (lastHandlerFn) {
+      return lastHandlerFn(count, exponent);
+    }
+
+    return count / exponent;
   }
 
   /**
@@ -2065,26 +2068,8 @@
     return Number(num);
   }
 
-  function $multiply(num1, num2) {
-    return handler(num1, num2, multiply, lastHandler);
-  }
-
-  defineValue(Math, '$multiply $cheng', $multiply);
-
-  function multiply(num1, num2) {
-    return num1 * num2;
-  }
-
-  function lastHandler(num, exponent, nums) {
-    return num / getDividend(exponent, nums);
-  }
-
-  function getDividend(exponent, nums) {
-    return nums ? pow(exponent, nums.length - 1) : exponent;
-  }
-
   function $divide(num1, num2) {
-    return handler(num1, num2, divide, lastHandler$1);
+    return handler(num1, num2, divide, lastHandler);
   }
 
   defineValue(Math, '$divide $chu', $divide);
@@ -2093,10 +2078,8 @@
     return num1 / num2;
   }
 
-  function lastHandler$1(num, exponent, nums) {
-    var dividend = getDividend(exponent, nums);
-
-    return getDecimalLength(num) > 0 ? $multiply(num, dividend) : num * dividend;
+  function lastHandler(count) {
+    return count;
   }
 
   function $mean() {
@@ -2116,6 +2099,20 @@
 
   function minus(num1, num2) {
     return num1 - num2;
+  }
+
+  function $multiply(num1, num2) {
+    return handler(num1, num2, multiply, lastHandler$1);
+  }
+
+  defineValue(Math, '$multiply $cheng', $multiply);
+
+  function multiply(num1, num2) {
+    return num1 * num2;
+  }
+
+  function lastHandler$1(count, exponent) {
+    return count / pow(exponent, 2);
   }
 
   var random = Math.random;

@@ -14,12 +14,6 @@ function multiply( num1, num2 ){
   return num1 * num2;
 }
 
-function lastHandler( num, exponent, nums ){
-  return num /
-         getDividend( exponent, nums );
-}
-
-export function getDividend( exponent, nums ){
-  return nums ? pow( exponent, nums.length - 1 )
-              : exponent;
+function lastHandler( count, exponent ){
+  return count / pow( exponent, 2 );
 }

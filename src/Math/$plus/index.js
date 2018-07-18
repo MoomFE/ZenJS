@@ -25,16 +25,19 @@ export function handler( num1, num2, handlerFn, lastHandlerFn ){
   const maxDecimal = max( decimal1, decimal2 );
   const exponent = maxDecimal ? pow( 10, maxDecimal )
                               : 1;
-  
+
   if( maxDecimal ){
     num1 = integer( num1, decimal1, maxDecimal );
     num2 = integer( num2, decimal2, maxDecimal );
   }
 
-  return ( lastHandlerFn || returnArg )(
-    handlerFn( num1, num2 ) / exponent,
-    exponent
-  );
+  const count = handlerFn( num1, num2 );
+
+  if( lastHandlerFn ){
+    return lastHandlerFn( count, exponent );
+  }
+
+  return count / exponent;
 }
 
 /**
