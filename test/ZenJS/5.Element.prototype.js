@@ -60,6 +60,42 @@ describes.push({
         option._nodeName.should.equals('option');
       }
     }, {
+      name: '_val / _value',
+      it: function(){
+        var input = window.input;
+            input.type = 'text';
+        
+        input._val.should.equals('');
+        input._val = 'ZenJS';
+        input._val.should.equals('ZenJS');
+
+
+        var select = window.select;
+        var option1 = select.appendChild( window.option ).$set( '_val', 0 );
+        var option2 = select.appendChild( window.option ).$set( '_val', 1 );
+
+        select._val.should.equals('0');
+
+        option2.selected = true;
+        select._val.should.equals('1');
+
+        option1._val.should.equals('0');
+        option2._val.should.equals('1');
+
+
+        var select2 = window.select;
+            select2.multiple = true;
+        var option3 = select2.appendChild( window.option ).$set( '_val', 2 );
+        var option4 = select2.appendChild( window.option ).$set( '_val', 3 );
+
+        select2._val = [ '2', '3' ];
+
+        option3.selected.should.true;
+        option4.selected.should.true;
+
+        [ '2', '3' ].$equals( select2._val ).should.true;
+      }
+    }, {
       name: '_width',
       it: function(){
         var div = window.div;
@@ -428,41 +464,6 @@ describes.push({
         span.$siblings('span').$equals([]).should.true;
         span.$siblings('a').$equals([ a ]).should.true;
 
-      }
-    }, {
-      name: '$val',
-      it: function(){
-        var input = window.input;
-            input.type = 'text';
-        
-        input.$val().should.equals('');
-        input.$val('ZenJS').$val().should.equals('ZenJS');
-
-
-        var select = window.select;
-        var option1 = select.appendChild( window.option ).$val( 0 );
-        var option2 = select.appendChild( window.option ).$val( 1 );
-
-        select.$val().should.equals('0');
-
-        option2.selected = true;
-        select.$val().should.equals('1');
-
-        option1.$val().should.equals('0');
-        option2.$val().should.equals('1');
-
-
-        var select2 = window.select;
-            select2.multiple = true;
-        var option3 = select2.appendChild( window.option ).$val( 2 );
-        var option4 = select2.appendChild( window.option ).$val( 3 );
-
-        select2.$val([ '2', '3' ]);
-
-        option3.selected.should.true;
-        option4.selected.should.true;
-
-        [ '2', '3' ].$equals( select2.$val() ).should.true;
       }
     }
   ]

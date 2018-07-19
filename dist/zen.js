@@ -36,7 +36,7 @@
    * @param {any} obj 需要判断的对象
    * @returns {Boolean}
    */
-  function isFunction(obj) {
+  function isFunction$1(obj) {
     return typeof obj === 'function';
   }
 
@@ -57,7 +57,7 @@
 
     var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
 
-    return isFunction(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
+    return isFunction$1(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
   }
 
   var create = Object.create;
@@ -303,7 +303,7 @@
     var i = 0;
     var result = Array(length >>= 0);
 
-    if (isFunction(insert)) {
+    if (isFunction$1(insert)) {
       for (; i < length; i++) {
         result[i] = insert(i);
       }
@@ -477,7 +477,7 @@
   var MAX_SAFE_INTEGER = 9007199254740991;
 
   function $isArrayLike(obj) {
-    if (obj != null && !isFunction(obj)) {
+    if (obj != null && !isFunction$1(obj)) {
       var length = obj.length;
       if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
         return true;
@@ -529,7 +529,7 @@
           }
         }
       }
-    } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
+    } else if (isFunction$1(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
       if (obj2.toString() !== oString) {
         return false;
       }
@@ -585,7 +585,7 @@
   function getPredicate(key) {
     // fn array object
     // 用户传的检测方法
-    if (isFunction(key)) {
+    if (isFunction$1(key)) {
       return key;
     }
 
@@ -771,6 +771,128 @@
     return this.nodeName.toLowerCase();
   });
 
+  var rreturn = /\r/g;
+
+  var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
+
+  inBrowser && define(ElementProto, '_val _value', {
+    get: function () {
+      // 兼容性处理
+      var hooks = valHooks[this.type] || valHooks[this._nodeName];
+      var result;
+
+      if (hooks && 'get' in hooks && (result = hooks.get(this)) !== undefined) {
+        return result;
+      }
+
+      if (isString(result = this.value)) {
+        return result.replace(rreturn, '');
+      }
+
+      return result == null ? '' : result;
+    },
+    set: function (value) {
+
+      if (isFunction(value)) {
+        value = value.call(this, this._val);
+      }
+
+      if (value == null) {
+        value = '';
+      } else if (isNumber(value)) {
+        value += '';
+      } else if (isArray(value)) {
+        value = value.map(function (val) {
+          return val == null ? '' : val + '';
+        });
+      }
+
+      var hooks = valHooks[this.type] || valHooks[this._nodeName];
+
+      if (!hooks || !('set' in hooks) || hooks.set(this, value) === undefined) {
+        this.value = value;
+      }
+    }
+  });
+
+  var valHooks = {
+    option: {
+      get: function (elem) {
+        var value = elem.getAttribute('value');
+        return value == null ? (elem.textContent.match(rnothtmlwhite) || []).join(' ') : value;
+      }
+    },
+    select: {
+      get: function (elem) {
+        var options = elem.options;
+        var index = elem.selectedIndex;
+        var one = elem.type === 'select-one';
+        var max = one ? index + 1 : options.length;
+        var values = one ? null : [];
+        var value,
+            option,
+            i;
+
+        if (index < 0) {
+          i = max;
+        } else {
+          i = one ? index : 0;
+        }
+
+        for (; i < max; i++) {
+          option = options[i];
+
+          if ((option.selected || i === index) && !option.disabled && (!option.parentNode.disabled || option.parentNode._nodeName !== 'optgroup')) {
+            value = valHooks.option.get(option);
+
+            if (one) {
+              return value;
+            }
+
+            values.push(value);
+          }
+        }
+
+        return values;
+      },
+      set: function (elem, value) {
+        var options = elem.options;
+        var values = $toArray(value);
+        var i = options.length;
+        var optionSet,
+            option;
+
+        while (i--) {
+          option = options[i];
+
+          if (option.selected = values.$inArray(valHooks.option.get(option))) {
+            optionSet = true;
+          }
+        }
+
+        if (!optionSet) {
+          elem.selectedIndex = -1;
+        }
+
+        return values;
+      }
+    }
+  };
+
+  var input = document.createElement('input');
+  input.type = 'checkbox';
+
+  // checkbox 的默认值应该为 'on'
+  if (input.value !== '') {
+    ['radio', 'checkbox'].forEach(function (type) {
+      valHooks[type] = {
+        get: function (elem) {
+          return elem.getAttribute('value') === null ? 'on' : elem.value;
+        }
+      };
+    });
+  }
+
   function $isNumber(obj) {
     if (isNumber(obj) || typeof obj === 'string') {
       if (!isNaN(obj - parseFloat(obj))) {
@@ -794,8 +916,6 @@
       }
     });
   });
-
-  var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
   if (inBrowser) {
     var access = function (elem, _className, handle, isToggle) {
@@ -1025,130 +1145,6 @@
 
     return parent ? Filter($toArray(parent.children).$deleteValue(this), filter) : [];
   });
-
-  var rreturn = /\r/g;
-
-  inBrowser && defineValue(ElementProto, '$val $value', function (value) {
-    var hooks,
-        result;
-
-    // 读取
-    if (!arguments.length) {
-      // 兼容性处理
-      hooks = valHooks[this.type] || valHooks[this._nodeName];
-
-      if (hooks && 'get' in hooks && (result = hooks.get(this)) !== undefined) {
-        return result;
-      }
-
-      if (isString(result = this.value)) {
-        return result.replace(rreturn, '');
-      }
-
-      return result == null ? '' : result;
-    }
-
-    // 设置
-    if (isFunction(value)) {
-      value = value.call(this, this.$val());
-    }
-
-    if (value == null) {
-      value = '';
-    } else if (isNumber(value)) {
-      value += '';
-    } else if (isArray(value)) {
-      value = value.map(function (val) {
-        return val == null ? '' : val + '';
-      });
-    }
-
-    hooks = valHooks[this.type] || valHooks[this._nodeName];
-
-    if (!hooks || !('set' in hooks) || hooks.set(this, value) === undefined) {
-      this.value = value;
-    }
-
-    return this;
-  });
-
-  var valHooks = {
-    option: {
-      get: function (elem) {
-        var value = elem.getAttribute('value');
-        return value == null ? (elem.textContent.match(rnothtmlwhite) || []).join(' ') : value;
-      }
-    },
-    select: {
-      get: function (elem) {
-        var options = elem.options;
-        var index = elem.selectedIndex;
-        var one = elem.type === 'select-one';
-        var max = one ? index + 1 : options.length;
-        var values = one ? null : [];
-        var value,
-            option,
-            i;
-
-        if (index < 0) {
-          i = max;
-        } else {
-          i = one ? index : 0;
-        }
-
-        for (; i < max; i++) {
-          option = options[i];
-
-          if ((option.selected || i === index) && !option.disabled && (!option.parentNode.disabled || option.parentNode._nodeName !== 'optgroup')) {
-            value = valHooks.option.get(option);
-
-            if (one) {
-              return value;
-            }
-
-            values.push(value);
-          }
-        }
-
-        return values;
-      },
-      set: function (elem, value) {
-        var options = elem.options;
-        var values = $toArray(value);
-        var i = options.length;
-        var optionSet,
-            option;
-
-        while (i--) {
-          option = options[i];
-
-          if (option.selected = values.$inArray(valHooks.option.get(option))) {
-            optionSet = true;
-          }
-        }
-
-        if (!optionSet) {
-          elem.selectedIndex = -1;
-        }
-
-        return values;
-      }
-    }
-  };
-
-  var input = document.createElement('input');
-  input.type = 'checkbox';
-
-  // checkbox 的默认值应该为 'on'
-  if (input.value !== '') {
-    ['radio', 'checkbox'].forEach(function (type) {
-      valHooks[type] = {
-        get: function (elem) {
-          return elem.getAttribute('value') === null ? 'on' : elem.value;
-        }
-      };
-    });
-  }
 
   function $isEmptyObject(obj) {
     for (var a in obj) {
@@ -1550,7 +1546,7 @@
       enumerable: true,
       configurable: true,
 
-      get: isFunction(get) ? function () {
+      get: isFunction$1(get) ? function () {
         if (this.originalEvent) {
           return get(this.originalEvent);
         }
@@ -2487,7 +2483,7 @@
 
     isArray: isArray,
     isBoolean: isBoolean,
-    isFunction: isFunction,
+    isFunction: isFunction$1,
     isNumber: isNumber,
     isObject: isObject,
     isRegExp: isRegExp,

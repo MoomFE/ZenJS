@@ -1,23 +1,19 @@
 import inBrowser from "../../shared/const/inBrowser";
-import defineValue from "../../shared/util/defineValue";
+import define from "../../shared/util/define";
 import ElementProto from "../../shared/global/Element/prototype/index";
 import isString from "../../shared/util/isString";
 import rreturn from "../../shared/const/rreturn";
-import isFunction from "../../shared/util/isFunction";
 import isNumber from "../../shared/util/isNumber";
 import isArray from "../../shared/global/Array/isArray";
 import rnothtmlwhite from "../../shared/const/rnothtmlwhite";
 import $toArray from "../../Array/$toArray/index";
 
 
-inBrowser && defineValue( ElementProto, '$val $value', function( value ){
-  let hooks,
-      result;
-
-  // 读取
-  if( !arguments.length ){
+inBrowser && define( ElementProto, '_val _value', {
+  get(){
     // 兼容性处理
-    hooks = valHooks[ this.type ] || valHooks[ this._nodeName ];
+    const hooks = valHooks[ this.type ] || valHooks[ this._nodeName ];
+    let result;
 
     if( hooks && 'get' in hooks && ( result = hooks.get( this ) ) !== undefined ){
       return result;
@@ -28,31 +24,30 @@ inBrowser && defineValue( ElementProto, '$val $value', function( value ){
     }
 
     return result == null ? '' : result;
-  }
+  },
+  set( value ){
 
-  // 设置
-  if( isFunction( value ) ){
-    value = value.call( this, this.$val() );
-  }
+    if( isFunction( value ) ){
+      value = value.call( this, this._val );
+    }
 
-  if( value == null ){
-    value = '';
-  }
-  else if( isNumber( value ) ){
-    value += '';
-  }
-  else if( isArray( value ) ){
-    value = value.map( val => val == null ? '' : val + '' );
-  }
+    if( value == null ){
+      value = '';
+    }
+    else if( isNumber( value ) ){
+      value += '';
+    }
+    else if( isArray( value ) ){
+      value = value.map( val => val == null ? '' : val + '' );
+    }
 
-  hooks = valHooks[ this.type ] || valHooks[ this._nodeName ];
+    const hooks = valHooks[ this.type ] || valHooks[ this._nodeName ];
 
-  if( !hooks || !( 'set' in hooks ) || hooks.set( this, value ) === undefined ){
-    this.value = value;
+    if( !hooks || !( 'set' in hooks ) || hooks.set( this, value ) === undefined ){
+      this.value = value;
+    }
   }
-
-  return this;
-});
+})
 
 
 const valHooks = {

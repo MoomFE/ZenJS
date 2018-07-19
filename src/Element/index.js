@@ -1,5 +1,6 @@
 import './_index/index';
 import './_nodeName/index';
+import './_val/index';
 import './_width/index';
 import './$addClass/index';
 import './$append/index';
@@ -14,4 +15,3 @@ import './$remove/index';
 import './$replaceWith/index';
 import './$selectText/index';
 import './$siblings/index';
-import './$val/index';
