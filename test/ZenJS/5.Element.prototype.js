@@ -50,6 +50,38 @@ describes.push({
 
       }
     }, {
+      name: '_nodeName',
+      it: function(){
+        div._nodeName.should.equals('div');
+        a._nodeName.should.equals('a');
+        span._nodeName.should.equals('span');
+        input._nodeName.should.equals('input');
+        select._nodeName.should.equals('select');
+        option._nodeName.should.equals('option');
+      }
+    }, {
+      name: '_width',
+      it: function(){
+        var div = window.div;
+
+        div._width.should.equals( 0 );
+
+        div._width = 123;
+        div._width.should.equals( 0 );
+        div.style.width.should.equals('123px');
+      }
+    }, {
+      name: '_height',
+      it: function(){
+        var div = window.div;
+
+        div._height.should.equals( 0 );
+
+        div._height = 123;
+        div._height.should.equals( 0 );
+        div.style.height.should.equals('123px');
+      }
+    }, {
       name: '$addClass',
       it: function(){
 

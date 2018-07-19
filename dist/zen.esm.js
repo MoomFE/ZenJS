@@ -765,6 +765,30 @@ inBrowser && defineGet(ElementProto, '_nodeName', function () {
   return this.nodeName.toLowerCase();
 });
 
+function $isNumber(obj) {
+  if (isNumber(obj) || typeof obj === 'string') {
+    if (!isNaN(obj - parseFloat(obj))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+defineValue(Number, '$isNumber', $isNumber);
+
+inBrowser && ['width', 'height'].forEach(function (prop) {
+  var name = '_' + prop;
+
+  define(ElementProto, name, {
+    get: function () {
+      return this.getBoundingClientRect()[prop];
+    },
+    set: function (value) {
+      this.style[prop] = $isNumber(value) ? value + 'px' : value;
+    }
+  });
+});
+
 var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
 if (inBrowser) {
@@ -2150,17 +2174,6 @@ function _randomParameters(args) {
 function _random(from, to) {
   return floor(random() * (to - from + 1) + from);
 }
-
-function $isNumber(obj) {
-  if (isNumber(obj) || typeof obj === 'string') {
-    if (!isNaN(obj - parseFloat(obj))) {
-      return true;
-    }
-  }
-  return false;
-}
-
-defineValue(Number, '$isNumber', $isNumber);
 
 defineValue(Object, '$assign', $assign);
 

@@ -210,6 +210,21 @@ interface Element {
    */
   _index: Number;
   /**
+   * 读取时获取元素的小写 nodeName
+   * 不可写入
+   */
+  _nodeName: String;
+  /**
+   * 读取时返回元素的宽度
+   * 写入时设置元素的宽度
+   */
+  _width: Number;
+  /**
+   * 读取时返回元素的高度
+   * 写入时设置元素的高度
+   */
+  _height: Number;
+  /**
    * 向元素添加一个或多个类
    * @param className 类名
    */
