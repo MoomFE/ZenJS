@@ -36,7 +36,7 @@
    * @param {any} obj 需要判断的对象
    * @returns {Boolean}
    */
-  function isFunction$1(obj) {
+  function isFunction(obj) {
     return typeof obj === 'function';
   }
 
@@ -57,7 +57,7 @@
 
     var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
 
-    return isFunction$1(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
+    return isFunction(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
   }
 
   var create = Object.create;
@@ -303,7 +303,7 @@
     var i = 0;
     var result = Array(length >>= 0);
 
-    if (isFunction$1(insert)) {
+    if (isFunction(insert)) {
       for (; i < length; i++) {
         result[i] = insert(i);
       }
@@ -477,7 +477,7 @@
   var MAX_SAFE_INTEGER = 9007199254740991;
 
   function $isArrayLike(obj) {
-    if (obj != null && !isFunction$1(obj)) {
+    if (obj != null && !isFunction(obj)) {
       var length = obj.length;
       if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
         return true;
@@ -529,7 +529,7 @@
           }
         }
       }
-    } else if (isFunction$1(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
+    } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
       if (obj2.toString() !== oString) {
         return false;
       }
@@ -585,7 +585,7 @@
   function getPredicate(key) {
     // fn array object
     // 用户传的检测方法
-    if (isFunction$1(key)) {
+    if (isFunction(key)) {
       return key;
     }
 
@@ -1546,7 +1546,7 @@
       enumerable: true,
       configurable: true,
 
-      get: isFunction$1(get) ? function () {
+      get: isFunction(get) ? function () {
         if (this.originalEvent) {
           return get(this.originalEvent);
         }
@@ -2483,7 +2483,7 @@
 
     isArray: isArray,
     isBoolean: isBoolean,
-    isFunction: isFunction$1,
+    isFunction: isFunction,
     isNumber: isNumber,
     isObject: isObject,
     isRegExp: isRegExp,
