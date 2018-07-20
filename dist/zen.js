@@ -2413,6 +2413,12 @@
     });
   });
 
+  var NumberProto = Number.prototype;
+
+  var BooleanProto = Boolean.prototype;
+
+  var FunctionProto = Function.prototype;
+
   function $typeof(obj) {
     var type;
 
@@ -2424,6 +2430,12 @@
   }
 
   defineValue(root, '$typeof', $typeof);
+
+  defineGet(ArrayProto, '__isArray__', returnTrue);
+  defineGet(StringProto, '__isString__', returnTrue);
+  defineGet(NumberProto, '__isNumber__', returnTrue);
+  defineGet(BooleanProto, '__isBoolean__', returnTrue);
+  defineGet(FunctionProto, '__isFunction__', returnTrue);
 
   var inject = $create$1(true);
 

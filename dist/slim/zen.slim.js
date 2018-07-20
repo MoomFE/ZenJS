@@ -1159,6 +1159,19 @@
     parse: parse
   });
 
+  var NumberProto = Number.prototype;
+
+  var BooleanProto = Boolean.prototype;
+
+  var FunctionProto = Function.prototype;
+
+  /**
+   * @returns {Boolean} true
+   */
+  function returnTrue() {
+    return true;
+  }
+
   function $typeof(obj) {
     var type;
 
@@ -1170,6 +1183,12 @@
   }
 
   defineValue(root, '$typeof', $typeof);
+
+  defineGet(ArrayProto, '__isArray__', returnTrue);
+  defineGet(StringProto, '__isString__', returnTrue);
+  defineGet(NumberProto, '__isNumber__', returnTrue);
+  defineGet(BooleanProto, '__isBoolean__', returnTrue);
+  defineGet(FunctionProto, '__isFunction__', returnTrue);
 
   /**
    * ZenJS
@@ -1189,13 +1208,6 @@
       return guid++;
     }
   });
-
-  /**
-   * @returns {Boolean} true
-   */
-  function returnTrue() {
-    return true;
-  }
 
   /**
    * @returns {Boolean} false
