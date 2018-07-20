@@ -1,5 +1,7 @@
 /*!
  * Zen.js v2.3.0
+ * https://github.com/MoomFE/ZenJS
+ * 
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
