@@ -93,7 +93,7 @@ function get( key, json ){
     }
 
     try {
-      name = decode[ parts[ 0 ] ];
+      name = decode( parts[ 0 ] );
       cookie = decode( cookie );
 
       if( json ){
