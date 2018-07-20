@@ -899,7 +899,11 @@ inBrowser && ['width', 'height'].forEach(function (prop) {
 
   define(ElementProto, name, {
     get: function () {
-      return this.getBoundingClientRect()[prop];
+      try {
+        return this.getBoundingClientRect()[prop];
+      } catch (error) {
+        return 0;
+      }
     },
     set: function (value) {
       this.style[prop] = $isNumber(value) ? value + 'px' : value;
