@@ -787,10 +787,6 @@ inBrowser && define(ElementProto, '_val _value', {
   },
   set: function (value) {
 
-    if (isFunction(value)) {
-      value = value.call(this, this._val);
-    }
-
     if (value == null) {
       value = '';
     } else if (isNumber(value)) {

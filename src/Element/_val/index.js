@@ -7,7 +7,6 @@ import isNumber from "../../shared/util/isNumber";
 import isArray from "../../shared/global/Array/isArray";
 import rnothtmlwhite from "../../shared/const/rnothtmlwhite";
 import $toArray from "../../Array/$toArray/index";
-import isFunction from "../../shared/util/isFunction";
 
 
 inBrowser && define( ElementProto, '_val _value', {
@@ -28,10 +27,6 @@ inBrowser && define( ElementProto, '_val _value', {
   },
   set( value ){
 
-    if( isFunction( value ) ){
-      value = value.call( this, this._val );
-    }
-
     if( value == null ){
       value = '';
     }
@@ -47,8 +42,9 @@ inBrowser && define( ElementProto, '_val _value', {
     if( !hooks || !( 'set' in hooks ) || hooks.set( this, value ) === undefined ){
       this.value = value;
     }
+
   }
-})
+});
 
 
 const valHooks = {
