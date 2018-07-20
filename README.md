@@ -48,18 +48,18 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 58.25kb | 15.26kb | \|  | UMD       | Browser |
-| zen.min.js         | 21.14kb | 7.86kb | \|  | UMD       | Browser |
-| zen.common.js      | 54.13kb | 14.96kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 54.12kb | 14.95kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 58.33kb | 15.28kb | \|  | UMD       | Browser |
+| zen.min.js         | 21.18kb | 7.89kb | \|  | UMD       | Browser |
+| zen.common.js      | 54.20kb | 14.98kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 54.19kb | 14.97kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.slim.js        | 26.71kb | 7.36kb | \|  | UMD       | Browser |
-| zen.slim.min.js    | 9.96kb | 3.80kb | \|  | UMD       | Browser |
-| zen.common.slim.js | 24.67kb | 7.20kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.slim.js    | 24.65kb | 7.19kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.slim.js        | 26.79kb | 7.38kb | \|  | UMD       | Browser |
+| zen.slim.min.js    | 10.00kb | 3.83kb | \|  | UMD       | Browser |
+| zen.common.slim.js | 24.74kb | 7.22kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.slim.js    | 24.72kb | 7.20kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 

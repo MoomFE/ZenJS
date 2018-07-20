@@ -471,12 +471,12 @@
   });
 
   /**
-   * 判断一个对象不是对象类型和方法类型
+   * 判断一个对象是否是引用类型
    * @param {*} obj 需要判断的对象
    */
-  function unFunctionObject(obj) {
+  function isReferenceType(obj) {
     var type = typeof obj;
-    return type !== 'object' && type !== 'function';
+    return type === 'object' || type === 'function';
   }
 
   /**
@@ -521,7 +521,7 @@
       return false;
     } else if (toString.call(obj) !== toString.call(obj2)) {
       return false;
-    } else if (unFunctionObject(obj)) {
+    } else if (!isReferenceType(obj)) {
       return false;
     } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
       if (oIsArray) {
@@ -575,7 +575,7 @@
 
     // 第一个参数不是数组或对象
     // 将所有传入参数转为数组
-    if (unFunctionObject(key)) {
+    if (!isReferenceType(key)) {
       key = $toArray(args);
     }
 
@@ -1228,6 +1228,7 @@
     isObject: isObject,
     isRegExp: isRegExp,
     isString: isString,
+    isReferenceType: isReferenceType,
 
     parametersDefault: parametersDefault,
     parametersRest: parametersRest,
@@ -1236,7 +1237,9 @@
     defineGet: defineGet,
     defineValue: defineValue,
     returnTrue: returnTrue,
-    returnFalse: returnFalse
+    returnFalse: returnFalse,
+
+    getDecimalLength: getDecimalLength
   });
 
 })));

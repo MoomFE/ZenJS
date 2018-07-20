@@ -2,7 +2,7 @@ import defineValue from "../../shared/util/defineValue";
 import ArrayProto from "../../shared/global/Array/prototype/index";
 import isFunction from "../../shared/util/isFunction";
 import $toArray from "../$toArray/index";
-import unFunctionObject from "../../shared/util/unFunctionObject";
+import isReferenceType from "../../shared/util/isReferenceType";
 import $isArrayLike from "../$isArrayLike/index";
 import $chunk from "../$chunk/index";
 import isArray from "../../shared/global/Array/isArray";
@@ -23,7 +23,7 @@ export default function findIndex( self, key, args ){
 
   // 第一个参数不是数组或对象
   // 将所有传入参数转为数组
-  if( unFunctionObject( key ) ){
+  if( !isReferenceType( key ) ){
     key = $toArray( args );
   }
 

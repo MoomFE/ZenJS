@@ -16,6 +16,8 @@ import returnFalse from "../../shared/util/returnFalse";
 import define from "../../shared/util/define";
 import defineGet from "../../shared/util/defineGet";
 import defineValue from "../../shared/util/defineValue";
+import isReferenceType from "../../shared/util/isReferenceType";
+import getDecimalLength from "../../shared/util/getDecimalLength";
 
 ZenJS.util = $create( true, {
 
@@ -29,6 +31,7 @@ ZenJS.util = $create( true, {
   isObject,
   isRegExp,
   isString,
+  isReferenceType,
 
   parametersDefault,
   parametersRest,
@@ -37,5 +40,7 @@ ZenJS.util = $create( true, {
   defineGet,
   defineValue,
   returnTrue,
-  returnFalse
+  returnFalse,
+
+  getDecimalLength
 });

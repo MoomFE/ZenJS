@@ -4,5 +4,5 @@
  * @returns {Number}
  */
 export default function getDecimalLength( num ){
-  return ( ( '' + num ).split('.')[1] || '' ).length
+  return ( ( '' + num ).split('.')[1] || '' ).length;
 }
