@@ -1926,7 +1926,7 @@
         if (!tmp || tmp.test(handleOptions.namespaceStr)) {
           // 检查事件委托
           if (!handleOptions.selector) {
-            handleOptions.handle.apply(null, data.$unshift(type));
+            handleOptions.handle.apply(null, [type].concat(data));
           }
         }
       }
