@@ -38,6 +38,12 @@ function isFunction(obj) {
   return typeof obj === 'function';
 }
 
+/**
+ * Transplant from jQuery
+ * Version: 3.3.1
+ * Homepage: https://jquery.com
+ */
+
 var fnToString = hasOwnProperty.toString,
     ObjectFunctionString = fnToString.call(Object);
 
@@ -68,6 +74,12 @@ var create = Object.create;
 function isBoolean(obj) {
   return typeof obj === 'boolean';
 }
+
+/**
+ * Transplant from jQuery
+ * Version: 3.3.1
+ * Homepage: https://jquery.com
+ */
 
 function $assign() {
 

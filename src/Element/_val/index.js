@@ -9,6 +9,13 @@ import rnothtmlwhite from "../../shared/const/rnothtmlwhite";
 import $toArray from "../../Array/$toArray/index";
 
 
+/**
+ * Transplant from jQuery
+ * Version: 3.3.1
+ * Homepage: https://jquery.com
+ */
+
+
 inBrowser && define( ElementProto, '_val _value', {
   get(){
     // 兼容性处理
