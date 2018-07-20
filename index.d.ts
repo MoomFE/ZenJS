@@ -184,6 +184,39 @@ interface Array<T> {
 
 interface Document {
   /**
+   * 设置页面 cookie
+   * @param key 需要设置的 cookie 的名称
+   * @param value 需要设置的 cookie 的值
+   * @param attributes cookie 的配置
+   */
+  $cookie( key: String, value: String, attributes?: any ): String;
+  /**
+   * 读取传入名称的页面 cookie
+   * @param value 需要读取的 cookie 的值
+   */
+  $cookie( key: String ): String | undefined;
+  /**
+   * 读取页面所有 cookie, 以键值对返回
+   */
+  $cookie(): any;
+  /**
+   * 删除页面指定 cookie
+   * @param key 需要删除的 cookie 名称
+   * @param attributes cookie 的配置
+   */
+  $deleteCookie( key: String, attributes?: any );
+  /**
+   * 删除页面指定 cookie
+   * @param key 需要删除的 cookie 名称
+   * @param attributes cookie 的配置
+   */
+  $removeCookie( key: String, attributes?: any );
+  /**
+   * document.getElementById 的引用
+   * @param elmentId ID
+   */
+  $id( elmentId: String ): Element;
+  /**
    * 页面加载完成后执行传入代码
    * -- 方法可以用 function[ call / apply ] 的方式使用, 可传入其他 document, 比如 iframe 的 document
    * 

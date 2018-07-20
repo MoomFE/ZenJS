@@ -48,18 +48,18 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 58.33kb | 15.28kb | \|  | UMD       | Browser |
-| zen.min.js         | 21.18kb | 7.89kb | \|  | UMD       | Browser |
-| zen.common.js      | 54.20kb | 14.98kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 54.19kb | 14.97kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 61.21kb | 16.15kb | \|  | UMD       | Browser |
+| zen.min.js         | 22.35kb | 8.38kb | \|  | UMD       | Browser |
+| zen.common.js      | 56.91kb | 15.84kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 56.89kb | 15.83kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Slim : No DOM API
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.slim.js        | 26.79kb | 7.38kb | \|  | UMD       | Browser |
-| zen.slim.min.js    | 10.00kb | 3.83kb | \|  | UMD       | Browser |
-| zen.common.slim.js | 24.74kb | 7.22kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.slim.js    | 24.72kb | 7.20kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.slim.js        | 29.67kb | 8.24kb | \|  | UMD       | Browser |
+| zen.slim.min.js    | 11.13kb | 4.33kb | \|  | UMD       | Browser |
+| zen.common.slim.js | 27.45kb | 8.05kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.slim.js    | 27.43kb | 8.03kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -95,6 +95,8 @@
   - $shift
 
 - document
+  - $cookie
+  - $deleteCookie / $removeCookie
   - $id
   - $ready
   - $query
@@ -107,7 +109,7 @@
   - \_height
   - \_val / \_value
   - $addClass
-  - $removeClass / $deleteClass
+  - $deleteClass / $removeClass
   - $hasClass
   - $toggleClass
   - $append

@@ -3,6 +3,7 @@ import { supportsEventTarget } from "../../supports/event-target";
 import defineValue from "../../util/defineValue";
 import { addEventListener, removeEventListener, addEventListenerPrivate, removeEventListenerPrivate } from "../../const/event";
 import inBrowser from "../../const/inBrowser";
+import document from "../Document/index";
 
 const EventTarget = supportsEventTarget
                       ? window.EventTarget.prototype
