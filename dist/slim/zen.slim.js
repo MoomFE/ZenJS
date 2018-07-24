@@ -1285,10 +1285,6 @@
     parse: parse$1
   });
 
-  var NumberProto = Number.prototype;
-
-  var BooleanProto = Boolean.prototype;
-
   var FunctionProto = Function.prototype;
 
   /**
@@ -1310,11 +1306,11 @@
 
   defineValue(root, '$typeof', $typeof);
 
-  defineGet(ArrayProto, '__isArray__', returnTrue);
-  defineGet(StringProto, '__isString__', returnTrue);
-  defineGet(NumberProto, '__isNumber__', returnTrue);
-  defineGet(BooleanProto, '__isBoolean__', returnTrue);
-  defineGet(FunctionProto, '__isFunction__', returnTrue);
+  // defineGet( ArrayProto, '__isArray__', returnTrue );
+  // defineGet( StringProto, '__isString__', returnTrue );
+  // defineGet( NumberProto, '__isNumber__', returnTrue );
+  // defineGet( BooleanProto, '__isBoolean__', returnTrue );
+  // defineGet( FunctionProto, '__isFunction__', returnTrue );
 
   /**
    * ZenJS

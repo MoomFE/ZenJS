@@ -860,6 +860,15 @@
 
   var ElementProto = inBrowser ? Element.prototype : undefined;
 
+  inBrowser && define(ElementProto, '_html', {
+    get: function () {
+      return this.innerHTML;
+    },
+    set: function (value) {
+      this.innerHTML = value;
+    }
+  });
+
   var min = Math.min;
 
   inBrowser && define(ElementProto, '_index', {
@@ -2539,10 +2548,6 @@
     });
   });
 
-  var NumberProto = Number.prototype;
-
-  var BooleanProto = Boolean.prototype;
-
   var FunctionProto = Function.prototype;
 
   function $typeof(obj) {
@@ -2557,11 +2562,11 @@
 
   defineValue(root, '$typeof', $typeof);
 
-  defineGet(ArrayProto, '__isArray__', returnTrue);
-  defineGet(StringProto, '__isString__', returnTrue);
-  defineGet(NumberProto, '__isNumber__', returnTrue);
-  defineGet(BooleanProto, '__isBoolean__', returnTrue);
-  defineGet(FunctionProto, '__isFunction__', returnTrue);
+  // defineGet( ArrayProto, '__isArray__', returnTrue );
+  // defineGet( StringProto, '__isString__', returnTrue );
+  // defineGet( NumberProto, '__isNumber__', returnTrue );
+  // defineGet( BooleanProto, '__isBoolean__', returnTrue );
+  // defineGet( FunctionProto, '__isFunction__', returnTrue );
 
   var inject = $create$1(true);
 

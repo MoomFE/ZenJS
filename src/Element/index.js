@@ -1,3 +1,4 @@
+import './_html/index';
 import './_index/index';
 import './_nodeName/index';
 import './_val/index';

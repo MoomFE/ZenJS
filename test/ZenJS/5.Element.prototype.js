@@ -2,6 +2,13 @@ describes.push({
   name: 'Element.prototype',
   describe: [
     {
+      name: '_html',
+      it: function(){
+        var div = window.div;
+        div._html = 123;
+        div._html.should.equals('123');
+      }
+    }, {
       name: '_index',
       it: function(){
 
