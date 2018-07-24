@@ -72,6 +72,38 @@ interface Array<T> {
    */
   $equals( obj: any[], congruence?: true ): Boolean;
   /**
+   * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param obj 需要筛选的一组 key: value 键值对
+   */
+  $find( obj: any ) : Number;
+  /**
+   * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
+   */
+  $find( arr: any[] ) : Number;
+  /**
+   * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param key 需要匹配的 key 值
+   * @param value 需要匹配的 value 值
+   */
+  $find( key: any, value: any ) : Number;
+  /**
+   * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
+   * @param obj 需要筛选的一组 key: value 键值对
+   */
+  $findIndex( obj: any ) : Number;
+  /**
+   * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
+   * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
+   */
+  $findIndex( arr: any[] ) : Number;
+  /**
+   * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
+   * @param key 需要匹配的 key 值
+   * @param value 需要匹配的 value 值
+   */
+  $findIndex( key: any, value: any ) : Number;
+  /**
    * 获取指定下标的对象
    * @param index 需要获取的对象的下标 - default: 0
    */
@@ -152,6 +184,39 @@ interface Array<T> {
 
 interface Document {
   /**
+   * 设置页面 cookie
+   * @param key 需要设置的 cookie 的名称
+   * @param value 需要设置的 cookie 的值
+   * @param attributes cookie 的配置
+   */
+  $cookie( key: String, value: String, attributes?: any ): String;
+  /**
+   * 读取传入名称的页面 cookie
+   * @param value 需要读取的 cookie 的值
+   */
+  $cookie( key: String ): String | undefined;
+  /**
+   * 读取页面所有 cookie, 以键值对返回
+   */
+  $cookie(): any;
+  /**
+   * 删除页面指定 cookie
+   * @param key 需要删除的 cookie 名称
+   * @param attributes cookie 的配置
+   */
+  $deleteCookie( key: String, attributes?: any );
+  /**
+   * 删除页面指定 cookie
+   * @param key 需要删除的 cookie 名称
+   * @param attributes cookie 的配置
+   */
+  $removeCookie( key: String, attributes?: any );
+  /**
+   * document.getElementById 的引用
+   * @param elmentId ID
+   */
+  $id( elmentId: String ): Element;
+  /**
    * 页面加载完成后执行传入代码
    * -- 方法可以用 function[ call / apply ] 的方式使用, 可传入其他 document, 比如 iframe 的 document
    * 
@@ -178,6 +243,31 @@ interface Element {
    */
   _index: Number;
   /**
+   * 读取时获取元素的小写 nodeName
+   * 不可写入
+   */
+  _nodeName: String;
+  /**
+   * 读取时返回元素的宽度
+   * 写入时设置元素的宽度
+   */
+  _width: Number;
+  /**
+   * 读取时返回元素的高度
+   * 写入时设置元素的高度
+   */
+  _height: Number;
+  /**
+   * 读取时返回元素的 value 值
+   * 写入时设置元素的 value 值
+   */
+  _val: String;
+  /**
+   * 读取时返回元素的 innerHTML 值
+   * 写入时设置元素的 innerHTML 值
+   */
+  _html: String;
+  /**
    * 向元素添加一个或多个类
    * @param className 类名
    */
@@ -198,6 +288,26 @@ interface Element {
    * @param toggle 若值为 true, 则规定只添加类, 反之只移除
    */
   $toggleClass( className: Stirng, toggle: Boolean ): Element;
+  /**
+   * 添加元素到当前元素内的尾部
+   * @param elem 需要添加的元素
+   */
+  $append( elem: Element ): Element;
+  /**
+   * 添加元素到当前元素内的头部
+   * @param elem 需要添加的元素
+   */
+  $prepend( elem: Element ): Element;
+  /**
+   * 将元素插入到当前元素前面
+   * @param elem 需要插入的元素
+   */
+  $before( elem: Element ): Element;
+  /**
+   * 将元素插入到当前元素后面
+   * @param elem 需要插入的元素
+   */
+  $after( elem: Element ): Element;
   /**
    * 获取当前节点下的所有匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回所有子节点
@@ -286,10 +396,28 @@ interface Element {
    */
   $query( selectors ): NodeListOf<Element>;
   /**
-   * 调用原生  querySelector 方法
+   * 调用原生 querySelector 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $queryFirst( selectors ): Element;
+  /**
+   * 移除当前节点
+   */
+  $delete();
+  /**
+   * 移除当前节点
+   */
+  $remove();
+  /**
+   * 将当前元素替换为新的元素
+   * @param elem 
+   */
+  $replaceWith( elem: Element );
+  /**
+   * 将当前元素替换为新的元素
+   * @param elem 
+   */
+  $replace( elem: Element );
   /**
    * 获取当前节点的所有符合过滤条件的兄弟节点
    * 若未传入过滤条件, 则直接返回当前节点的所有兄弟节点
@@ -548,6 +676,54 @@ interface EventTarget{
 
 interface Math {
   /**
+   * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $plus( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $minus( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $multiply( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $divide( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $jia( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $jian( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $cheng( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $chu( num1: Number, num2: Number ): Number;
+  /**
    * 传入多个数字, 求出传入参数的平均值
    * @param args 任意个数数字
    */
@@ -672,8 +848,9 @@ interface ObjectConstructor {
 interface String {
   /**
    * 将字符串首字母大写
+   * @param ignoreNext 是否忽略除首字母外小写的操作
    */
-  $toCapitalize(): String;
+  $toCapitalize( ignoreNext?: Boolean ): String;
   /**
    * 对当前字符串进行全局替换
    * @param searchValue 匹配字符串中被替换的部分
@@ -786,11 +963,15 @@ interface ZenJS {
      */
     is: {
       /**
-       * 判断两个参数是否相等
+       * 判断传入的两个参数是否相等
+       * @param one 需要判断的第一参数
+       * @param two 需要判断的第二参数
        */
       equals( one: any, two: any ): Boolean;
       /**
-       * 判断两个参数是否全等
+       * 判断传入的两个参数是否全等
+       * @param one 需要判断的第一参数
+       * @param two 需要判断的第二参数
        */
       congruence( one: any, two: any ): Boolean;
     },
@@ -799,37 +980,37 @@ interface ZenJS {
      */
     types: {
       /**
-       * 判断传入参数是否是数组
+       * 判断传入对象是否是 Array 类型
        * @param obj 需要判断的对象
        */
       isArray( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是逻辑值
+       * 判断传入对象是否是 Boolean 类型
        * @param obj 需要判断的对象
        */
       isBoolean( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是方法
+       * 判断传入对象是否是 Function 类型
        * @param obj 需要判断的对象
        */
       isFunction( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是数字
+       * 判断传入对象是否是 Number 类型
        * @param obj 需要判断的对象
        */
       isNumber( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是对象且不为null
+       * 判断传入对象是否是 Object 类型, 并且不为 null
        * @param obj 需要判断的对象
        */
       isObject( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是正则
+       * 判断传入对象是否是 RegExp 类型
        * @param obj 需要判断的对象
        */
       isRegExp( obj: any ): Boolean;
       /**
-       * 判断传入对象是否是字符串
+       * 判断传入对象是否是 String 类型
        * @param obj 需要判断的对象
        */
       isString( obj: any ): Boolean;
@@ -838,12 +1019,6 @@ interface ZenJS {
      * 方法参数处理
      */
     parameters: {
-      /**
-       * 判断方法指定位参数是否传值
-       * @param args arguments
-       * @param index 需要在 arguments 中判断默认值得下标
-       */
-      has( args: IArguments, index: Number ): any;
       /**
        * 获取方法指定位参数, 若未传入参数, 则取默认值
        * @param args arguments

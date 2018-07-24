@@ -10,6 +10,8 @@ const { title, version, author } = require('../package.json');
 const banner =
 `/*!
  * ${ title } v${ version }
+ * https://github.com/MoomFE/ZenJS
+ * 
  * (c) 2018 ${ author }
  * Released under the MIT License.
  */

@@ -58,7 +58,7 @@ const allConfig = [
   for( let config of allConfig ){
 
     const output = config.output && config.output.file || defaultConfig.output.file;
-    const fileName = output.replace( /^dist\//, '' );
+    const fileName = output.replace( /^dist\/(slim\/)*/, '' );
     const now = new Date();
 
     const isMinify = /min\.js$/.test( output );

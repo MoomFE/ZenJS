@@ -5,6 +5,13 @@ import hasOwnProperty from '../../shared/global/Object/hasOwnProperty';
 import isFunction from '../../shared/util/isFunction';
 
 
+/**
+ * Transplant from jQuery
+ * Version: 3.3.1
+ * Homepage: https://jquery.com
+ */
+
+
 const
   fnToString = hasOwnProperty.toString,
   ObjectFunctionString = fnToString.call( Object );

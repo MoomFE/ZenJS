@@ -1,5 +1,6 @@
 import isNumber from "../../shared/util/isNumber";
 import defineValue from "../../shared/util/defineValue";
+import Number from "../../shared/global/Number/index";
 
 
 export default function $isNumber( obj ){

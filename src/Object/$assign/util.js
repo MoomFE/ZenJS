@@ -4,6 +4,13 @@ import create from '../../shared/global/Object/create';
 import isBoolean from '../../shared/util/isBoolean';
 
 
+/**
+ * Transplant from jQuery
+ * Version: 3.3.1
+ * Homepage: https://jquery.com
+ */
+
+
 export default function $assign(){
 
   let i = 1,

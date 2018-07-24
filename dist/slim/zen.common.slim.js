@@ -1,5 +1,7 @@
 /*!
- * Zen.js v2.2.0
+ * Zen.js v2.3.0
+ * https://github.com/MoomFE/ZenJS
+ * 
  * (c) 2018 Zhang_Wei
  * Released under the MIT License.
  */
@@ -10,6 +12,11 @@ var isArray = Array.isArray;
 
 var defineProperty = Object.defineProperty;
 
+/**
+ * 判断传入对象是否是 Object 类型, 并且不为 null
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isObject(obj) {
   return obj !== null && typeof obj === 'object';
 }
@@ -22,9 +29,20 @@ var getPrototypeOf = Object.getPrototypeOf;
 
 var hasOwnProperty = Object.hasOwnProperty;
 
+/**
+ * 判断传入对象是否是 Function 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isFunction(obj) {
   return typeof obj === 'function';
 }
+
+/**
+ * Transplant from jQuery
+ * Version: 3.3.1
+ * Homepage: https://jquery.com
+ */
 
 var fnToString = hasOwnProperty.toString,
     ObjectFunctionString = fnToString.call(Object);
@@ -48,9 +66,20 @@ function $isPlainObject(obj) {
 
 var create = Object.create;
 
+/**
+ * 判断传入对象是否是 Boolean 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isBoolean(obj) {
   return typeof obj === 'boolean';
 }
+
+/**
+ * Transplant from jQuery
+ * Version: 3.3.1
+ * Homepage: https://jquery.com
+ */
 
 function $assign() {
 
@@ -118,6 +147,13 @@ function $assign() {
   return target;
 }
 
+/**
+ * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
+ * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+ * @param {String} name 要定义或修改的属性的名称
+ * @param {any} options 将被定义或修改的属性描述符
+ * @param {any} options2 将被定义或修改的属性描述符, 会覆盖前一个 options
+ */
 function define(obj, name, options, options2) {
   var key;
 
@@ -157,6 +193,13 @@ var defineGetPropertyOptions = {
   enumerable: false // 枚举
 };
 
+/**
+ * 在一个对象上定义/修改一个新属性的 value 描述符
+ * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+ * @param {String} name 要定义或修改的属性的名称
+ * @param {Function} value 将被定义或修改的 value 描述符
+ * @param {any} options 将被定义或修改的属性描述符
+ */
 function defineValue(obj, name, value, options) {
   var key;
 
@@ -172,6 +215,13 @@ function defineValue(obj, name, value, options) {
 
 var ArrayProto = Array.prototype;
 
+/**
+ * 获取方法指定位参数, 若未传入参数, 则取默认值
+ * @param {IArguments} args arguments
+ * @param {Number} index 需要在 argument 中取得默认值的下标
+ * @param {any} defaultValue 若未传入值时取得默认值
+ * @returns {any}
+ */
 function parametersDefault(args, index, defaultValue) {
   var arg;
 
@@ -183,6 +233,11 @@ function parametersDefault(args, index, defaultValue) {
 
 var slice = ArrayProto.slice;
 
+/**
+ * 判断传入对象是否是 String 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isString(obj) {
   return typeof obj === 'string';
 }
@@ -207,6 +262,12 @@ function $toArray(value) {
 
 defineValue(Array, '$toArray', $toArray);
 
+/**
+ * 获取方法从指定位开始的剩余参数
+ * @param { IArguments } args arguments
+ * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
+ * @returns {any[]}
+ */
 function parametersRest(args) {
   var index = parametersDefault(arguments, 1, 0);
   var length = args.length;
@@ -217,6 +278,13 @@ function parametersRest(args) {
   return [];
 }
 
+/**
+ * 将一个传入的数组的下标修复到正确的位置上
+ * @param {Array} array 原数组
+ * @param {Number} index 传入的下标, 可为负数
+ * @param {Number} add 额外值
+ * @returns {Number}
+ */
 function fixArrayIndex(array, index, add) {
   if (index < 0 && (index = array.length + index + (add || 0)) < 0) {
     index = 0;
@@ -321,10 +389,22 @@ defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted)
   return returnDeleted ? deleted : this;
 });
 
+/**
+ * 判断传入的两个参数是否全等
+ * @param {any} one 需要判断的第一参数
+ * @param {any} two 需要判断的第二参数
+ * @returns {Boolean}
+ */
 function congruence(one, two) {
   return one === two;
 }
 
+/**
+ * 判断传入的两个参数是否相等
+ * @param {any} one 需要判断的第一参数
+ * @param {any} two 需要判断的第二参数
+ * @returns {Boolean}
+ */
 function equals(one, two) {
   return one == two;
 }
@@ -386,11 +466,20 @@ defineValue(ArrayProto, '$equals', function (obj) {
   return true;
 });
 
-function unFunctionObject(obj) {
+/**
+ * 判断一个对象是否是引用类型
+ * @param {*} obj 需要判断的对象
+ */
+function isReferenceType(obj) {
   var type = typeof obj;
-  return type !== 'object' && type !== 'function';
+  return type === 'object' || type === 'function';
 }
 
+/**
+ * 判断传入对象是否是 Number 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isNumber(obj) {
   return typeof obj === 'number';
 }
@@ -428,7 +517,7 @@ function $equals(obj, obj2, parent) {
     return false;
   } else if (toString.call(obj) !== toString.call(obj2)) {
     return false;
-  } else if (unFunctionObject(obj)) {
+  } else if (!isReferenceType(obj)) {
     return false;
   } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
     if (oIsArray) {
@@ -469,17 +558,21 @@ function $equals(obj, obj2, parent) {
 
 defineValue(Object, '$equals', $equals);
 
-defineValue(ArrayProto, '$findIndex $indexOf', function (key) {
+defineValue(ArrayProto, '$findIndex', function (key) {
+  return findIndex(this, key, arguments);
+});
+
+function findIndex(self, key, args) {
   var length;
 
-  if (key == null || !(length = this.length)) {
+  if (key == null || !(length = self.length)) {
     return -1;
   }
 
   // 第一个参数不是数组或对象
   // 将所有传入参数转为数组
-  if (unFunctionObject(key)) {
-    key = $toArray(arguments);
+  if (!isReferenceType(key)) {
+    key = $toArray(args);
   }
 
   // 将类数组类型的按照键值对进行分割
@@ -492,12 +585,12 @@ defineValue(ArrayProto, '$findIndex $indexOf', function (key) {
 
   // 遍历数组内的对象, 交给检测方法进行检测
   for (var index = 0; index < length; index++) {
-    if (predicate(this[index])) {
+    if (predicate(self[index])) {
       return index;
     }
   }
   return -1;
-});
+}
 
 function getPredicate(key) {
   // fn array object
@@ -547,6 +640,12 @@ function checkObject(source, object) {
   return true;
 }
 
+defineValue(ArrayProto, '$find', function (key) {
+  var index = findIndex(this, key, arguments);
+
+  return index === -1 ? null : this[index];
+});
+
 defineValue(ArrayProto, '$get', function () {
   var index = fixArrayIndex(this, parametersDefault(arguments, 0, 0));
 
@@ -587,7 +686,7 @@ defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
   });
 });
 
-defineValue(ArrayProto, '$set', function (index, value) {
+defineValue(ArrayProto, '$set $edit', function (index, value) {
 
   if (typeof index === 'object') {
     var key;
@@ -605,20 +704,230 @@ function $set(array, index, value) {
 
   index = fixArrayIndex(array, index);
 
-  array[index] = value;
+  array.splice(index, 1, value);
 }
 
-var addEventListener = 'addEventListener';
+var parse = JSON.parse;
 
-var inBrowser = typeof window !== 'undefined';
+/**
+ * Transplant from JavaScript Cookie
+ * Version: 2.2.0
+ * Homepage: https://github.com/js-cookie/js-cookie
+ */
 
-inBrowser && defineValue(document, '$ready', function (func, data) {
-  if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
-  this[addEventListener]('DOMContentLoaded', function callback(event) {
-    this.removeEventListener(event.type, callback);
-    func.apply(window, data);
-  });
+var rDecode = /(%[0-9A-Z]{2})+/g;
+
+function decode(s) {
+  return s.replace(rDecode, decodeURIComponent);
+}
+
+var rObject = /^[\{\[]/;
+var rDecodeValue = /%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g;
+var rDecodeKey = /%(23|24|26|2B|5E|60|7C)/g;
+var rBrackets = /[\(\)]/g;
+
+function set(key, value, attributes) {
+
+  attributes = $assign(true, { path: '/' }, attributes);
+
+  if (isNumber(attributes.expires)) {
+    attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
+  }
+
+  // We're using "expires" because "max-age" is not supported by IE
+  attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+  try {
+    var result = stringify(value);
+
+    if (rObject.test(result)) {
+      value = result;
+    }
+  } catch (error) {}
+
+  value = encodeURIComponent(String(value)).replace(rDecodeValue, decodeURIComponent);
+
+  key = encodeURIComponent(String(key)).replace(rDecodeKey, decodeURIComponent).replace(rBrackets, escape);
+
+  var stringifiedAttributes = '';
+  var attributeName;
+
+  for (attributeName in attributes) {
+
+    if (!attributes[attributeName]) {
+      continue;
+    }
+
+    stringifiedAttributes += '; ' + attributeName;
+
+    if (attributes[attributeName] === true) {
+      continue;
+    }
+
+    stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+  }
+
+  return document.cookie = key + '=' + value + stringifiedAttributes;
+}
+
+function get(key, json) {
+
+  var jar = {};
+  var cookies = document.cookie ? document.cookie.split('; ') : [];
+  var length = cookies.length;
+  var i = 0,
+      parts,
+      cookie,
+      name;
+
+  for (; i < length; i++) {
+    parts = cookies[i].split('=');
+    cookie = parts.slice(1).join('=');
+
+    if (!json && cookie.charAt(0) === '"') {
+      cookie = cookie.slice(1, -1);
+    }
+
+    try {
+      name = decode(parts[0]);
+      cookie = decode(cookie);
+
+      if (json) {
+        try {
+          cookie = parse(cookie);
+        } catch (error) {}
+      }
+
+      jar[name] = cookie;
+
+      if (key === name) {
+        break;
+      }
+    } catch (error) {}
+  }
+
+  // key is String or undefined
+  return key !== undefined ? jar[key] : jar;
+}
+
+defineValue(document, {
+  $cookie: function (key, value, attributes) {
+    var length = arguments.length;
+
+    // getter JSON
+    if (!length) {
+      return get(key, true);
+    }
+    // getter one
+    if (length === 1) {
+      return get(key || key + '', false);
+    }
+    // setter
+    return set(key, value, attributes);
+  },
+
+
+  '$deleteCookie $removeCookie': function (key, attributes) {
+    set(key, '', $assign(true, attributes, { expires: -1 }));
+  }
+
 });
+
+/**
+ * 获取传入数字的小数位长度
+ * @param {Number} num
+ * @returns {Number}
+ */
+function getDecimalLength(num) {
+  return (('' + num).split('.')[1] || '').length;
+}
+
+var pow = Math.pow;
+
+var max = Math.max;
+
+/**
+ * 返回传入值
+ * @param {any} arg 
+ * @returns {any} arg
+ */
+
+/**
+ * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
+ * String.prototype.repeat polyfill
+ * @param {String} str 需要重复的字符串
+ * @param {Number} count 需要重复的次数
+ */
+function repeat(str, count) {
+  var result = '';
+  var i = 0;
+
+  for (; i++ < count;) {
+    result += str;
+  }
+
+  return result;
+}
+
+function $plus(num1, num2) {
+  return handler(num1, num2, plus);
+}
+
+defineValue(Math, '$plus $jia', $plus);
+
+function plus(num1, num2) {
+  return num1 + num2;
+}
+
+function handler(num1, num2, handlerFn, lastHandlerFn) {
+  var decimal1 = getDecimalLength(num1 = num1 || 0);
+  var decimal2 = getDecimalLength(num2 = num2 || 0);
+  var maxDecimal = max(decimal1, decimal2);
+  var exponent = maxDecimal ? pow(10, maxDecimal) : 1;
+
+  if (maxDecimal) {
+    num1 = integer(num1, decimal1, maxDecimal);
+    num2 = integer(num2, decimal2, maxDecimal);
+  }
+
+  var count = handlerFn(num1, num2);
+
+  if (lastHandlerFn) {
+    return lastHandlerFn(count, exponent);
+  }
+
+  return count / exponent;
+}
+
+/**
+ * 将传入数字乘以一定的倍数, 不使用乘法的方式, 防止出现乘法精度不准的问题
+ * @param {Number} num 需要处理的数字
+ * @param {Number} decimal 当前数字的小数位
+ * @param {Number} maxDecimal 最大小数位
+ */
+function integer(num, decimal, maxDecimal) {
+  num = ('' + num).replace('.', '');
+
+  if (decimal !== maxDecimal) {
+    num += repeat('0', maxDecimal - decimal);
+  }
+
+  return Number(num);
+}
+
+function $divide(num1, num2) {
+  return handler(num1, num2, divide, lastHandler);
+}
+
+defineValue(Math, '$divide $chu', $divide);
+
+function divide(num1, num2) {
+  return num1 / num2;
+}
+
+function lastHandler(count) {
+  return count;
+}
 
 function $mean() {
 
@@ -629,30 +938,41 @@ function $mean() {
 
 defineValue(Math, '$mean', $mean);
 
+function $minus(num1, num2) {
+  return handler(num1, num2, minus);
+}
+
+defineValue(Math, '$minus $jian', $minus);
+
+function minus(num1, num2) {
+  return num1 - num2;
+}
+
+function $multiply(num1, num2) {
+  return handler(num1, num2, multiply, lastHandler$1);
+}
+
+defineValue(Math, '$multiply $cheng', $multiply);
+
+function multiply(num1, num2) {
+  return num1 * num2;
+}
+
+function lastHandler$1(count, exponent) {
+  return count / pow(exponent, 2);
+}
+
 var random = Math.random;
 
 var floor = Math.floor;
 
-function _randomParameters(args) {
-  var from = parametersDefault(args, 0, 9),
-      to = parametersDefault(args, 1, 0);
-
-  return from > to ? [to, from] : [from, to];
-}
-
-function _random(from, to) {
-  return floor(random() * (to - from + 1) + from);
-}
+var abs = Math.abs;
 
 function $random() {
   var cache = _randomParameters(arguments);
 
   return _random(cache[0], cache[1]);
 }
-
-defineValue(Math, '$random', $random);
-
-var abs = Math.abs;
 
 function $randomPlus() {
   var cache = _randomParameters(arguments);
@@ -668,7 +988,21 @@ function $randomPlus() {
   }
 }
 
-defineValue(Math, '$randomPlus', $randomPlus);
+defineValue(Math, {
+  $random: $random,
+  $randomPlus: $randomPlus
+});
+
+function _randomParameters(args) {
+  var from = parametersDefault(args, 0, 9),
+      to = parametersDefault(args, 1, 0);
+
+  return from > to ? [to, from] : [from, to];
+}
+
+function _random(from, to) {
+  return floor(random() * (to - from + 1) + from);
+}
 
 function $isNumber(obj) {
   if (isNumber(obj) || typeof obj === 'string') {
@@ -756,6 +1090,13 @@ defineValue(Object, '$isEmptyObject', $isEmptyObject);
 
 defineValue(Object, '$isPlainObject', $isPlainObject);
 
+/**
+ * 在一个对象上定义/修改一个新属性的 get 描述符
+ * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+ * @param {String} name 要定义或修改的属性的名称
+ * @param {Function} get 将被定义或修改的 get 描述符
+ * @param {any} options 将被定义或修改的属性描述符
+ */
 function defineGet(obj, name, get, options) {
   var key;
 
@@ -776,7 +1117,7 @@ function $self() {
 defineValue(ObjectProto, '$self', $self);
 defineGet(ObjectProto, '__self__', $self);
 
-defineValue(ObjectProto, '$set', function (key, value) {
+defineValue(ObjectProto, '$set $edit', function (key, value) {
   var _key;
 
   if (isObject(key)) for (_key in key) {
@@ -796,6 +1137,11 @@ function string$random() {
 
 defineValue(String, '$random', string$random);
 
+/**
+ * 判断传入对象是否是 RegExp 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
 function isRegExp(obj) {
   return toString.call(obj) === '[object RegExp]';
 }
@@ -848,9 +1194,21 @@ function string$someRandom() {
 
 defineValue(String, '$someRandom', string$someRandom);
 
-defineValue(StringProto, '$toCapitalize', function $toCapitalize() {
-  return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
+defineValue(StringProto, '$toCapitalize', function $toCapitalize(ignoreNext) {
+  return this.substr(0, 1).toUpperCase() + this.substr(1)[ignoreNext ? '$self' : 'toLowerCase']();
 });
+
+/**
+ * @type {Boolean} 当前是否是浏览器环境
+ */
+var inBrowser = typeof window !== 'undefined';
+
+/**
+ * @type {Boolean} 当前是否是 Node 环境
+ */
+var inNode = typeof global !== 'undefined';
+
+var root = inBrowser ? window : inNode ? global : undefined;
 
 var rBackSlant = /\+/g;
 
@@ -880,7 +1238,7 @@ function stringify$1(obj) {
   return '';
 }
 
-function parse(str) {
+function parse$1(str) {
   var sep = parametersDefault(arguments, 1, '&'),
       eq = parametersDefault(arguments, 2, '='),
       result = {};
@@ -918,20 +1276,19 @@ function parse(str) {
   return result;
 }
 
-inBrowser && defineValue(window, '$querystring', {
+defineValue(root, '$querystring', {
   stringify: stringify$1,
-  parse: parse
+  parse: parse$1
 });
 
-inBrowser && defineValue(window, '$ready', function (func, data) {
-  var self = this || window;
+var FunctionProto = Function.prototype;
 
-  if (self.document.readyState === 'complete') return func.apply(self, data);
-  self[addEventListener]('load', function callback(event) {
-    self.removeEventListener(event.type, callback);
-    func.apply(self, data);
-  });
-});
+/**
+ * @returns {Boolean} true
+ */
+function returnTrue() {
+  return true;
+}
 
 function $typeof(obj) {
   var type;
@@ -943,13 +1300,19 @@ function $typeof(obj) {
   return type;
 }
 
-inBrowser && defineValue(window, '$typeof', $typeof);
+defineValue(root, '$typeof', $typeof);
+
+// defineGet( ArrayProto, '__isArray__', returnTrue );
+// defineGet( StringProto, '__isString__', returnTrue );
+// defineGet( NumberProto, '__isNumber__', returnTrue );
+// defineGet( BooleanProto, '__isBoolean__', returnTrue );
+// defineGet( FunctionProto, '__isFunction__', returnTrue );
 
 /**
  * ZenJS
  */
 var ZenJS = $create$1(true, {
-  version: '2.2.0'
+  version: '2.3.0'
 });
 
 if (inBrowser) {
@@ -964,28 +1327,12 @@ defineProperty(ZenJS, 'guid', {
   }
 });
 
-function returnTrue() {
-  return true;
-}
-
+/**
+ * @returns {Boolean} false
+ */
 function returnFalse() {
   return false;
 }
-
-var supportsPassiveEvent = false;
-
-try {
-
-  var options = defineProperty({}, 'passive', {
-    get: function () {
-      supportsPassiveEvent = true;
-    }
-  });
-
-  window[addEventListener]('test', null, options);
-} catch (e) {}
-
-var supportsEventTarget = inBrowser && 'EventTarget' in window;
 
 ZenJS.util = $create$1(true, {
 
@@ -999,6 +1346,7 @@ ZenJS.util = $create$1(true, {
   isObject: isObject,
   isRegExp: isRegExp,
   isString: isString,
+  isReferenceType: isReferenceType,
 
   parametersDefault: parametersDefault,
   parametersRest: parametersRest,
@@ -1009,10 +1357,7 @@ ZenJS.util = $create$1(true, {
   returnTrue: returnTrue,
   returnFalse: returnFalse,
 
-  supports: {
-    passiveEvent: supportsPassiveEvent,
-    EventTarget: supportsEventTarget
-  }
+  getDecimalLength: getDecimalLength
 });
 
 module.exports = ZenJS;

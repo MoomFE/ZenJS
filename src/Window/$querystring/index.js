@@ -2,7 +2,7 @@ import defineValue from "../../shared/util/defineValue";
 import parametersDefault from "../../shared/util/parametersDefault";
 import isObject from "../../shared/util/isObject";
 import isString from "../../shared/util/isString";
-import inBrowser from "../../shared/const/inBrowser";
+import root from "../../shared/const/root";
 
 
 const rBackSlant = /\+/g;
@@ -74,7 +74,7 @@ export function parse( str ){
   return result;
 }
 
-inBrowser && defineValue( window, '$querystring', {
+defineValue( root, '$querystring', {
   stringify,
   parse
 });

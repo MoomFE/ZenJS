@@ -6,7 +6,7 @@ import $isPlainObject from "../$isPlainObject/util";
 import isArray from "../../shared/global/Array/isArray";
 import stringify from "../../shared/global/JSON/stringify";
 import isFunction from "../../shared/util/isFunction";
-import unFunctionObject from "../../shared/util/unFunctionObject";
+import isReferenceType from "../../shared/util/isReferenceType";
 
 
 export default function $equals( obj, obj2, parent ){
@@ -22,7 +22,7 @@ export default function $equals( obj, obj2, parent ){
     return false;
   }else if( toString.call( obj ) !== toString.call( obj2 ) ){
     return false;
-  }else if( unFunctionObject( obj ) ){
+  }else if( !isReferenceType( obj ) ){
     return false;
   }else if( $isPlainObject( obj ) || ( oIsArray = isArray( obj ) ) ){
     if( oIsArray ){

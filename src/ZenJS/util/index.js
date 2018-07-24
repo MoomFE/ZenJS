@@ -13,11 +13,11 @@ import parametersDefault from "../../shared/util/parametersDefault";
 import parametersRest from "../../shared/util/parametersRest";
 import returnTrue from "../../shared/util/returnTrue";
 import returnFalse from "../../shared/util/returnFalse";
-import { supportsPassiveEvent } from "../../shared/supports/passive-event";
-import { supportsEventTarget } from "../../shared/supports/event-target";
 import define from "../../shared/util/define";
 import defineGet from "../../shared/util/defineGet";
 import defineValue from "../../shared/util/defineValue";
+import isReferenceType from "../../shared/util/isReferenceType";
+import getDecimalLength from "../../shared/util/getDecimalLength";
 
 ZenJS.util = $create( true, {
 
@@ -31,6 +31,7 @@ ZenJS.util = $create( true, {
   isObject,
   isRegExp,
   isString,
+  isReferenceType,
 
   parametersDefault,
   parametersRest,
@@ -41,8 +42,5 @@ ZenJS.util = $create( true, {
   returnTrue,
   returnFalse,
 
-  supports: {
-    passiveEvent: supportsPassiveEvent,
-    EventTarget: supportsEventTarget
-  }
+  getDecimalLength
 });
