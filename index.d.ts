@@ -848,8 +848,9 @@ interface ObjectConstructor {
 interface String {
   /**
    * 将字符串首字母大写
+   * @param ignoreNext 是否忽略除首字母外小写的操作
    */
-  $toCapitalize(): String;
+  $toCapitalize( ignoreNext?: Boolean ): String;
   /**
    * 对当前字符串进行全局替换
    * @param searchValue 匹配字符串中被替换的部分

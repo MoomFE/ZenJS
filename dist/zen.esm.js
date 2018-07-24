@@ -2450,8 +2450,8 @@ function string$someRandom() {
 
 defineValue(String, '$someRandom', string$someRandom);
 
-defineValue(StringProto, '$toCapitalize', function $toCapitalize() {
-  return this.substr(0, 1).toUpperCase() + this.substr(1).toLowerCase();
+defineValue(StringProto, '$toCapitalize', function $toCapitalize(ignoreNext) {
+  return this.substr(0, 1).toUpperCase() + this.substr(1)[ignoreNext ? '$self' : 'toLowerCase']();
 });
 
 /**
