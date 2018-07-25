@@ -1,20 +1,30 @@
-import defineValue from "../../shared/util/defineValue";
-import ArrayProto from "../../shared/global/Array/prototype/index";
-import isFunction from "../../shared/util/isFunction";
-import $toArray from "../$toArray/index";
-import isReferenceType from "../../shared/util/isReferenceType";
-import $isArrayLike from "../$isArrayLike/index";
-import $chunk from "../$chunk/index";
-import isArray from "../../shared/global/Array/isArray";
-import keys from "../../shared/global/Object/keys";
-import $equals from "../../Object/$equals/index";
+import defineValue from "../../../shared/util/defineValue";
+import ArrayProto from "../../../shared/global/Array/prototype/index";
+import isBoolean from "../../../shared/util/isBoolean";
+import congruence from "../../../shared/util/congruence";
+import equals from "../../../shared/util/equals";
+import parametersRest from "../../../shared/util/parametersRest";
 
 
-defineValue( ArrayProto, '$findIndex', function( key ){
-  return findIndex( this, key, arguments );
+defineValue( ArrayProto, '$findIndex', function( _congruence, key ){
+  let isEqual = congruence;
+  let args = arguments;
+  
+  // 可能需要修改检测方式
+  if( isBoolean( _congruence ) ){
+    if( !_congruence ){
+      isEqual = equals;
+    }
+    args = parametersRest( args, 1 );
+  }else{
+    key = args[ 0 ];
+  }
+
+  return findIndex( this, key, args, isEqual );
 });
 
-export default function findIndex( self, key, args ){
+
+export default function findIndex( self, key, args, isEqual ){
   let length;
 
   if( key == null || !( length = self.length ) ){
@@ -37,13 +47,16 @@ export default function findIndex( self, key, args ){
 
   // 遍历数组内的对象, 交给检测方法进行检测
   for( let index = 0; index < length; index++ ){
-    if( predicate( self[ index ] ) ){
+    if( predicate( self[ index ], isEqual ) ){
       return index;
     }
   }
   return -1;
 }
 
+/**
+ * 根据传入
+ */
 function getPredicate( key ){// fn array object
   // 用户传的检测方法
   if( isFunction( key ) ){
@@ -60,32 +73,32 @@ function getPredicate( key ){// fn array object
   }
 }
 
-function checkArray( source, object ){
-  let index = 0,
-      chunk, key;
-  const length = source.length;
+// function checkArray( source, object ){
+//   let index = 0,
+//       chunk, key;
+//   const length = source.length;
 
-  // 遍历检测对象
-  for( ; index < length; index++ ){
-    chunk = source[ index ];
-    key = chunk[ 0 ];
+//   // 遍历检测对象
+//   for( ; index < length; index++ ){
+//     chunk = source[ index ];
+//     key = chunk[ 0 ];
 
-    if( !( key in object && ( chunk.length === 1 || $equals( chunk[ 1 ], object[ key ] ) ) ) ){
-      return false;
-    }
-  }
+//     if( !( key in object && ( chunk.length === 1 || $equals( chunk[ 1 ], object[ key ] ) ) ) ){
+//       return false;
+//     }
+//   }
 
-  return true;
-}
+//   return true;
+// }
 
-function checkObject( source, object ){
-  let key;
+// function checkObject( source, object ){
+//   let key;
 
-  for( key in source ){
-    if( !( key in object && $equals( source[ key ], object[ key ] ) ) ){
-      return false;
-    }
-  }
+//   for( key in source ){
+//     if( !( key in object && $equals( source[ key ], object[ key ] ) ) ){
+//       return false;
+//     }
+//   }
 
-  return true;
-}
+//   return true;
+// }
