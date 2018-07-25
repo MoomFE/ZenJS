@@ -1,6 +1,6 @@
-import defineValue from "../../shared/util/defineValue";
-import ArrayProto from "../../shared/global/Array/prototype/index";
-import parametersDefault from "../../shared/util/parametersDefault";
+import defineValue from "../../../shared/util/defineValue";
+import ArrayProto from "../../../shared/global/Array/prototype/index";
+import parametersDefault from "../../../shared/util/parametersDefault";
 
 
 defineValue( ArrayProto, '$delete $remove', function( index, noop, returnDeleted ){

@@ -437,6 +437,13 @@
     return $add(this, index, parametersRest(arguments, 1));
   });
 
+  defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted) {
+    var num = parametersDefault(arguments, 1, 1);
+    var deleted = this.splice(index, num);
+
+    return returnDeleted ? deleted : this;
+  });
+
   defineValue(ArrayProto, '$concat', function () {
     var _this = this;
 

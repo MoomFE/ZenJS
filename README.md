@@ -79,13 +79,13 @@
   - $each
   - $chunk
   - $add
+  - $delete / $remove
   - $concat
   - $concatTo
 
 
 
 
-  - $delete / $remove
   - $deleteValue / $removeValue
   - $equals
   - $get
