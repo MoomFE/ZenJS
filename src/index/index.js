@@ -1,4 +1,5 @@
 import './Array/index';
+import './Date/index';
 import './Document/index';
 import './Element/index';
 import './EventTarget/index';

@@ -1,4 +1,5 @@
 import './Array/index';
+import './Date/index';
 import './Document/slim';
 import './Math/index';
 import './Number/index';
