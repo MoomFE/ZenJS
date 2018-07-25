@@ -2,7 +2,7 @@ import Array from '../global/Array/index';
 import isArray from '../global/Array/isArray';
 import defineProperty from '../global/Object/defineProperty';
 import isObject from './isObject';
-import $assign from '../../Object/$assign/util';
+import assign from '../polyfill/assign';
 
 
 /**
@@ -35,8 +35,8 @@ export default function define( obj, name, options, options2 ){
 
   name.split(' ').forEach( name => {
     defineProperty(
-      obj, name, $assign(
-        true, {}, options, options2
+      obj, name, assign(
+        {}, options, options2
       )
     );
   });
