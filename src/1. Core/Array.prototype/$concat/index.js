@@ -1,15 +1,15 @@
-import defineValue from "../../shared/util/defineValue";
-import ArrayProto from "../../shared/global/Array/prototype/index";
-import isArray from "../../shared/global/Array/isArray";
+import defineValue from "../../../shared/util/defineValue";
+import ArrayProto from "../../../shared/global/Array/prototype/index";
+import isArray from "../../../shared/global/Array/isArray";
 import $add from "../$add/index";
-import $toArray from "../$toArray/index";
-import parametersRest from "../../shared/util/parametersRest";
-import fixArrayIndex from "../../shared/util/fixArrayIndex";
+import parametersRest from "../../../shared/util/parametersRest";
+import fixArrayIndex from "../../../shared/util/fixArrayIndex";
+import slice from "../../../shared/global/Array/prototype/slice";
 
 
 defineValue( ArrayProto, '$concat', function(){
 
-  $toArray( arguments ).forEach( arg => {
+  slice.call( arguments ).forEach( arg => {
     $add(
       this,
       -1,

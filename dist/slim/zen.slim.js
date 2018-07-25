@@ -437,6 +437,39 @@
     return $add(this, index, parametersRest(arguments, 1));
   });
 
+  defineValue(ArrayProto, '$concat', function () {
+    var _this = this;
+
+    slice.call(arguments).forEach(function (arg) {
+      $add(_this, -1, isArray(arg) ? arg : [arg]);
+    });
+
+    return this;
+  });
+
+  defineValue(ArrayProto, '$concatTo', function (index) {
+    var _this2 = this;
+
+    var args = parametersRest(arguments, 1);
+
+    if (!args.length) {
+      return this;
+    }
+
+    var originLength = this.length;
+    var increasedLength = 0;
+
+    index = fixArrayIndex(this, index, 1);
+
+    args.forEach(function (arg) {
+      $add(_this2, increasedLength + index, isArray(arg) ? arg : [arg]);
+      // 用于修正 index, 后续的 arg 需要插入到前面的 arg 后面
+      increasedLength = _this2.length - originLength;
+    });
+
+    return this;
+  });
+
   // import './Math/index';
   // import './Number/index';
   // import './Object/index';

@@ -64,28 +64,29 @@ interface Array<T> {
    */
   $add( index: Number, ...args: any[] ): any[];
 
-  
-
-
-
-
-
-
-
-
-
-  
   /**
    * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组后
    * @param args 需要添加到数组后的数据
    */
   $concat( ...args: any[] ): any[];
+
   /**
    * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组指定下标位置
    * @param index 需要插入到数组位置的下标
    * @param args 需要添加的数据
    */
   $concatTo( index: Number, ...args: any[] ): any[];
+
+
+
+
+
+
+
+
+
+  
+  
   /**
    * 在数组指定位置删除若干对象
    * @param index 需要删除的下标, 可为负数

@@ -79,12 +79,12 @@
   - $each
   - $chunk
   - $add
-
-
-
-
   - $concat
   - $concatTo
+
+
+
+
   - $delete / $remove
   - $deleteValue / $removeValue
   - $equals
