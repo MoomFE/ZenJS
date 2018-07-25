@@ -1,1 +1,1 @@
-import '../core/index';
+import '../1. Core/index';
