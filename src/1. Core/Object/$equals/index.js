@@ -2,7 +2,7 @@ import defineValue from "../../shared/util/defineValue";
 import Object from "../../shared/global/Object/index";
 import toString from "../../shared/global/Object/prototype/toString";
 import keys from "../../shared/global/Object/keys";
-import $isPlainObject from "../$isPlainObject/util";
+import $isPlainObject from "../../../shared/util/isPlainObject";
 import isArray from "../../shared/global/Array/isArray";
 import stringify from "../../shared/global/JSON/stringify";
 import isFunction from "../../shared/util/isFunction";

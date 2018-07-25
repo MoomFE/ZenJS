@@ -1,13 +1,13 @@
-import isFunction from '../../shared/util/isFunction';
-import defineValue from '../../shared/util/defineValue';
-import Array from '../../shared/global/Array/index';
+import isFunction from '../../../shared/util/isFunction';
+import defineValue from '../../../shared/util/defineValue';
+import Array from '../../../shared/global/Array/index';
 
 
-export default function $create( length, insert ){
+export default function $create( length, insert, isInsert ){
   let i = 0;
-  const result = Array( length >>= 0 );
+  const result = Array( length );
 
-  if( isFunction( insert ) ){
+  if( !isInsert && isFunction( insert ) ){
     for( ; i < length; i++ )
       result[ i ] = insert( i );
   }else{

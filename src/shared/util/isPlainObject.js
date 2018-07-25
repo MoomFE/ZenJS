@@ -1,8 +1,8 @@
-import Object from '../../shared/global/Object/index';
-import toString from '../../shared/global/Object/prototype/toString';
-import getPrototypeOf from '../../shared/global/Object/getPrototypeOf';
-import hasOwnProperty from '../../shared/global/Object/hasOwnProperty';
-import isFunction from '../../shared/util/isFunction';
+import Object from '../global/Object/index';
+import toString from '../global/Object/prototype/toString';
+import getPrototypeOf from '../global/Object/getPrototypeOf';
+import hasOwnProperty from '../global/Object/hasOwnProperty';
+import isFunction from './isFunction';
 
 
 /**
@@ -17,7 +17,7 @@ const
   ObjectFunctionString = fnToString.call( Object );
 
 
-export default function $isPlainObject( obj ){
+export default function isPlainObject( obj ){
 
   if( !obj || toString.call( obj ) !== '[object Object]' ){
     return false;

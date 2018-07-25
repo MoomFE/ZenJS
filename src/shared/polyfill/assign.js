@@ -1,9 +1,9 @@
-import assign from "../global/Object/assign";
 import extend from "../util/extend";
 import slice from "../global/Array/prototype/slice";
+import Object from "../global/Object/index";
 
 
-export default assign || function(){
+export default Object.assign || function(){
   extend.apply(
     null,
     [ true ].concat(

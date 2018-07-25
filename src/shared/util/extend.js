@@ -1,4 +1,4 @@
-import $isPlainObject from '../../1. Core/Object/$isPlainObject/util';
+import isPlainObject from './isPlainObject';
 import isArray from '../global/Array/isArray';
 import create from '../global/Object/create';
 import isBoolean from './isBoolean';
@@ -48,7 +48,7 @@ export default function extend(){
         src = target[ name ];
 
         // 如果被该属性是原生对象或数组, 则进循环拷贝
-        if( !shallow && copy && ( $isPlainObject( copy ) || ( copyIsArray = isArray( copy ) ) ) ){
+        if( !shallow && copy && ( isPlainObject( copy ) || ( copyIsArray = isArray( copy ) ) ) ){
 
           // 目标对象的当前属性是否和该属性类型相同
           // 不是的话, 则进行覆盖
@@ -56,10 +56,10 @@ export default function extend(){
             copyIsArray = false;
             clone = src && isArray( src ) ? src : [];
           }else{
-            clone = src && $isPlainObject( src ) ? src : this === true ? create( null ) : {};
+            clone = src && isPlainObject( src ) ? src : this === true ? create( null ) : {};
           }
 
-          target[ name ] = $assign( clone, copy );
+          target[ name ] = extend( clone, copy );
 
         }else if( copy !== undefined ){
 
