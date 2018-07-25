@@ -514,6 +514,30 @@
     return this;
   });
 
+  defineValue(ArrayProto, '$equals', function (obj) {
+
+    if (!obj || obj[isFunction$1]) {
+      return false;
+    }
+
+    var index = 0,
+        length = this.length;
+
+    if (length !== obj.length) {
+      return false;
+    }
+
+    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
+
+    for (; index < length; index++) {
+      if (!isEqual(this[index], obj[index])) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
   // import './Math/index';
   // import './Number/index';
   // import './Object/index';

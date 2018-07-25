@@ -1,13 +1,14 @@
-import defineValue from "../../shared/util/defineValue";
-import ArrayProto from "../../shared/global/Array/prototype/index";
-import parametersDefault from "../../shared/util/parametersDefault";
-import congruence from "../../shared/util/congruence";
-import equals from "../../shared/util/equals";
+import defineValue from "../../../shared/util/defineValue";
+import ArrayProto from "../../../shared/global/Array/prototype/index";
+import parametersDefault from "../../../shared/util/parametersDefault";
+import congruence from "../../../shared/util/congruence";
+import equals from "../../../shared/util/equals";
+import { isFunction } from "../../../shared/const/type";
 
 
 defineValue( ArrayProto, '$equals', function( obj ){
 
-  if( !obj ){
+  if( !obj || obj[ isFunction ] ){
     return false;
   }
 

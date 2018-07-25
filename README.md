@@ -80,14 +80,14 @@
   - $chunk
   - $add
   - $delete / $remove
+  - $deleteValue / $removeValue
   - $concat
   - $concatTo
-  - $deleteValue / $removeValue
-
-
-
-
   - $equals
+
+
+
+
   - $get
   - $inArray
   - $find

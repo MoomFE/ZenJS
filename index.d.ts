@@ -107,23 +107,24 @@ interface Array<T> {
    */
   $concatTo( index: Number, ...args: any[] ): any[];
 
-
-
-
-
-
-
-
-
-  
-  
-  
   /**
    * 判断传入数组或类数组的内容是否和当前数组相同
    * @param obj 需要检测的值
    * @param congruence 是否使用全等进行判断 - default: true
    */
   $equals( obj: any[], congruence?: true ): Boolean;
+
+
+
+
+
+
+
+
+  
+  
+  
+  
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
    * @param obj 需要筛选的一组 key: value 键值对
