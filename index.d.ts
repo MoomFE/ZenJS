@@ -57,14 +57,24 @@ interface Array<T> {
    */
   $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
 
-
-
   /**
    * 在数组指定位置插入对象
    * @param index 插入在数组中的位置, 可为负数
    * @param args 需要插入的对象, 可以是多个
    */
   $add( index: Number, ...args: any[] ): any[];
+
+  
+
+
+
+
+
+
+
+
+
+  
   /**
    * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组后
    * @param args 需要添加到数组后的数据

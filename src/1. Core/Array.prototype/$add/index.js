@@ -1,16 +1,17 @@
-import defineValue from '../../shared/util/defineValue';
-import ArrayProto from '../../shared/global/Array/prototype/index';
-import parametersRest from '../../shared/util/parametersRest';
-import fixArrayIndex from '../../shared/util/fixArrayIndex';
+import defineValue from '../../../shared/util/defineValue';
+import ArrayProto from '../../../shared/global/Array/prototype/index';
+import parametersRest from '../../../shared/util/parametersRest';
+import fixArrayIndex from '../../../shared/util/fixArrayIndex';
 
 
 export default function $add( self, index, args ){
 
   const len = args.length;
+  let i = 0;
 
   index = fixArrayIndex( self, index, 1 );
 
-  for( let i = 0; i < len; i++ ){
+  for( ; i < len; i++ ){
     self.splice( index++, 0, args[ i ] );
   }
 

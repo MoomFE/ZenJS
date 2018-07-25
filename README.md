@@ -78,9 +78,11 @@
 - Array.prototype
   - $each
   - $chunk
-
-
   - $add
+
+
+
+
   - $concat
   - $concatTo
   - $delete / $remove

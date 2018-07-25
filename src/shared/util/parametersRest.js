@@ -1,5 +1,4 @@
 import parametersDefault from "./parametersDefault";
-import $toArray from "../../Array/$toArray/index";
 import slice from "../global/Array/prototype/slice";
 
 /**

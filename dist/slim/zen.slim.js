@@ -371,6 +371,72 @@
 
   defineValue(Array, '$toArray', $toArray);
 
+  /**
+   * 获取方法指定位参数, 若未传入参数, 则取默认值
+   * @param {IArguments} args arguments
+   * @param {Number} index 需要在 argument 中取得默认值的下标
+   * @param {any} defaultValue 若未传入值时取得默认值
+   * @returns {any}
+   */
+  function parametersDefault(args, index, defaultValue) {
+    var arg;
+
+    if (args.length > index && (arg = args[index]) !== undefined) {
+      return arg;
+    }
+
+    return defaultValue;
+  }
+
+  /**
+   * 获取方法从指定位开始的剩余参数
+   * @param { IArguments } args arguments
+   * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
+   * @returns {any[]}
+   */
+  function parametersRest(args) {
+    var index = parametersDefault(arguments, 1, 0);
+    var length = args.length;
+
+    if (length > index) {
+      return slice.call(args, index, length);
+    }
+
+    return [];
+  }
+
+  /**
+   * 将一个传入的数组的下标修复到正确的位置上
+   * @param {Array} array 原数组
+   * @param {Number} index 传入的下标, 可为负数
+   * @param {Number} add 额外值
+   * @returns {Number}
+   */
+  function fixArrayIndex(array, index, add) {
+    if (index < 0 && (index = array.length + index + (add || 0)) < 0) {
+      index = 0;
+    }
+    return index;
+  }
+
+  function $add(self, index, args) {
+
+    var len = args.length;
+    var i = 0;
+
+    index = fixArrayIndex(self, index, 1);
+
+    for (; i < len; i++) {
+      self.splice(index++, 0, args[i]);
+    }
+
+    return self;
+  }
+
+  defineValue(ArrayProto, '$add', function (index) {
+    return $add(this, index, parametersRest(arguments, 1));
+  });
+
   // import './Math/index';
   // import './Number/index';
   // import './Object/index';
