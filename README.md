@@ -68,19 +68,24 @@
 
 
 - Array
-  - $chunk
-  - $create
-  - $toArray
   - $copy
+  - $create
+  - $each
   - $isArrayLike
+  - $toArray
+
+
+  - $chunk
 
 - Array.prototype
+  - $each
+
+
   - $add
   - $concat
   - $concatTo
   - $delete / $remove
   - $deleteValue / $removeValue
-  - $each
   - $equals
   - $get
   - $inArray

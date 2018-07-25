@@ -23,21 +23,28 @@ interface ArrayConstructor {
   $each( array: any[], callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
 
   /**
+   * 判断传入对象是否是一个类数组对象
+   * @param value 需要判断的对象
+   */
+  $isArrayLike( value: any ): Array;
+
+  /**
+   * 将传入参数转为数组
+   * @param value 需要转为数组的对象
+   */
+  $toArray( value: any ): Array;
+
+
+
+
+  /**
    * 创建一个新的数组, 将传入数组按照指定的长度进行分割, 如果数组不能均分, 则最后的数组中是数组剩余的元素
    * @param array 需要进行分割的数组
    * @param size 分割的长度
    */
   $chunk( array: any[], size: Number ): any[];
-  /**
-   * 将传入参数转为数组
-   * @param value 需要转为数组的值
-   */
-  $toArray( value: any ): Array;
-  /**
-   * 判断传入对象是否是一个类数组对象
-   * @param value 需要判断的对象
-   */
-  $isArrayLike( value: any ): Array;
+  
+  
 }
 
 interface Array<T> {

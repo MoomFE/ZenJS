@@ -265,9 +265,14 @@
     return $each(this, callback);
   });
 
-  var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
-
-  var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
+  /**
+   * 判断传入对象是否是 Number 类型
+   * @param {any} obj 需要判断的对象
+   * @returns {Boolean}
+   */
+  function isNumber(obj) {
+    return typeof obj === 'number';
+  }
 
   var StringProto = String.prototype;
 
@@ -289,6 +294,34 @@
   var isString = '__isString__';
   var isBoolean$1 = '__isBoolean__';
   var isArray$1 = '__isArray__';
+  var isFunction$1 = '__isFunction__';
+
+  var MAX_SAFE_INTEGER = 9007199254740991;
+
+  function $isArrayLike(obj) {
+
+    if (obj == null || obj[isBoolean$1] || obj[isFunction$1]) {
+      return false;
+    }
+
+    if (obj[isArray$1]) {
+      return true;
+    }
+
+    var length = obj.length;
+
+    if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
+      return true;
+    }
+
+    return false;
+  }
+
+  defineValue(Array, '$isArrayLike', $isArrayLike);
+
+  var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
+
+  var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
 
   function $toArray(value) {
 
@@ -311,8 +344,7 @@
       }
     }
 
-    // 其他类型, 比如 arguments, jQuery
-    // 后期将加入对 Map, Set 的支持
+    // 其他类数组的类型, 比如 arguments, jQuery
     return slice.call(value);
   }
 

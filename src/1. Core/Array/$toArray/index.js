@@ -27,8 +27,7 @@ export default function $toArray( value ){
     }
   }
 
-  // 其他类型, 比如 arguments, jQuery
-  // 后期将加入对 Map, Set 的支持
+  // 其他类数组的类型, 比如 arguments, jQuery
   return slice.call( value );
 }
 
