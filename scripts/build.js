@@ -7,47 +7,16 @@ const uglify = require('uglify-js');
 const readmePath = __dirname.replace( /scripts$/, 'README.md' );
 const defaultConfig = require('./config');
 const allConfig = [
-  {}, {
-    output: {
-      file: 'dist/zen.min.js'
-    }
-  }, {
-    output: {
-      file: 'dist/zen.common.js',
-      format: 'cjs',
-      footer: '\nmodule.exports = ZenJS;'
-    }
-  }, {
-    output: {
-      file: 'dist/zen.esm.js',
-      format: 'es',
-      footer: '\nexport default ZenJS;'
-    }
-  },
   // slim
   {
-    input: 'src/slim.js',
+    input: 'src/build/index.slim.js',
     output: {
       file: 'dist/slim/zen.slim.js'
     }
   }, {
-    input: 'src/slim.js',
+    input: 'src/build/index.slim.js',
     output: {
       file: 'dist/slim/zen.slim.min.js'
-    }
-  }, {
-    input: 'src/slim.js',
-    output: {
-      file: 'dist/slim/zen.common.slim.js',
-      format: 'cjs',
-      footer: '\nmodule.exports = ZenJS;'
-    }
-  }, {
-    input: 'src/slim.js',
-    output: {
-      file: 'dist/slim/zen.esm.slim.js',
-      format: 'es',
-      footer: '\nexport default ZenJS;'
     }
   }
 ];

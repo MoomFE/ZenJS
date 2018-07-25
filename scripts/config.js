@@ -17,10 +17,9 @@ const banner =
  */
 `;
 
-const rVoid0 = /\s*=\s*void 0(,|;)/g;
 
 module.exports = {
-  input: 'src/index.js',
+  input: 'src/build/index.js',
   output: {
     file: 'dist/zen.js',
     format: 'umd',
@@ -38,7 +37,7 @@ module.exports = {
     {
       name: "remove babel let void 0",
       transformBundle: function( code ){
-        return code.replace( rVoid0, '$1' );
+        return code.replace( /\s*=\s*void 0(,|;)/g, '$1' );
       }
     }
   ]
