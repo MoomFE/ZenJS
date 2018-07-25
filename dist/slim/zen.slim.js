@@ -220,10 +220,6 @@
     return define(obj, name, { value: value }, options || definePropertyOptions), value;
   }
 
-  defineValue(Array, '$copy', function (source, array) {
-    return array ? array.concat(source) : source.slice();
-  });
-
   function $create(length, insert, isInsert) {
     var i = 0;
     var result = Array(length);
@@ -242,6 +238,31 @@
   }
 
   defineValue(Array, '$create', $create);
+
+  var ceil = Math.ceil;
+
+  function $chunk(array, size) {
+    var length;
+
+    if (!array || size < 1 || !(length = array.length)) {
+      return [];
+    }
+
+    return $create(ceil(length / size), function (index) {
+      var start = index * size;
+      return array.slice(start, start + size);
+    });
+  }
+
+  defineValue(Array, '$chunk', $chunk);
+
+  defineValue(ArrayProto, '$chunk', function (size) {
+    return $chunk(this, size);
+  });
+
+  defineValue(Array, '$copy', function (source, array) {
+    return array ? array.concat(source) : source.slice();
+  });
 
   function $each(array, callback) {
     var length = array.length;
@@ -300,7 +321,7 @@
 
   function $isArrayLike(obj) {
 
-    if (obj == null || obj[isBoolean$1] || obj[isFunction$1]) {
+    if (obj == null || obj[isFunction$1]) {
       return false;
     }
 

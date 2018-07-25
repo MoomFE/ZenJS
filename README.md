@@ -68,17 +68,16 @@
 
 
 - Array
+  - $chunk
   - $copy
   - $create
   - $each
   - $isArrayLike
   - $toArray
 
-
-  - $chunk
-
 - Array.prototype
   - $each
+  - $chunk
 
 
   - $add
