@@ -1,22 +1,34 @@
-import defineValue from "../../shared/util/defineValue";
-import Array from "../../shared/global/Array/index";
-import slice from "../../shared/global/Array/prototype/slice";
-import isString from "../../shared/util/isString";
-import reHasUnicode from "../../shared/const/reHasUnicode";
-import reUnicode from "../../shared/const/reunicode";
+import defineValue from "../../../shared/util/defineValue";
+import Array from "../../../shared/global/Array/index";
+import slice from "../../../shared/global/Array/prototype/slice";
+import reHasUnicode from "../../../shared/const/reHasUnicode";
+import reUnicode from "../../../shared/const/reunicode";
+import { isBoolean, isString, isArray } from "../../../shared/const/type";
 
 
 export default function $toArray( value ){
-  if( !value ){
+
+  // 不可转为数组的, 直接返回空数组
+  if( !value || value[ isBoolean ] ){
     return [];
   }
-  if( isString( value ) ){
+
+  // 是数组类型, 那就直接返回一个副本
+  if( value[ isArray ] ){
+    return slice.call( value );
+  }
+
+  // 是字符串类型
+  if( value[ isString ] ){
     if( reHasUnicode.test( value ) ){
       return value.match( reUnicode ) || [];
     }else{
       return value.split('');
     }
   }
+
+  // 其他类型, 比如 arguments, jQuery
+  // 后期将加入对 Map, Set 的支持
   return slice.call( value );
 }
 

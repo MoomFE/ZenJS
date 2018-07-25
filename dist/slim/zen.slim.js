@@ -243,8 +243,80 @@
 
   defineValue(Array, '$create', $create);
 
-  // import './$each/index';
-  // import './$toArray/index';
+  function $each(array, callback) {
+    var length = array.length;
+    var index = 0,
+        value;
+
+    for (; index < length; index++) {
+      value = array[index];
+
+      if (callback.call(value, value, index, array) === false) {
+        break;
+      }
+    }
+
+    return array;
+  }
+
+  defineValue(Array, '$each', $each);
+
+  defineValue(ArrayProto, '$each', function (callback) {
+    return $each(this, callback);
+  });
+
+  var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
+
+  var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
+
+  var StringProto = String.prototype;
+
+  var NumberProto = Number.prototype;
+
+  var BooleanProto = Boolean.prototype;
+
+  var FunctionProto = Function.prototype;
+
+  [['String', StringProto], ['Number', NumberProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
+    defineProperty(obj[1], "__is" + obj[0] + "__", {
+      value: true,
+      configurable: false, // 删除/定义
+      enumerable: false, // 枚举
+      writable: false // 写入
+    });
+  });
+
+  var isString = '__isString__';
+  var isBoolean$1 = '__isBoolean__';
+  var isArray$1 = '__isArray__';
+
+  function $toArray(value) {
+
+    // 不可转为数组的, 直接返回空数组
+    if (!value || value[isBoolean$1]) {
+      return [];
+    }
+
+    // 是数组类型, 那就直接返回一个副本
+    if (value[isArray$1]) {
+      return slice.call(value);
+    }
+
+    // 是字符串类型
+    if (value[isString]) {
+      if (reHasUnicode.test(value)) {
+        return value.match(reUnicode) || [];
+      } else {
+        return value.split('');
+      }
+    }
+
+    // 其他类型, 比如 arguments, jQuery
+    // 后期将加入对 Map, Set 的支持
+    return slice.call(value);
+  }
+
+  defineValue(Array, '$toArray', $toArray);
 
   // import './Math/index';
   // import './Number/index';

@@ -1,4 +1,27 @@
 interface ArrayConstructor {
+
+  /**
+   * 传入一个数组, 返回一个新的数组 ( 浅拷贝 )
+   * @param source 需要复制的数组
+   * @param array 将需要复制的数组合并到这个数组后进行返回, 返回的依旧是一个新的数组
+   */
+  $copy( source: any[], array: any[] ): any[];
+
+  /**
+   * 快捷创建数组
+   * @param length 需要创建的数组的长度
+   * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index, 然后将方法的返回值填充到数组中
+   * @param isInsert 若值为真, 即使二个参数 insert 是方法, 都会直接进行插入
+   */
+  $create( length: Number, insert: any, isInsert: Boolean ): any[];
+
+  /**
+   * 调用传入方法遍历传入数组
+   * @param array 需要进行遍历的数组
+   * @param callback 遍历数组时调用的方法, 方法返回 false 时, 将终止后续遍历
+   */
+  $each( array: any[], callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
+
   /**
    * 创建一个新的数组, 将传入数组按照指定的长度进行分割, 如果数组不能均分, 则最后的数组中是数组剩余的元素
    * @param array 需要进行分割的数组
@@ -6,22 +29,10 @@ interface ArrayConstructor {
    */
   $chunk( array: any[], size: Number ): any[];
   /**
-   * 快捷创建数组
-   * @param length 需要创建的数组的长度
-   * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index
-   */
-  $create( length: Number, insert: any ): any[];
-  /**
    * 将传入参数转为数组
    * @param value 需要转为数组的值
    */
   $toArray( value: any ): Array;
-  /**
-   * 传入一个数组, 返回一个新的数组 ( 浅拷贝 ),
-   * @param source 需要复制的数组
-   * @param array 复制到这个数组中, 返回的依旧是一个新的数组
-   */
-  $copy( source: any[], array: any[] ): any[];
   /**
    * 判断传入对象是否是一个类数组对象
    * @param value 需要判断的对象
@@ -30,6 +41,14 @@ interface ArrayConstructor {
 }
 
 interface Array<T> {
+  /**
+   * 调用传入方法遍历当前数组
+   * @param callback 遍历数组时调用的方法, 方法返回 false 时, 将终止后续遍历
+   */
+  $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
+
+
+
   /**
    * 在数组指定位置插入对象
    * @param index 插入在数组中的位置, 可为负数
@@ -60,11 +79,6 @@ interface Array<T> {
    * @param congruence 是否使用全等进行判断 - default: true
    */
   $deleteValue( value: any, congruence?: true ): any[];
-  /**
-   * 遍历数组, 并调用传入方法
-   * @param callback 遍历数组时调用的方法, 方法返回 false 时, 退出遍历
-   */
-  $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
   /**
    * 判断传入数组或类数组的内容是否和当前数组相同
    * @param obj 需要检测的值
