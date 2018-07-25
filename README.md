@@ -82,11 +82,11 @@
   - $delete / $remove
   - $concat
   - $concatTo
-
-
-
-
   - $deleteValue / $removeValue
+
+
+
+
   - $equals
   - $get
   - $inArray

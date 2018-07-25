@@ -1,8 +1,8 @@
-import defineValue from "../../shared/util/defineValue";
-import ArrayProto from "../../shared/global/Array/prototype/index";
-import parametersDefault from "../../shared/util/parametersDefault";
-import congruence from "../../shared/util/congruence";
-import equals from "../../shared/util/equals";
+import defineValue from "../../../shared/util/defineValue";
+import ArrayProto from "../../../shared/global/Array/prototype/index";
+import parametersDefault from "../../../shared/util/parametersDefault";
+import congruence from "../../../shared/util/congruence";
+import equals from "../../../shared/util/equals";
 
 
 defineValue( ArrayProto, '$deleteValue $removeValue', function( value ){

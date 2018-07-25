@@ -444,6 +444,43 @@
     return returnDeleted ? deleted : this;
   });
 
+  /**
+   * 判断传入的两个参数是否全等
+   * @param {any} one 需要判断的第一参数
+   * @param {any} two 需要判断的第二参数
+   * @returns {Boolean}
+   */
+  function congruence(one, two) {
+    return one === two;
+  }
+
+  /**
+   * 判断传入的两个参数是否相等
+   * @param {any} one 需要判断的第一参数
+   * @param {any} two 需要判断的第二参数
+   * @returns {Boolean}
+   */
+  function equals(one, two) {
+    return one == two;
+  }
+
+  defineValue(ArrayProto, '$deleteValue $removeValue', function (value) {
+    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
+    var index = 0,
+        length = this.length;
+
+    for (; index < length;) {
+      if (isEqual(this[index], value)) {
+        this.$delete(index);
+        length--;
+      } else {
+        index++;
+      }
+    }
+
+    return this;
+  });
+
   defineValue(ArrayProto, '$concat', function () {
     var _this = this;
 
