@@ -23,13 +23,28 @@ export default function findIndex( self, predicate, key, args ){
     return -1;
   }
 
-  // 首个参数标识的是比对方法
-  if( predicate[ isBoolean ] || predicate[ isFunction ] ){
-    // 正常参数校正 index 为从 1 的地方开始
-    args = parametersRest( args, 1 );
+  let traversal,
+      predicateIsFunction = predicate[ isFunction ];
 
-    if( predicate[ isBoolean ] ){
-      predicate = predicate ? congruence : equals;
+
+  if( predicateIsFunction || predicate[ isBoolean ] ){
+
+    // $findIndex( Function )
+    // 传入的方法是用作数组遍历时的手动进行检测
+    if( predicateIsFunction && args.length === 1 ){
+      traversal = predicate;
+    }
+    // $findIndex( Function | Boolean, key, value )
+    // $findIndex( Function | Boolean, Array )
+    // $findIndex( Function | Boolean, Object )
+    // 传入的方法是用作值比对时进行检测
+    else{
+      // 正常参数校正 index 为从 1 的地方开始
+      args = parametersRest( args, 1 );
+      // 指定值比对时的方法
+      if( !predicateIsFunction ){
+        predicate = predicate ? congruence : equals;
+      }
     }
   }else{
     // 首个参数不是对比的方法, 那么校正 key 的位置
@@ -38,21 +53,25 @@ export default function findIndex( self, predicate, key, args ){
     predicate = congruence;
   }
 
-  // 第一个参数不是数组或对象
-  // 将所有传入参数转为数组
-  // $findIndex( 'key', 'value', 'key2', 'value2' ) -> [ 'key', 'value', 'key2', 'value2' ]
-  if( typeof key !== 'object' ){
-    key = slice.call( args );
+  // 指定值遍历时的检测方法
+  if( !traversal ){
+
+    // 第一个参数不是数组或对象, 将所有传入参数转为数组
+    // $findIndex( 'key', 'value', 'key2', 'value2' ) -> [ 'key', 'value', 'key2', 'value2' ]
+    if( typeof key !== 'object' ){
+      key = slice.call( args );
+    }
+
+    // 将类数组类型的按照键值对进行分割
+    // $findIndex( [ 'key', 'value', 'key2', 'value2' ] ) -> [ [ 'key', 'value' ], [ 'key2', 'value2' ] ]
+    if( $isArrayLike( key ) ){
+      key = $chunk( key, 2 );
+    }
+
+    traversal = getTraversal( key, predicate );
+
   }
 
-  // 将类数组类型的按照键值对进行分割
-  // $findIndex( [ 'key', 'value', 'key2', 'value2' ] ) -> [ [ 'key', 'value' ], [ 'key2', 'value2' ] ]
-  if( $isArrayLike( key ) ){
-    key = $chunk( key, 2 );
-  }
-
-  // 遍历方法
-  const traversal = getTraversal( key, predicate );
   let index = 0;
 
   // 遍历数组内的对象, 交给检测方法进行检测

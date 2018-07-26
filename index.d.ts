@@ -113,50 +113,66 @@ interface Array<T> {
    * @param congruence 是否使用全等进行判断 - default: true
    */
   $equals( obj: any[], congruence?: true ): Boolean;
-
-
-
-
-
-
-
-
-  
-  
-  
   
   /**
+   * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的值
+   * @param traversal 遍历集合的方法
+   */
+  $find( traversal: Function ) : Number;
+  /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param obj 需要筛选的一组 key: value 键值对
    */
-  $find( obj: any ) : Number;
+  $find( predicate?: true, obj: any ) : Number;
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
    */
-  $find( arr: any[] ) : Number;
+  $find( predicate?: true, arr: any[] ) : Number;
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param key 需要匹配的 key 值
    * @param value 需要匹配的 value 值
    */
-  $find( key: any, value: any ) : Number;
+  $find( predicate?: true, key: String, value: any ) : Number;
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的值的下标
+   * @param traversal 遍历集合的方法
+   */
+  $findIndex( traversal: Function ) : Number;
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param obj 需要筛选的一组 key: value 键值对
    */
-  $findIndex( obj: any ) : Number;
+  $findIndex( predicate?: true, obj: any ) : Number;
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
    */
-  $findIndex( arr: any[] ) : Number;
+  $findIndex( predicate?: true, arr: any[] ) : Number;
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param key 需要匹配的 key 值
    * @param value 需要匹配的 value 值
    */
-  $findIndex( key: any, value: any ) : Number;
+  $findIndex( predicate?: true, key: String, value: any ) : Number;
+
+
+  
+  
+  
+  
+
+
+  
+
   /**
    * 获取指定下标的对象
    * @param index 需要获取的对象的下标 - default: 0

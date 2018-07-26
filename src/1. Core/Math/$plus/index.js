@@ -9,6 +9,7 @@ import returnArg from "../../shared/util/returnArg";
 import repeat from "../../shared/polyfill/repeat";
 
 
+// add subtract multiply divide
 export function $plus( num1, num2 ){
   return handler( num1, num2, plus );
 }

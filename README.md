@@ -84,14 +84,14 @@
   - $concat
   - $concatTo
   - $equals
+  - $find
+  - $findIndex
 
 
 
 
   - $get
   - $inArray
-  - $find
-  - $findIndex
   - $set / $edit
   - $move
   - $moveRange
