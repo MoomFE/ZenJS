@@ -19,9 +19,9 @@ const banner =
 
 
 module.exports = {
-  input: 'src/build/index.slim.js',
+  input: 'src/build/index.js',
   output: {
-    file: 'dist/slim/zen.slim.js',
+    file: 'dist/zen.js',
     format: 'umd',
     banner,
     name: 'ZenJS'
