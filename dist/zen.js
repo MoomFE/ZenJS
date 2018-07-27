@@ -660,9 +660,108 @@
     return index === -1 ? null : this[index];
   });
 
-  // import './Math/index';
-  // import './Number/index';
-  // import './Object/index';
+  /**
+   * 判断一个对象是否是引用类型
+   * @param {*} obj 需要判断的对象
+   */
+  function isReferenceType(obj) {
+    var type = typeof obj;
+    return type === 'object' || type === 'function';
+  }
+
+  var stringify = JSON.stringify;
+
+  function $equals(obj, obj2, parent) {
+
+    var key,
+        i,
+        length,
+        oToString;
+
+    if (obj === obj2) {
+      return true;
+    }
+
+    // 其中一个是假值 ( undefined, null, false, '', 0, NaN )
+    if (!obj || !obj2) {
+      return false;
+    }
+    // 类型不一样 ( RegExp, Element, ... )
+    // 过了这一步骤, 类型比对时就只需要比对一个值, 因为类型是完全相同的
+    else if (toString.call(obj) !== toString.call(obj2)) {
+        return false;
+      }
+      // 不是引用类型 ( Number, String, Boolean )
+      else if (!isReferenceType(obj)) {
+          return false;
+        }
+        // 是原生 Object 类型
+        else if (isPlainObject(obj)) {
+            // 元素数量不一样
+            if (keys(obj).length !== keys(obj2).length) {
+              return false;
+            }
+            for (key in obj) {
+              if (!$equals(obj[key], obj2[key])) {
+                return false;
+              }
+            }
+          }
+          // 数组及类数组对象
+          else if ($isArrayLike(obj)) {
+              // 类数组转为数组
+              if (obj[isArray$1]) {
+                obj = $toArray(obj);obj2 = $toArray(obj2);
+              }
+              // 元素数量不一样
+              if ((length = obj.length) !== obj2.length) ;
+              for (i = 0; i < length; i++) {
+                if (!$equals(obj[i], obj2[i])) {
+                  return false;
+                }
+              }
+            }
+            // 拥有 toString 方法且 toString 后的内容是有效的 ( Function )
+            else if (isFunction(obj.toString) && (oToString = obj.toString()).substr(0, 8) !== '[object ') {
+                if (oToString !== obj2.toString()) {
+                  return false;
+                }
+              }
+              // 拥有 toJSON 方法 ( Date )
+              else if (isFunction(obj.toJSON)) {
+                  if (obj.toJSON() !== obj2.toJSON()) {
+                    return false;
+                  }
+                }
+                // 其他的类型
+                // 尝试使用 JSON.stringify 进行处理成字符串进行比对
+                // 如果还是比对不了...
+                else {
+                    try {
+                      if (stringify(obj) !== stringify(obj2)) {
+                        return false;
+                      }
+                    } catch (error) {
+                      return false;
+                    }
+                  }
+
+    return true;
+  }
+
+  defineValue(Object, '$equals', $equals);
+
+  defineValue(ObjectProto, '$equals', function (obj) {
+    return $equals(this, obj);
+  });
+
+  // import './$assign/index';
+  // import './$get/index';
+  // import './$isEmptyObject/index';
+  // import './$isPlainObject/index';
+  // import './$self/index';
+  // import './$set/index';
+
   // import './String/index';
 
 })));
