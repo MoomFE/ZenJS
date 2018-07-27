@@ -2,6 +2,84 @@ describes.push({
   name: 'Object',
   describe: [
     {
+      name: '$equals',
+      it: function(){
+
+        // null
+        Object.$equals( undefined, undefined ).should.true;
+        Object.$equals( null, null ).should.true;
+        // --
+        Object.$equals( undefined, null ).should.false;
+        Object.$equals( null, undefined ).should.false;
+
+        // false
+        Object.$equals( false, false ).should.true;
+        Object.$equals( '', '' ).should.true;
+        Object.$equals( 0, 0 ).should.true;
+        // --
+        Object.$equals( false, '' ).should.false;
+        Object.$equals( '', false ).should.false;
+        Object.$equals( false, 0 ).should.false;
+        Object.$equals( 0, false ).should.false;
+        Object.$equals( '', 0 ).should.false;
+        Object.$equals( 0, '' ).should.false;
+
+        // Other
+        Object.$equals( NaN, NaN ).should.true;
+        Object.$equals( Infinity, Infinity ).should.true;
+        // --
+        Object.$equals( NaN, Infinity ).should.false;
+        Object.$equals( Infinity, NaN ).should.false;
+
+        // 不同类型检测
+        Object.$equals( new Map(), new Set() ).should.false;
+        Object.$equals( new Set(), new Map() ).should.false;
+        Object.$equals( div, new Map() ).should.false;
+        Object.$equals( div, new Set() ).should.false;
+        Object.$equals( div, span ).should.false;
+
+        // Object.$equals( {}, {} ).should.true;
+        // Object.$equals( { a: 1 }, { a: 1 } ).should.true;
+
+        // Object.$equals( null, null ).should.true;
+        // Object.$equals( { null: null }, { null: null } );
+
+        // Object.$equals( undefined, undefined ).should.true;
+        // Object.$equals( { undefined: undefined }, { undefined: undefined } ).should.true;
+
+        // Object.$equals( 'ZenJS', 'ZenJS' ).should.true;
+        // Object.$equals( { ZenJS: 'ZenJS' }, { ZenJS: 'ZenJS' } ).should.true;
+
+        // Object.$equals( true, true ).should.true;
+        // Object.$equals( false, false ).should.true;
+        // Object.$equals( { true: true }, { true: true } ).should.true;
+        // Object.$equals( { false: false }, { false: false } ).should.true;
+
+        // Object.$equals( div, div ).should.true;
+        // Object.$equals( { div: div }, { div: div } ).should.true;
+
+        // Object.$equals( /ZenJS/, /ZenJS/ );
+        // Object.$equals( { ZenJS: /ZenJS/ }, { ZenJS: /ZenJS/ } );
+
+        // Object.$equals( {}, [] ).should.false;
+        // Object.$equals( {}, div ).should.false;
+        // Object.$equals( {}, { a: 1 } ).should.false;
+
+        // var a = {};
+        //     a.a = a;
+        // Object.$equals( a, a ).should.true;
+
+        // var b = {};
+        //     b.a = a;
+        // Object.$equals( a, b ).should.true;
+
+        // b.a = b;
+        // Object.$equals( a, b ).should.false;
+
+        // b.a = { a: 1 };
+        // Object.$equals( a, b ).should.false;
+      }
+    }, {
       name: '$assign',
       it: function(){
 
@@ -78,50 +156,6 @@ describes.push({
 
         test2[ "1" ].should.equals( 1 );
         test2[ "3" ].should.equals( 1 );
-      }
-    }, {
-      name: '$equals',
-      it: function(){
-        // Object.$equals( {}, {} ).should.true;
-        // Object.$equals( { a: 1 }, { a: 1 } ).should.true;
-
-        // Object.$equals( null, null ).should.true;
-        // Object.$equals( { null: null }, { null: null } );
-
-        // Object.$equals( undefined, undefined ).should.true;
-        // Object.$equals( { undefined: undefined }, { undefined: undefined } ).should.true;
-
-        // Object.$equals( 'ZenJS', 'ZenJS' ).should.true;
-        // Object.$equals( { ZenJS: 'ZenJS' }, { ZenJS: 'ZenJS' } ).should.true;
-
-        // Object.$equals( true, true ).should.true;
-        // Object.$equals( false, false ).should.true;
-        // Object.$equals( { true: true }, { true: true } ).should.true;
-        // Object.$equals( { false: false }, { false: false } ).should.true;
-
-        // Object.$equals( div, div ).should.true;
-        // Object.$equals( { div: div }, { div: div } ).should.true;
-
-        // Object.$equals( /ZenJS/, /ZenJS/ );
-        // Object.$equals( { ZenJS: /ZenJS/ }, { ZenJS: /ZenJS/ } );
-
-        // Object.$equals( {}, [] ).should.false;
-        // Object.$equals( {}, div ).should.false;
-        // Object.$equals( {}, { a: 1 } ).should.false;
-
-        // var a = {};
-        //     a.a = a;
-        // Object.$equals( a, a ).should.true;
-
-        // var b = {};
-        //     b.a = a;
-        // Object.$equals( a, b ).should.true;
-
-        // b.a = b;
-        // Object.$equals( a, b ).should.false;
-
-        // b.a = { a: 1 };
-        // Object.$equals( a, b ).should.false;
       }
     }, {
       name: '$isEmptyObject',

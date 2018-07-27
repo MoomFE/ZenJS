@@ -87,6 +87,12 @@
   - $find
   - $findIndex
 
+- Object
+  - $equals
+
+- Object.prototype
+  - $equals
+
 
 
 
@@ -166,7 +172,6 @@
   - $assign
   - $create
   - $each
-  - $equals
   - $isEmptyObject
   - $isPlainObject
 

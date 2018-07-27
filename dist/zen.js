@@ -661,22 +661,18 @@
   });
 
   /**
-   * 判断一个对象是否是引用类型
-   * @param {*} obj 需要判断的对象
+   * @type {Boolean} 当前是否是浏览器环境
    */
-  function isReferenceType(obj) {
-    var type = typeof obj;
-    return type === 'object' || type === 'function';
-  }
+  var inBrowser = typeof window !== 'undefined';
 
-  var stringify = JSON.stringify;
+  /**
+   * @type {Element}
+   */
+  var DomElement = inBrowser ? window.Element : undefined;
 
-  function $equals(obj, obj2, parent) {
+  var rType = /^\[object\s([^\]]+)]$/;
 
-    var key,
-        i,
-        length,
-        oToString;
+  function equals$1(obj, obj2) {
 
     if (obj === obj2) {
       return true;
@@ -684,75 +680,172 @@
 
     // 其中一个是假值 ( undefined, null, false, '', 0, NaN )
     if (!obj || !obj2) {
+      // 对付 NaN 用的, 要不然直接就返回 false 了
+      return obj !== obj && obj2 !== obj2;
+    }
+
+    var oString = toString.call(obj);
+
+    // 实际类型不一样 ( RegExp, Element, ... )
+    // 比如上面两种类型都是 object, 但是实际上却是不一样的
+    // 过了这一步骤, 类型比对时就只需要比对一个值, 因为类型是完全相同的
+    if (oString !== toString.call(obj2)) {
       return false;
     }
-    // 类型不一样 ( RegExp, Element, ... )
-    // 过了这一步骤, 类型比对时就只需要比对一个值, 因为类型是完全相同的
-    else if (toString.call(obj) !== toString.call(obj2)) {
-        return false;
-      }
-      // 不是引用类型 ( Number, String, Boolean )
-      else if (!isReferenceType(obj)) {
-          return false;
-        }
-        // 是原生 Object 类型
-        else if (isPlainObject(obj)) {
-            // 元素数量不一样
-            if (keys(obj).length !== keys(obj2).length) {
-              return false;
-            }
-            for (key in obj) {
-              if (!$equals(obj[key], obj2[key])) {
-                return false;
-              }
-            }
-          }
-          // 数组及类数组对象
-          else if ($isArrayLike(obj)) {
-              // 类数组转为数组
-              if (obj[isArray$1]) {
-                obj = $toArray(obj);obj2 = $toArray(obj2);
-              }
-              // 元素数量不一样
-              if ((length = obj.length) !== obj2.length) ;
-              for (i = 0; i < length; i++) {
-                if (!$equals(obj[i], obj2[i])) {
-                  return false;
-                }
-              }
-            }
-            // 拥有 toString 方法且 toString 后的内容是有效的 ( Function )
-            else if (isFunction(obj.toString) && (oToString = obj.toString()).substr(0, 8) !== '[object ') {
-                if (oToString !== obj2.toString()) {
-                  return false;
-                }
-              }
-              // 拥有 toJSON 方法 ( Date )
-              else if (isFunction(obj.toJSON)) {
-                  if (obj.toJSON() !== obj2.toJSON()) {
-                    return false;
-                  }
-                }
-                // 其他的类型
-                // 尝试使用 JSON.stringify 进行处理成字符串进行比对
-                // 如果还是比对不了...
-                else {
-                    try {
-                      if (stringify(obj) !== stringify(obj2)) {
-                        return false;
-                      }
-                    } catch (error) {
-                      return false;
-                    }
-                  }
 
-    return true;
+    // 非引用类型及方法 ( String, Boolean, Number, Function )
+    // 剩下的就是对象的比对了
+    if (typeof obj !== 'object') {
+      return false;
+    }
+
+    // 对于 object 更加细致点的比对 ( Map, Set, ... )
+    // 它们两都是 [object Object]
+    if (obj.constructor !== obj2.constructor) {
+      return false;
+    }
+
+    // 是数组类型 ( Array )
+    if (obj[isArray$1]) {
+      return types.array(obj, obj2);
+    }
+
+    // 原始对象类型 ( JSON )
+    if (isPlainObject(obj)) {
+      return types.object(obj, obj2);
+    }
+
+    var oType = oString.match(rType)[1].toLowerCase();
+
+    // 有针对性的比对方法 ( Regexp, Date, Arguments )
+    if (oType in types) {
+      return types[oType](obj, obj2);
+    }
+
+    // ( Elemnet )
+    if (DomElement && obj instanceof DomElement) {
+      return type.element(obj, obj2);
+    }
+    // ( Set )
+    if (isFunction(Set) && obj instanceof Set) {
+      return type.set(obj, obj2);
+    }
+    // ( Map )
+    if (isFunction(Map) && obj instanceof Map) {
+      return type.map(obj, obj2);
+    }
+
+    return types.object(obj, obj2);
   }
 
-  defineValue(Object, '$equals', $equals);
+  var types = {
 
-  defineValue(ObjectProto, '$equals', function (obj) {
-    return $equals(this, obj);
+    /**
+     * @param {Array} obj 
+     * @param {Array} obj2 
+     */
+    array: function (obj, obj2) {
+      var i,
+          length = obj.length;
+
+      if (length !== obj2.length) {
+        return false;
+      }
+
+      for (i = 0; i < length; i++) {
+        if (!equals$1(obj[i], obj2[i])) {
+          return false;
+        }
+      }
+
+      return true;
+    },
+
+
+    /**
+     * @param {Object} obj 
+     * @param {Object} obj2 
+     */
+    object: function (obj, obj2) {
+      var _keys = keys(obj);
+      var length = _keys.length;
+      var i,
+          key;
+
+      if (length !== keys(obj2).length) {
+        return false;
+      }
+
+      for (i = 0; i < length; i++) {
+        key = _keys[i];
+
+        if (!equals$1(obj[key], obj2[key])) {
+          return false;
+        }
+      }
+
+      return true;
+    },
+
+
+    /**
+     * @param {Element} obj 
+     * @param {Element} obj2 
+     */
+    element: function (obj, obj2) {
+      return obj.innerHTML === obj2.innerHTML;
+    },
+
+
+    /**
+     * @param {RegExp} obj 
+     * @param {RegExp} obj2 
+     */
+    regexp: function (obj, obj2) {
+      return obj.toString() === obj2.toString();
+    },
+
+
+    /**
+     * @param {Date} obj 
+     * @param {Date} obj2 
+     */
+    date: function (obj, obj2) {
+      return +obj === +obj2;
+    },
+    set: function (obj, obj2) {},
+    map: function (obj, obj2) {
+      if (obj.size !== obj2.size) {
+        return false;
+      }
+
+      var keys$$1 = [],
+          key,
+          i,
+          length;
+
+      obj.forEach(function (value, key) {
+        return keys$$1.push(key);
+      });
+
+      for (i = 0, length = keys$$1.length; i < length; i++) {
+        key = keys$$1[i];
+
+        if (!equals$1(obj.get(key), obj2.get(key))) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+  };
+
+  types.arguments = types.array;
+
+  defineValue(Object, '$equals', equals$1);
+
+  defineValue(ObjectProto, '$equals', function (obj2) {
+    return equals$1(this, obj2);
   });
 
   // import './$assign/index';
