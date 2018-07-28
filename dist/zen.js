@@ -344,16 +344,50 @@
 
   var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
 
+  /**
+   * 判断传入对象是否是 Map 类型
+   * @param {any} obj 需要判断的对象
+   * @returns {Boolean}
+   */
+  function isMap(obj) {
+    return isFunction(Map) && obj instanceof Map;
+  }
+
+  /**
+   * 判断传入对象是否是 Set 类型
+   * @param {any} obj 需要判断的对象
+   * @returns {Boolean}
+   */
+  function isSet(obj) {
+    return isFunction(Set) && obj instanceof Set;
+  }
+
+  /**
+   * 将 Map 或 Set 类型转换为数组类型,
+   * 执行到这之前必须确定传进来的是 Map 或 Set 类型
+   * @param { Map | Set } map 
+   */
+  function mapSetToArray(map) {
+    var result = [];
+
+    if (map instanceof Map) {
+      map.forEach(function (key, value) {
+        return result.push([value, key]);
+      });
+    } else {
+      map.forEach(function (value) {
+        return result.push(value);
+      });
+    }
+
+    return result;
+  }
+
   function $toArray(value) {
 
     // 不可转为数组的, 直接返回空数组
     if (!value || value[isBoolean$1]) {
       return [];
-    }
-
-    // 是数组类型, 那就直接返回一个副本
-    if (value[isArray$1]) {
-      return slice.call(value);
     }
 
     // 是字符串类型
@@ -365,8 +399,17 @@
       }
     }
 
-    // 其他类数组的类型, 比如 arguments, jQuery
-    return slice.call(value);
+    // 是数组类型, 那就直接返回一个副本
+    if ($isArrayLike(value)) {
+      return slice.call(value);
+    }
+
+    // 转换 Map, Set 类型
+    if (isMap(value) || isSet(value)) {
+      return mapSetToArray(value);
+    }
+
+    return [];
   }
 
   defineValue(Array, '$toArray', $toArray);
@@ -813,7 +856,9 @@
     date: function (obj, obj2) {
       return +obj === +obj2;
     },
-    set: function (obj, obj2) {},
+    set: function (obj, obj2) {
+      // 待完成
+    },
     map: function (obj, obj2) {
       if (obj.size !== obj2.size) {
         return false;
