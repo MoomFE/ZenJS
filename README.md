@@ -96,7 +96,7 @@
 
 
 
-  - $get
+  <!-- - $get
   - $inArray
   - $set / $edit
   - $move
@@ -195,7 +195,7 @@
   - $ready
   - $typeof
   - $querystring.stringify
-  - $querystring.parse
+  - $querystring.parse -->
 
 <br>
 
