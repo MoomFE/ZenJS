@@ -105,25 +105,24 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: 'Array.$each',
+      describe: [
+        {
+          name: 'Always return to itself',
+          it: function(){
+            Object.$equals( Array.$each(), undefined ).should.true;
+            Object.$equals( Array.$each( null ), null ).should.true;
+            Object.$equals( Array.$each( undefined ), undefined ).should.true;
+            Object.$equals( Array.$each( false ), false ).should.true;
+            Object.$equals( Array.$each( true ), true ).should.true;
+            Object.$equals( Array.$each( [] ), [] ).should.true;
+            Object.$equals( Array.$each( [ 1, 2, 3 ] ), [ 1, 2, 3 ] ).should.true;
+          }
+        }
+      ]
     }
 
-
-    // {
-    //   name: '$create',
-    //   it: function(){
-    //     Array.$create( 10 ).length.should.equals( 10 );
-    //     Array.$create( true ).length.should.equals( 1 );
-    //     Array.$create( false ).length.should.equals( 0 );
-    //     Array.$create( 1, true )[0].should.true;
-    //     Array.$create( 1, false )[0].should.false;
-    //     Array
-    //       .$create( 10, function( index ){
-    //         return 'ZenJS-' + index
-    //       })
-    //       [ 9 ]
-    //       .should.equals( 'ZenJS-9' )
-    //   }
-    // }, {
     //   name: '$toArray',
     //   it: function(){
 
