@@ -3,178 +3,229 @@ describes.push({
   describe: [
     {
       name: '$equals',
-      it: function(){
+      describe: [
+        {
+          name: 'equal to null',
+          it: function(){
+            // true
+            Object.$equals( undefined, undefined ).should.true;
+            Object.$equals( null, null ).should.true;
+            // false
+            Object.$equals( undefined, null ).should.false;
+            Object.$equals( null, undefined ).should.false;
+          }
+        }, {
+          name: 'equal to false',
+          it: function(){
+            // true
+            Object.$equals( false, false ).should.true;
+            Object.$equals( '', '' ).should.true;
+            Object.$equals( 0, 0 ).should.true;
+            // false
+            Object.$equals( false, '' ).should.false;
+            Object.$equals( '', false ).should.false;
+            Object.$equals( false, 0 ).should.false;
+            Object.$equals( 0, false ).should.false;
+            Object.$equals( '', 0 ).should.false;
+            Object.$equals( 0, '' ).should.false;
+          }
+        }, {
+          name: 'other equal to false',
+          it: function(){
+            // true
+            Object.$equals( NaN, NaN ).should.true;
+            Object.$equals( Infinity, Infinity ).should.true;
+            // false
+            Object.$equals( NaN, Infinity ).should.false;
+            Object.$equals( Infinity, NaN ).should.false;
+          }
+        }, {
+          name: 'String type',
+          it: function(){
+            // true
+            Object.$equals( 'ZenJS', 'ZenJS' ).should.true;
+            Object.$equals( 'ZenUI', 'ZenUI' ).should.true;
+            Object.$equals( '123', '123' ).should.true;
+            // false
+            Object.$equals( 'ZenJS', 'ZenUI' ).should.false;
+            Object.$equals( '123', '456' ).should.false;
+            Object.$equals( '', '123' ).should.false;
+          }
+        }, {
+          name: 'Boolean type',
+          it: function(){
+            // true
+            Object.$equals( true, true ).should.true;
+            Object.$equals( false, false ).should.true;
+            // false
+            Object.$equals( true, false ).should.false;
+          }
+        }, {
+          name: 'Number type',
+          it: function(){
+            // true
+            Object.$equals( -1 , -1 ).should.true;
+            Object.$equals( 0 , 0 ).should.true;
+            Object.$equals( 1 , 1 ).should.true;
+            Object.$equals( NaN , NaN ).should.true;
+            Object.$equals( Infinity , Infinity ).should.true;
+            Object.$equals( Infinity , Infinity ).should.true;
+            // false
+            Object.$equals( -1, 0 ).should.false;
+            Object.$equals( 0, 1 ).should.false;
+            Object.$equals( 0, NaN ).should.false;
+            Object.$equals( 0, Infinity ).should.false;
+            Object.$equals( NaN, Infinity ).should.false;
+          }
+        }, {
+          name: 'Function type',
+          it: function(){
+            // true
+            function func1(){};
+            function func2(){};
+            Object.$equals( func1, func1 ).should.true;
+            Object.$equals( func2, func2 ).should.true;
+            Object.$equals( function(){ return true }, function(){ return true }).should.true;
+            Object.$equals( function(){ return false }, function(){ return false }).should.true;
+            // false
+            Object.$equals( func1, func2 ).should.false;
+            Object.$equals( function(){ return true }, function(){ return false }).should.false;
+          }
+        }, {
+          name: 'Array type',
+          it: function(){
+            // true
+            Object.$equals( [], [] ).should.true;
+            Object.$equals( [ 1 ], [ 1 ] ).should.true;
+            Object.$equals( [ 1, 2 ], [ 1, 2 ] ).should.true;
+            // false
+            Object.$equals( [ ], [ 1 ] ).should.false;
+            Object.$equals( [ 1 ], [ 2 ] ).should.false;
+            Object.$equals( [ 1, 2, 3 ], [ 1, 2, 4 ] ).should.false;
+          }
+        }, {
+          name: 'Array Like for IArguments',
+          it: function(){
+            var args1;
+            var args2;
+            function func1(){
+              args1 = arguments;
+            }
+            function func2(){
+              args2 = arguments;
+            }
 
-        // null
-        Object.$equals( undefined, undefined ).should.true;
-        Object.$equals( null, null ).should.true;
-        // --
-        Object.$equals( undefined, null ).should.false;
-        Object.$equals( null, undefined ).should.false;
+            func1( 1, 2, 3 );
+            func2( 1, 2, 3 );
 
-        // false
-        Object.$equals( false, false ).should.true;
-        Object.$equals( '', '' ).should.true;
-        Object.$equals( 0, 0 ).should.true;
-        // --
-        Object.$equals( false, '' ).should.false;
-        Object.$equals( '', false ).should.false;
-        Object.$equals( false, 0 ).should.false;
-        Object.$equals( 0, false ).should.false;
-        Object.$equals( '', 0 ).should.false;
-        Object.$equals( 0, '' ).should.false;
+            // true
+            Object.$equals( args1, args2 ).should.true;
+            // false
+            func2( 1, 2, 3, 4 );
+            Object.$equals( args1, args2 ).should.false;
+          }
+        }, {
+          name: 'Array Like for DOMTokenList',
+          it: function(){
+            var div1 = div;
+            var div2 = div;
 
-        // Other
-        Object.$equals( NaN, NaN ).should.true;
-        Object.$equals( Infinity, Infinity ).should.true;
-        // --
-        Object.$equals( NaN, Infinity ).should.false;
-        Object.$equals( Infinity, NaN ).should.false;
+            div1.className = div2.className = '1 2 3';
 
-        // String
-        Object.$equals( 'ZenJS', 'ZenJS' ).should.true;
-        Object.$equals( 'ZenUI', 'ZenUI' ).should.true;
-        Object.$equals( '123', '123' ).should.true;
-        // --
-        Object.$equals( 'ZenJS', 'ZenUI' ).should.false;
-        Object.$equals( '123', '456' ).should.false;
-        Object.$equals( '', '123' ).should.false;
-
-        // Boolean
-        Object.$equals( true, true ).should.true;
-        Object.$equals( false, false ).should.true;
-        // --
-        Object.$equals( true, false ).should.false;
-
-        // Number
-        Object.$equals( -1 , -1 ).should.true;
-        Object.$equals( 0 , 0 ).should.true;
-        Object.$equals( 1 , 1 ).should.true;
-        Object.$equals( NaN , NaN ).should.true;
-        Object.$equals( Infinity , Infinity ).should.true;
-        Object.$equals( Infinity , Infinity ).should.true;
-        // --
-        Object.$equals( -1, 0 ).should.false;
-        Object.$equals( 0, 1 ).should.false;
-        Object.$equals( 0, NaN ).should.false;
-        Object.$equals( 0, Infinity ).should.false;
-        Object.$equals( NaN, Infinity ).should.false;
-
-        // Function
-        function func1(){};
-        function func2(){};
-        Object.$equals( func1, func1 ).should.true;
-        Object.$equals( func2, func2 ).should.true;
-        Object.$equals( function(){ return true }, function(){ return true }).should.true;
-        Object.$equals( function(){ return false }, function(){ return false }).should.true;
-        // --
-        Object.$equals( func1, func2 ).should.false;
-        Object.$equals( function(){ return true }, function(){ return false }).should.false;
-
-        // Array
-        Object.$equals( [], [] ).should.true;
-        Object.$equals( [ 1 ], [ 1 ] ).should.true;
-        Object.$equals( [ 1, 2 ], [ 1, 2 ] ).should.true;
-        // --
-        Object.$equals( [ ], [ 1 ] ).should.false;
-        Object.$equals( [ 1 ], [ 2 ] ).should.false;
-        Object.$equals( [ 1, 2, 3 ], [ 1, 2, 4 ] ).should.false;
-
-        // ArrayLike for IArguments
-        var args3;
-        var args4;
-        function func3(){
-          args3 = arguments;
+            // true
+            Object.$equals( div1.classList, div2.classList ).should.true;
+            // false
+            div2.className = '1 2 3 4';
+            Object.$equals( div1.classList, div2.classList ).should.false;
+          }
+        }, {
+          name: 'Plain Object',
+          it: function(){
+            // true
+            Object.$equals( {}, {} ).should.true;
+            Object.$equals( { a: 1 }, { a: 1 } ).should.true;
+            Object.$equals( { a: 1, b: 2 }, { a: 1, b: 2 } ).should.true;
+            Object.$equals( { zenjs: /ZenJS/ }, { zenjs: /ZenJS/ } ).should.true;
+            // false
+            Object.$equals( {}, { a: 1 } ).should.false;
+            Object.$equals( { a: 1 }, { a: 2 } ).should.false;
+            Object.$equals( { a: 1, b: 2 }, { a: 1 } ).should.false;
+            Object.$equals( { a: 1, b: 2 }, { a: 1, b: 3 } ).should.false;
+            Object.$equals( { zenjs: /ZenJS/ }, { zenjs: /ZenJS/img } ).should.false;
+          }
+        }, {
+          name: 'Regexp type',
+          it: function(){
+            // true
+            Object.$equals( /ZenJS/, /ZenJS/ ).should.true;
+            Object.$equals( /ZenJS/img, /ZenJS/img ).should.true;
+            // false
+            Object.$equals( /ZenJS/, /ZenUI/ ).should.false;
+            Object.$equals( /ZenJS/, /ZenJS/img ).should.false;
+          }
+        }, {
+          name: 'Date type',
+          it: function(){
+            // true
+            Object.$equals( new Date(), new Date() ).should.true;
+            Object.$equals( new Date('2018/7/28'), new Date('2018/7/28') ).should.true;
+            Object.$equals( new Date('2019/7/28'), new Date('2019/7/28') ).should.true;
+            // false
+            Object.$equals( new Date(), new Date('2018/7/28') ).should.false;
+            Object.$equals( new Date('2018/7/28'), new Date('2019/7/28') ).should.false;
+          }
+        }, {
+          name: 'Elemnet type',
+          it: function(){
+            // true
+            Object.$equals( div, div ).should.true;
+            Object.$equals( span, span ).should.true;
+            Object.$equals( select, select ).should.true;
+            Object.$equals( option, option ).should.true;
+            // false
+            Object.$equals( div, span ).should.false;
+            Object.$equals( span, select ).should.false;
+            Object.$equals( select, option ).should.false;
+          }
+        }, {
+          name: 'Map',
+          it: function(){
+            // true
+            Object.$equals( new Map(), new Map() ).should.true;
+            Object.$equals( new Map(), new Map([]) ).should.true;
+            Object.$equals( new Map([]), new Map([]) ).should.true;
+            Object.$equals( new Map([ [ 1, 2 ] ]), new Map([ [ 1, 2 ] ]) ).should.true;
+            Object.$equals( new Map([ [ 1, 2 ], [ 3, 4 ] ]), new Map([ [ 1, 2 ], [ 3, 4 ] ]) ).should.true;
+            // false
+            Object.$equals( new Map(), new Map([ [ 1, 2 ] ]) ).should.false;
+            Object.$equals( new Map([ [ 1, 2 ] ]), new Map([ [ 3, 4 ] ]) ).should.false;
+            Object.$equals( new Map([ [ 1, 2 ], [ 3, 4 ] ]), new Map([ [ 1, 2 ], [ 3, 5 ] ]) ).should.false;
+          }
+        }, {
+          name: 'Set',
+          it: function(){
+            // true
+            Object.$equals( new Set(), new Set() ).should.true;
+            Object.$equals( new Set(), new Set([]) ).should.true;
+            Object.$equals( new Set([]), new Set([]) ).should.true;
+            Object.$equals( new Set([ 1 ]), new Set([ 1 ]) ).should.true;
+            Object.$equals( new Set([ 1, 2 ]), new Set([ 1, 2 ]) ).should.true;
+            Object.$equals( new Set([ 1, 2, 3 ]), new Set([ 1, 2, 3 ]) ).should.true;
+            // false
+            Object.$equals( new Set(), new Set([ 1 ]) ).should.false;
+            Object.$equals( new Set([ 1 ]), new Set([ 1, 2 ]) ).should.false;
+            Object.$equals( new Set([ 1, 2 ]), new Set([ 1, 2, 3 ]) ).should.false;
+          }
+        }, {
+          name: 'Check different types',
+          it: function(){
+            Object.$equals( new Map(), new Set() ).should.false;
+            Object.$equals( new Set(), new Map() ).should.false;
+            Object.$equals( div, new Map() ).should.false;
+            Object.$equals( div, new Set() ).should.false;
+          }
         }
-        function func4(){
-          args4 = arguments;
-        }
-
-        func3( 1, 2, 3 );
-        func4( 1, 2, 3 );
-
-        Object.$equals( args3, args4 ).should.true;
-        // --
-        func4( 1, 2, 3, 4 );
-        Object.$equals( args3, args4 ).should.false;
-
-        // ArrayLike for DOMTokenList
-        var div1 = div;
-        var div2 = div;
-
-        div1.className = div2.className = '1 2 3';
-
-        Object.$equals( div1.classList, div2.classList ).should.true;
-        // --
-        div2.className = '1 2 3 4';
-        Object.$equals( div1.classList, div2.classList ).should.false;
-
-        // JSON
-        Object.$equals( {}, {} ).should.true;
-        Object.$equals( { a: 1 }, { a: 1 } ).should.true;
-        Object.$equals( { a: 1, b: 2 }, { a: 1, b: 2 } ).should.true;
-        Object.$equals( { zenjs: /ZenJS/ }, { zenjs: /ZenJS/ } ).should.true;
-        // --
-        Object.$equals( {}, { a: 1 } ).should.false;
-        Object.$equals( { a: 1 }, { a: 2 } ).should.false;
-        Object.$equals( { a: 1, b: 2 }, { a: 1 } ).should.false;
-        Object.$equals( { a: 1, b: 2 }, { a: 1, b: 3 } ).should.false;
-        Object.$equals( { zenjs: /ZenJS/ }, { zenjs: /ZenJS/img } ).should.false;
-
-        // Regexp
-        Object.$equals( /ZenJS/, /ZenJS/ ).should.true;
-        Object.$equals( /ZenJS/img, /ZenJS/img ).should.true;
-        // --
-        Object.$equals( /ZenJS/, /ZenUI/ ).should.false;
-        Object.$equals( /ZenJS/, /ZenJS/img ).should.false;
-
-        // Date
-        Object.$equals( new Date(), new Date() ).should.true;
-        Object.$equals( new Date('2018/7/28'), new Date('2018/7/28') ).should.true;
-        Object.$equals( new Date('2019/7/28'), new Date('2019/7/28') ).should.true;
-        // --
-        Object.$equals( new Date(), new Date('2018/7/28') ).should.false;
-        Object.$equals( new Date('2018/7/28'), new Date('2019/7/28') ).should.false;
-
-        // Elemnet
-        Object.$equals( div, div ).should.true;
-        Object.$equals( span, span ).should.true;
-        Object.$equals( select, select ).should.true;
-        Object.$equals( option, option ).should.true;
-        // --
-        Object.$equals( div, span ).should.false;
-        Object.$equals( span, select ).should.false;
-        Object.$equals( select, option ).should.false;
-
-        // Map
-        Object.$equals( new Map(), new Map() ).should.true;
-        Object.$equals( new Map(), new Map([]) ).should.true;
-        Object.$equals( new Map([]), new Map([]) ).should.true;
-        Object.$equals( new Map([ [ 1, 2 ] ]), new Map([ [ 1, 2 ] ]) ).should.true;
-        Object.$equals( new Map([ [ 1, 2 ], [ 3, 4 ] ]), new Map([ [ 1, 2 ], [ 3, 4 ] ]) ).should.true;
-        // --
-        Object.$equals( new Map(), new Map([ [ 1, 2 ] ]) ).should.false;
-        Object.$equals( new Map([ [ 1, 2 ] ]), new Map([ [ 3, 4 ] ]) ).should.false;
-        Object.$equals( new Map([ [ 1, 2 ], [ 3, 4 ] ]), new Map([ [ 1, 2 ], [ 3, 5 ] ]) ).should.false;
-
-        // Set
-        Object.$equals( new Set(), new Set() ).should.true;
-        Object.$equals( new Set(), new Set([]) ).should.true;
-        Object.$equals( new Set([]), new Set([]) ).should.true;
-        Object.$equals( new Set([ 1 ]), new Set([ 1 ]) ).should.true;
-        Object.$equals( new Set([ 1, 2 ]), new Set([ 1, 2 ]) ).should.true;
-        Object.$equals( new Set([ 1, 2, 3 ]), new Set([ 1, 2, 3 ]) ).should.true;
-        // --
-        Object.$equals( new Set(), new Set([ 1 ]) ).should.false;
-        Object.$equals( new Set([ 1 ]), new Set([ 1, 2 ]) ).should.false;
-        Object.$equals( new Set([ 1, 2 ]), new Set([ 1, 2, 3 ]) ).should.false;
-
-        // 不同类型检测
-        Object.$equals( new Map(), new Set() ).should.false;
-        Object.$equals( new Set(), new Map() ).should.false;
-        Object.$equals( div, new Map() ).should.false;
-        Object.$equals( div, new Set() ).should.false;
-      }
+      ]
     }
     // , {
     //   name: '$assign',
