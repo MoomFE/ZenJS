@@ -16,7 +16,7 @@ describes.push({
             Object.$equals( Array.$chunk( [ 1, 2, 3, 4 ], -1 ), [] ).should.true;
           }
         }, {
-          name: 'Success',
+          name: 'Chunk',
           it: function(){
             Object.$equals( Array.$chunk( [ 1, 2, 3 ], 1 ), [ [ 1 ], [ 2 ], [ 3 ] ] ).should.true;
             Object.$equals( Array.$chunk( [ 1, 2, 3 ], 2 ), [ [ 1, 2 ], [ 3 ] ] ).should.true;
@@ -37,7 +37,43 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: 'Array.$copy',
+      describe: [
+        {
+          name: 'Return empty Array',
+          it: function(){
+            Object.$equals( Array.$copy(), [] ).should.true;
+            Object.$equals( Array.$copy( null ), [] ).should.true;
+            Object.$equals( Array.$copy( undefined ), [] ).should.true;
+            Object.$equals( Array.$copy( false ), [] ).should.true;
+            Object.$equals( Array.$copy( true ), [] ).should.true;
+            Object.$equals( Array.$copy([]), [] ).should.true;
+          }
+        }, {
+          name: 'Copy',
+          it: function(){
+            var arr = [ 1, 2, 3 ];
+
+            Object.$equals( Array.$copy( arr ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( Array.$copy( arr ) === arr, false ).should.true;
+          }
+        }, {
+          name: 'Copy to Array',
+          it: function(){
+            var arr1 = [ 1, 2, 3 ];
+            var arr2 = [ 4, 5, 6 ];
+            var copy = Array.$copy( arr2, arr1 );
+
+            Object.$equals( copy, [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( copy === arr1, false ).should.true;
+            Object.$equals( copy === arr2, false ).should.true;
+          }
+        }
+      ]
     }
+
+
     // {
     //   name: '$create',
     //   it: function(){
