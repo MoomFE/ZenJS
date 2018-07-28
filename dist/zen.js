@@ -220,7 +220,21 @@
     return define(obj, name, { value: value }, options || definePropertyOptions), value;
   }
 
+  /**
+   * 判断传入对象是否是 Number 类型
+   * @param {any} obj 需要判断的对象
+   * @returns {Boolean}
+   */
+  function isNumber(obj) {
+    return typeof obj === 'number';
+  }
+
   function $create(length, insert, isInsert) {
+
+    if (!isNumber(length) || length < 1) {
+      return [];
+    }
+
     var i = 0;
     var result = Array(length);
 
@@ -294,15 +308,6 @@
   defineValue(ArrayProto, '$each', function (callback) {
     return $each(this, callback);
   });
-
-  /**
-   * 判断传入对象是否是 Number 类型
-   * @param {any} obj 需要判断的对象
-   * @returns {Boolean}
-   */
-  function isNumber(obj) {
-    return typeof obj === 'number';
-  }
 
   var StringProto = String.prototype;
 
