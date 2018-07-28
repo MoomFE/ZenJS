@@ -71,6 +71,40 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: 'Array.$create',
+      describe: [
+        {
+          name: 'Return empty Array',
+          it: function(){
+            Object.$equals( Array.$create(), [] ).should.true;
+            Object.$equals( Array.$create( null ), [] ).should.true;
+            Object.$equals( Array.$create( undefined ), [] ).should.true;
+            Object.$equals( Array.$create( false ), [] ).should.true;
+            Object.$equals( Array.$create( true ), [] ).should.true;
+            Object.$equals( Array.$create( 0 ), [] ).should.true;
+            Object.$equals( Array.$create( -1 ), [] ).should.true;
+          }
+        }, {
+          name: 'Success',
+          it: function(){
+            Array.$create( 10 ).length.should.equals( 10 );
+            Array.$create( 100 ).length.should.equals( 100 );
+            Object.$equals( Array.$create( 1, true ), [ true ] ).should.true;
+            Object.$equals( Array.$create( 2, true ), [ true, true ] ).should.true;
+            Object.$equals( Array.$create( 1, false ), [ false ] ).should.true;
+            Object.$equals( Array.$create( 2, false ), [ false, false ] ).should.true;
+            Object.$equals( Array.$create( 1 ), [ undefined ] ).should.true;
+            Object.$equals( Array.$create( 2 ), [ undefined, undefined ] ).should.true;
+            Object.$equals(
+              Array.$create( 3, function( index ){
+                return 'ZenJS-' + index;
+              }),
+              [ 'ZenJS-0', 'ZenJS-1', 'ZenJS-2' ]
+            );
+          }
+        }
+      ]
     }
 
 
@@ -114,24 +148,6 @@ describes.push({
     //     var div3 = div.appendChild( window.div );
 
     //     Array.$toArray( div.querySelectorAll('div') ).$equals( [ div1, div2, div3 ] ).should.true;
-
-    //   }
-    // }, {
-    //   name: '$copy',
-    //   it: function(){
-
-    //     var arr = [ 1, 2, 3 ], arr1;
-    //     var result;
-
-    //     result = Array.$copy( arr );
-    //     result.$equals( arr ).should.true;
-    //     isEqual( result, arr ).should.false;
-
-    //     arr1 = [ 4, 5, 6 ];
-    //     result = Array.$copy( arr1, arr );
-    //     result.$equals([ 1, 2, 3, 4, 5, 6 ]).should.true;
-    //     isEqual( result, arr ).should.false;
-    //     isEqual( result, arr1 ).should.false;
 
     //   }
     // }, {
