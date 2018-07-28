@@ -2,7 +2,7 @@
  * Zen.js v3.0.0
  * https://github.com/MoomFE/ZenJS
  * 
- * (c) 2018 Zhang_Wei
+ * (c) 2018 Wei Zhang
  * Released under the MIT License.
  */
 
