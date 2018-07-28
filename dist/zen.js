@@ -288,6 +288,11 @@
   });
 
   function $each(array, callback) {
+
+    if (!array || !array.length || !isFunction(callback)) {
+      return array;
+    }
+
     var length = array.length;
     var index = 0,
         value;

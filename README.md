@@ -76,8 +76,8 @@
   - $toArray
 
 - Array.prototype
-  - $each
   - $chunk
+  - $each
   - $add
   - $delete / $remove
   - $deleteValue / $removeValue
