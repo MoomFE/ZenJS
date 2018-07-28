@@ -1,4 +1,4 @@
-import { isFunction } from "../const/type";
+import isFunction from "./isFunction";
 
 /**
  * 判断传入对象是否是 Map 类型
