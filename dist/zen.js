@@ -715,6 +715,15 @@
 
   var rType = /^\[object\s([^\]]+)]$/;
 
+  /**
+   * 判断一个对象是否是引用类型
+   * @param {*} obj 需要判断的对象
+   */
+  function isReferenceType(obj) {
+    var type = typeof obj;
+    return type === 'object' || type === 'function';
+  }
+
   function equals$1(obj, obj2) {
 
     if (obj === obj2) {
@@ -736,9 +745,8 @@
       return false;
     }
 
-    // 非引用类型及方法 ( String, Boolean, Number, Function )
-    // 剩下的就是对象的比对了
-    if (typeof obj !== 'object') {
+    // 非引用类型 ( String, Boolean, Number )
+    if (!isReferenceType(obj)) {
       return false;
     }
 
@@ -748,8 +756,8 @@
       return false;
     }
 
-    // 是数组类型 ( Array )
-    if (obj[isArray$1]) {
+    // 是数组类型或类数组类型 ( Array, LikeArray )
+    if ($isArrayLike(obj)) {
       return types.array(obj, obj2);
     }
 
@@ -760,22 +768,19 @@
 
     var oType = oString.match(rType)[1].toLowerCase();
 
-    // 有针对性的比对方法 ( Regexp, Date, Arguments )
+    // 有针对性的比对方法 ( Regexp, Date, Function )
     if (oType in types) {
       return types[oType](obj, obj2);
     }
 
     // ( Elemnet )
     if (DomElement && obj instanceof DomElement) {
-      return type.element(obj, obj2);
+      return types.element(obj, obj2);
     }
-    // ( Set )
-    if (isFunction(Set) && obj instanceof Set) {
-      return type.set(obj, obj2);
-    }
-    // ( Map )
-    if (isFunction(Map) && obj instanceof Map) {
-      return type.map(obj, obj2);
+
+    // ( Map, Set )
+    if (isMap(obj) || isSet(obj)) {
+      return equals$1(mapSetToArray(obj), mapSetToArray(obj2));
     }
 
     return types.object(obj, obj2);
@@ -856,36 +861,16 @@
     date: function (obj, obj2) {
       return +obj === +obj2;
     },
-    set: function (obj, obj2) {
-      // 待完成
-    },
-    map: function (obj, obj2) {
-      if (obj.size !== obj2.size) {
-        return false;
-      }
 
-      var keys$$1 = [],
-          key,
-          i,
-          length;
 
-      obj.forEach(function (value, key) {
-        return keys$$1.push(key);
-      });
-
-      for (i = 0, length = keys$$1.length; i < length; i++) {
-        key = keys$$1[i];
-
-        if (!equals$1(obj.get(key), obj2.get(key))) {
-          return false;
-        }
-      }
-
-      return true;
+    /**
+     * @param {Function} obj 
+     * @param {Function} obj2 
+     */
+    function: function (obj, obj2) {
+      return obj.toString() === obj2.toString();
     }
   };
-
-  types.arguments = types.array;
 
   defineValue(Object, '$equals', equals$1);
 

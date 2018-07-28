@@ -3,11 +3,14 @@ import Object from "../../../shared/global/Object/index";
 import ObjectProto from "../../../shared/global/Object/prototype/index";
 import toString from "../../../shared/global/Object/prototype/toString";
 import DomElement from "../../../shared/global/DomElement/index";
-import { isArray } from "../../../shared/const/type";
 import isPlainObject from "../../../shared/util/isPlainObject";
 import keys from "../../../shared/global/Object/keys";
 import rType from "../../../shared/const/rType";
-import isFunction from "../../../shared/util/isFunction";
+import isMap from "../../../shared/util/isMap";
+import isSet from "../../../shared/util/isSet";
+import mapSetToArray from "../../../shared/util/mapSetToArray";
+import $isArrayLike from "../../Array/$isArrayLike/index";
+import isReferenceType from "../../../shared/util/isReferenceType";
 
 
 export default function equals( obj, obj2 ){
@@ -31,9 +34,8 @@ export default function equals( obj, obj2 ){
     return false;
   }
 
-  // 非引用类型及方法 ( String, Boolean, Number, Function )
-  // 剩下的就是对象的比对了
-  if( typeof obj !== 'object' ){
+  // 非引用类型 ( String, Boolean, Number )
+  if( !isReferenceType( obj ) ){
     return false;
   }
 
@@ -43,8 +45,8 @@ export default function equals( obj, obj2 ){
     return false;
   }
 
-  // 是数组类型 ( Array )
-  if( obj[ isArray ] ){
+  // 是数组类型或类数组类型 ( Array, LikeArray )
+  if( $isArrayLike( obj ) ){
     return types.array( obj, obj2 );
   }
 
@@ -55,22 +57,22 @@ export default function equals( obj, obj2 ){
 
   let oType = oString.match( rType )[ 1 ].toLowerCase();
 
-  // 有针对性的比对方法 ( Regexp, Date, Arguments )
+  // 有针对性的比对方法 ( Regexp, Date, Function )
   if( oType in types ){
     return types[ oType ]( obj, obj2 );
   }
 
   // ( Elemnet )
   if( DomElement && obj instanceof DomElement ){
-    return type.element( obj, obj2 );
+    return types.element( obj, obj2 );
   }
-  // ( Set )
-  if( isFunction( Set ) && obj instanceof Set ){
-    return type.set( obj, obj2 );
-  }
-  // ( Map )
-  if( isFunction( Map ) && obj instanceof Map ){
-    return type.map( obj, obj2 );
+
+  // ( Map, Set )
+  if( isMap( obj ) || isSet( obj ) ){
+    return equals(
+      mapSetToArray( obj ),
+      mapSetToArray( obj2 )
+    );
   }
 
   return types.object( obj, obj2 );
@@ -148,35 +150,15 @@ const types = {
     return +obj === +obj2;
   },
 
-  set( obj, obj2 ){
-    // 待完成
-  },
-
-  map( obj, obj2 ){
-    if( obj.size !== obj2.size ){
-      return false;
-    }
-
-    var keys = [],
-        key,
-        i, length;
-
-    obj.forEach(( value, key ) => keys.push( key ) );
-
-    for( i = 0, length = keys.length; i < length; i++ ){
-      key = keys[ i ];
-
-      if( !equals( obj.get( key ), obj2.get( key ) ) ){
-        return false;
-      }
-    }
-
-    return true;
+  /**
+   * @param {Function} obj 
+   * @param {Function} obj2 
+   */
+  function( obj, obj2 ){
+    return obj.toString() === obj2.toString();
   }
 
 };
-
-types.arguments = types.array;
 
 
 defineValue( Object, '$equals', equals );
