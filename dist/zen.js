@@ -261,7 +261,16 @@
   });
 
   defineValue(Array, '$copy', function (source, array) {
-    return array ? array.concat(source) : source.slice();
+
+    if (!source || !source.length) {
+      return [];
+    }
+
+    if (isArray(array)) {
+      return array.concat(source);
+    }
+
+    return slice.call(source);
   });
 
   function $each(array, callback) {
