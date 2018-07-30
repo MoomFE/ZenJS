@@ -78,6 +78,14 @@
 - Array.prototype
   - $chunk
   - $each
+  - $add
+  - $delete / $remove
+  - $deleteValue / $removeValue
+  - $concat
+  - $concatTo
+  - $equals
+  - $find
+  - $findIndex
 
 - Object
   - $equals
@@ -87,16 +95,6 @@
 
 
 
-
-<!-- 
-  - $add
-  - $delete / $remove
-  - $deleteValue / $removeValue
-  - $concat
-  - $concatTo
-  - $equals
-  - $find
-  - $findIndex -->
   <!-- - $get
   - $inArray
   - $set / $edit

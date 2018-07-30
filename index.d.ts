@@ -40,7 +40,7 @@ interface ArrayConstructor {
    * @param value 需要转为数组的对象
    */
   $toArray( value: any ): Array;
-  
+
 }
 
 interface Array<T> {
@@ -113,7 +113,7 @@ interface Array<T> {
    * @param congruence 是否使用全等进行判断 - default: true
    */
   $equals( obj: any[], congruence?: true ): Boolean;
-  
+
   /**
    * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的值
    * @param traversal 遍历集合的方法
@@ -165,13 +165,13 @@ interface Array<T> {
   $findIndex( predicate?: true, key: String, value: any ) : Number;
 
 
-  
-  
-  
-  
 
 
-  
+
+
+
+
+
 
   // /**
   //  * 获取指定下标的对象
@@ -188,7 +188,7 @@ interface Array<T> {
   //  * 查找数组内是否有此传入值
   //  * -- 弱检测
   //  * -- 强检测使用 Array.prototype.includes
-  //  * 
+  //  *
   //  * @param obj 需要检测的值
   //  */
   // $inArray( obj: any ): Boolean;
@@ -255,7 +255,7 @@ interface Array<T> {
 interface Object {
   /**
    * 判断传入的两个对象是否相同
-   * 
+   *
    * // 下面的比对结果都是 true
    * Object.$equals( NaN, NaN );
    * Object.$equals( 'ZenJS', 'ZenJS' );
@@ -267,7 +267,7 @@ interface Object {
    * Object.$equals( document.createElement('div'), document.createElement('div') );
    * Object.$equals( new Date('2018/7/28'), new Date('2018/7/28') );
    * Object.$equals( /ZenJS/, /ZenJS/ );
-   * 
+   *
    * @param obj 需要判断的第一个对象
    * @param obj2 需要判断的第二个对象
    */
@@ -325,7 +325,7 @@ interface ObjectConstructor {
 //   /**
 //    * 页面加载完成后执行传入代码
 //    * -- 方法可以用 function[ call / apply ] 的方式使用, 可传入其他 document, 比如 iframe 的 document
-//    * 
+//    *
 //    * @param func DOM 载入完成后执行的方法
 //    * @param data 需要传入方法的数据
 //    */
@@ -516,12 +516,12 @@ interface ObjectConstructor {
 //   $remove();
 //   /**
 //    * 将当前元素替换为新的元素
-//    * @param elem 
+//    * @param elem
 //    */
 //   $replaceWith( elem: Element );
 //   /**
 //    * 将当前元素替换为新的元素
-//    * @param elem 
+//    * @param elem
 //    */
 //   $replace( elem: Element );
 //   /**
@@ -1206,7 +1206,7 @@ interface ObjectConstructor {
 // /**
 //  * 页面及页面资源载入完成后传入代码
 //  * -- 方法可以用 Function[ call / apply ] 的方式使用, 可传入其他 window, 比如 iframe 的 window
-//  * 
+//  *
 //  * @param func 页面及页面资源载入完成后执行的方法
 //  * @param data 需要传入方法的数据
 //  */
