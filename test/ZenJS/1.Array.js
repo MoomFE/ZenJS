@@ -16,7 +16,7 @@ describes.push({
             Object.$equals( Array.$chunk( [ 1, 2, 3, 4 ], -1 ), [] ).should.true;
           }
         }, {
-          name: 'Chunk',
+          name: 'Normal use',
           it: function(){
             Object.$equals( Array.$chunk( [ 1, 2, 3 ], 1 ), [ [ 1 ], [ 2 ], [ 3 ] ] ).should.true;
             Object.$equals( Array.$chunk( [ 1, 2, 3 ], 2 ), [ [ 1, 2 ], [ 3 ] ] ).should.true;
@@ -29,7 +29,7 @@ describes.push({
             // Return empty Array
             Object.$equals( [ 1, 2, 3, 4 ].$chunk( 0 ), [] ).should.true;
             Object.$equals( [ 1, 2, 3, 4 ].$chunk( -1 ), [] ).should.true;
-            // Success
+            // Normal use
             Object.$equals( [ 1, 2, 3 ].$chunk( 1 ), [ [ 1 ], [ 2 ], [ 3 ] ] ).should.true;
             Object.$equals( [ 1, 2, 3 ].$chunk( 2 ), [ [ 1, 2 ], [ 3 ] ] ).should.true;
             Object.$equals( [ 1, 2, 3 ].$chunk( 3 ), [ [ 1, 2, 3 ] ] ).should.true;
@@ -51,7 +51,7 @@ describes.push({
             Object.$equals( Array.$copy([]), [] ).should.true;
           }
         }, {
-          name: 'Copy',
+          name: 'Normal use',
           it: function(){
             var arr = [ 1, 2, 3 ];
 
@@ -86,7 +86,7 @@ describes.push({
             Object.$equals( Array.$create( -1 ), [] ).should.true;
           }
         }, {
-          name: 'Success',
+          name: 'Normal use',
           it: function(){
             Array.$create( 10 ).length.should.equals( 10 );
             Array.$create( 100 ).length.should.equals( 100 );
@@ -109,7 +109,7 @@ describes.push({
       name: 'Array.$each',
       describe: [
         {
-          name: 'Always return to itself',
+          name: 'Always return the first incoming value',
           it: function(){
             Object.$equals( Array.$each(), undefined ).should.true;
             Object.$equals( Array.$each( null ), null ).should.true;
@@ -118,6 +118,64 @@ describes.push({
             Object.$equals( Array.$each( true ), true ).should.true;
             Object.$equals( Array.$each( [] ), [] ).should.true;
             Object.$equals( Array.$each( [ 1, 2, 3 ] ), [ 1, 2, 3 ] ).should.true;
+          }
+        }, {
+          name: 'Determine if the parameters of the incoming callback are correct',
+          it: function(){
+            var index;
+
+            index = 3;
+            Array.$each( [ 3, 4, 5, 6, 7, 8 ], function( value ){
+              Object.$equals( value, index++ ).should.true;
+            });
+
+            index = 0;
+            Array.$each( [ 3, 4, 5, 6, 7, 8 ], function( value, _index ){
+              Object.$equals( _index, index++ ).should.true;
+            });
+
+            Array.$each( [ 3, 4, 5, 6, 7, 8 ], function( value, index, array ){
+              Object.$equals( array, [ 3, 4, 5, 6, 7, 8 ] ).should.true;
+            });
+          }
+        }, {
+          name: 'Passing false will terminate traversal',
+          it: function(){
+            var value;
+
+            Array.$each( [ 1, 2, 3, 4, 5, 6 ], function( _value ){
+              value = _value;
+              if( _value === 3 ) return false;
+            });
+
+            Object.$equals( value, 3 ).should.true;
+          }
+        }, {
+          name: 'Array.prototype.$each',
+          it: function(){
+            var index, value;
+
+            // Always return the first incoming value
+            Object.$equals( [].$each(), [] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$each(), [ 1, 2, 3 ] ).should.true;
+            // Determine if the parameters of the incoming callback are correct
+            index = 3;
+            [ 3, 4, 5, 6, 7, 8 ].$each(function( value ){
+              Object.$equals( value, index++ ).should.true;
+            });
+            index = 0;
+            [ 3, 4, 5, 6, 7, 8 ].$each(function( value, _index ){
+              Object.$equals( _index, index++ ).should.true;
+            });
+            [ 3, 4, 5, 6, 7, 8 ].$each(function( value, index, array ){
+              Object.$equals( array, [ 3, 4, 5, 6, 7, 8 ] ).should.true;
+            });
+            // Passing false will terminate traversal
+            Array.$each( [ 1, 2, 3, 4, 5, 6 ], function( _value ){
+              value = _value;
+              if( _value === 3 ) return false;
+            });
+            Object.$equals( value, 3 ).should.true;
           }
         }
       ]

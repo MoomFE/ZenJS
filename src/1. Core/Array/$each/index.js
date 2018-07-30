@@ -13,7 +13,7 @@ export default function $each( array, callback ){
   const length = array.length;
   let index = 0,
       value;
-  
+
   for( ; index < length; index++ ){
     value = array[ index ];
 
