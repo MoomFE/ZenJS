@@ -503,6 +503,13 @@
   });
 
   defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted) {
+
+    var length = this.length;
+
+    if ((index = fixArrayIndex(this, index)) >= length) {
+      index = length - 1;
+    }
+
     var num = parametersDefault(arguments, 1, 1);
     var deleted = this.splice(index, num);
 
