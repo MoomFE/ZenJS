@@ -109,7 +109,25 @@ describes.push({
       name: '$delete / $remove',
       describe: [
         {
-          name: 'Normal use'
+          name: 'Normal use',
+          it: function(){
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( -7 ), [ 2, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( -6 ), [ 2, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( -5 ), [ 1, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( -4 ), [ 1, 2, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( -3 ), [ 1, 2, 3, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( -2 ), [ 1, 2, 3, 4, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( -1 ), [ 1, 2, 3, 4, 5 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( 0 ), [ 2, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( 1 ), [ 1, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( 2 ), [ 1, 2, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( 3 ), [ 1, 2, 3, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( 4 ), [ 1, 2, 3, 4, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( 5 ), [ 1, 2, 3, 4, 5 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( 6 ), [ 1, 2, 3, 4, 5 ] ).should.true;
+          }
+        }, {
+          name: ''
         }
       ]
     }
