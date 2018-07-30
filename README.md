@@ -78,6 +78,7 @@
 - Array.prototype
   - $chunk
   - $each
+
   - $add
   - $delete / $remove
   - $deleteValue / $removeValue

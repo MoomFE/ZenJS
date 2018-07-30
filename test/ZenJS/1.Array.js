@@ -179,6 +179,34 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: 'Array.$isArrayLike',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            Array.$isArrayLike( [] ).should.true;
+            Array.$isArrayLike( 'ZenJS' ).should.true;
+            Array.$isArrayLike( div.classList ).should.true;
+
+            Array.$isArrayLike( null ).should.false;
+            Array.$isArrayLike( undefined ).should.false;
+            Array.$isArrayLike( false ).should.false;
+            Array.$isArrayLike( true ).should.false;
+            Array.$isArrayLike( NaN ).should.false;
+            Array.$isArrayLike( Infinity ).should.false;
+            Array.$isArrayLike( -1 ).should.false;
+            Array.$isArrayLike( 0 ).should.false;
+            Array.$isArrayLike( 1 ).should.false;
+            Array.$isArrayLike( function(){} ).should.false;
+            Array.$isArrayLike( /ZenJS/ ).should.false;
+            Array.$isArrayLike( div ).should.false;
+            Array.$isArrayLike( new Date() ).should.false;
+            Array.$isArrayLike( new Map() ).should.false;
+            Array.$isArrayLike( new Set() ).should.false;
+          }
+        }
+      ]
     }
 
     //   name: '$toArray',
