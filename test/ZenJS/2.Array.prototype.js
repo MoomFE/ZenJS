@@ -65,6 +65,41 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$concatTo',
+      describe: [
+        {
+          name: 'Always return to itself',
+          it: function(){
+            var arr = [];
+
+            arr.$concatTo().should.equals( arr );
+            arr.$concatTo( 0 ).should.equals( arr );
+            arr.$concatTo( 1, [] ).should.equals( arr );
+            arr.$concatTo( 2, [ 1, 2, 3 ] ).should.equals( arr );
+          }
+        }, {
+          name: 'Normal use',
+          it: function(){
+            Object.$equals( [].$concatTo( -2, 1, 2, 3 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [].$concatTo( -1, 1, 2, 3 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [].$concatTo( 0, 1, 2, 3 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [].$concatTo( 1, 1, 2, 3 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [].$concatTo( 2, 1, 2, 3 ), [ 1, 2, 3 ] ).should.true;
+
+            Object.$equals( [ 1, 2, 3 ].$concatTo( -5, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concatTo( -4, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concatTo( -3, 4, 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concatTo( -2, 4, 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concatTo( -1, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concatTo( 0, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concatTo( 1, 4, 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concatTo( 2, 4, 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concatTo( 3, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concatTo( 4, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          }
+        }
+      ]
     }
 
     //   name: '$concat',

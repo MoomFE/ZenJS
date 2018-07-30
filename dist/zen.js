@@ -483,12 +483,15 @@
 
   function $add(self, index, args) {
 
-    var len = args.length;
-    var i = 0;
+    var length = args.length;
+
+    if (!length) {
+      return self;
+    }
 
     index = fixArrayIndex(self, index, 1);
 
-    for (; i < len; i++) {
+    for (var i = 0; i < length; i++) {
       self.splice(index++, 0, args[i]);
     }
 
