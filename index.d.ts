@@ -68,17 +68,17 @@ interface Array<T> {
    * 在数组指定位置删除若干对象
    * @param index 需要删除的下标, 可为负数
    * @param num 需要从该下标开始删除几个对象 - default: 1
-   * @param returnDeleted 是否返回删除的数据
+   * @param returnDeleted 是否返回删除的数据 - default: false
    */
-  $delete( index: Number, num: Number = 1, returnDeleted?: Boolean ): any[];
+  $delete( index: Number, num: Number = 1, returnDeleted?: false ): any[];
 
   /**
    * 在数组指定位置删除若干对象
    * @param index 需要删除的下标, 可为负数
    * @param num 需要从该下标开始删除几个对象 - default: 1
-   * @param returnDeleted 是否返回删除的数据
+   * @param returnDeleted 是否返回删除的数据 - default: false
    */
-  $remove( index: Number, num: Number = 1, returnDeleted?: Boolean ): any[];
+  $remove( index: Number, num: Number = 1, returnDeleted?: false ): any[];
 
   /**
    * 从数组中删除与传入值相同的对象
