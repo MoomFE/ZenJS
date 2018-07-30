@@ -40,4 +40,3 @@ export default function $toArray( value ){
 }
 
 defineValue( Array, '$toArray', $toArray );
-

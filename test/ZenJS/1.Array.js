@@ -183,12 +183,15 @@ describes.push({
       name: 'Array.$isArrayLike',
       describe: [
         {
-          name: 'Normal use',
+          name: 'Success',
           it: function(){
             Array.$isArrayLike( [] ).should.true;
             Array.$isArrayLike( 'ZenJS' ).should.true;
             Array.$isArrayLike( div.classList ).should.true;
-
+          }
+        }, {
+          name: 'Error',
+          it: function(){
             Array.$isArrayLike( null ).should.false;
             Array.$isArrayLike( undefined ).should.false;
             Array.$isArrayLike( false ).should.false;
@@ -207,49 +210,45 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: 'Array.$toArray',
+      describe: [
+        {
+          name: 'Return empty Array',
+          it: function(){
+            Object.$equals( Array.$toArray(), [] ).should.true;
+            Object.$equals( Array.$toArray( null ), [] ).should.true;
+            Object.$equals( Array.$toArray( undefined ), [] ).should.true;
+            Object.$equals( Array.$toArray( false ), [] ).should.true;
+            Object.$equals( Array.$toArray( true ), [] ).should.true;
+            Object.$equals( Array.$toArray( NaN ), [] ).should.true;
+            Object.$equals( Array.$toArray( Infinity ), [] ).should.true;
+            Object.$equals( Array.$toArray( -1 ), [] ).should.true;
+            Object.$equals( Array.$toArray( 0 ), [] ).should.true;
+            Object.$equals( Array.$toArray( 1 ), [] ).should.true;
+            Object.$equals( Array.$toArray( function(){} ), [] ).should.true;
+            Object.$equals( Array.$toArray( /ZenJS/ ), [] ).should.true;
+            Object.$equals( Array.$toArray( div ), [] ).should.true;
+            Object.$equals( Array.$toArray( new Date() ), [] ).should.true;
+          }
+        }, {
+          name: 'Normal use',
+          it: function(){
+            Object.$equals( Array.$toArray( 'ZenJS' ), [ 'Z', 'e', 'n', 'J', 'S' ] ).should.true;
+            Object.$equals( Array.$toArray( '💪' ), [ '💪' ] ).should.true;
+            Object.$equals( Array.$toArray( '💪💪' ), [ '💪', '💪' ] ).should.true;
+
+            var div = window.div;
+                div.className = 'Zen JS UI';
+            var div1 = div.appendChild( window.div );
+            var div2 = div.appendChild( window.div );
+            var div3 = div.appendChild( window.div );
+
+            Object.$equals( Array.$toArray( div.classList ), [ 'Zen', 'JS', 'UI' ] ).should.true;
+            Object.$equals( Array.$toArray( div.querySelectorAll('div') ), [ div1, div2, div3 ] ).should.true;
+          }
+        }
+      ]
     }
-
-    //   name: '$toArray',
-    //   it: function(){
-
-    //     Array.$toArray( null ).$equals( [] ).should.true;
-    //     Array.$toArray( undefined ).$equals( [] ).should.true;
-    //     Array.$toArray( '' ).$equals( [] ).should.true;
-    //     Array.$toArray( false ).$equals( [] ).should.true;
-    //     Array.$toArray( true ).$equals( [] ).should.true;
-    //     Array.$toArray( NaN ).$equals( [] ).should.true;
-    //     Array.$toArray( undefined ).$equals( [] ).should.true;
-    //     Array.$toArray( 0 ).$equals( [] ).should.true;
-    //     Array.$toArray( 1 ).$equals( [] ).should.true;
-    //     Array.$toArray( Infinity ).$equals( [] ).should.true;
-
-    //     Array.$toArray( '135' ).$equals( [ '1', '3', '5' ] ).should.true;
-    //     Array.$toArray( '💪' ).$equals( [ '💪' ] ).should.true;
-    //     Array.$toArray( '💪💪' ).$equals( [ '💪', '💪' ] ).should.true;
-
-    //     var div = window.div;
-    //     var div1 = div.appendChild( window.div );
-    //     var div2 = div.appendChild( window.div );
-    //     var div3 = div.appendChild( window.div );
-
-    //     Array.$toArray( div.querySelectorAll('div') ).$equals( [ div1, div2, div3 ] ).should.true;
-
-    //   }
-    // }, {
-    //   name: '$isArrayLike',
-    //   it: function(){
-
-    //     Array.$isArrayLike( null ).should.false;
-    //     Array.$isArrayLike( undefined ).should.false;
-    //     Array.$isArrayLike( NaN ).should.false;
-    //     Array.$isArrayLike( Infinity ).should.false;
-    //     Array.$isArrayLike( function(){} ).should.false;
-    //     Array.$isArrayLike( 123 ).should.false;
-
-    //     Array.$isArrayLike( '123' ).should.true;
-    //     Array.$isArrayLike( [] ).should.true;
-
-    //   }
-    // }
   ]
 });
