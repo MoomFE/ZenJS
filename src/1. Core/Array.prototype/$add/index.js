@@ -7,11 +7,14 @@ import fixArrayIndex from '../../../shared/util/fixArrayIndex';
 export default function $add( self, index, args ){
 
   const len = args.length;
-  let i = 0;
+
+  if( len < 1 ){
+    return self;
+  }
 
   index = fixArrayIndex( self, index, 1 );
 
-  for( ; i < len; i++ ){
+  for( let i = 0; i < len; i++ ){
     self.splice( index++, 0, args[ i ] );
   }
 
