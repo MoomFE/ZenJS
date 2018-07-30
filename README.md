@@ -64,7 +64,7 @@
 <br>
 
 ## 参考
-### 更详细的使用方法及介绍请参照 [index.d.ts](https://github.com/MoomFE/ZenJS/blob/master/index.d.ts)
+### 更详细的使用方法及介绍请参照 [index.d.ts](./index.d.ts)
 
 
 - Array
