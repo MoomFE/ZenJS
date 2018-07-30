@@ -1,20 +1,36 @@
 describes.push({
   name: 'Array.prototype',
   describe: [
-    // {
-    //   name: '$add',
-    //   it: function(){
-    //     Object.$equals( [ 1 ].$add( 0, 0 ), [ 0, 1 ] ).should.true;
-    //     Object.$equals( [ 1 ].$add( 0, 1 ), [ 1, 1 ] ).should.true;
-    //     Object.$equals( [ 5 ].$add( 1, 4, 3, 2, 1 ), [ 5, 4, 3, 2, 1 ] ).should.true;
-    //     Object.$equals( [ 1 ].$add( 0, 0 ), [ 0, 1 ] ).should.true;
-    //     Object.$equals( [ 1 ].$add( 1, 2 ), [ 1, 2 ] ).should.true;
-    //     Object.$equals( [ 1 ].$add( -1, 2 ), [ 1, 2 ] ).should.true;
-    //     Object.$equals( [ 1, 2 ].$add( -1, 3 ), [ 1, 2, 3 ] ).should.true;
-    //     Object.$equals( [ 1, 2 ].$add( -2, 0 ), [ 1, 0, 2 ] ).should.true;
-    //     Object.$equals( [ 1, 2 ].$add( -3, 0 ), [ 0, 1, 2 ] ).should.true;
-    //   }
-    // }, {
+    {
+      name: '$add',
+      describe: [
+        {
+          name: 'Add to an empty array',
+          it: function(){
+            Object.$equals( [].$add( -2, 1, 2, 3, 4, 5 ), [ 1, 2, 3, 4, 5 ] ).should.true;
+            Object.$equals( [].$add( -1, 1, 2, 3, 4, 5 ), [ 1, 2, 3, 4, 5 ] ).should.true;
+            Object.$equals( [].$add( 0, 1, 2, 3, 4, 5 ), [ 1, 2, 3, 4, 5 ] ).should.true;
+            Object.$equals( [].$add( 1, 1, 2, 3, 4, 5 ), [ 1, 2, 3, 4, 5 ] ).should.true;
+            Object.$equals( [].$add( 2, 1, 2, 3, 4, 5 ), [ 1, 2, 3, 4, 5 ] ).should.true;
+          }
+        }, {
+          name: 'Add to a non-empty array',
+          it: function(){
+            Object.$equals( [ 1, 2, 3 ].$add( -5, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$add( -4, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$add( -3, 4, 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$add( -2, 4, 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$add( -1, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$add( 0, 4, 5, 6 ), [ 4, 5, 6, 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$add( 1, 4, 5, 6 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$add( 2, 4, 5, 6 ), [ 1, 2, 4, 5, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$add( 3, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$add( 4, 4, 5, 6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
+          }
+        }
+      ]
+    }
+
     //   name: '$concat',
     //   it: function(){
     //     Object.$equals( [ 1 ].$concat( 2 ), [ 1, 2 ] ).should.true;

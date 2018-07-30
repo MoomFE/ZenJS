@@ -2,7 +2,7 @@ describes.push({
   name: 'Array',
   describe: [
     {
-      name: 'Array.$chunk',
+      name: '$chunk',
       describe: [
         {
           name: 'Return empty Array',
@@ -24,7 +24,7 @@ describes.push({
             Object.$equals( Array.$chunk( [ 1, 2, 3 ], 4 ), [ [ 1, 2, 3 ] ] ).should.true;
           }
         }, {
-          name: 'Array.prototype.$chunk',
+          name: 'prototype.$chunk',
           it: function(){
             // Return empty Array
             Object.$equals( [ 1, 2, 3, 4 ].$chunk( 0 ), [] ).should.true;
@@ -38,7 +38,7 @@ describes.push({
         }
       ]
     }, {
-      name: 'Array.$copy',
+      name: '$copy',
       describe: [
         {
           name: 'Return empty Array',
@@ -72,7 +72,7 @@ describes.push({
         }
       ]
     }, {
-      name: 'Array.$create',
+      name: '$create',
       describe: [
         {
           name: 'Return empty Array',
@@ -106,7 +106,7 @@ describes.push({
         }
       ]
     }, {
-      name: 'Array.$each',
+      name: '$each',
       describe: [
         {
           name: 'Always return the first incoming value',
@@ -151,7 +151,7 @@ describes.push({
             Object.$equals( value, 3 ).should.true;
           }
         }, {
-          name: 'Array.prototype.$each',
+          name: 'prototype.$each',
           it: function(){
             var index, value;
 
@@ -180,7 +180,7 @@ describes.push({
         }
       ]
     }, {
-      name: 'Array.$isArrayLike',
+      name: '$isArrayLike',
       describe: [
         {
           name: 'Success',
@@ -211,7 +211,7 @@ describes.push({
         }
       ]
     }, {
-      name: 'Array.$toArray',
+      name: '$toArray',
       describe: [
         {
           name: 'Return empty Array',
