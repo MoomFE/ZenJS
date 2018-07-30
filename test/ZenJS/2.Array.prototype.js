@@ -5,6 +5,16 @@ describes.push({
       name: '$add',
       describe: [
         {
+          name: 'Always return to itself',
+          it: function(){
+            var arr = [];
+
+            arr.$add().should.equals( arr );
+            arr.$add( -1 ).should.equals( arr );
+            arr.$add( 0 ).should.equals( arr );
+            arr.$add( 1 ).should.equals( arr );
+          }
+        }, {
           name: 'Add to an empty array',
           it: function(){
             Object.$equals( [].$add( -2, 1, 2, 3, 4, 5 ), [ 1, 2, 3, 4, 5 ] ).should.true;
