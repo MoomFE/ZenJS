@@ -6,15 +6,15 @@ import fixArrayIndex from '../../../shared/util/fixArrayIndex';
 
 export default function $add( self, index, args ){
 
-  const len = args.length;
+  const length = args.length;
 
-  if( len < 1 ){
+  if( !length ){
     return self;
   }
 
   index = fixArrayIndex( self, index, 1 );
 
-  for( let i = 0; i < len; i++ ){
+  for( let i = 0; i < length; i++ ){
     self.splice( index++, 0, args[ i ] );
   }
 

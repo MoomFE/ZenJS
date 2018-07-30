@@ -39,6 +39,32 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$concat',
+      describe: [
+        {
+          name: 'Always return to itself',
+          it: function(){
+            var arr = [];
+
+            arr.$concat().should.equals( arr );
+            arr.$concat( 1 ).should.equals( arr );
+            arr.$concat( [] ).should.equals( arr );
+            arr.$concat( [ 1, 2, 3 ] ).should.equals( arr );
+          }
+        }, {
+          name: 'Normal use',
+          it: function(){
+            Object.$equals( [].$concat( 4 ), [ 4 ] ).should.true;
+            Object.$equals( [ 1 ].$concat( 4, 5 ), [ 1, 4, 5 ] ).should.true;
+            Object.$equals( [ 1, 2 ].$concat( 4, 5, 6 ), [ 1, 2, 4, 5, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concat( 4, 5, 6, 7 ), [ 1, 2, 3, 4, 5, 6, 7 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concat( 4, [ 5, 6 ], 7, 8 ), [ 1, 2, 3, 4, 5, 6, 7, 8 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concat( 4, [ 5, 6 ], [ 7, 8, 9 ] ), [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$concat( 4, [ [ 5, 6 ], [ 7, 8, 9 ] ] ), [ 1, 2, 3, 4, [ 5, 6 ], [ 7, 8, 9 ] ] ).should.true;
+          }
+        }
+      ]
     }
 
     //   name: '$concat',
