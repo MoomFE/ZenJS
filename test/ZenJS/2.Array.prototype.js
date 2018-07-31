@@ -109,6 +109,22 @@ describes.push({
       name: '$delete / $remove',
       describe: [
         {
+          name: 'Return itself by default',
+          it: function(){
+            var arr = [];
+
+            arr.$delete().should.equals( arr );
+            arr.$delete( 0 ).should.equals( arr );
+            arr.$delete( 1 ).should.equals( arr );
+            arr.$delete( 1, 1 ).should.equals( arr );
+          }
+        }, {
+          name: 'Can return deleted content',
+          it: function(){
+            Object.$equals( [ 1, 2, 3, 4, 5 ].$delete( 1, 3, true ), [ 2, 3, 4 ] ).should.true;
+            Object.$equals( [ 1, 2, 3, 4, 5 ].$delete( 0, 99, true ), [ 1, 2, 3, 4, 5 ] ).should.true;
+          }
+        }, {
           name: 'Normal use',
           it: function(){
             Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( -7 ), [ 2, 3, 4, 5, 6 ] ).should.true;
@@ -127,27 +143,16 @@ describes.push({
             Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$delete( 6 ), [ 1, 2, 3, 4, 5 ] ).should.true;
           }
         }, {
-          name: ''
+          name: 'Delete the first one when there are no parameters',
+          it: function(){
+            Object.$equals( [ 1, 2, 3 ].$delete(), [ 2, 3 ] ).should.true;
+          }
         }
       ]
     }
 
-    // }, {
-    //   name: '$delete',
-    //   it: function(){
-    //     Object.$equals( [ 1 ].$delete( 0 ), [ ] ).should.true;
-    //     Object.$equals( [ 0, 1 ].$delete( 0, 2 ), [ ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2 ].$delete( 0, 2 ), [ 2 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2 ].$delete( -1, 1 ), [ 0, 1 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2 ].$delete( -1, 2 ), [ 0, 1 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2 ].$delete( -2, 2 ), [ 0 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2 ].$delete( -3, 2 ), [ 2 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2 ].$delete( -3, 3 ), [ ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2 ].$delete( -4, 3 ), [ ] ).should.true;
-    //     // 返回删除的数据
-    //     Object.$equals( [ 1, 2, 3, 4, 5 ].$delete( 3, 2, true ), [ 4, 5 ] ).should.true;
-    //   }
-    // }, {
+
+    // {
     //   name: '$deleteValue',
     //   it: function(){
     //     [ 1, 2, 3, 4 ].$deleteValue( 4 ).length.should.equals( 3 );
