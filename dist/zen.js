@@ -226,7 +226,17 @@
    * @returns {Boolean}
    */
   function isNumber(obj) {
-    return typeof obj === 'number';
+    return typeof obj === 'number' && obj === obj && isFinite(obj);
+  }
+
+  /**
+   * 判断传入的对象是否是数字
+   * @param {any} obj 需要判断的对象
+   * @returns {Boolean}
+   */
+  function $isNumber(obj) {
+    if (isNumber(obj)) return true;
+    return isString(obj) && !isNaN(obj - parseFloat(obj));
   }
 
   function $create(length, insert, isInsert) {
@@ -316,13 +326,11 @@
 
   var StringProto = String.prototype;
 
-  var NumberProto = Number.prototype;
-
   var BooleanProto = Boolean.prototype;
 
   var FunctionProto = Function.prototype;
 
-  [['String', StringProto], ['Number', NumberProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
+  [['String', StringProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
     defineProperty(obj[1], "__is" + obj[0] + "__", {
       value: true,
       configurable: false, // 删除/定义
@@ -331,7 +339,7 @@
     });
   });
 
-  var isString = '__isString__';
+  var isString$1 = '__isString__';
   var isBoolean$1 = '__isBoolean__';
   var isArray$1 = '__isArray__';
   var isFunction$1 = '__isFunction__';
@@ -410,7 +418,7 @@
     }
 
     // 是字符串类型
-    if (value[isString]) {
+    if (value[isString$1]) {
       if (reHasUnicode.test(value)) {
         return value.match(reUnicode) || [];
       } else {
@@ -475,7 +483,7 @@
    * @returns {Number}
    */
   function fixArrayIndex(array, index, add) {
-    if (index < 0 && (index = array.length + index + (add || 0)) < 0) {
+    if (!$isNumber(index) || index < 0 && (index = array.length + index + (add || 0)) < 0) {
       index = 0;
     }
     return index;
