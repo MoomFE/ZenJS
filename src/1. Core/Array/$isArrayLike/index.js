@@ -1,7 +1,7 @@
 import defineValue from "../../../shared/util/defineValue";
 import Array from "../../../shared/global/Array/index";
-import isNumber from "../../../shared/util/isNumber";
-import { isFunction, isBoolean, isArray } from "../../../shared/const/type";
+import { isNumber } from "../../../shared/util/isNumber";
+import { isFunction, isArray } from "../../../shared/const/type";
 
 
 const MAX_SAFE_INTEGER = 9007199254740991;
