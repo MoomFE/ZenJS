@@ -534,6 +534,16 @@
   });
 
   /**
+   * 判断传入的两个参数是否相等
+   * @param {any} one 需要判断的第一参数
+   * @param {any} two 需要判断的第二参数
+   * @returns {Boolean}
+   */
+  function equals(one, two) {
+    return one == two;
+  }
+
+  /**
    * 判断传入的两个参数是否全等
    * @param {any} one 需要判断的第一参数
    * @param {any} two 需要判断的第二参数
@@ -544,22 +554,40 @@
   }
 
   /**
-   * 判断传入的两个参数是否相等
-   * @param {any} one 需要判断的第一参数
-   * @param {any} two 需要判断的第二参数
-   * @returns {Boolean}
+   * 返回一个可以判断两个值的方法.
+   * 如果传入值为 Function 类型, 说明是用户传的方法, 则直接返回;
+   * 如果传入值不为 Function 类型, 则值是真值, 则返回全等判断方法, 否则返回双等判断方法
+   * 
+   * @param {*} predicate 
    */
-  function equals(one, two) {
-    return one == two;
+  function getPredicate(predicate) {
+    if (isFunction(predicate)) {
+      return predicate;
+    }
+    return predicate ? congruence : equals;
   }
 
   defineValue(ArrayProto, '$deleteValue $removeValue', function (value) {
-    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
-    var index = 0,
-        length = this.length;
 
-    for (; index < length;) {
-      if (isEqual(this[index], value)) {
+    var length = this.length,
+        index,
+        predicate;
+
+    if (!length) {
+      return this;
+    }
+
+    if (arguments.length > 1) {
+      predicate = getPredicate(parametersDefault(arguments, 1, true));
+    } else if (isFunction(value)) {
+      predicate = value;
+      value = undefined;
+    } else {
+      predicate = congruence;
+    }
+
+    for (index = 0; index < length;) {
+      if (predicate(this[index], value)) {
         this.$delete(index);
         length--;
       } else {
