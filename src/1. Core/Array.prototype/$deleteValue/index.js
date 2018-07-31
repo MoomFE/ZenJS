@@ -1,21 +1,21 @@
 import defineValue from "../../../shared/util/defineValue";
 import ArrayProto from "../../../shared/global/Array/prototype/index";
-import parametersDefault from "../../../shared/util/parametersDefault";
-import congruence from "../../../shared/util/congruence";
-import equals from "../../../shared/util/equals";
+import getPredicate from "../../../shared/util/getPredicate";
 
 
-defineValue( ArrayProto, '$deleteValue $removeValue', function( value ){
-  const
-    isEqual = parametersDefault( arguments, 1, true )
-      ? congruence
-      : equals;
-  let
-    index = 0,
-    length = this.length;
+defineValue( ArrayProto, '$deleteValue $removeValue', function( value, predicate ){
 
-  for( ; index < length; ){
-    if( isEqual( this[ index ], value ) ){
+  let length = this.length,
+      index;
+
+  if( !length ){
+    return this;
+  }
+
+  predicate = getPredicate( predicate );
+
+  for( index = 0; index < length; ){
+    if( predicate( this[ index ], value ) ){
       this.$delete( index );
       length--;
     }else{

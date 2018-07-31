@@ -83,16 +83,16 @@ interface Array<T> {
   /**
    * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
-   * @param congruence 是否使用全等进行判断 - default: true
+   * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $deleteValue( value: any, congruence?: true ): any[];
+  $deleteValue( value: any, predicate: Function | Boolean ): any[];
 
   /**
    * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
-   * @param congruence 是否使用全等进行判断 - default: true
+   * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $removeValue( value: any, congruence?: true ): any[];
+  $removeValue( value: any, predicate: Function | Boolean ): any[];
 
   /**
    * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组后

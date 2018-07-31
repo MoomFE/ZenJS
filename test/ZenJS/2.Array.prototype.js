@@ -161,29 +161,6 @@ describes.push({
     //     Array.$create( 10, null ).concat( Array.$create( 10, 0 ) ).$deleteValue( false, false ).length.should.equals( 10 );
     //   }
     // }, {
-    //   name: '$each',
-    //   it: function(){
-    //     var test1 = [ 1, 2, 3 ].$each(function( value, index, arr ){
-    //       if( index === 0 ) arr[ index ] = 3;
-    //       else if( index === 2 ) arr[ index ] = 1;
-    //     });
-
-    //     test1[ 0 ].should.equals( 3 );
-    //     test1[ 2 ].should.equals( 1 );
-
-
-    //     var test2 = [ 1, 2, 3 ].$each(function( value, index, arr ){
-    //       if( index === 0 ){
-    //         arr[ index ] = 3;
-    //         return false;
-    //       }
-    //       else if( index === 2 ) arr[ index ] = 1;
-    //     });
-
-    //     test2[ 0 ].should.equals( 3 );
-    //     test2[ 2 ].should.equals( 3 );
-    //   }
-    // }, {
     //   name: '$equals',
     //   it: function(){
     //     [].$equals( ZenJS ).should.false;
