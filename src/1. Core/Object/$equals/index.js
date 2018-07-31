@@ -13,7 +13,7 @@ import $isArrayLike from "../../Array/$isArrayLike/index";
 import isReferenceType from "../../../shared/util/isReferenceType";
 
 
-export default function equals( obj, obj2 ){
+export default function equals( obj, obj2, parent, parent2 ){
 
   if( obj === obj2 ){
     return true;
@@ -47,19 +47,19 @@ export default function equals( obj, obj2 ){
 
   // 是数组类型或类数组类型 ( Array, LikeArray )
   if( $isArrayLike( obj ) ){
-    return types.array( obj, obj2 );
+    return types.array( obj, obj2, parent, parent2 );
   }
 
   // 原始对象类型 ( JSON )
   if( isPlainObject( obj ) ){
-    return types.object( obj, obj2 );
+    return types.object( obj, obj2, parent, parent2 );
   }
 
   let oType = oString.match( rType )[ 1 ].toLowerCase();
 
   // 有针对性的比对方法 ( Regexp, Date, Function )
   if( oType in types ){
-    return types[ oType ]( obj, obj2 );
+    return types[ oType ]( obj, obj2, parent, parent2 );
   }
 
   // ( Elemnet )
@@ -75,7 +75,7 @@ export default function equals( obj, obj2 ){
     );
   }
 
-  return types.object( obj, obj2 );
+  return types.object( obj, obj2, parent, parent2 );
 }
 
 
@@ -85,16 +85,25 @@ const types = {
    * @param {Array} obj 
    * @param {Array} obj2 
    */
-  array( obj, obj2 ){
-    let i,
-        length = obj.length;
+  array( obj, obj2, parent, parent2 ){
+    let length = obj.length,
+        i, value, value2;
 
     if( length !== obj2.length ){
       return false;
     }
 
     for( i = 0; i < length; i++ ){
-      if( !equals( obj[ i ], obj2[ i ] ) ){
+      value = obj[ i ];
+      value2 = obj2[ i ];
+
+      // 避免无限引用
+      if( parent && parent === value ){
+        if( parent2 === value2 ) continue;
+        else return false;
+      }
+
+      if( !equals( value, value2, obj, obj2 ) ){
         return false;
       }
     }
@@ -106,10 +115,10 @@ const types = {
    * @param {Object} obj 
    * @param {Object} obj2 
    */
-  object( obj, obj2 ){
+  object( obj, obj2, parent, parent2 ){
     const _keys = keys( obj );
     const length = _keys.length;
-    let i, key;
+    let i, key, value, value2;
 
     if( length !== keys( obj2 ).length ){
       return false;
@@ -117,8 +126,16 @@ const types = {
 
     for( i = 0; i < length; i++ ){
       key = _keys[ i ];
+      value = obj[ key ];
+      value2 = obj2[ key ];
 
-      if( !equals( obj[ key ], obj2[ key ] ) ){
+      // 避免无限引用
+      if( parent && parent === value ){
+        if( parent2 === value2 ) continue;
+        else return false;
+      }
+
+      if( !equals( value, value2, obj, obj2 ) ){
         return false;
       }
     }

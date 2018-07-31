@@ -224,6 +224,40 @@ describes.push({
             Object.$equals( div, new Map() ).should.false;
             Object.$equals( div, new Set() ).should.false;
           }
+        }, {
+          name: 'Object infinite Loop',
+          it: function(){
+
+            var parent = {};
+            var children = {};
+            parent.children = children;
+            children.parent = parent;
+
+            var parent2 = {};
+            var children2 = {};
+            parent2.children = children2;
+            children2.parent = parent2;
+
+            Object.$equals( parent, parent2 ).should.true;
+
+          }
+        }, {
+          name: 'Array infinite Loop',
+          it: function(){
+
+            var parent = [];
+            var children = [];
+            parent.push( children );
+            children.push( parent );
+
+            var parent2 = [];
+            var children2 = [];
+            parent2.push( children2 );
+            children2.push( parent2 );
+
+            Object.$equals( parent, parent2 ).should.true;
+
+          }
         }
       ]
     }

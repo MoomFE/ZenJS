@@ -798,7 +798,7 @@
     return type === 'object' || type === 'function';
   }
 
-  function equals$1(obj, obj2) {
+  function equals$1(obj, obj2, parent, parent2) {
 
     if (obj === obj2) {
       return true;
@@ -832,19 +832,19 @@
 
     // 是数组类型或类数组类型 ( Array, LikeArray )
     if ($isArrayLike(obj)) {
-      return types.array(obj, obj2);
+      return types.array(obj, obj2, parent, parent2);
     }
 
     // 原始对象类型 ( JSON )
     if (isPlainObject(obj)) {
-      return types.object(obj, obj2);
+      return types.object(obj, obj2, parent, parent2);
     }
 
     var oType = oString.match(rType)[1].toLowerCase();
 
     // 有针对性的比对方法 ( Regexp, Date, Function )
     if (oType in types) {
-      return types[oType](obj, obj2);
+      return types[oType](obj, obj2, parent, parent2);
     }
 
     // ( Elemnet )
@@ -857,7 +857,7 @@
       return equals$1(mapSetToArray(obj), mapSetToArray(obj2));
     }
 
-    return types.object(obj, obj2);
+    return types.object(obj, obj2, parent, parent2);
   }
 
   var types = {
@@ -866,16 +866,26 @@
      * @param {Array} obj 
      * @param {Array} obj2 
      */
-    array: function (obj, obj2) {
-      var i,
-          length = obj.length;
+    array: function (obj, obj2, parent, parent2) {
+      var length = obj.length,
+          i,
+          value,
+          value2;
 
       if (length !== obj2.length) {
         return false;
       }
 
       for (i = 0; i < length; i++) {
-        if (!equals$1(obj[i], obj2[i])) {
+        value = obj[i];
+        value2 = obj2[i];
+
+        // 避免无限引用
+        if (parent && parent === value) {
+          if (parent2 === value2) continue;else return false;
+        }
+
+        if (!equals$1(value, value2, obj, obj2)) {
           return false;
         }
       }
@@ -888,11 +898,13 @@
      * @param {Object} obj 
      * @param {Object} obj2 
      */
-    object: function (obj, obj2) {
+    object: function (obj, obj2, parent, parent2) {
       var _keys = keys(obj);
       var length = _keys.length;
       var i,
-          key;
+          key,
+          value,
+          value2;
 
       if (length !== keys(obj2).length) {
         return false;
@@ -900,8 +912,15 @@
 
       for (i = 0; i < length; i++) {
         key = _keys[i];
+        value = obj[key];
+        value2 = obj2[key];
 
-        if (!equals$1(obj[key], obj2[key])) {
+        // 避免无限引用
+        if (parent && parent === value) {
+          if (parent2 === value2) continue;else return false;
+        }
+
+        if (!equals$1(value, value2, obj, obj2)) {
           return false;
         }
       }
