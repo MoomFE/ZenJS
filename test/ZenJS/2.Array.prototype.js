@@ -149,6 +149,70 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$deleteValue / $removeValue',
+      describe: [
+        {
+          name: 'Use congruent to delete',
+          it: function(){
+            // No parameters
+            Object.$equals( [ 1, 2, 3, 4 ].$deleteValue( 4 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 4, 4, 4, 4 ].$deleteValue( 4 ), [] ).should.true;
+            Object.$equals( [ 4, 1, 2, 4 ].$deleteValue( 4 ), [ 1, 2 ] ).should.true;
+            Object.$equals( [ false, 0, '' ].$deleteValue( false ), [ 0, '' ] ).should.true;
+            Object.$equals( [ null, undefined ].$deleteValue( null ), [ undefined ] ).should.true;
+            // Using parameters
+            Object.$equals( [ 1, 2, 3, 4 ].$deleteValue( 4, true ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 4, 4, 4, 4 ].$deleteValue( 4, true ), [] ).should.true;
+            Object.$equals( [ 4, 1, 2, 4 ].$deleteValue( 4, true ), [ 1, 2 ] ).should.true;
+            Object.$equals( [ false, 0, '' ].$deleteValue( false, true ), [ 0, '' ] ).should.true;
+            Object.$equals( [ null, undefined ].$deleteValue( null, true ), [ undefined ] ).should.true;
+          }
+        }, {
+          name: 'Use double to delete',
+          it: function(){
+            Object.$equals( [ 1, 2, 3, 4 ].$deleteValue( 4, false ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 4, 4, 4, 4 ].$deleteValue( 4, false ), [] ).should.true;
+            Object.$equals( [ 4, 1, 2, 4 ].$deleteValue( 4, false ), [ 1, 2 ] ).should.true;
+            Object.$equals( [ false, 0, '' ].$deleteValue( false, false ), [] ).should.true;
+            Object.$equals( [ null, undefined ].$deleteValue( null, false ), [] ).should.true;
+          }
+        }, {
+          name: 'Use a custom method to delete',
+          it: function(){
+            Object.$equals( [ 1, 2, 3, 4 ].$deleteValue( 4, Object.$equals ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 4, 4, 4, 4 ].$deleteValue( 4, Object.$equals ), [] ).should.true;
+            Object.$equals( [ 4, 1, 2, 4 ].$deleteValue( 4, Object.$equals ), [ 1, 2 ] ).should.true;
+
+            var arr = [
+              { ZenJS: true }, { ZenJS: false },
+              { ZenUI: true }, { ZenUI: false }
+            ];
+
+            // ( 1
+            Object.$equals(
+              arr.slice().$deleteValue( { ZenJS: true }, Object.$equals ),
+              arr.slice().$delete( 0 )
+            ).should.true;
+
+            // ( 2
+            Object.$equals(
+              arr.slice().$deleteValue( 'ZenJS', function( json, key ){
+                return key in json;
+              }),
+              arr.slice().$delete( 0, 2 )
+            ).should.true;
+
+            // ( 3
+            Object.$equals(
+              arr.slice().$deleteValue(function( json ){
+                return 'ZenUI' in json;
+              }),
+              arr.slice().$delete( -2, 2 )
+            ).should.true
+          }
+        }
+      ]
     }
 
 

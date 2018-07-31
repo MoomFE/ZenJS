@@ -95,6 +95,18 @@ interface Array<T> {
   $removeValue( value: any, predicate: Function | Boolean ): any[];
 
   /**
+   * 从数组中删除与传入值相同的对象
+   * @param predicate 用于自定义筛选内容
+   */
+  $deleteValue( predicate: Function ): any[];
+
+  /**
+   * 从数组中删除与传入值相同的对象
+   * @param predicate 用于自定义筛选内容
+   */
+  $removeValue( predicate: Function ): any[];
+
+  /**
    * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组后
    * @param args 需要添加到数组后的数据
    */
