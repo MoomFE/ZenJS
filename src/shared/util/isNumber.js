@@ -4,5 +4,5 @@
  * @returns {Boolean}
  */
 export default function isNumber( obj ){
-  return typeof obj === 'number';
+  return typeof obj === 'number' && obj === obj && isFinite( obj );
 }
