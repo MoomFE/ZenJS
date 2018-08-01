@@ -87,24 +87,16 @@ const types = {
    */
   array( obj, obj2, parent, parent2 ){
     let length = obj.length,
-        i, value, value2;
+        i;
 
     if( length !== obj2.length ){
       return false;
     }
 
     for( i = 0; i < length; i++ ){
-      value = obj[ i ];
-      value2 = obj2[ i ];
-
-      // 避免无限引用
-      if( parent && parent === value ){
-        if( parent2 === value2 ) continue;
-        else return false;
-      }
-
-      if( !equals( value, value2, obj, obj2 ) ){
-        return false;
+      switch( checkInfiniteLoop( obj[ i ], obj2[ i ], parent, parent2, obj, obj2 ) ){
+        case 0: return false;
+        case 1: continue;
       }
     }
 
@@ -118,7 +110,7 @@ const types = {
   object( obj, obj2, parent, parent2 ){
     const _keys = keys( obj );
     const length = _keys.length;
-    let i, key, value, value2;
+    let i, key;
 
     if( length !== keys( obj2 ).length ){
       return false;
@@ -126,17 +118,10 @@ const types = {
 
     for( i = 0; i < length; i++ ){
       key = _keys[ i ];
-      value = obj[ key ];
-      value2 = obj2[ key ];
 
-      // 避免无限引用
-      if( parent && parent === value ){
-        if( parent2 === value2 ) continue;
-        else return false;
-      }
-
-      if( !equals( value, value2, obj, obj2 ) ){
-        return false;
+      switch( checkInfiniteLoop( obj[ key ], obj2[ key ], parent, parent2, obj, obj2 ) ){
+        case 0: return false;
+        case 1: continue;
       }
     }
 
@@ -176,6 +161,27 @@ const types = {
   }
 
 };
+
+
+/**
+ * 检查是否无限引用, 然后继续进行下一步判断
+ * @returns {Number} 0: 执行 return;
+ *                   1: 执行 continue;
+ */
+function checkInfiniteLoop( value, value2, parent, parent2, obj, obj2 ){
+
+  // 避免无限引用
+  if( parent && ( parent === value || parent2 === value2 ) ){
+    return parent === value ? parent2 === value2 ? 1 : 0
+                            : parent === value ? 1 : 0;
+  }
+
+  // 进行下一步判断
+  if( !equals( value, value2, obj, obj2 ) ){
+    return 0;
+  }
+
+}
 
 
 defineValue( Object, '$equals', equals );
