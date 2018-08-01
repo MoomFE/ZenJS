@@ -2,7 +2,7 @@ import Array from '../global/Array/index';
 import isArray from '../global/Array/isArray';
 import defineProperty from '../global/Object/defineProperty';
 import isObject from './isObject';
-import assign from '../polyfill/assign';
+import assign from '../polyfill/Object.assign';
 
 
 /**

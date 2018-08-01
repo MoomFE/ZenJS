@@ -6,9 +6,8 @@
  */
 export default function repeat( str, count ){
   let result = '';
-  let i = 0;
 
-  for( ; i++ < count; ){
+  while( count-- ){
     result += str;
   }
 
