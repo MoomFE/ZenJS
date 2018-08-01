@@ -96,9 +96,9 @@ function getTraversal( key, predicate ){
 }
 
 function checkArray( source, object, predicate ){
+  const length = source.length;
   let index = 0,
       chunk, key;
-  const length = source.length;
 
   // 遍历检测对象
   for( ; index < length; index++ ){
@@ -114,9 +114,15 @@ function checkArray( source, object, predicate ){
 }
 
 function checkObject( source, object, predicate ){
-  let key;
+  const sKeys = keys( source ),
+        sLength = sKeys.length;
+  let index = 0,
+      key;
 
-  for( key in source ){
+  // 遍历检测对象
+  for( ; index < sLength; index++ ){
+    key = sKeys[ index ];
+
     if( !( key in object && predicate( source[ key ], object[ key ] ) ) ){
       return false;
     }

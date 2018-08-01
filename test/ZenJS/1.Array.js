@@ -24,7 +24,7 @@ describes.push({
             Object.$equals( Array.$chunk( [ 1, 2, 3 ], 4 ), [ [ 1, 2, 3 ] ] ).should.true;
           }
         }, {
-          name: 'prototype.$chunk',
+          name: 'Array.prototype.$chunk',
           it: function(){
             // Return empty Array
             Object.$equals( [ 1, 2, 3, 4 ].$chunk( 0 ), [] ).should.true;
@@ -151,7 +151,7 @@ describes.push({
             Object.$equals( value, 3 ).should.true;
           }
         }, {
-          name: 'prototype.$each',
+          name: 'Array.prototype.$each',
           it: function(){
             var index, value;
 

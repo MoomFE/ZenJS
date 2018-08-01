@@ -747,10 +747,10 @@
   }
 
   function checkArray(source, object, predicate) {
+    var length = source.length;
     var index = 0,
         chunk,
         key;
-    var length = source.length;
 
     // 遍历检测对象
     for (; index < length; index++) {
@@ -766,10 +766,15 @@
   }
 
   function checkObject(source, object, predicate) {
-    var key;
+    var sKeys = keys(source),
+        sLength = sKeys.length;
+    var index = 0,
+        key;
 
     // 遍历检测对象
-    for (key in source) {
+    for (; index < sLength; index++) {
+      key = sKeys[index];
+
       if (!(key in object && predicate(source[key], object[key]))) {
         return false;
       }
