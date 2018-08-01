@@ -376,6 +376,87 @@
 
   defineValue(Array, '$isArrayLike', $isArrayLike);
 
+  /**
+   * 获取方法指定位参数, 若未传入参数, 则取默认值
+   * @param {IArguments} args arguments
+   * @param {Number} index 需要在 argument 中取得默认值的下标
+   * @param {any} defaultValue 若未传入值时取得默认值
+   * @returns {any}
+   */
+  function parametersDefault(args, index, defaultValue) {
+    var arg;
+
+    if (args.length > index && (arg = args[index]) !== undefined) {
+      return arg;
+    }
+
+    return defaultValue;
+  }
+
+  /**
+   * 判断传入的两个参数是否相等
+   * @param {any} one 需要判断的第一参数
+   * @param {any} two 需要判断的第二参数
+   * @returns {Boolean}
+   */
+  function equals(one, two) {
+    return one == two;
+  }
+
+  /**
+   * 判断传入的两个参数是否全等
+   * @param {any} one 需要判断的第一参数
+   * @param {any} two 需要判断的第二参数
+   * @returns {Boolean}
+   */
+  function congruence(one, two) {
+    return one === two;
+  }
+
+  /**
+   * 返回一个可以判断两个值的方法.
+   * 如果传入值为 Function 类型, 说明是用户传的方法, 则直接返回;
+   * 如果传入值不为 Function 类型, 则值是真值, 则返回全等判断方法, 否则返回双等判断方法
+   * 
+   * @param {*} predicate 
+   */
+  function getPredicate(predicate) {
+    if (isFunction(predicate)) {
+      return predicate;
+    }
+    return predicate ? congruence : equals;
+  }
+
+  function equals$1(array, array2) {
+
+    // 可比较数组及类数组的内容
+    if (!($isArrayLike(array) && $isArrayLike(array2))) {
+      return false;
+    }
+
+    var length = array.length;
+
+    if (length !== array2.length) {
+      return false;
+    }
+
+    var predicate = getPredicate(parametersDefault(arguments, 2, true));
+
+    for (var index = 0; index < length; index++) {
+      if (!predicate(array[index], array2[index])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  defineValue(Array, '$equals', equals$1);
+
+  defineValue(ArrayProto, '$equals', function (obj, predicate) {
+    return equals$1(this, obj, predicate);
+  });
+
   var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
 
   var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
@@ -451,23 +532,6 @@
   defineValue(Array, '$toArray', $toArray);
 
   /**
-   * 获取方法指定位参数, 若未传入参数, 则取默认值
-   * @param {IArguments} args arguments
-   * @param {Number} index 需要在 argument 中取得默认值的下标
-   * @param {any} defaultValue 若未传入值时取得默认值
-   * @returns {any}
-   */
-  function parametersDefault(args, index, defaultValue) {
-    var arg;
-
-    if (args.length > index && (arg = args[index]) !== undefined) {
-      return arg;
-    }
-
-    return defaultValue;
-  }
-
-  /**
    * 获取方法从指定位开始的剩余参数
    * @param { IArguments } args arguments
    * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
@@ -533,40 +597,6 @@
     return returnDeleted ? deleted : this;
   });
 
-  /**
-   * 判断传入的两个参数是否相等
-   * @param {any} one 需要判断的第一参数
-   * @param {any} two 需要判断的第二参数
-   * @returns {Boolean}
-   */
-  function equals(one, two) {
-    return one == two;
-  }
-
-  /**
-   * 判断传入的两个参数是否全等
-   * @param {any} one 需要判断的第一参数
-   * @param {any} two 需要判断的第二参数
-   * @returns {Boolean}
-   */
-  function congruence(one, two) {
-    return one === two;
-  }
-
-  /**
-   * 返回一个可以判断两个值的方法.
-   * 如果传入值为 Function 类型, 说明是用户传的方法, 则直接返回;
-   * 如果传入值不为 Function 类型, 则值是真值, 则返回全等判断方法, 否则返回双等判断方法
-   * 
-   * @param {*} predicate 
-   */
-  function getPredicate(predicate) {
-    if (isFunction(predicate)) {
-      return predicate;
-    }
-    return predicate ? congruence : equals;
-  }
-
   defineValue(ArrayProto, '$deleteValue $removeValue', function (value) {
 
     var length = this.length,
@@ -629,30 +659,6 @@
     });
 
     return this;
-  });
-
-  defineValue(ArrayProto, '$equals', function (obj) {
-
-    if (!obj || obj[isFunction$1]) {
-      return false;
-    }
-
-    var index = 0,
-        length = this.length;
-
-    if (length !== obj.length) {
-      return false;
-    }
-
-    var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
-
-    for (; index < length; index++) {
-      if (!isEqual(this[index], obj[index])) {
-        return false;
-      }
-    }
-
-    return true;
   });
 
   var keys = Object.keys;
@@ -798,7 +804,7 @@
     return type === 'object' || type === 'function';
   }
 
-  function equals$1(obj, obj2, parent, parent2) {
+  function equals$2(obj, obj2, parent, parent2) {
 
     if (obj === obj2) {
       return true;
@@ -854,7 +860,7 @@
 
     // ( Map, Set )
     if (isMap(obj) || isSet(obj)) {
-      return equals$1(mapSetToArray(obj), mapSetToArray(obj2));
+      return equals$2(mapSetToArray(obj), mapSetToArray(obj2));
     }
 
     return types.object(obj, obj2, parent, parent2);
@@ -965,15 +971,15 @@
     }
 
     // 进行下一步判断
-    if (!equals$1(value, value2, obj, obj2)) {
+    if (!equals$2(value, value2, obj, obj2)) {
       return 0;
     }
   }
 
-  defineValue(Object, '$equals', equals$1);
+  defineValue(Object, '$equals', equals$2);
 
   defineValue(ObjectProto, '$equals', function (obj2) {
-    return equals$1(this, obj2);
+    return equals$2(this, obj2);
   });
 
   // import './$assign/index';

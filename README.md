@@ -72,18 +72,19 @@
   - $copy
   - $create
   - $each
+  - $equals
   - $isArrayLike
   - $toArray
 
 - Array.prototype
   - $chunk
   - $each
+  - $equals
   - $add
   - $delete / $remove
   - $deleteValue / $removeValue
   - $concat
   - $concatTo
-  - $equals
   - $find
   - $findIndex
 

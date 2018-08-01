@@ -30,6 +30,14 @@ interface ArrayConstructor {
   $each( array: any[], callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
 
   /**
+   * 比较两个数组的内容是否相同, 与 Object.$equals 不同, 比较的两个数组可以是类数组对象
+   * @param array 进行比较的第一个数组
+   * @param array2 进行比较的第二个数组
+   * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
+   */
+  $equals( array: any[], array2: any[], predicate: Function | Boolean ): Boolean;
+
+  /**
    * 判断传入对象是否是一个类数组对象
    * @param value 需要判断的对象
    */
@@ -56,6 +64,13 @@ interface Array<T> {
    * @param callback 遍历数组时调用的方法, 方法返回 false 时, 将终止后续遍历
    */
   $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
+
+  /**
+   * 比较当前数组和目标数组的内容是否相同, 与 Object.$equals 不同, 比较的两个数组可以是类数组对象
+   * @param array 进行比较的数组
+   * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
+   */
+  $equals( array: any[], predicate: Function | Boolean ): Boolean;
 
   /**
    * 在数组指定位置插入对象
@@ -118,13 +133,6 @@ interface Array<T> {
    * @param args 需要添加的数据
    */
   $concatTo( index: Number, ...args: any[] ): any[];
-
-  /**
-   * 判断传入数组或类数组的内容是否和当前数组相同
-   * @param obj 需要检测的值
-   * @param congruence 是否使用全等进行判断 - default: true
-   */
-  $equals( obj: any[], congruence?: true ): Boolean;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的值

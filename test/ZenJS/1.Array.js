@@ -180,6 +180,93 @@ describes.push({
         }
       ]
     }, {
+      name: '$equals',
+      describe: [
+        {
+          name: 'Always return Boolean type',
+          it: function(){
+            Array.$equals().should.false;
+            Array.$equals( null ).should.false;
+            Array.$equals( undefined ).should.false;
+            Array.$equals( false ).should.false;
+            Array.$equals( true ).should.false;
+            Array.$equals( [] ).should.false;
+            Array.$equals( [], null ).should.false;
+            Array.$equals( [], undefined ).should.false;
+            Array.$equals( [], false ).should.false;
+            Array.$equals( [], true ).should.false;
+          }
+        }, {
+          name: 'Use congruence for comparison',
+          it: function(){
+            // No parameters
+            Array.$equals( [ 1 ], [ 1 ] ).should.true;
+            Array.$equals( [ 1 ], [ '1' ] ).should.false;
+            Array.$equals( [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ] ).should.true;
+            Array.$equals( [ 1, 2, 3, 4 ], [ '1', '2', '3', '4' ] ).should.false;
+            // Using parameters
+            Array.$equals( [ 1 ], [ 1 ], true ).should.true;
+            Array.$equals( [ 1 ], [ '1' ], true ).should.false;
+            Array.$equals( [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ], true ).should.true;
+            Array.$equals( [ 1, 2, 3, 4 ], [ '1', '2', '3', '4' ], true ).should.false;
+          }
+        }, {
+          name: 'Use double comparison',
+          it: function(){
+            Array.$equals( [ 1 ], [ 1 ], false ).should.true;
+            Array.$equals( [ 1 ], [ '1' ], false ).should.true;
+            Array.$equals( [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ], false ).should.true;
+            Array.$equals( [ 1, 2, 3, 4 ], [ '1', '2', '3', '4' ], false ).should.true;
+          }
+        }, {
+          name: 'Compare using a custom method',
+          it: function(){
+            Array.$equals( [ { ZenJS: true } ], [ { ZenJS: true } ], Object.$equals ).should.true;
+            Array.$equals( [ { ZenJS: true } ], [ { ZenJS: false } ], Object.$equals ).should.false;
+          }
+        }, {
+          name: 'Compare with like array',
+          it: function(){
+            var div = window.div;
+            div.className = 'z e n j s';
+
+            Array.$equals( [ 'z', 'e', 'n', 'j', 's' ], div.classList ).should.true;
+          }
+        }, {
+          name: 'Array.prototype.$equals',
+          it: function(){
+            // Always return Boolean type
+            [].$equals().should.false;
+            [].$equals( null ).should.false;
+            [].$equals( undefined ).should.false;
+            [].$equals( false ).should.false;
+            [].$equals( true ).should.false;
+            // Use congruence for comparison
+            [ 1 ].$equals( [ 1 ] ).should.true;
+            [ 1 ].$equals( [ '1' ] ).should.false;
+            [ 1, 2, 3, 4 ].$equals( [ 1, 2, 3, 4 ] ).should.true;
+            [ 1, 2, 3, 4 ].$equals( [ '1', '2', '3', '4' ] ).should.false;
+            [ 1 ].$equals( [ 1 ], true ).should.true;
+            [ 1 ].$equals( [ '1' ], true ).should.false;
+            [ 1, 2, 3, 4 ].$equals( [ 1, 2, 3, 4 ], true ).should.true;
+            [ 1, 2, 3, 4 ].$equals( [ '1', '2', '3', '4' ], true ).should.false;
+            // Use double comparison
+            [ 1 ].$equals( [ 1 ], false ).should.true;
+            [ 1 ].$equals( [ '1' ], false ).should.true;
+            [ 1, 2, 3, 4 ].$equals( [ 1, 2, 3, 4 ], false ).should.true;
+            [ 1, 2, 3, 4 ].$equals( [ '1', '2', '3', '4' ], false ).should.true;
+            // Compare using a custom method
+            [ { ZenJS: true } ].$equals( [ { ZenJS: true } ], Object.$equals ).should.true;
+            [ { ZenJS: true } ].$equals( [ { ZenJS: false } ], Object.$equals ).should.false;
+            // Compare with like array
+            var div = window.div;
+            div.className = 'z e n j s';
+
+            [ 'z', 'e', 'n', 'j', 's' ].$equals( div.classList ).should.true;
+          }
+        }
+      ]
+    }, {
       name: '$isArrayLike',
       describe: [
         {
