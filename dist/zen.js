@@ -768,6 +768,7 @@
   function checkObject(source, object, predicate) {
     var key;
 
+    // 遍历检测对象
     for (key in source) {
       if (!(key in object && predicate(source[key], object[key]))) {
         return false;
@@ -976,7 +977,9 @@
     }
   }
 
-  defineValue(Object, '$equals', equals$2);
+  defineValue(Object, '$equals', function (obj, obj2) {
+    return equals$2(obj, obj2);
+  });
 
   defineValue(ObjectProto, '$equals', function (obj2) {
     return equals$2(this, obj2);

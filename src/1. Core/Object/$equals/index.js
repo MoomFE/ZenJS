@@ -184,7 +184,7 @@ function checkInfiniteLoop( value, value2, parent, parent2, obj, obj2 ){
 }
 
 
-defineValue( Object, '$equals', equals );
+defineValue( Object, '$equals', ( obj, obj2 ) => equals( obj, obj2 ) );
 
 defineValue( ObjectProto, '$equals', function( obj2 ){
   return equals( this, obj2 );
