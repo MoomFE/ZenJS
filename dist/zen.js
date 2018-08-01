@@ -25,6 +25,49 @@
     return obj !== null && typeof obj === 'object';
   }
 
+  var StringProto = String.prototype;
+
+  var BooleanProto = Boolean.prototype;
+
+  var ArrayProto = Array.prototype;
+
+  var FunctionProto = Function.prototype;
+
+  [['String', StringProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
+    defineProperty(obj[1], "__is" + obj[0] + "__", {
+      value: true,
+      configurable: false, // 删除/定义
+      enumerable: false, // 枚举
+      writable: false // 写入
+    });
+  });
+
+  var isString = '__isString__';
+  var isBoolean = '__isBoolean__';
+  var isArray$1 = '__isArray__';
+  var isFunction = '__isFunction__';
+
+  var keys = Object.keys;
+
+  /**
+   * 方法返回一个给定对象自身可枚举属性的键值对数组.
+   * Object.entries polyfill
+   */
+  var entries = Object.entries || function (obj) {
+
+    var index,
+        key;
+
+    var ownKeys = keys(obj);
+    var result = Array(index = ownKeys.length);
+
+    while (index--) {
+      result[index] = [key = ownKeys[index], obj[key]];
+    }
+
+    return result;
+  };
+
   var ObjectProto = Object.prototype;
 
   var toString = ObjectProto.toString;
@@ -38,7 +81,7 @@
    * @param {any} obj 需要判断的对象
    * @returns {Boolean}
    */
-  function isFunction(obj) {
+  function isFunction$1(obj) {
     return typeof obj === 'function';
   }
 
@@ -65,93 +108,79 @@
 
     var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
 
-    return isFunction(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
+    return isFunction$1(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
   }
-
-  var create = Object.create;
-
-  /**
-   * 判断传入对象是否是 Boolean 类型
-   * @param {any} obj 需要判断的对象
-   * @returns {Boolean}
-   */
-  function isBoolean(obj) {
-    return typeof obj === 'boolean';
-  }
-
-  /**
-   * Transplant from jQuery
-   * Version: 3.3.1
-   * Homepage: https://jquery.com
-   */
 
   function extend() {
 
-    var i = 1,
-        length = arguments.length,
+    var length = arguments.length;
 
+    /** 首个源对象下标 */
+    var index = 1;
     /** 目标对象 */
-    target = arguments[0] || {},
-        options,
-        name,
-        src,
-        copy,
-        copyIsArray,
-        clone,
-
-
+    var target = arguments[0] || {};
     /** 浅拷贝 */
-    shallow = false;
+    var shallow = false;
 
-    if (isBoolean(target)) {
+    /** 当前源对象 */
+    var options;
+    /** 当前源对象所有可枚举属性名及属性 */
+    var ownEntries;
+    var ownLength,
+        ownIndex,
+        ownEntrie,
+        ownEntrieName;
+    var ownValue,
+        targetValue,
+        cloneValue;
+
+    // 指定了是否使用浅拷贝
+    if (target[isBoolean]) {
       shallow = target;
       target = arguments[i] || {};
-      i++;
+      index++;
     }
 
-    // 遍历所有的传入参数
-    for (; i < length; i++) {
+    // 遍历参数
+    for (; index < length; index++) {
 
-      // 判断当前传入参数是有效的
-      if ((options = arguments[i]) != null) {
+      // 无用参数
+      if ((options = arguments[index]) == null) continue;
 
-        // 遍历传入参数的属性
-        for (name in options) {
+      // 所有可枚举属性
+      ownEntries = entries(options);
+      ownLength = ownEntries.length;
+      ownIndex = 0;
 
-          // 判断传入参数的属性是否和目标对象相同
-          // 是相同则跳出, 防止无限拷贝
-          if ((copy = options[name]) === target) {
-            continue;
+      for (; ownIndex < ownLength; ownIndex++) {
+        // [ key, value ]
+        ownEntrie = ownEntries[ownIndex];
+        ownEntrieName = ownEntrie[0];
+        ownValue = ownEntrie[1];
+
+        // 防止无限拷贝
+        if (ownValue === target) continue;
+
+        targetValue = target[ownEntrieName];
+
+        // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
+        if (!shallow && ownValue && (isPlainObject(ownValue) || ownValue[isArray$1])) {
+
+          if (ownValue[isArray$1]) {
+            cloneValue = targetValue && targetValue[isArray$1] ? targetValue : [];
+          } else {
+            cloneValue = targetValue && isPlainObject(src) ? src : {};
           }
 
-          src = target[name];
-
-          // 如果被该属性是原生对象或数组, 则进循环拷贝
-          if (!shallow && copy && (isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
-
-            // 目标对象的当前属性是否和该属性类型相同
-            // 不是的话, 则进行覆盖
-            if (copyIsArray) {
-              copyIsArray = false;
-              clone = src && isArray(src) ? src : [];
-            } else {
-              clone = src && isPlainObject(src) ? src : this === true ? create(null) : {};
-            }
-
-            target[name] = extend(clone, copy);
-          } else if (copy !== undefined) {
-
-            // 该属性不是原生对象和数组, 直接进行赋值
-            target[name] = copy;
-          }
+          target[ownEntrieName] = extend(cloneValue, ownValue);
+        } else if (ownValue !== undefined) {
+          target[ownEntrieName] = ownValue;
         }
       }
     }
 
     return target;
   }
-
-  var ArrayProto = Array.prototype;
 
   var slice = ArrayProto.slice;
 
@@ -229,7 +258,7 @@
    * @param {any} obj 需要判断的对象
    * @returns {Boolean}
    */
-  function isString(obj) {
+  function isString$1(obj) {
     return typeof obj === 'string';
   }
 
@@ -249,7 +278,7 @@
    */
   function $isNumber(obj) {
     if (isNumber(obj)) return true;
-    return isString(obj) && !isNaN(obj - parseFloat(obj));
+    return isString$1(obj) && !isNaN(obj - parseFloat(obj));
   }
 
   function $create(length, insert, isInsert) {
@@ -261,7 +290,7 @@
     var i = 0;
     var result = Array(length);
 
-    if (!isInsert && isFunction(insert)) {
+    if (!isInsert && isFunction$1(insert)) {
       for (; i < length; i++) {
         result[i] = insert(i);
       }
@@ -312,7 +341,7 @@
 
   function $each(array, callback) {
 
-    if (!array || !array.length || !isFunction(callback)) {
+    if (!array || !array.length || !isFunction$1(callback)) {
       return array;
     }
 
@@ -337,31 +366,11 @@
     return $each(this, callback);
   });
 
-  var StringProto = String.prototype;
-
-  var BooleanProto = Boolean.prototype;
-
-  var FunctionProto = Function.prototype;
-
-  [['String', StringProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
-    defineProperty(obj[1], "__is" + obj[0] + "__", {
-      value: true,
-      configurable: false, // 删除/定义
-      enumerable: false, // 枚举
-      writable: false // 写入
-    });
-  });
-
-  var isString$1 = '__isString__';
-  var isBoolean$1 = '__isBoolean__';
-  var isArray$1 = '__isArray__';
-  var isFunction$1 = '__isFunction__';
-
   var MAX_SAFE_INTEGER = 9007199254740991;
 
   function $isArrayLike(obj) {
 
-    if (obj == null || obj[isFunction$1]) {
+    if (obj == null || obj[isFunction]) {
       return false;
     }
 
@@ -425,7 +434,7 @@
    * @param {*} predicate 
    */
   function getPredicate(predicate) {
-    if (isFunction(predicate)) {
+    if (isFunction$1(predicate)) {
       return predicate;
     }
     return predicate ? congruence : equals;
@@ -471,7 +480,7 @@
    * @returns {Boolean}
    */
   function isMap(obj) {
-    return isFunction(Map) && obj instanceof Map;
+    return isFunction$1(Map) && obj instanceof Map;
   }
 
   /**
@@ -480,7 +489,7 @@
    * @returns {Boolean}
    */
   function isSet(obj) {
-    return isFunction(Set) && obj instanceof Set;
+    return isFunction$1(Set) && obj instanceof Set;
   }
 
   /**
@@ -507,12 +516,12 @@
   function $toArray(value) {
 
     // 不可转为数组的, 直接返回空数组
-    if (!value || value[isBoolean$1]) {
+    if (!value || value[isBoolean]) {
       return [];
     }
 
     // 是字符串类型
-    if (value[isString$1]) {
+    if (value[isString]) {
       if (reHasUnicode.test(value)) {
         return value.match(reUnicode) || [];
       } else {
@@ -613,7 +622,7 @@
 
     if (arguments.length > 1) {
       predicate = getPredicate(parametersDefault(arguments, 1, true));
-    } else if (isFunction(value)) {
+    } else if (isFunction$1(value)) {
       predicate = value;
       value = undefined;
     } else {
@@ -665,8 +674,6 @@
     return this;
   });
 
-  var keys = Object.keys;
-
   defineValue(ArrayProto, '$findIndex', function (predicate, key) {
     return findIndex(this, predicate, key, arguments);
   });
@@ -681,9 +688,9 @@
     }
 
     var traversal,
-        predicateIsFunction = predicate[isFunction$1];
+        predicateIsFunction = predicate[isFunction];
 
-    if (predicateIsFunction || predicate[isBoolean$1]) {
+    if (predicateIsFunction || predicate[isBoolean]) {
 
       // $findIndex( Function )
       // 传入的方法是用作数组遍历时的手动进行检测
