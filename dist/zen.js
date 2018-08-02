@@ -1047,6 +1047,8 @@
   // import './$self/index';
   // import './$set/index';
 
+  defineValue(Number, '$isNumber', $isNumber);
+
   // import './String/index';
 
 })));
