@@ -35,6 +35,7 @@ export default function extend(){
     if( ( options = arguments[ index ] ) == null ) continue;
 
     // 所有可枚举属性
+    // [ [ key, value ], [ key, value ], [ key, value ] ]
     ownEntries = entries( options );
     ownLength = ownEntries.length;
     ownIndex = 0;

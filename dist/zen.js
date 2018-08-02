@@ -148,6 +148,7 @@
       if ((options = arguments[index]) == null) continue;
 
       // 所有可枚举属性
+      // [ [ key, value ], [ key, value ], [ key, value ] ]
       ownEntries = entries(options);
       ownLength = ownEntries.length;
       ownIndex = 0;
@@ -800,6 +801,8 @@
     return index === -1 ? null : this[index];
   });
 
+  defineValue(Object, '$assign $extend', extend);
+
   /**
    * @type {Boolean} 当前是否是浏览器环境
    */
@@ -1001,7 +1004,10 @@
     return equals$2(this, obj2);
   });
 
-  // import './$assign/index';
+  // import './$create/index';
+  // import './$delete/index';
+  // import './$deleteValue/index';
+  // import './$each/index';
   // import './$get/index';
   // import './$isEmptyObject/index';
   // import './$isPlainObject/index';
