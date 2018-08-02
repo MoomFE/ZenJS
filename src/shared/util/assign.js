@@ -4,10 +4,10 @@ import isPlainObject from "./isPlainObject";
 
 
 /**
- * 
- * @param {Boolean} deep 是否使用深拷贝模式
+ * 将多个源对象的可枚举属性合并到第一个对象中
+ * @param {Boolean} shallow 是否使用浅拷贝模式, 类似于使用 Object.assign
  */
-export default function assign( deep, args ){
+export default function assign( shallow, args, parent ){
 
   const length = args.length;
 
@@ -41,21 +41,38 @@ export default function assign( deep, args ){
       ownEntrieName = ownEntrie[ 0 ];
       ownValue = ownEntrie[ 1 ]
 
-      // 防止无限拷贝
-      if( ownValue === target ) continue;
+      // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
+      if( !shallow && ownValue && ( isPlainObject( ownValue ) || ownValue[ isArray ] ) ){
 
-      targetValue = target[ ownEntrieName ];
+        // 防御下面这种无限引用
+        // var target = {};
+        // var source = { infiniteLoop: target };
+        // 
+        // Object.$assign( target, source );
+        if( ownValue === target ) continue;
+        // 防御下面这种无限引用
+        // var target = {};
+        // var source = {};
+        // target.source = source;
+        // source.target = target;
+        // 
+        // Object.$assign( {}, target )
+        else if( parent && parent === ownValue ){
+          if( ownLength === 1 ) target = undefined;
+          continue;
+        }
 
-      // 深拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
-      if( deep && ownValue && ( isPlainObject( ownValue ) || ownValue[ isArray ] ) ){
+        targetValue = target[ ownEntrieName ];
 
         if( ownValue[ isArray ] ){
           cloneValue = targetValue && targetValue[ isArray ] ? targetValue : [];
         }else{
-          cloneValue = targetValue && isPlainObject( src ) ? src : {};
+          cloneValue = targetValue && isPlainObject( targetValue ) ? targetValue : {};
         }
 
-        target[ ownEntrieName ] = extend( cloneValue, ownValue );
+        if( assign( false, [ cloneValue, ownValue ], options ) !== undefined ){
+          target[ ownEntrieName ] = cloneValue;
+        }
 
       }else if( ownValue !== undefined ){
         target[ ownEntrieName ] = ownValue;
