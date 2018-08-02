@@ -5,20 +5,24 @@ import { addEventListener, removeEventListener, addEventListenerPrivate, removeE
 import inBrowser from "../../const/inBrowser";
 import document from "../Document/index";
 
-const EventTarget = supportsEventTarget
+
+/**
+ * @type {EventTarget}
+ */
+const DomEventTarget = supportsEventTarget
                       ? window.EventTarget.prototype
                       : inBrowser
                         ? [ window, document, ElementProto ]
                         : undefined;
 
 if( supportsEventTarget ){
-  defineValue( EventTarget, addEventListenerPrivate, EventTarget[ addEventListener ] );
-  defineValue( EventTarget, removeEventListenerPrivate, EventTarget[ removeEventListener ] )
-}else if( EventTarget ){
-  EventTarget.forEach( obj => {
+  defineValue( DomEventTarget, addEventListenerPrivate, DomEventTarget[ addEventListener ] );
+  defineValue( DomEventTarget, removeEventListenerPrivate, DomEventTarget[ removeEventListener ] )
+}else if( DomEventTarget ){
+  DomEventTarget.forEach( obj => {
     defineValue( obj, addEventListenerPrivate, obj[ addEventListener ] );
     defineValue( obj, removeEventListenerPrivate, obj[ removeEventListener ] );
   });
 }
 
-export default EventTarget;
+export default DomEventTarget;
