@@ -2,6 +2,61 @@ describes.push({
   name: 'Object',
   describe: [
     {
+      name: '$assign',
+      describe: [
+        {
+          name: 'Default mode - deep copy',
+          it: function(){
+            var target = { zenjs: { test: true } };
+            var source = {
+              zenjs: { InDevelopment: true }
+            }
+
+            Object.$assign( target, source );
+            Object.$equals( target, { zenjs: { test: true, InDevelopment: true } } ).should.true;
+            Object.$equals( source, { zenjs: { InDevelopment: true } } ).should.true;
+
+            target = { zenjs: { test: true } };
+
+            Object.$assign( false, target, source );
+            Object.$equals( target, { zenjs: { test: true, InDevelopment: true } } ).should.true;
+            Object.$equals( source, { zenjs: { InDevelopment: true } } ).should.true;
+          }
+        }, {
+          name: 'Default mode - shallow copy',
+          it: function(){
+            var target = { zenjs: { test: true } };
+            var source = {
+              zenjs: { InDevelopment: true }
+            }
+
+            Object.$assign( true, target, source );
+            Object.$equals( target, { zenjs: { InDevelopment: true } } ).should.true;
+            Object.$equals( source, { zenjs: { InDevelopment: true } } ).should.true;
+
+            target.zenjs.should.equals( source.zenjs );
+          }
+        }, {
+          name: 'infinite Loop',
+          it: function(){
+
+            var target = {},
+                source = { infiniteLoop: target };
+
+            Object.$equals( Object.$assign( target, source ), {} ).should.true;
+
+
+            target = {};
+            source = {};
+            target.source = source;
+            source.target = target;
+
+            Object.$equals( Object.$assign( {}, target ), {} ).should.true;
+
+          }
+        }
+      ]
+    }, {
       name: '$equals',
       describe: [
         {

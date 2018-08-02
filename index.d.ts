@@ -272,7 +272,14 @@ interface Array<T> {
   // $shift(): any[];
 }
 
-interface Object {
+interface ObjectConstructor {
+
+  /**
+   * 将多个源对象的可枚举属性合并到第一个对象中
+   * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign
+   */
+  $assign( shallow? = false, ...args?: any[] ): any;
+
   /**
    * 判断传入的两个对象是否相同
    *
@@ -292,14 +299,23 @@ interface Object {
    * @param obj2 需要判断的第二个对象
    */
   $equals( obj: any, obj2: any ): Boolean;
+
 }
 
-interface ObjectConstructor {
+interface Object {
+
+  /**
+   * 将多个源对象的可枚举属性合并到当前对象中
+   * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign
+   */
+  $assign( shallow? = false, ...args?: any[] ): any;
+
   /**
    * 判断当前对象和传入对象是否相同, 比对规则请参考 Object.$equals
    * @param obj 需要比对的对象
    */
   $equals( obj: any ): Boolean;
+
 }
 
 
@@ -933,11 +949,6 @@ interface ObjectConstructor {
 // }
 
 // interface ObjectConstructor {
-//   /**
-//    * Object.assign 的深拷贝版本
-//    * @param shallow 是否使用浅拷贝
-//    */
-//   $assign( shallow? = false, ...args?: any[] ): any;
 //   /**
 //    * 创建一个新的对象
 //    * 可传入多个参数, 参数会使用深拷贝进行继承

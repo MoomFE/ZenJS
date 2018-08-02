@@ -89,11 +89,11 @@
   - $findIndex
 
 - Object
-  - $assign / $extend
+  - $assign
   - $equals
 
 - Object.prototype
-  - $extend
+  - $assign
   - $equals
 
 
