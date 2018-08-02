@@ -89,9 +89,11 @@
   - $findIndex
 
 - Object
+  - $assign / $extend
   - $equals
 
 - Object.prototype
+  - $extend
   - $equals
 
 
@@ -169,7 +171,6 @@
   - $isNumber
 
 - Object
-  - $assign
   - $create
   - $each
   - $isEmptyObject

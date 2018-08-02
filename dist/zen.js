@@ -803,6 +803,10 @@
 
   defineValue(Object, '$assign $extend', extend);
 
+  defineValue(ObjectProto, '$extend', function () {
+    return extend.apply(null, [this].concat(slice.call(arguments)));
+  });
+
   /**
    * @type {Boolean} 当前是否是浏览器环境
    */
