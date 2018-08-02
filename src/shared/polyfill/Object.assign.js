@@ -7,5 +7,5 @@ import Object from "../global/Object/index";
  * Object.assign polyfill
  */
 export default Object.assign || function(){
-  return assign( false, arguments );
+  return assign( true, arguments );
 }

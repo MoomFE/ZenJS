@@ -112,10 +112,10 @@
   }
 
   /**
-   * 
-   * @param {Boolean} deep 是否使用深拷贝模式
+   * 将多个源对象的可枚举属性合并到第一个对象中
+   * @param {Boolean} shallow 是否使用浅拷贝模式, 类似于使用 Object.assign
    */
-  function assign(deep, args) {
+  function assign(shallow, args, parent) {
 
     var length = args.length;
 
@@ -154,21 +154,38 @@
         ownEntrieName = ownEntrie[0];
         ownValue = ownEntrie[1];
 
-        // 防止无限拷贝
-        if (ownValue === target) continue;
+        // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
+        if (!shallow && ownValue && (isPlainObject(ownValue) || ownValue[isArray$1])) {
 
-        targetValue = target[ownEntrieName];
+          // 防御下面这种无限引用
+          // var target = {};
+          // var source = { infiniteLoop: target };
+          // 
+          // Object.$assign( target, source );
+          if (ownValue === target) continue;
+          // 防御下面这种无限引用
+          // var target = {};
+          // var source = {};
+          // target.source = source;
+          // source.target = target;
+          // 
+          // Object.$assign( {}, target )
+          else if (parent && parent === ownValue) {
+              if (ownLength === 1) target = undefined;
+              continue;
+            }
 
-        // 深拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
-        if (deep && ownValue && (isPlainObject(ownValue) || ownValue[isArray$1])) {
+          targetValue = target[ownEntrieName];
 
           if (ownValue[isArray$1]) {
             cloneValue = targetValue && targetValue[isArray$1] ? targetValue : [];
           } else {
-            cloneValue = targetValue && isPlainObject(src) ? src : {};
+            cloneValue = targetValue && isPlainObject(targetValue) ? targetValue : {};
           }
 
-          target[ownEntrieName] = extend(cloneValue, ownValue);
+          if (assign(false, [cloneValue, ownValue], options) !== undefined) {
+            target[ownEntrieName] = cloneValue;
+          }
         } else if (ownValue !== undefined) {
           target[ownEntrieName] = ownValue;
         }
@@ -183,7 +200,7 @@
    * Object.assign polyfill
    */
   var assign$1 = Object.assign || function () {
-    return assign(false, arguments);
+    return assign(true, arguments);
   };
 
   /**
@@ -796,15 +813,27 @@
     return index === -1 ? null : this[index];
   });
 
-  ['$assign', '$assignDeep'].forEach(function (name, index) {
+  /**
+   * 判断传入对象是否是 Boolean 类型
+   * @param {any} obj 需要判断的对象
+   * @returns {Boolean}
+   */
+  function isBoolean$1(obj) {
+    return typeof obj === 'boolean';
+  }
 
-    defineValue(Object, name, function () {
-      return assign(index, arguments);
-    });
+  defineValue(Object, '$assign', function (shallow) {
+    if (isBoolean$1(shallow)) {
+      return assign(shallow, parametersRest(arguments, 1));
+    }
+    return assign(false, arguments);
+  });
 
-    defineValue(ObjectProto, name, function () {
-      return assign(index, [this].concat(slice.call(arguments)));
-    });
+  defineValue(ObjectProto, '$assign', function (shallow) {
+    if (isBoolean$1(shallow)) {
+      return assign(shallow, [this].concat(parametersRest(arguments, 1)));
+    }
+    return assign(false, [this].concat(slice.call(arguments)));
   });
 
   /**
