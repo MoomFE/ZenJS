@@ -1,5 +1,4 @@
 import extend from "../util/extend";
-import slice from "../global/Array/prototype/slice";
 import Object from "../global/Object/index";
 
 
@@ -8,10 +7,5 @@ import Object from "../global/Object/index";
  * Object.assign polyfill
  */
 export default Object.assign || function(){
-  extend.apply(
-    null,
-    [ true ].concat(
-      slice.call( arguments )
-    )
-  );
+  return extend( true, arguments );
 }

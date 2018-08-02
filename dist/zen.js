@@ -111,16 +111,18 @@
     return isFunction$1(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
   }
 
-  function extend() {
+  /**
+   * 
+   * @param {Boolean} shallow 是否使用浅拷贝模式, 相当于使用 Object.assign
+   */
+  function extend(shallow, args) {
 
-    var length = arguments.length;
+    var length = args.length;
 
     /** 首个源对象下标 */
     var index = 1;
     /** 目标对象 */
-    var target = arguments[0] || {};
-    /** 浅拷贝 */
-    var shallow = false;
+    var target = args[0] || {};
 
     /** 当前源对象 */
     var options;
@@ -134,18 +136,11 @@
         targetValue,
         cloneValue;
 
-    // 指定了是否使用浅拷贝
-    if (target[isBoolean]) {
-      shallow = target;
-      target = arguments[i] || {};
-      index++;
-    }
-
     // 遍历参数
     for (; index < length; index++) {
 
       // 无用参数
-      if ((options = arguments[index]) == null) continue;
+      if ((options = args[index]) == null) continue;
 
       // 所有可枚举属性
       // [ [ key, value ], [ key, value ], [ key, value ] ]
@@ -183,14 +178,12 @@
     return target;
   }
 
-  var slice = ArrayProto.slice;
-
   /**
    * 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象. 它将返回目标对象.
    * Object.assign polyfill
    */
   var assign = Object.assign || function () {
-    extend.apply(null, [true].concat(slice.call(arguments)));
+    return extend(true, arguments);
   };
 
   /**
@@ -326,6 +319,8 @@
   defineValue(ArrayProto, '$chunk', function (size) {
     return $chunk(this, size);
   });
+
+  var slice = ArrayProto.slice;
 
   defineValue(Array, '$copy', function (source, array) {
 
@@ -801,10 +796,15 @@
     return index === -1 ? null : this[index];
   });
 
-  defineValue(Object, '$assign $extend', extend);
+  ['$extend', '$assign'].forEach(function (name, index) {
 
-  defineValue(ObjectProto, '$extend', function () {
-    return extend.apply(null, [this].concat(slice.call(arguments)));
+    defineValue(Object, name, function () {
+      return extend(index, arguments);
+    });
+
+    defineValue(ObjectProto, name, function () {
+      return extend(index, [this].concat(slice.call(arguments)));
+    });
   });
 
   /**

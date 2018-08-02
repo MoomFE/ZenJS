@@ -1,18 +1,20 @@
-import { isBoolean, isArray } from "../const/type";
+import { isArray } from "../const/type";
 import entries from "../global/Object/entries";
 import isPlainObject from "./isPlainObject";
 
 
-export default function extend(){
+/**
+ * 
+ * @param {Boolean} shallow 是否使用浅拷贝模式, 相当于使用 Object.assign
+ */
+export default function extend( shallow, args ){
 
-  const length = arguments.length;
+  const length = args.length;
 
   /** 首个源对象下标 */
   let index = 1;
   /** 目标对象 */
-  let target = arguments[ 0 ] || {};
-  /** 浅拷贝 */
-  let shallow = false;
+  let target = args[ 0 ] || {};
 
   /** 当前源对象 */
   let options;
@@ -21,18 +23,11 @@ export default function extend(){
   let ownLength, ownIndex, ownEntrie, ownEntrieName;
   let ownValue, targetValue, cloneValue;
 
-  // 指定了是否使用浅拷贝
-  if( target[ isBoolean ] ){
-    shallow = target;
-    target = arguments[ i ] || {};
-    index++;
-  }
-
   // 遍历参数
   for( ; index < length; index++ ){
 
     // 无用参数
-    if( ( options = arguments[ index ] ) == null ) continue;
+    if( ( options = args[ index ] ) == null ) continue;
 
     // 所有可枚举属性
     // [ [ key, value ], [ key, value ], [ key, value ] ]
