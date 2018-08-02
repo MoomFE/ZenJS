@@ -1,4 +1,4 @@
-import extend from "../util/extend";
+import assign from "../util/assign";
 import Object from "../global/Object/index";
 
 
@@ -7,5 +7,5 @@ import Object from "../global/Object/index";
  * Object.assign polyfill
  */
 export default Object.assign || function(){
-  return extend( true, arguments );
+  return assign( false, arguments );
 }

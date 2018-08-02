@@ -1,17 +1,17 @@
 import defineValue from "../../../shared/util/defineValue";
-import extend from "../../../shared/util/extend";
+import assign from "../../../shared/util/assign";
 import ObjectProto from "../../../shared/global/Object/prototype/index";
 import slice from "../../../shared/global/Array/prototype/slice";
 
 
-[ '$extend', '$assign' ].forEach(( name, index ) => {
+[ '$assign', '$assignDeep' ].forEach(( name, index ) => {
 
   defineValue( Object, name, function(){
-    return extend( index, arguments );
+    return assign( index, arguments );
   });
 
   defineValue( ObjectProto, name, function(){
-    return extend(
+    return assign(
       index, [ this ].concat(
         slice.call( arguments )
       )

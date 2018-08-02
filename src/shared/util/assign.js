@@ -5,9 +5,9 @@ import isPlainObject from "./isPlainObject";
 
 /**
  * 
- * @param {Boolean} shallow 是否使用浅拷贝模式, 相当于使用 Object.assign
+ * @param {Boolean} deep 是否使用深拷贝模式
  */
-export default function extend( shallow, args ){
+export default function assign( deep, args ){
 
   const length = args.length;
 
@@ -46,8 +46,8 @@ export default function extend( shallow, args ){
 
       targetValue = target[ ownEntrieName ];
 
-      // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
-      if( !shallow && ownValue && ( isPlainObject( ownValue ) || ownValue[ isArray ] ) ){
+      // 深拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
+      if( deep && ownValue && ( isPlainObject( ownValue ) || ownValue[ isArray ] ) ){
 
         if( ownValue[ isArray ] ){
           cloneValue = targetValue && targetValue[ isArray ] ? targetValue : [];

@@ -113,9 +113,9 @@
 
   /**
    * 
-   * @param {Boolean} shallow 是否使用浅拷贝模式, 相当于使用 Object.assign
+   * @param {Boolean} deep 是否使用深拷贝模式
    */
-  function extend(shallow, args) {
+  function assign(deep, args) {
 
     var length = args.length;
 
@@ -159,8 +159,8 @@
 
         targetValue = target[ownEntrieName];
 
-        // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
-        if (!shallow && ownValue && (isPlainObject(ownValue) || ownValue[isArray$1])) {
+        // 深拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
+        if (deep && ownValue && (isPlainObject(ownValue) || ownValue[isArray$1])) {
 
           if (ownValue[isArray$1]) {
             cloneValue = targetValue && targetValue[isArray$1] ? targetValue : [];
@@ -182,8 +182,8 @@
    * 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象. 它将返回目标对象.
    * Object.assign polyfill
    */
-  var assign = Object.assign || function () {
-    return extend(true, arguments);
+  var assign$1 = Object.assign || function () {
+    return assign(false, arguments);
   };
 
   /**
@@ -217,7 +217,7 @@
     }
 
     name.split(' ').forEach(function (name) {
-      defineProperty(obj, name, assign({}, options, options2));
+      defineProperty(obj, name, assign$1({}, options, options2));
     });
   }
 
@@ -796,14 +796,14 @@
     return index === -1 ? null : this[index];
   });
 
-  ['$extend', '$assign'].forEach(function (name, index) {
+  ['$assign', '$assignDeep'].forEach(function (name, index) {
 
     defineValue(Object, name, function () {
-      return extend(index, arguments);
+      return assign(index, arguments);
     });
 
     defineValue(ObjectProto, name, function () {
-      return extend(index, [this].concat(slice.call(arguments)));
+      return assign(index, [this].concat(slice.call(arguments)));
     });
   });
 
