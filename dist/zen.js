@@ -292,7 +292,7 @@
     return isString$1(obj) && !isNaN(obj - parseFloat(obj));
   }
 
-  function $create(length, insert, isInsert) {
+  function create(length, insert, isInsert) {
 
     if (!isNumber(length) || length < 1) {
       return [];
@@ -314,8 +314,6 @@
     return result;
   }
 
-  defineValue(Array, '$create', $create);
-
   var ceil = Math.ceil;
 
   function $chunk(array, size) {
@@ -325,7 +323,7 @@
       return [];
     }
 
-    return $create(ceil(length / size), function (index) {
+    return create(ceil(length / size), function (index) {
       var start = index * size;
       return array.slice(start, start + size);
     });
@@ -351,6 +349,8 @@
 
     return slice.call(source);
   });
+
+  defineValue(Array, '$create', create);
 
   function $each(array, callback) {
 
