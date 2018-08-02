@@ -292,6 +292,12 @@
     return isString$1(obj) && !isNaN(obj - parseFloat(obj));
   }
 
+  /**
+   * 快捷创建数组
+   * @param length 需要创建的数组的长度
+   * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index, 然后将方法的返回值填充到数组中
+   * @param isInsert 若值为真, 即使二个参数 insert 是方法, 都会直接进行插入
+   */
   function create(length, insert, isInsert) {
 
     if (!isNumber(length) || length < 1) {
@@ -316,7 +322,12 @@
 
   var ceil = Math.ceil;
 
-  function $chunk(array, size) {
+  /**
+   * 创建一个新的数组, 将传入数组按照指定的长度进行分割, 如果数组不能均分, 则最后的数组中是数组剩余的元素
+   * @param array 需要进行分割的数组
+   * @param size 分割的长度
+   */
+  function chunk(array, size) {
     var length;
 
     if (!array || size < 1 || !(length = array.length)) {
@@ -329,10 +340,10 @@
     });
   }
 
-  defineValue(Array, '$chunk', $chunk);
+  defineValue(Array, '$chunk', chunk);
 
   defineValue(ArrayProto, '$chunk', function (size) {
-    return $chunk(this, size);
+    return chunk(this, size);
   });
 
   var slice = ArrayProto.slice;
@@ -741,7 +752,7 @@
       // 将类数组类型的按照键值对进行分割
       // $findIndex( [ 'key', 'value', 'key2', 'value2' ] ) -> [ [ 'key', 'value' ], [ 'key2', 'value2' ] ]
       if ($isArrayLike(key)) {
-        key = $chunk(key, 2);
+        key = chunk(key, 2);
       }
 
       traversal = getTraversal(key, predicate);
@@ -773,15 +784,15 @@
   function checkArray(source, object, predicate) {
     var length = source.length;
     var index = 0,
-        chunk,
+        chunk$$1,
         key;
 
     // 遍历检测对象
     for (; index < length; index++) {
-      chunk = source[index];
-      key = chunk[0];
+      chunk$$1 = source[index];
+      key = chunk$$1[0];
 
-      if (!(key in object && (chunk.length === 1 || predicate(chunk[1], object[key])))) {
+      if (!(key in object && (chunk$$1.length === 1 || predicate(chunk$$1[1], object[key])))) {
         return false;
       }
     }
