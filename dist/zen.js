@@ -1060,6 +1060,4 @@
 
   defineValue(Number, '$isNumber', $isNumber);
 
-  // import './String/index';
-
 })));
