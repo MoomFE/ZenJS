@@ -318,7 +318,15 @@ interface Object {
 
 }
 
+interface NumberConstructor {
 
+  /**
+   * 判断传入对象是否是数字类型或可转为数字
+   * @param obj 需要判断的对象
+   */
+  $isNumber( obj: any ): Boolean;
+
+}
 
 
 
@@ -900,14 +908,6 @@ interface Object {
 //    * @param to 指定一个最大数, 可为负数 - default: 9
 //    */
 //   $randomPlus( from: Number = 0, to: Number = 9 ): Number;
-// }
-
-// interface NumberConstructor {
-//   /**
-//    * 判断一个对象是否是数字或是否可转为数字
-//    * @param obj 需要判断的对象
-//    */
-//   $isNumber( obj: any ): Boolean;
 // }
 
 // interface Object {

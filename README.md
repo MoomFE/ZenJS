@@ -96,6 +96,9 @@
   - $assign
   - $equals
 
+- Number
+  - $isNumber
+
 
 
   <!-- - $get
@@ -166,9 +169,6 @@
   - $mean
   - $random
   - $randomPlus
-
-- Number
-  - $isNumber
 
 - Object
   - $create
