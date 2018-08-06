@@ -5,7 +5,7 @@ import equals from "../../../shared/util/equals";
 import parametersRest from "../../../shared/util/parametersRest";
 import { isFunction, isBoolean, isArray } from "../../../shared/const/type";
 import slice from "../../../shared/global/Array/prototype/slice";
-import $isArrayLike from "../../Array/$isArrayLike/index";
+import isArrayLike from "../../../shared/util/isArrayLike";
 import chunk from "../../../shared/util/chunk";
 import keys from "../../../shared/global/Object/keys";
 
@@ -64,7 +64,7 @@ export default function findIndex( self, predicate, key, args ){
 
     // 将类数组类型的按照键值对进行分割
     // $findIndex( [ 'key', 'value', 'key2', 'value2' ] ) -> [ [ 'key', 'value' ], [ 'key2', 'value2' ] ]
-    if( $isArrayLike( key ) ){
+    if( isArrayLike( key ) ){
       key = chunk( key, 2 );
     }
 

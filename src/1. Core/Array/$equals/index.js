@@ -1,7 +1,7 @@
 import defineValue from "../../../shared/util/defineValue";
 import Array from "../../../shared/global/Array/index";
 import ArrayProto from "../../../shared/global/Array/prototype/index";
-import $isArrayLike from "../$isArrayLike/index";
+import isArrayLike from "../../../shared/util/isArrayLike";
 import parametersDefault from "../../../shared/util/parametersDefault";
 import getPredicate from "../../../shared/util/getPredicate";
 
@@ -9,7 +9,7 @@ import getPredicate from "../../../shared/util/getPredicate";
 function equals( array, array2 ){
 
   // 可比较数组及类数组的内容
-  if( !( $isArrayLike( array ) && $isArrayLike( array2 ) ) ){
+  if( !( isArrayLike( array ) && isArrayLike( array2 ) ) ){
     return false;
   }
 

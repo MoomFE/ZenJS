@@ -9,7 +9,7 @@ import rType from "../../../shared/const/rType";
 import isMap from "../../../shared/util/isMap";
 import isSet from "../../../shared/util/isSet";
 import mapSetToArray from "../../../shared/util/mapSetToArray";
-import $isArrayLike from "../../Array/$isArrayLike/index";
+import isArrayLike from "../../../shared/util/isArrayLike";
 import isReferenceType from "../../../shared/util/isReferenceType";
 
 
@@ -46,7 +46,7 @@ export default function equals( obj, obj2, parent, parent2 ){
   }
 
   // 是数组类型或类数组类型 ( Array, LikeArray )
-  if( $isArrayLike( obj ) ){
+  if( isArrayLike( obj ) ){
     return types.array( obj, obj2, parent, parent2 );
   }
 

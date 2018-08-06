@@ -4,7 +4,7 @@ import slice from "../../../shared/global/Array/prototype/slice";
 import reHasUnicode from "../../../shared/const/reHasUnicode";
 import reUnicode from "../../../shared/const/reunicode";
 import { isBoolean, isString } from "../../../shared/const/type";
-import $isArrayLike from "../$isArrayLike/index";
+import isArrayLike from "../../../shared/util/isArrayLike";
 import isMap from "../../../shared/util/isMap";
 import isSet from "../../../shared/util/isSet";
 import mapSetToArray from "../../../shared/util/mapSetToArray";
@@ -27,7 +27,7 @@ export default function $toArray( value ){
   }
 
   // 是数组类型, 那就直接返回一个副本
-  if( $isArrayLike( value ) ){
+  if( isArrayLike( value ) ){
     return slice.call( value );
   }
 

@@ -392,7 +392,7 @@
 
   var MAX_SAFE_INTEGER = 9007199254740991;
 
-  function $isArrayLike(obj) {
+  function isArrayLike(obj) {
 
     if (obj == null || obj[isFunction]) {
       return false;
@@ -410,8 +410,6 @@
 
     return false;
   }
-
-  defineValue(Array, '$isArrayLike', $isArrayLike);
 
   /**
    * 获取方法指定位参数, 若未传入参数, 则取默认值
@@ -467,7 +465,7 @@
   function equals$1(array, array2) {
 
     // 可比较数组及类数组的内容
-    if (!($isArrayLike(array) && $isArrayLike(array2))) {
+    if (!(isArrayLike(array) && isArrayLike(array2))) {
       return false;
     }
 
@@ -493,6 +491,8 @@
   defineValue(ArrayProto, '$equals', function (obj, predicate) {
     return equals$1(this, obj, predicate);
   });
+
+  defineValue(Array, '$isArrayLike', isArrayLike);
 
   var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
 
@@ -554,7 +554,7 @@
     }
 
     // 是数组类型, 那就直接返回一个副本
-    if ($isArrayLike(value)) {
+    if (isArrayLike(value)) {
       return slice.call(value);
     }
 
@@ -751,7 +751,7 @@
 
       // 将类数组类型的按照键值对进行分割
       // $findIndex( [ 'key', 'value', 'key2', 'value2' ] ) -> [ [ 'key', 'value' ], [ 'key2', 'value2' ] ]
-      if ($isArrayLike(key)) {
+      if (isArrayLike(key)) {
         key = chunk(key, 2);
       }
 
@@ -901,7 +901,7 @@
     }
 
     // 是数组类型或类数组类型 ( Array, LikeArray )
-    if ($isArrayLike(obj)) {
+    if (isArrayLike(obj)) {
       return types.array(obj, obj2, parent, parent2);
     }
 
