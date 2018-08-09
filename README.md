@@ -87,6 +87,7 @@
   - $concatTo
   - $find
   - $findIndex
+  - $get
 
 - Object
   - $assign
