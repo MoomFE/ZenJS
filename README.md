@@ -88,6 +88,7 @@
   - $find
   - $findIndex
   - $get
+  - $set / $edit
 
 - Object
   - $assign

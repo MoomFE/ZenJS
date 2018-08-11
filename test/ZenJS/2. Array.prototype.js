@@ -535,6 +535,11 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$set / $edit',
+      describe: [
+        
+      ]
     }
 
 

@@ -104,16 +104,16 @@ interface Array<T> {
 
   /**
    * 从数组中删除与传入值相同的对象
+   * @param predicate 用于自定义筛选内容
+   */
+  $deleteValue( predicate: Function ): any[];
+
+  /**
+   * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
   $removeValue( value: any, predicate: Function | Boolean ): any[];
-
-  /**
-   * 从数组中删除与传入值相同的对象
-   * @param predicate 用于自定义筛选内容
-   */
-  $deleteValue( predicate: Function ): any[];
 
   /**
    * 从数组中删除与传入值相同的对象
@@ -139,18 +139,21 @@ interface Array<T> {
    * @param traversal 遍历集合的方法
    */
   $find( traversal: Function ) : Number;
+
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param obj 需要筛选的一组 key: value 键值对
    */
   $find( predicate?: true, obj: any ) : Number;
+
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
    */
   $find( predicate?: true, arr: any[] ) : Number;
+
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
@@ -164,18 +167,21 @@ interface Array<T> {
    * @param traversal 遍历集合的方法
    */
   $findIndex( traversal: Function ) : Number;
+
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param obj 需要筛选的一组 key: value 键值对
    */
   $findIndex( predicate?: true, obj: any ) : Number;
+
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
    */
   $findIndex( predicate?: true, arr: any[] ) : Number;
+
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
@@ -189,12 +195,39 @@ interface Array<T> {
    * @param index 需要获取的下标, 可为负数 - default: 0
    */
   $get( index?: 0 ): any;
+
   /**
    * 获取指定下标开始的若干个对象
    * @param index 需要获取的下标, 可为负数 - default: 0
    * @param num 需要从该下标开始获取几个对象 - default: 1
    */
   $get( index?: 0, num: Number ): any[];
+
+  /**
+   * 修改数组内指定下标的值
+   * @param index 下标, 可为负数
+   * @param value 值
+   */
+  $set( index: Number, value: any ): any[];
+
+  /**
+   * 修改数组内指定下标的值
+   * @param obj 批量修改数组内指定下标的值
+   */
+  $set( obj: { index: Number, value: any } ): any[];
+
+  /**
+   * 修改数组内指定下标的值
+   * @param index 下标, 可为负数
+   * @param value 值
+   */
+  $edit( index: Number, value: any ): any[];
+
+  /**
+   * 修改数组内指定下标的值
+   * @param obj 批量修改数组内指定下标的值
+   */
+  $edit( obj: { index: Number, value: any } ): any[];
 
 
 
@@ -212,33 +245,6 @@ interface Array<T> {
   //  * @param obj 需要检测的值
   //  */
   // $inArray( obj: any ): Boolean;
-  // /**
-  //  * 检测数组内对象的属性是否符合传入规则
-  //  * @param key 需要检测的字段名
-  //  * @param value 需要比对的字段值, 若不传入, 则只是判断字段是否存在
-  //  */
-  // $indexOf( key: String, value: any ): Number;
-  // /**
-  //  * 检测数组内对象的属性是否符合传入规则
-  //  * @param source 需要检测的键值是数组集合
-  //  */
-  // $indexOf( source: Array ): Number;
-  // /**
-  //  * 检测数组内对象的属性是否符合传入规则
-  //  * @param source 需要检测的键值对
-  //  */
-  // $indexOf( source: any ): Number
-  // /**
-  //  * 修改数组内指定下标的值
-  //  * @param index 需要修改的下标, 可为负数
-  //  * @param value 值
-  //  */
-  // $set( index: Number, value: any ): any[];
-  // /**
-  //  * 修改数组内指定下标的值
-  //  * @param obj 批量修改数组内指定下标的值
-  //  */
-  // $set( obj: { index: Number, value: any } ): any[];
   // /**
   //  * 移动数组内的某个元素到指定的位置
   //  * @param from 需要移动的元素下标, 可为负数

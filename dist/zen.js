@@ -841,6 +841,24 @@
     return this.slice(index, num + index);
   });
 
+  defineValue(ArrayProto, '$set $edit', function (index, value) {
+    var _this = this;
+
+    if (isObject(index)) {
+      entries(index).forEach(function (arr) {
+        return set(_this, arr[0], arr[1]);
+      });
+    } else {
+      set(this, index, value);
+    }
+
+    return this;
+  });
+
+  function set(array, index, value) {
+    array.splice(fixArrayIndex(array, index), 1, value);
+  }
+
   /**
    * 判断传入对象是否是 Boolean 类型
    * @param {any} obj 需要判断的对象
