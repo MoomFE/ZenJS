@@ -1,4 +1,5 @@
 import { $isNumber } from "./isNumber";
+import Number from "../global/Number/index";
 
 /**
  * 将一个传入的数组的下标修复到正确的位置上,
@@ -12,7 +13,7 @@ import { $isNumber } from "./isNumber";
  * @returns {Number}
  */
 export default function fixArrayIndex( array, index, add ){
-  if( !$isNumber( index ) || ( index < 0 && ( index = array.length + index + ( add || 0 ) ) < 0 ) ){
+  if( !$isNumber( index ) || ( index < 0 && ( index = array.length + Number( index ) + ( add || 0 ) ) < 0 ) ){
     index = 0;
   }
   return index;
