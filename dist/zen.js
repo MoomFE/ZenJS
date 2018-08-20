@@ -462,6 +462,20 @@
     return predicate ? congruence : equals;
   }
 
+  function autoGetPredicate(args, value, predicate, predicateIndex) {
+
+    if (args.length > 1) {
+      predicate = getPredicate(parametersDefault(args, predicateIndex, true));
+    } else if (isFunction$1(value)) {
+      predicate = value;
+      value = undefined;
+    } else {
+      predicate = congruence;
+    }
+
+    return [value, predicate];
+  }
+
   function equals$1(array, array2) {
 
     // 可比较数组及类数组的内容
@@ -648,14 +662,10 @@
       return this;
     }
 
-    if (arguments.length > 1) {
-      predicate = getPredicate(parametersDefault(arguments, 1, true));
-    } else if (isFunction$1(value)) {
-      predicate = value;
-      value = undefined;
-    } else {
-      predicate = congruence;
-    }
+    var args = autoGetPredicate(arguments, value, predicate, 1);
+
+    value = args[0];
+    predicate = args[1];
 
     for (index = 0; index < length;) {
       if (predicate(this[index], value)) {
@@ -864,6 +874,25 @@
 
     array.splice(index, 1, value);
   }
+
+  defineValue(ArrayProto, '$inArray', function (value, predicate) {
+
+    var index = 0,
+        length = this.length;
+
+    var args = autoGetPredicate(arguments, value, predicate, 1);
+
+    value = args[0];
+    predicate = args[1];
+
+    for (; index < length; index++) {
+      if (predicate(this[index], value)) {
+        return true;
+      }
+    }
+
+    return false;
+  });
 
   /**
    * 判断传入对象是否是 Boolean 类型

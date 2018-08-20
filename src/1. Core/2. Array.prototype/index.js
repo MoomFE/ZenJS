@@ -6,3 +6,4 @@ import './$find/index';
 import './$findIndex/index';
 import './$get/index';
 import './$set/index';
+import './$inArray/index';
