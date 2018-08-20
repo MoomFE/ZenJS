@@ -58,7 +58,7 @@ export default function assign( shallow, args, parent ){
         // 
         // Object.$assign( {}, target )
         else if( parent && parent === ownValue ){
-          if( ownLength === 1 ) target = undefined;
+          if( ownLength === 1 ) return undefined;
           continue;
         }
 

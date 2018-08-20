@@ -580,18 +580,6 @@ describes.push({
     //     [ undefined ].$inArray( null ).should.true;
     //   }
     // }, {
-    //   name: '$set',
-    //   it: function(){
-    //     Object.$equals( [ 1, 2, 3 ].$set( 0, 4 ), [ 4, 2, 3 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$set( 1, 4 ), [ 1, 4, 3 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$set( 2, 4 ), [ 1, 2, 4 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$set( -1, 4 ), [ 1, 2, 4 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$set( -2, 4 ), [ 1, 4, 3 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$set( -3, 4 ), [ 4, 2, 3 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$set( -4, 4 ), [ 4, 2, 3 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$set({ 0: 5, 1: 6, 2: 7 }), [ 5, 6, 7 ] ).should.true;
-    //   }
-    // }, {
     //   name: '$move',
     //   it: function(){
     //     Object.$equals( [ 1, 2, 3 ].$move( 0, 1 ), [ 2, 1, 3 ] ).should.true;
