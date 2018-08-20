@@ -1,6 +1,7 @@
 import equals from "./equals";
 import congruence from "./congruence";
 import isFunction from "./isFunction";
+import parametersDefault from "./parametersDefault";
 
 
 /**
@@ -10,9 +11,26 @@ import isFunction from "./isFunction";
  * 
  * @param {*} predicate 
  */
-export default function getPredicate( predicate ){
+export function getPredicate( predicate ){
   if( isFunction( predicate ) ){
     return predicate;
   }
   return predicate ? congruence : equals;
+}
+
+
+export function autoGetPredicate( args, value, predicate, predicateIndex ){
+
+  if( args.length > 1 ){
+    predicate = getPredicate(
+      parametersDefault( args, predicateIndex, true )
+    );
+  }else if( isFunction( value ) ){
+    predicate = value;
+    value = undefined;
+  }else{
+    predicate = congruence;
+  }
+
+  return [ value, predicate ];
 }

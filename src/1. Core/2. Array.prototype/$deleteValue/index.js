@@ -1,9 +1,6 @@
 import defineValue from "../../../shared/util/defineValue";
 import ArrayProto from "../../../shared/global/Array/prototype/index";
-import getPredicate from "../../../shared/util/getPredicate";
-import parametersDefault from "../../../shared/util/parametersDefault";
-import isFunction from "../../../shared/util/isFunction";
-import congruence from "../../../shared/util/congruence";
+import { autoGetPredicate } from "../../../shared/util/getPredicate";
 
 
 defineValue( ArrayProto, '$deleteValue $removeValue', function( value ){
@@ -16,16 +13,10 @@ defineValue( ArrayProto, '$deleteValue $removeValue', function( value ){
     return this;
   }
 
-  if( arguments.length > 1 ){
-    predicate = getPredicate(
-      parametersDefault( arguments, 1, true )
-    );
-  }else if( isFunction( value ) ){
-    predicate = value;
-    value = undefined;
-  }else{
-    predicate = congruence;
-  }
+  const args = autoGetPredicate( arguments, value, predicate, 1 );
+
+  value = args[ 0 ];
+  predicate = args[ 1 ];
 
   for( index = 0; index < length; ){
     if( predicate( this[ index ], value ) ){

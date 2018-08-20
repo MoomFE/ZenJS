@@ -3,7 +3,7 @@ import Array from "../../../shared/global/Array/index";
 import ArrayProto from "../../../shared/global/Array/prototype/index";
 import isArrayLike from "../../../shared/util/isArrayLike";
 import parametersDefault from "../../../shared/util/parametersDefault";
-import getPredicate from "../../../shared/util/getPredicate";
+import { getPredicate } from "../../../shared/util/getPredicate";
 
 
 function equals( array, array2 ){
