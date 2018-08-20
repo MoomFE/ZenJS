@@ -597,7 +597,7 @@
    * @returns {Number}
    */
   function fixArrayIndex(array, index, add) {
-    if (!$isNumber(index) || index < 0 && (index = array.length + index + (add || 0)) < 0) {
+    if (!$isNumber(index) || index < 0 && (index = array.length + Number(index) + (add || 0)) < 0) {
       index = 0;
     }
     return index;
@@ -856,7 +856,13 @@
   });
 
   function set(array, index, value) {
-    array.splice(fixArrayIndex(array, index), 1, value);
+    var length = array.length;
+
+    if ((index = fixArrayIndex(array, index)) >= length) {
+      index = length - 1;
+    }
+
+    array.splice(index, 1, value);
   }
 
   /**

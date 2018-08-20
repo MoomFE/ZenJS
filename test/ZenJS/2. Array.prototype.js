@@ -538,36 +538,39 @@ describes.push({
     }, {
       name: '$set / $edit',
       describe: [
-        
+        {
+          name: 'Normal use',
+          it: function(){
+            Object.$equals( [ 1, 2, 3 ].$set( -5, 6 ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( -4, 6 ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( -3, 6 ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( -2, 6 ), [ 1, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( -1, 6 ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( 0, 6 ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( 1, 6 ), [ 1, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( 2, 6 ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( 3, 6 ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( 4, 6 ), [ 1, 2, 6 ] ).should.true;
+          }
+        }, {
+          name: 'Batch setting',
+          it: function(){
+            Object.$equals( [ 1, 2, 3 ].$set( { '-5': 6 } ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '-4': 6 } ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '-3': 6 } ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '-2': 6 } ), [ 1, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '-1': 6 } ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '0': 6 } ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '1': 6 } ), [ 1, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '2': 6 } ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '3': 6 } ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '4': 6 } ), [ 1, 2, 6 ] ).should.true;
+          }
+        }
       ]
     }
 
 
-    //
-    //   name: '$get',
-    //   it: function(){
-    //     [ 0, 1, 2, 3, 4, 5 ].$get().should.equals( 0 );
-    //     [ 0, 1, 2, 3, 4, 5 ].$get( 2 ).should.equals( 2 );
-    //     [ 0, 1, 2, 3, 4, 5 ].$get( -1 ).should.equals( 5 );
-    //     [ 0, 1, 2, 3, 4, 5 ].$get( -2 ).should.equals( 4 );
-    //     [ 0, 1, 2, 3, 4, 5 ].$get( -3 ).should.equals( 3 );
-    //     [ 0, 1, 2, 3, 4, 5 ].$get( -4 ).should.equals( 2 );
-    //     [ 0, 1, 2, 3, 4, 5 ].$get( -5 ).should.equals( 1 );
-    //     [ 0, 1, 2, 3, 4, 5 ].$get( -6 ).should.equals( 0 );
-    //     [ 0, 1, 2, 3, 4, 5 ].$get( -7 ).should.equals( 0 );
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( 2, undefined ), [ 2 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( 0, 3 ), [ 0, 1, 2 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( 2, 3 ), [ 2, 3, 4 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -1, 0 ), [ ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -3, 2 ), [ 3, 4 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -1, 99 ), [ 5 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -2, 99 ), [ 4, 5 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -3, 99 ), [ 3, 4, 5 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -4, 99 ), [ 2, 3, 4, 5 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -5, 99 ), [ 1, 2, 3, 4, 5  ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -6, 99 ), [ 0, 1, 2, 3, 4, 5 ] ).should.true;
-    //     Object.$equals( [ 0, 1, 2, 3, 4, 5 ].$get( -7, 99 ), [ 0, 1, 2, 3, 4, 5 ] ).should.true;
-    //   }
     // }, {
     //   name: '$inArray',
     //   it: function(){

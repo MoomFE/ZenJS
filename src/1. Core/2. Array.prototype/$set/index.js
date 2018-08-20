@@ -17,9 +17,11 @@ defineValue( ArrayProto, '$set $edit', function( index, value ){
 });
 
 function set( array, index, value ){
-  array.splice(
-    fixArrayIndex( array, index ),
-    1,
-    value
-  );
+  const length = array.length;
+
+  if( ( index = fixArrayIndex( array, index ) ) >= length ){
+    index = length - 1;
+  }
+
+  array.splice( index, 1, value );
 }
