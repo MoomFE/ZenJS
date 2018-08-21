@@ -90,6 +90,7 @@
   - $get
   - $set / $edit
   - $inArray
+  - $move
 
 - Object
   - $assign

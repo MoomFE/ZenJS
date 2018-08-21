@@ -638,17 +638,34 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$move',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            Object.$equals( [ 1, 2, 3 ].$move( -1, 3 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( -1, 2 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( -1, 1 ), [ 1, 3, 2 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( -1, 0 ), [ 3, 1, 2 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( -1, -1 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 0, 0 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 0, 1 ), [ 2, 1, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 0, 2 ), [ 2, 3, 1 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 0, 3 ), [ 2, 3, 1 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 0, 3 ), [ 2, 3, 1 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 0, -1 ), [ 2, 3, 1 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 0, -2 ), [ 2, 1, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 0, -3 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 0, -4 ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 1, 0 ), [ 2, 1, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$move( 1, 2 ), [ 1, 3, 2 ] ).should.true;
+          }
+        }
+      ]
     }
 
 
-    // }, {
-    //   name: '$inArray',
-    //   it: function(){
-    //     [ 1, 2, 3 ].$inArray( 1 ).should.true;
-    //     [ 1, 2, 3 ].$inArray( 0 ).should.false;
-    //     [ '' ].$inArray( false ).should.true;
-    //     [ undefined ].$inArray( null ).should.true;
-    //   }
     // }, {
     //   name: '$move',
     //   it: function(){

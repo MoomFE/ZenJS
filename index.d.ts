@@ -242,24 +242,16 @@ interface Array<T> {
    */
   $inArray( predicate: Function ): Boolean;
 
+  /**
+   * 移动数组内的某个元素到指定的位置
+   * @param from 需要移动的元素下标, 可为负数
+   * @param to 需要移动到的位置下标, 可为负数
+   */
+  $move( from: Number, to: Number ): any[];
 
 
 
 
-  // /**
-  //  * 查找数组内是否有此传入值
-  //  * -- 弱检测
-  //  * -- 强检测使用 Array.prototype.includes
-  //  *
-  //  * @param obj 需要检测的值
-  //  */
-  // $inArray( obj: any ): Boolean;
-  // /**
-  //  * 移动数组内的某个元素到指定的位置
-  //  * @param from 需要移动的元素下标, 可为负数
-  //  * @param to 需要移动到的位置下标, 可为负数
-  //  */
-  // $move( from: Number, to: Number ): any[];
   // /**
   //  * 提取数组一个范围内的元素, 移动到指定下标中 ( 指定下标是按照需要移动的元素移除后的下标进行计算 )
   //  * @param start 需要移动的位置的起始下标, 可为负数
