@@ -19,7 +19,7 @@ export function getPredicate( predicate ){
 }
 
 
-export function autoGetPredicate( args, value, predicate, predicateIndex ){
+export function autoGetPredicate( args, value, predicateIndex, predicate ){
 
   if( args.length > 1 ){
     predicate = getPredicate(

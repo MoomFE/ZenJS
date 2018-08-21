@@ -229,7 +229,18 @@ interface Array<T> {
    */
   $edit( obj: { index: Number, value: any } ): any[];
 
+  /**
+   * 查找数组内是否有此传入值
+   * @param value 需要在数组中检测的对象
+   * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
+   */
+  $inArray( value: any, predicate: Function | Boolean ): Boolean;
 
+  /**
+   * 查找数组内是否有此传入值
+   * @param predicate 用于自定义筛选内容
+   */
+  $inArray( predicate: Function ): Boolean;
 
 
 

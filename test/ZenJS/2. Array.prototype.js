@@ -568,6 +568,76 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$inArray',
+      describe: [
+        {
+          name: 'Use the equality to judge by default',
+          it: function(){
+            // No parameters
+            [ 1, 2, 3, 4, 5 ].$inArray( 5 ).should.true;
+            [ 1, 2, 3, 4, 5 ].$inArray( 6 ).should.false;
+            [ 0, '' ].$inArray( false ).should.false;
+            [ undefined ].$inArray( null ).should.false;
+            // Using parameters
+            [ 1, 2, 3, 4, 5 ].$inArray( 5, true ).should.true;
+            [ 1, 2, 3, 4, 5 ].$inArray( 6, true ).should.false;
+            [ 0, '' ].$inArray( false, true ).should.false;
+            [ undefined ].$inArray( null, true ).should.false;
+          }
+        }, {
+          name: 'Use double to judge',
+          it: function(){
+            [ 1, 2, 3, 4, 5 ].$inArray( 5, false ).should.true;
+            [ 1, 2, 3, 4, 5 ].$inArray( 6, false ).should.false;
+            [ 0, '' ].$inArray( false, false ).should.true;
+            [ undefined ].$inArray( null, false ).should.true;
+          }
+        }, {
+          name: 'Use custom methods to compare values',
+          it: function(){
+            [ 1, 2, 3, 4, 5 ].$inArray( 5, Object.$equals ).should.true;
+            [ 1, 2, 3, 4, 5 ].$inArray( 6, Object.$equals ).should.false;
+            [ 0, '' ].$inArray( false, Object.$equals ).should.false;
+            [ undefined ].$inArray( null, Object.$equals ).should.false;
+
+            var arr = [
+              { ZenJS: true }, { ZenJS: false },
+              { ZenUI: true }
+            ];
+
+
+            // ( 1
+            arr.$inArray( { ZenUI: true }, Object.$equals ).should.true;
+
+            // ( 2
+            arr.$inArray( 'ZenJS', function( value, key ){
+              return key in value;
+            }).should.true;
+
+            arr.$inArray( 'ZenXX', function( value, key ){
+              return key in value;
+            }).should.false;
+
+            arr.$inArray( 'ZenUI', function( value, key ){
+              return key in value && value[ key ];
+            }).should.true;
+
+            arr.$inArray( 'ZenUI', function( value, key ){
+              return key in value && !value[ key ];
+            }).should.false;
+
+            // ( 3
+            arr.$inArray(function( value ){
+              return 'ZenUI' in value && value.ZenUI;
+            });
+
+            arr.$inArray(function( value ){
+              return 'ZenUI' in value && value.ZenUI === false;
+            });
+          }
+        }
+      ]
     }
 
 

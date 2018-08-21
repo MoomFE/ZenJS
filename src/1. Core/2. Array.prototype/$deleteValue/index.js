@@ -13,7 +13,7 @@ defineValue( ArrayProto, '$deleteValue $removeValue', function( value ){
     return this;
   }
 
-  const args = autoGetPredicate( arguments, value, predicate, 1 );
+  const args = autoGetPredicate( arguments, value, 1 );
 
   value = args[ 0 ];
   predicate = args[ 1 ];

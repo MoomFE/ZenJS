@@ -8,7 +8,7 @@ defineValue( ArrayProto, '$inArray', function( value, predicate ){
   let index = 0,
       length = this.length;
 
-  const args = autoGetPredicate( arguments, value, predicate, 1 );
+  const args = autoGetPredicate( arguments, value, 1 );
 
   value = args[ 0 ];
   predicate = args[ 1 ];

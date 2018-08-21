@@ -462,7 +462,7 @@
     return predicate ? congruence : equals;
   }
 
-  function autoGetPredicate(args, value, predicate, predicateIndex) {
+  function autoGetPredicate(args, value, predicateIndex, predicate) {
 
     if (args.length > 1) {
       predicate = getPredicate(parametersDefault(args, predicateIndex, true));
@@ -662,7 +662,7 @@
       return this;
     }
 
-    var args = autoGetPredicate(arguments, value, predicate, 1);
+    var args = autoGetPredicate(arguments, value, 1);
 
     value = args[0];
     predicate = args[1];
@@ -880,7 +880,7 @@
     var index = 0,
         length = this.length;
 
-    var args = autoGetPredicate(arguments, value, predicate, 1);
+    var args = autoGetPredicate(arguments, value, 1);
 
     value = args[0];
     predicate = args[1];
