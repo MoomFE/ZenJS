@@ -3,20 +3,18 @@ import ArrayProto from "../../../shared/global/Array/prototype/index";
 import { autoGetPredicate } from "../../../shared/util/getPredicate";
 
 
-defineValue( ArrayProto, '$deleteValue $removeValue', function( value ){
+defineValue( ArrayProto, '$deleteValue $removeValue', function( _value ){
 
   let length = this.length,
-      index,
-      predicate;
+      index;
 
   if( !length ){
     return this;
   }
 
-  const args = autoGetPredicate( arguments, value, 1 );
-
-  value = args[ 0 ];
-  predicate = args[ 1 ];
+  const args = autoGetPredicate( arguments, _value, 1 );
+  const value = args[ 0 ];
+  const predicate = args[ 1 ];
 
   for( index = 0; index < length; ){
     if( predicate( this[ index ], value ) ){

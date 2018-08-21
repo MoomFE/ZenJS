@@ -5,7 +5,7 @@ import concat from "../../../shared/global/Array/prototype/concat";
 
 defineValue( ObjectProto, '$delete $remove', function(){
 
-  concat.apply( [], arguments ).$each( key => {
+  concat.apply( [], arguments ).forEach( key => {
     delete this[ key ];
   });
 

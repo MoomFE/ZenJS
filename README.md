@@ -105,6 +105,7 @@
   - $assign
   - $equals
   - $delete / $remove
+  - $deleteValue / $removeValue
 
 - Number
   - $isNumber

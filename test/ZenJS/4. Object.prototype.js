@@ -22,6 +22,65 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$deleteValue / $removeValue',
+      describe: [
+        {
+          name: 'Use congruent to delete',
+          it: function(){
+            var obj = { z: false, e: 0, n: '', j: null };
+
+            // No parameters
+            Object.$equals( {}.$assign( obj ).$deleteValue( 0 ), { z: false, n: '', j: null } ).should.true;
+            Object.$equals( {}.$assign( obj ).$deleteValue( false ), { e: 0, n: '', j: null } ).should.true;
+            Object.$equals( {}.$assign( obj ).$deleteValue( null ), { z: false, e: 0, n: '' } ).should.true;
+            // Using parameters
+            Object.$equals( {}.$assign( obj ).$deleteValue( 0, true ), { z: false, n: '', j: null } ).should.true;
+            Object.$equals( {}.$assign( obj ).$deleteValue( false, true ), { e: 0, n: '', j: null } ).should.true;
+            Object.$equals( {}.$assign( obj ).$deleteValue( null, true ), { z: false, e: 0, n: '' } ).should.true;
+          }
+        }, {
+          name: 'Use double to delete',
+          it: function(){
+            var obj = { z: false, e: 0, n: '', j: null };
+
+            Object.$equals( {}.$assign( obj ).$deleteValue( 0, false ), { j: null } ).should.true;
+            Object.$equals( {}.$assign( obj ).$deleteValue( false, false ), { j: null } ).should.true;
+            Object.$equals( {}.$assign( obj ).$deleteValue( null, false ), { z: false, e: 0, n: '' } ).should.true;
+          }
+        }, {
+          name: 'Use a custom method to delete',
+          it: function(){
+            var obj = { z: false, e: 0, n: '', j: null, s: { ZenJS: true } };
+
+            Object.$equals( {}.$assign( obj ).$deleteValue( 0, Object.$equals ), { z: false, n: '', j: null, s: { ZenJS: true } } ).should.true;
+            Object.$equals( {}.$assign( obj ).$deleteValue( false, Object.$equals ), { e: 0, n: '', j: null, s: { ZenJS: true } } ).should.true;
+            Object.$equals( {}.$assign( obj ).$deleteValue( null, Object.$equals ), { z: false, e: 0, n: '', s: { ZenJS: true } } ).should.true;
+
+            // ( 1
+            Object.$equals(
+              {}.$assign( obj ).$deleteValue( { ZenJS: true }, Object.$equals ),
+              { z: false, e: 0, n: '', j: null }
+            ).should.true;
+
+            // ( 2
+            Object.$equals(
+              {}.$assign( obj ).$deleteValue( 'ZenJS', function( json, key ){
+                return typeof json == 'object' && json && key in json;
+              }),
+              { z: false, e: 0, n: '', j: null }
+            ).should.true;
+
+            // ( 3
+            Object.$equals(
+              {}.$assign( obj ).$deleteValue(function( json, key ){
+                return typeof json == 'object' && json && 'ZenJS' in json;
+              }),
+              { z: false, e: 0, n: '', j: null }
+            ).should.true;
+          }
+        }
+      ]
     }
 
 

@@ -652,20 +652,18 @@
     return returnDeleted ? deleted : this;
   });
 
-  defineValue(ArrayProto, '$deleteValue $removeValue', function (value) {
+  defineValue(ArrayProto, '$deleteValue $removeValue', function (_value) {
 
     var length = this.length,
-        index,
-        predicate;
+        index;
 
     if (!length) {
       return this;
     }
 
-    var args = autoGetPredicate(arguments, value, 1);
-
-    value = args[0];
-    predicate = args[1];
+    var args = autoGetPredicate(arguments, _value, 1);
+    var value = args[0];
+    var predicate = args[1];
 
     for (index = 0; index < length;) {
       if (predicate(this[index], value)) {
@@ -875,17 +873,20 @@
     array.splice(index, 1, value);
   }
 
-  defineValue(ArrayProto, '$inArray', function (value, predicate) {
+  defineValue(ArrayProto, '$inArray', function (_value) {
 
-    var index = 0,
+    var index,
         length = this.length;
 
-    var args = autoGetPredicate(arguments, value, 1);
+    if (!length) {
+      return false;
+    }
 
-    value = args[0];
-    predicate = args[1];
+    var args = autoGetPredicate(arguments, _value, 1);
+    var value = args[0];
+    var predicate = args[1];
 
-    for (; index < length; index++) {
+    for (index = 0; index < length; index++) {
       if (predicate(this[index], value)) {
         return true;
       }
@@ -1149,8 +1150,24 @@
   defineValue(ObjectProto, '$delete $remove', function () {
     var _this = this;
 
-    concat.apply([], arguments).$each(function (key) {
+    concat.apply([], arguments).forEach(function (key) {
       delete _this[key];
+    });
+
+    return this;
+  });
+
+  defineValue(ObjectProto, '$deleteValue $removeValue', function (_value) {
+    var _this = this;
+
+    var args = autoGetPredicate(arguments, _value, 1);
+    var value = args[0];
+    var predicate = args[1];
+
+    entries(this).forEach(function (obj) {
+      if (predicate(obj[1], value)) {
+        delete _this[obj[0]];
+      }
     });
 
     return this;

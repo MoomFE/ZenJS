@@ -349,6 +349,32 @@ interface Object {
    */
   $remove( args: any[] ): any;
 
+  /**
+   * 从对象中删除与传入值相同的值
+   * @param value 需要对象中删除的值
+   * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
+   */
+  $deleteValue( value: any, predicate: Function | Boolean ): any;
+
+  /**
+   * 从数组中删除与传入值相同的对象
+   * @param predicate 用于自定义筛选内容
+   */
+  $deleteValue( predicate: Function ): any;
+
+  /**
+   * 从对象中删除与传入值相同的值
+   * @param value 需要对象中删除的值
+   * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
+   */
+  $removeValue( value: any, predicate: Function | Boolean ): any;
+
+  /**
+   * 从数组中删除与传入值相同的对象
+   * @param predicate 用于自定义筛选内容
+   */
+  $removeValue( predicate: Function ): any;
+
 }
 
 interface NumberConstructor {
