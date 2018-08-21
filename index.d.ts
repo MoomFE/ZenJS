@@ -249,16 +249,16 @@ interface Array<T> {
    */
   $move( from: Number, to: Number ): any[];
 
+  /**
+   * 提取数组一个范围内的元素, 移动到指定下标中 ( 指定下标是按照需要移动的元素移除后的下标进行计算 )
+   * @param start 需要移动的位置的起始下标, 可为负数
+   * @param moveCount 从起始下标开始, 取几位进行移动
+   * @param toIndex 需要移动到数组的目标下标, 可为负数
+   */
+  $moveRange( start: Number, moveCount: Number, toIndex: Number ): any[];
 
 
 
-  // /**
-  //  * 提取数组一个范围内的元素, 移动到指定下标中 ( 指定下标是按照需要移动的元素移除后的下标进行计算 )
-  //  * @param start 需要移动的位置的起始下标, 可为负数
-  //  * @param moveCount 从起始下标开始, 取几位进行移动
-  //  * @param toIndex 需要移动到数组的目标下标
-  //  */
-  // $moveRange( start, moveCount, toIndex ): any[];
   // /**
   //  * 调用原生 push 方法, 返回 this
   //  * @param args 需要插入到数组末尾的对象

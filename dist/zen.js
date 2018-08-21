@@ -894,6 +894,15 @@
     return false;
   });
 
+  defineValue(ArrayProto, '$move', function (from, to) {
+    this.splice(fixArrayIndex(this, to), 0, this.splice(from, 1)[0]);
+    return this;
+  });
+
+  defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
+    return $add(this, fixArrayIndex(this, toIndex), this.splice(start, moveCount));
+  });
+
   /**
    * 判断传入对象是否是 Boolean 类型
    * @param {any} obj 需要判断的对象

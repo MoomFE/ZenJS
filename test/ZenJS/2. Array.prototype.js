@@ -663,21 +663,38 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$moveRange',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var arr = [ 1, 2, 3, 4, 5, 6 ];
+
+            Object.$equals( arr.slice().$moveRange( 0, 2, -4 ), [ 1, 2, 3, 4, 5, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, -3 ), [ 1, 2, 3, 4, 5, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, -2 ), [ 3, 1, 2, 4, 5, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, -2 ), [ 3, 4, 1, 2, 5, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, -2 ), [ 3, 4, 5, 1, 2, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, -1 ), [ 3, 4, 5, 6, 1, 2 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, 0 ), [ 1, 2, 3, 4, 5, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, 1 ), [ 3, 1, 2, 4, 5, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, 2 ), [ 3, 4, 1, 2, 5, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, 3 ), [ 3, 4, 5, 1, 2, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, 4 ), [ 3, 4, 5, 6, 1, 2 ] );
+            Object.$equals( arr.slice().$moveRange( 0, 2, 5 ), [ 3, 4, 5, 6, 1, 2 ] );
+            Object.$equals( arr.slice().$moveRange( 4, 9, 0 ), [ 5, 6, 1, 2, 3, 4 ] );
+            Object.$equals( arr.slice().$moveRange( 4, 9, 1 ), [ 1, 5, 6, 2, 3, 4 ] );
+            Object.$equals( arr.slice().$moveRange( 4, 9, 2 ), [ 1, 2, 5, 6, 3, 4 ] );
+            Object.$equals( arr.slice().$moveRange( 4, 9, 3 ), [ 1, 2, 3, 5, 6, 4 ] );
+            Object.$equals( arr.slice().$moveRange( 4, 9, 4 ), [ 1, 2, 3, 4, 5, 6 ] );
+            Object.$equals( arr.slice().$moveRange( 4, 9, 5 ), [ 1, 2, 3, 4, 5, 6 ] );
+          }
+        }
+      ]
     }
 
 
-    // }, {
-    //   name: '$move',
-    //   it: function(){
-    //     Object.$equals( [ 1, 2, 3 ].$move( 0, 1 ), [ 2, 1, 3 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$move( 0, 2 ), [ 2, 3, 1 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$move( 1, 2 ), [ 1, 3, 2 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$move( -1, 0 ), [ 3, 1, 2 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$move( -2, 0 ), [ 2, 1, 3 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$move( 0, -1 ), [ 2, 3, 1 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$move( 0, -2 ), [ 2, 1, 3 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3 ].$move( 1, -1 ), [ 1, 3, 2 ] ).should.true;
-    //   }
     // }, {
     //   name: '$moveRange',
     //   it: function(){

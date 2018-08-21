@@ -91,6 +91,7 @@
   - $set / $edit
   - $inArray
   - $move
+  - $moveRange
 
 - Object
   - $assign
