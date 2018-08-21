@@ -692,68 +692,58 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$push',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var arr = [ 1, 2, 3, 4, 5 ];
+    
+            arr.$push( 6 ).should.equals( arr );
+            Object.$equals( arr, [ 1, 2, 3, 4, 5, 6 ] )
+          }
+        }
+      ]
+    }, {
+      name: '$pop',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var arr = [ 1, 2, 3, 4, 5 ];
+
+            arr.$pop().should.equals( arr );
+            Object.$equals( arr, [ 1, 2, 3, 4 ] );
+          }
+        }
+      ]
+    }, {
+      name: '$unshift',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var arr = [ 1, 2, 3, 4, 5 ];
+
+            arr.$unshift( 0 ).should.equals( arr );
+            Object.$equals( arr, [ 0, 1, 2, 3, 4 ] );
+          }
+        }
+      ]
+    }, {
+      name: '$shift',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var arr = [ 1, 2, 3, 4, 5 ];
+
+            arr.$shift().should.equals( arr );
+            Object.$equals( arr, [ 2, 3, 4, 5 ] );
+          }
+        }
+      ]
     }
-
-
-    // }, {
-    //   name: '$moveRange',
-    //   it: function(){
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 0 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 1 ), [ 3, 1, 2, 4, 5, 6 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 2 ), [ 3, 4, 1, 2, 5, 6 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 3 ), [ 3, 4, 5, 1, 2, 6 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 4 ), [ 3, 4, 5, 6, 1, 2 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, 5 ), [ 3, 4, 5, 6, 1, 2 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -1 ), [ 3, 4, 5, 6, 1, 2 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -2 ), [ 3, 4, 5, 1, 2, 6 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -3 ), [ 3, 4, 1, 2, 5, 6 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -4 ), [ 3, 1, 2, 4, 5, 6 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -5 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( 0, 2, -6 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( -2, 2, 0 ), [ 5, 6, 1, 2, 3, 4 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( -2, 2, 1 ), [ 1, 5, 6, 2, 3, 4 ] ).should.true;
-    //     Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange( -2, 2, -2 ), [ 1, 2, 3, 5, 6, 4 ] ).should.true;
-    //   }
-    // }, {
-    //   name: '$moveRange2',
-    //   it: function(){
-    //     // // 放到自己选取内则不进行移动
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 0, 2, 2 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 3, 1 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 3, 2 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 3, 3 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 3, 4 ), [ 1, 2, 3, 4, 5, 6 ] ).should.true;
-    //     // // 正确的移动
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 0, 2, 3 ), [ 3, 1, 2, 4, 5, 6 ] ).should.true;
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 2, 4 ), [ 3, 4, 1, 2, 5, 6 ] ).should.true;
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( 1, 2, -1 ), [ 1, 4, 5, 6, 2, 3 ] ).should.true;
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( -2, 2, 0 ), [ 5, 6, 1, 2, 3, 4 ] ).should.true;
-    //     // Object.$equals( [ 1, 2, 3, 4, 5, 6 ].$moveRange2( -2, 2, 3 ), [ 1, 2, 3, 5, 6, 4 ] ).should.true;
-    //   }
-    // }, {
-    //   name: '$push',
-    //   it: function(){
-    //     [ 1 ].$push( 2 ).length.should.equals( 2 );
-    //     [ 1 ].$push( 2 )[ 1 ].should.equals( 2 );
-    //   }
-    // }, {
-    //   name: '$unshift',
-    //   it: function(){
-    //     [ 1 ].$unshift( 0 ).length.should.equals( 2 );
-    //     [ 1 ].$unshift( 0 )[ 0 ].should.equals( 0 );
-    //   }
-    // }, {
-    //   name: '$pop',
-    //   it: function(){
-    //     [ 1, 2, 3 ].$pop().length.should.equals( 2 );
-    //     [ 1, 2, 3 ].$pop()[ 1 ].should.equals( 2 );
-    //   }
-    // }, {
-    //   name: '$shift',
-    //   it: function(){
-    //     [ 1, 2, 3 ].$shift().length.should.equals( 2 );
-    //     [ 1, 2, 3 ].$shift()[ 1 ].should.equals( 3 );
-    //   }
-    // }
   ]
 });

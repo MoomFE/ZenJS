@@ -903,6 +903,13 @@
     return $add(this, fixArrayIndex(this, toIndex), this.splice(start, moveCount));
   });
 
+  ['push', 'pop', 'unshift', 'shift'].forEach(function (key) {
+    defineValue(ArrayProto, '$' + key, function () {
+      this[key].apply(this, arguments);
+      return this;
+    });
+  });
+
   /**
    * 判断传入对象是否是 Boolean 类型
    * @param {any} obj 需要判断的对象

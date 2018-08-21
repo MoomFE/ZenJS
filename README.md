@@ -92,6 +92,10 @@
   - $inArray
   - $move
   - $moveRange
+  - $push
+  - $pop
+  - $unshift
+  - $shift
 
 - Object
   - $assign

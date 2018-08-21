@@ -257,26 +257,28 @@ interface Array<T> {
    */
   $moveRange( start: Number, moveCount: Number, toIndex: Number ): any[];
 
+  /**
+   * 将一个或多个元素添加到数组的末尾, 并返回数组.
+   * @param args 需要插入到数组末尾的对象
+   */
+  $push( ...args: any[] ): any[];
 
+  /**
+   * 从数组中删除最后一个元素, 并返回数组.
+   */
+  $pop(): any[];
 
-  // /**
-  //  * 调用原生 push 方法, 返回 this
-  //  * @param args 需要插入到数组末尾的对象
-  //  */
-  // $push( ...args: T[] ): any[];
-  // /**
-  //  * 调用原生 unshift 方法, 返回 this
-  //  * @param args 需要插入到数组开头的对象
-  //  */
-  // $unshift( ...args: T[] ): any[];
-  // /**
-  //  * 调用原生 pop 方法, 返回 this
-  //  */
-  // $pop(): any[];
-  // /**
-  //  * 调用原生 shift 方法, 返回 this
-  //  */
-  // $shift(): any[];
+  /**
+   * 将一个或多个元素添加到数组的开头, 并返回数组.
+   * @param args 需要插入到数组开头的对象
+   */
+  $unshift( ...args: any[] ): any[];
+
+  /**
+   * 从数组中删除第一个元素, 并返回数组.
+   */
+  $shift(): any[];
+
 }
 
 interface ObjectConstructor {
