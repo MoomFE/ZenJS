@@ -104,6 +104,7 @@
 - Object.prototype
   - $assign
   - $equals
+  - $delete / $remove
 
 - Number
   - $isNumber

@@ -1144,6 +1144,18 @@
   // import './$self/index';
   // import './$set/index';
 
+  var concat = ArrayProto.concat;
+
+  defineValue(ObjectProto, '$delete $remove', function () {
+    var _this = this;
+
+    concat.apply([], arguments).$each(function (key) {
+      delete _this[key];
+    });
+
+    return this;
+  });
+
   defineValue(Number, '$isNumber', $isNumber);
 
 })));

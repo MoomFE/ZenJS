@@ -325,6 +325,30 @@ interface Object {
    */
   $equals( obj: any ): Boolean;
 
+  /**
+   * 删除对象中指定值
+   * @param args 可删除多个指定值
+   */
+  $delete( ...args: any[] ): any;
+
+  /**
+   * 删除对象中指定值
+   * @param args 可删除多个指定值
+   */
+  $delete( args: any[] ): any;
+
+  /**
+   * 删除对象中指定值
+   * @param args 可删除多个指定值
+   */
+  $remove( ...args: any[] ): any;
+
+  /**
+   * 删除对象中指定值
+   * @param args 可删除多个指定值
+   */
+  $remove( args: any[] ): any;
+
 }
 
 interface NumberConstructor {
@@ -336,7 +360,6 @@ interface NumberConstructor {
   $isNumber( obj: any ): Boolean;
 
 }
-
 
 
 
@@ -921,11 +944,6 @@ interface NumberConstructor {
 
 // interface Object {
 //   /**
-//    * 删除对象中指定值
-//    * @param keys 可传入多个
-//    */
-//   $delete( ...keys: any[] ): any;
-//   /**
 //    * 从对象中删除与传入值相同的对象
 //    * @param value 需要删除的对象
 //    * @param congruence 是否使用全等进行判断 - default: true
@@ -959,26 +977,11 @@ interface NumberConstructor {
 
 // interface ObjectConstructor {
 //   /**
-//    * 创建一个新的对象
-//    * 可传入多个参数, 参数会使用深拷贝进行继承
-//    * @param isNoProto 是否创建一个无 prototype 的对象
-//    * @param args 继承到新对象中的对象
-//    */
-//   $create( isNoProto?: Boolean, ...args?: any[] ): any;
-//   /**
 //    * 遍历对象, 并调用传入方法
 //    * @param obj 需要遍历的对象
 //    * @param callback 遍历对象时调用的方法, 方法返回 false 时, 退出遍历
 //    */
 //   $each( obj: any, callback: ( key: String, value: any, obj: any ) => Boolean ): any;
-//   /**
-//    * 判断两个对象的类型是否相同然后判断两个对象的各个属性是否相同. 如果属性也有属性, 也会继续进行判断.
-//    * 目前可判断原生类型以及提供了 toString 接口的对象.
-//    * 对于实在无法判断的对象, 将会使用 JSON.stringify 进行转换后进行判断( 这一步骤将会产生误差, 比如两个 Set 对象将无法进行判断 ).
-//    * @param obj 需要判断的第一个对象
-//    * @param obj2 需要判断的第二个对象
-//    */
-//   $equals( obj: any, obj2: any ): Boolean;
 //   /**
 //    * 判断传入对象是否是空对象
 //    * @param obj 需要判断的对象
