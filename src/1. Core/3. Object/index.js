@@ -1,5 +1,6 @@
 import './$assign/index';
 import './$equals/index';
+import './$each/index';
 
 // import './$create/index';
 // import './$delete/index';
