@@ -101,6 +101,8 @@
   - $assign
   - $equals
   - $each
+  - $isEmptyObject
+  - $isPlainObject
 
 - Object.prototype
   - $assign

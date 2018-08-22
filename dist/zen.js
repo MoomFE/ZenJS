@@ -1203,6 +1203,21 @@
     return this;
   });
 
+  /**
+   * 判断传入对象是否是空对象
+   * @param {*} obj 需要判断的对象
+   */
+  function isEmptyObject(obj) {
+    for (var a in obj) {
+      return false;
+    }
+    return true;
+  }
+
+  defineValue(Object, '$isEmptyObject', isEmptyObject);
+
+  defineValue(Object, '$isPlainObject', isPlainObject);
+
   defineValue(Number, '$isNumber', $isNumber);
 
 })));

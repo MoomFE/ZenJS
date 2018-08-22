@@ -316,6 +316,18 @@ interface ObjectConstructor {
    */
   $each( obj: any, callback: Function ): any;
 
+  /**
+   * 判断传入对象是否是空对象
+   * @param obj 需要判断的对象
+   */
+  $isEmptyObject( obj: any ): Boolean;
+
+  /**
+   * 判断传入对象是否是纯粹的对象
+   * @param obj 需要判断的对象
+   */
+  $isPlainObject( obj: any ): Boolean;
+
 }
 
 interface Object {
@@ -1021,16 +1033,6 @@ interface NumberConstructor {
 //    * @param callback 遍历对象时调用的方法, 方法返回 false 时, 退出遍历
 //    */
 //   $each( obj: any, callback: ( key: String, value: any, obj: any ) => Boolean ): any;
-//   /**
-//    * 判断传入对象是否是空对象
-//    * @param obj 需要判断的对象
-//    */
-//   $isEmptyObject( obj: any ): Boolean;
-//   /**
-//    * 判断传入对象是否是纯粹的对象
-//    * @param obj 需要判断的对象
-//    */
-//   $isPlainObject( obj: any ): Boolean;
 // }
 
 // interface String {

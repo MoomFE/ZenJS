@@ -362,24 +362,32 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$isEmptyObject',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            Object.$isEmptyObject( {} ).should.true;
+            Object.$isEmptyObject( { Empty: false } ).should.false;
+          }
+        }
+      ]
+    }, {
+      name: '$isPlainObject',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            Object.$isPlainObject( {} ).should.true;
+            Object.$isPlainObject( Object.create( null ) ).should.true;
+            Object.$isPlainObject( div ).should.false;
+            Object.$isPlainObject( Element ).should.false;
+            Object.$isPlainObject( Element.prototype ).should.false;
+            Object.$isPlainObject( new function(){} ).should.false;
+          }
+        }
+      ]
     }
-
-    // }, {
-    //   name: '$isEmptyObject',
-    //   it: function(){
-    //     Object.$isEmptyObject( {} ).should.true;
-    //     Object.$isEmptyObject( { Empty: false } ).should.false;
-    //   }
-    // }, {
-    //   name: '$isPlainObject',
-    //   it: function(){
-    //     Object.$isPlainObject( {} ).should.true;
-    //     Object.$isPlainObject( Object.create( null ) ).should.true;
-    //     Object.$isPlainObject( div ).should.false;
-    //     Object.$isPlainObject( Element ).should.false;
-    //     Object.$isPlainObject( Element.prototype ).should.false;
-    //     Object.$isPlainObject( new function(){} ).should.false;
-    //   }
-    // }
   ]
 });
