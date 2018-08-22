@@ -54,6 +54,12 @@ describes.push({
             Object.$equals( Object.$assign( {}, target ), {} ).should.true;
 
           }
+        }, {
+          name: 'Intelligent undefined',
+          it: function(){
+            Object.$equals( Object.$assign( { asd: 123 }, { asd: undefined } ), { asd: 123 } ).should.true;
+            Object.$equals( Object.$assign( {}, { asd: undefined } ), { asd: undefined } ).should.true;
+          }
         }
       ]
     }, {

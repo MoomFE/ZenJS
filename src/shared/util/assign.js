@@ -1,6 +1,7 @@
 import { isArray } from "../const/type";
 import entries from "../global/Object/entries";
 import isPlainObject from "./isPlainObject";
+import hasOwnProperty from "../global/Object/hasOwnProperty";
 
 
 /**
@@ -74,7 +75,7 @@ export default function assign( shallow, args, parent ){
           target[ ownEntrieName ] = cloneValue;
         }
 
-      }else if( ownValue !== undefined ){
+      }else if( ownValue !== undefined || hasOwnProperty.call( target, ownEntrieName ) === false ){
         target[ ownEntrieName ] = ownValue;
       }
     }

@@ -175,7 +175,7 @@
           if (assign(false, [cloneValue, ownValue], options) !== undefined) {
             target[ownEntrieName] = cloneValue;
           }
-        } else if (ownValue !== undefined) {
+        } else if (ownValue !== undefined || hasOwnProperty.call(target, ownEntrieName) === false) {
           target[ownEntrieName] = ownValue;
         }
       }
