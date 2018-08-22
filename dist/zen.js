@@ -1232,4 +1232,35 @@
 
   defineValue(Number, '$isNumber', $isNumber);
 
+  var floor = Math.floor;
+
+  var random = Math.random;
+
+  var abs = Math.abs;
+
+  defineValue(Math, '$random', function () {
+    var args = arguments;
+
+    var from = parametersDefault(args, 0, 0);
+    var to = args.length !== 1 ? parametersDefault(args, 1, 9) : 0;
+
+    if (from > to) {
+      var _ref = [to, from];
+      from = _ref[0];
+      to = _ref[1];
+    }
+
+    if (from > 0) {
+      return intRandom(from, to);
+    }
+
+    var result = intRandom(0, to + abs(from));
+
+    return result > to ? to - result : result;
+  });
+
+  function intRandom(from, to) {
+    return floor(random() * (to - from + 1) + from);
+  }
+
 })));
