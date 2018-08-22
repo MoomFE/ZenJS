@@ -12,13 +12,14 @@ describes.push({
         'zen'.$toCapitalize( true ).should.equals( 'Zen' );
         'zEN'.$toCapitalize( true ).should.equals( 'ZEN' );
       }
-    }, {
-      name: '$replaceAll',
-      it: function(){
-        '121212'.$replaceAll( '1', '2' ).should.equals( '222222' );
-        '121212'.$replaceAll( /1/, '2' ).should.equals( '222222' );
-        '121212'.$replaceAll( /1/g, '2' ).should.equals( '222222' );
-      }
     }
+    // , {
+    //   name: '$replaceAll',
+    //   it: function(){
+    //     '121212'.$replaceAll( '1', '2' ).should.equals( '222222' );
+    //     '121212'.$replaceAll( /1/, '2' ).should.equals( '222222' );
+    //     '121212'.$replaceAll( /1/g, '2' ).should.equals( '222222' );
+    //   }
+    // }
   ]
 });

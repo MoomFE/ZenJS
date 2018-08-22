@@ -123,6 +123,9 @@
 - Window / Global
   - $typeof
 
+- String.prototype
+  - $toCapitalize
+
   <!-- - $get
   - $inArray
   - $set / $edit
