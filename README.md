@@ -100,10 +100,12 @@
 - Object
   - $assign
   - $equals
+  - $each
 
 - Object.prototype
   - $assign
   - $equals
+  - $each
   - $delete / $remove
   - $deleteValue / $removeValue
 

@@ -1135,6 +1135,36 @@
     return equals$2(this, obj2);
   });
 
+  function each(obj, callback) {
+
+    if (obj == null) {
+      return obj;
+    }
+
+    var oKeys = keys(obj),
+        length = oKeys.length;
+    var index = 0,
+        key,
+        value;
+
+    for (; index < length; index++) {
+      key = oKeys[index];
+      value = obj[key];
+
+      if (callback.call(value, key, value, obj) === false) {
+        break;
+      }
+    }
+
+    return obj;
+  }
+
+  defineValue(Object, '$each', each);
+
+  defineValue(ObjectProto, '$each', function (callback) {
+    return each(this, callback);
+  });
+
   // import './$create/index';
   // import './$delete/index';
   // import './$deleteValue/index';

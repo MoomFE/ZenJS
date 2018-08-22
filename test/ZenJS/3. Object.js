@@ -315,85 +315,55 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$each',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var obj = { 1: 3, 2: 2, 3: 1 };
+
+            Object.$each( obj, function( key, value, obj ){
+              switch( key ){
+                case "1": obj[ key ] = 1; break;
+                case "3": obj[ key ] = 3; break;
+              }
+            });
+
+            Object.$equals( obj, { 1: 1, 2: 2, 3: 3 } ).should.true;
+
+            Object
+              .$each( obj, function( key, value, obj ){
+                Object.$equals( this, value ).should.true;
+                Object.$equals( obj, obj ).should.true;
+              })
+              .should.equals( obj );
+          }
+        }, {
+          name: 'Object.prototype.$each',
+          it: function(){
+            var obj = { 1: 3, 2: 2, 3: 1 };
+
+            obj.$each(function( key, value, obj ){
+              switch( key ){
+                case "1": obj[ key ] = 1; break;
+                case "3": obj[ key ] = 3; break;
+              }
+            });
+
+            Object.$equals( obj, { 1: 1, 2: 2, 3: 3 } ).should.true;
+
+            obj
+              .$each(function( key, value, obj ){
+                Object.$equals( this, value ).should.true;
+                Object.$equals( obj, obj ).should.true;
+              })
+              .should.equals( obj );
+          }
+        }
+      ]
     }
-    // , {
-    //   name: '$assign',
-    //   it: function(){
 
-    //     Object.$isPlainObject( Object.$assign() ).should.true;
-    //     Object.$isEmptyObject( Object.$assign() ).should.true;
-
-    //     var obj1 = {},
-    //         obj2 = { asd: 123 },
-    //         obj3 = { asd: 1234 };
-
-    //     Object.$assign( obj1 ).should.equals( obj1 );
-    //     Object.$isEmptyObject( Object.$assign( obj1 ) ).should.true;
-
-    //     Object.$assign( obj1, obj2 ).should.equals( obj1 );
-    //     Object.$isEmptyObject( Object.$assign( obj1, obj2 ) ).should.false;
-
-    //     Object.$assign( obj1, obj2 ).asd.should.equals( 123 );
-    //     Object.$assign( obj1, obj2, obj3 ).asd.should.equals( 1234 );
-
-    //     var obj4 = { infiniteLoop: obj5 },
-    //         obj5 = { infiniteLoop: obj4 };
-
-    //     isUndef( Object.$assign( obj4, obj5 ).infiniteLoop ).should.true;
-
-
-    //     // Shallow Mode
-    //     var obj6 = {},
-    //         obj7 = { obj: { asd: 1 } },
-    //         obj8 = { obj: { asd: 1 } };
-
-    //     Object.$assign( true, obj6, obj7 ).should.equals( obj6 );
-    //     Object.$assign( true, obj6, obj8 ).should.equals( obj6 );
-
-    //     obj6.obj.should.equals( obj8.obj );
-    //   }
-    // }, {
-    //   name: '$create',
-    //   it: function(){
-    //     Object.$isEmptyObject( Object.$create() ).should.true;
-    //     Object.$isPlainObject( Object.$create() ).should.true;
-    //     Object.$isPlainObject( Object.$create( true ) ).should.true;
-    //     Object.$isPlainObject( Object.$create( false ) ).should.true;
-
-    //     ( Object.getPrototypeOf( Object.$create( true ) ) == null ).should.true;
-    //     ( Object.$create().constructor != null ).should.true;
-
-    //     var obj1 = { asd: 123 },
-    //         obj2 = { asd: 1234 };
-
-    //     Object.$create( obj1 ).asd.should.equals( 123 );
-    //     Object.$create( obj1, obj2 ).asd.should.equals( 1234 );
-    //     isEqual( obj1, Object.$create( obj1 ) ).should.false;
-    //   }
-    // }, {
-    //   name: '$each',
-    //   it: function(){
-    //     var test1 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
-    //       switch( key ){
-    //         case "3": obj[ key ] = 3; break;
-    //         case "1": obj[ key ] = 1; break;
-    //       }
-    //     });
-
-    //     test1[ "3" ].should.equals( 3 );
-    //     test1[ "1" ].should.equals( 1 );
-
-    //     var test2 = Object.$each( { "1": 3, "2": 2, "3": 1 }, function( key, value, obj ){
-    //       switch( key ){
-    //         case "3": obj[ key ] = 3; break;
-    //         case "1": obj[ key ] = 1;
-    //                   return false;
-    //       }
-    //     });
-
-    //     test2[ "1" ].should.equals( 1 );
-    //     test2[ "3" ].should.equals( 1 );
-    //   }
     // }, {
     //   name: '$isEmptyObject',
     //   it: function(){

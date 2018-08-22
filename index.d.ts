@@ -309,6 +309,13 @@ interface ObjectConstructor {
    */
   $equals( obj: any, obj2: any ): Boolean;
 
+  /**
+   * 调用传入方法遍历传入对象
+   * @param obj 需要进行遍历的对象
+   * @param callback 遍历对象时调用的方法, 方法返回 false 时, 将终止后续遍历
+   */
+  $each( obj: any, callback: Function ): any;
+
 }
 
 interface Object {
@@ -324,6 +331,12 @@ interface Object {
    * @param obj 需要比对的对象
    */
   $equals( obj: any ): Boolean;
+
+  /**
+   * 调用传入方法遍历当前对象
+   * @param callback 遍历当前对象时调用的方法, 方法返回 false 时, 将终止后续遍历
+   */
+  $each( callback: Function ): any;
 
   /**
    * 删除对象中指定值
