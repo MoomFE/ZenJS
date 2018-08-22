@@ -400,6 +400,11 @@ interface Object {
    */
   $removeValue( predicate: Function ): any;
 
+  /**
+   * 返回当前对象
+   */
+  $self(): any;
+
 }
 
 interface NumberConstructor {
@@ -1016,10 +1021,6 @@ interface NumberConstructor {
 //    * @param obj 批量修改对象内的值
 //    */
 //   $set( obj: any ): any;
-//   /**
-//    * 返回当前对象
-//    */
-//   $self(): any;
 //   /**
 //    * 返回当前对象
 //    */

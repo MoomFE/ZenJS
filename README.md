@@ -110,6 +110,7 @@
   - $each
   - $delete / $remove
   - $deleteValue / $removeValue
+  - $self
 
 - Number
   - $isNumber

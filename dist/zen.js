@@ -1218,6 +1218,12 @@
     return this;
   });
 
+  function self() {
+    return this;
+  }
+
+  defineValue(ObjectProto, '$self', self);
+
   defineValue(Number, '$isNumber', $isNumber);
 
 })));

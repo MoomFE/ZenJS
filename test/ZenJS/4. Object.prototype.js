@@ -81,6 +81,20 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$self',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var arr = [ 1, 2, 3 ];
+            var obj = { 1: 1 }
+
+            arr.$self().should.equals( arr );
+            obj.$self().should.equals( obj );
+          }
+        }
+      ]
     }
 
 
