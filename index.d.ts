@@ -442,6 +442,28 @@ interface NumberConstructor {
 
 }
 
+interface Math {
+
+  /**
+   * 在最小数和最大数之间随机一个数字
+   * @param from 指定一个最小数, 可为负数 - default: 0
+   * @param to 指定一个最大数, 可为负数 - default: 9
+   */
+  $random( from: Number, to: Number ): Number;
+
+  /**
+   * 在 0 到传入值之间随机一个数字
+   * @param to 指定一个数字, 可为负数
+   */
+  $random( to: Number ): Number;
+
+  /**
+   * 在 0 到 9 之间随机一个数字
+   */
+  $random(): Number;
+
+}
+
 
 
 
@@ -937,7 +959,9 @@ interface NumberConstructor {
 //   $emit( types, ...data?: any[] ): this;
 // }
 
-// interface Math {
+//  { $ramdom(): Number;
+
+// } {
 //   /**
 //    * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
 //    * @param num1 数字1
@@ -991,36 +1015,6 @@ interface NumberConstructor {
 //    * @param args 任意个数数字
 //    */
 //   $mean( ...args?: Number[] ): Number;
-//   /**
-//    * 在 0 和 9 之间随机一个数字
-//    */
-//   $random(): Number;
-//   /**
-//    * 在 0 和最大值之间随机一个数字
-//    * @param to 指定一个最大值, 必须大于-1 - default: 9
-//    */
-//   $random( to: Number = 9 ): Number;
-//   /**
-//    * 在最小数和最大数之间随机一个数字
-//    * @param from 指定一个最小数, 必须大于-1 - default: 0
-//    * @param to 指定一个最大数, 必须大于-1 - default: 9
-//    */
-//   $random( from: Number = 0, to: Number = 9 ): Number;
-//   /**
-//    * 在 0 和 9 之间随机一个数字
-//    */
-//   $randomPlus(): Number;
-//   /**
-//    * 在 0 和指定值之间随机一个数字
-//    * @param to 指定一个值, 可为负数 - default: 9
-//    */
-//   $randomPlus( to: Number = 9 ): Number;
-//   /**
-//    * 在最小数和最大数之间随机一个数字
-//    * @param from 指定一个最小数, 可为负数 - default: 0
-//    * @param to 指定一个最大数, 可为负数 - default: 9
-//    */
-//   $randomPlus( from: Number = 0, to: Number = 9 ): Number;
 // }
 
 // interface Object {

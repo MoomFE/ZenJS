@@ -117,7 +117,9 @@
 - Number
   - $isNumber
 
-
+- Math
+  - $random
+  - $randomPlus
 
   <!-- - $get
   - $inArray
