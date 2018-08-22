@@ -4,4 +4,5 @@ import './3. Object/index';
 import './4. Object.prototype/index';
 import './5. Number/index';
 import './6. Math/index';
+import './7. Root/index';
 import './666. ZenJS/index';

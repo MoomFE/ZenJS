@@ -464,6 +464,19 @@ interface Math {
 
 }
 
+interface Window {
+
+  $typeof: $typeof
+
+}
+
+/**
+ * 判断传入参数的类型
+ * @param obj 需要判断类型的参数
+ */
+declare function $typeof( obj: any ): String;
+declare const $typeof: $typeof;
+
 
 
 
@@ -1315,11 +1328,7 @@ interface Math {
 //  * @param data 需要传入方法的数据
 //  */
 // declare function $ready( func: () => void, data?: any ): void;
-// /**
-//  * 判断传入参数的类型
-//  * @param obj 需要判断类型的参数
-//  */
-// declare function $typeof( obj: any ): String;
+
 
 // declare const Zen: ZenJS;
 
@@ -1328,5 +1337,3 @@ interface Math {
 // declare const $querystring: $querystring;
 
 // declare const $ready: $ready;
-
-// declare const $typeof: $typeof;

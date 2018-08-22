@@ -120,6 +120,9 @@
 - Math
   - $random
 
+- Window / Global
+  - $typeof
+
   <!-- - $get
   - $inArray
   - $set / $edit
