@@ -119,7 +119,6 @@
 
 - Math
   - $random
-  - $randomPlus
 
   <!-- - $get
   - $inArray
