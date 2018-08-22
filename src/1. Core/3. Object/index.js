@@ -1,6 +1,8 @@
 import './$assign/index';
 import './$equals/index';
 import './$each/index';
+import './$isEmptyObject/index';
+import './$isPlainObject/index';
 
 // import './$create/index';
 // import './$delete/index';
