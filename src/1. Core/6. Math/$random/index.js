@@ -1,8 +1,7 @@
 import defineValue from "../../../shared/util/defineValue";
 import Math from "../../../shared/global/Math/index";
 import parametersDefault from "../../../shared/util/parametersDefault";
-import floor from "../../../shared/global/Math/floor";
-import random from "../../../shared/global/Math/random";
+import intRandom from "../../../shared/util/intRandom";
 import abs from "../../../shared/global/Math/abs";
 
 
@@ -26,9 +25,3 @@ defineValue( Math, '$random', function(){
   return result > to ? to - result
                      : result;
 });
-
-function intRandom( from, to ){
-  return floor(
-    random() * ( to - from + 1 ) + from
-  );
-}

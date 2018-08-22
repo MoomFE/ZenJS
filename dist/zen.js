@@ -1236,6 +1236,15 @@
 
   var random = Math.random;
 
+  /**
+   * 在传入的两个正整数中随机一个数字
+   * @param {Number} from 
+   * @param {Number} to 
+   */
+  function intRandom(from, to) {
+    return floor(random() * (to - from + 1) + from);
+  }
+
   var abs = Math.abs;
 
   defineValue(Math, '$random', function () {
@@ -1258,9 +1267,5 @@
 
     return result > to ? to - result : result;
   });
-
-  function intRandom(from, to) {
-    return floor(random() * (to - from + 1) + from);
-  }
 
 })));
