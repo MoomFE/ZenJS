@@ -218,6 +218,11 @@
     writable: true // 写入
   };
 
+  var defineGetPropertyOptions = {
+    configurable: true, // 删除/定义
+    enumerable: false // 枚举
+  };
+
   /**
    * 在一个对象上定义/修改一个新属性的 value 描述符
    * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
@@ -1269,5 +1274,98 @@
 
     return result > to ? to - result : result;
   });
+
+  /**
+   * @type {Boolean} 当前是否是 Node 环境
+   */
+  var inNode = typeof global !== 'undefined';
+
+  var root = inBrowser ? window : inNode ? global : {};
+
+  /**
+   * 在一个对象上定义/修改一个新属性的 get 描述符
+   * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+   * @param {String} name 要定义或修改的属性的名称
+   * @param {Function} get 将被定义或修改的 get 描述符
+   * @param {any} options 将被定义或修改的属性描述符
+   */
+  function defineGet(obj, name, get, options) {
+    define(obj, name, { get: get }, options || defineGetPropertyOptions);
+
+    return get;
+  }
+
+  /**
+   * 返回传入值
+   * @param {any} arg 
+   * @returns {any} arg
+   */
+  function returnArg(arg) {
+    return arg;
+  }
+
+  /**
+   * @returns {Boolean} true
+   */
+  function returnTrue() {
+    return true;
+  }
+
+  /**
+   * @returns {Boolean} false
+   */
+  function returnFalse() {
+    return false;
+  }
+
+  /**
+   * 判断传入对象是否是 RegExp 类型
+   * @param {any} obj 需要判断的对象
+   * @returns {Boolean}
+   */
+  function isRegExp(obj) {
+    return toString.call(obj) === '[object RegExp]';
+  }
+
+  var ZenJS = root.ZenJS = assign(false, [null, {
+
+        polyfill: {
+              assign: assign$1,
+              entries: entries
+        },
+
+        util: {
+
+              congruence: congruence,
+              equals: equals,
+
+              define: define,
+              defineValue: defineValue,
+              defineGet: defineGet,
+
+              intRandom: intRandom,
+
+              returnArg: returnArg,
+              returnTrue: returnTrue,
+              returnFalse: returnFalse,
+
+              parametersDefault: parametersDefault,
+              parametersRest: parametersRest,
+
+              isString: isString$1,
+              isBoolean: isBoolean$1,
+              isArray: isArray$1,
+              isNumber: isNumber,
+              isRegExp: isRegExp,
+              isSet: isSet,
+              isMap: isMap,
+              isFunction: isFunction$1,
+              isObject: isObject,
+              isReferenceType: isReferenceType,
+
+              mapSetToArray: mapSetToArray
+        }
+
+  }]);
 
 })));
