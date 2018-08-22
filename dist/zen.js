@@ -100,18 +100,20 @@
     return isFunction$1(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
   }
 
+  var create = Object.create;
+
   /**
    * 将多个源对象的可枚举属性合并到第一个对象中
    * @param {Boolean} shallow 是否使用浅拷贝模式, 类似于使用 Object.assign
    */
-  function assign(shallow, args, parent) {
+  function assign(shallow, args, parent, noProto) {
 
     var length = args.length;
 
     /** 首个源对象下标 */
     var index = 1;
     /** 目标对象 */
-    var target = args[0] || {};
+    var target = args[0] || (args[0] !== null ? {} : (noProto = true, create(null)));
 
     /** 当前源对象 */
     var options;
@@ -169,10 +171,10 @@
           if (ownValue[isArray]) {
             cloneValue = targetValue && targetValue[isArray] ? targetValue : [];
           } else {
-            cloneValue = targetValue && isPlainObject(targetValue) ? targetValue : {};
+            cloneValue = targetValue && isPlainObject(targetValue) ? targetValue : noProto ? create(null) : {};
           }
 
-          if (assign(false, [cloneValue, ownValue], options) !== undefined) {
+          if (assign(false, [cloneValue, ownValue], options, noProto) !== undefined) {
             target[ownEntrieName] = cloneValue;
           }
         } else if (ownValue !== undefined || hasOwnProperty.call(target, ownEntrieName) === false) {
@@ -263,7 +265,7 @@
    * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index, 然后将方法的返回值填充到数组中
    * @param isInsert 若值为真, 即使二个参数 insert 是方法, 都会直接进行插入
    */
-  function create(length, insert, isInsert) {
+  function create$1(length, insert, isInsert) {
 
     if (!isNumber(length) || length < 1) {
       return [];
@@ -299,7 +301,7 @@
       return [];
     }
 
-    return create(ceil(length / size), function (index) {
+    return create$1(ceil(length / size), function (index) {
       var start = index * size;
       return array.slice(start, start + size);
     });
@@ -328,7 +330,7 @@
     return slice.call(source);
   });
 
-  defineValue(Array, '$create', create);
+  defineValue(Array, '$create', create$1);
 
   function $each(array, callback) {
 

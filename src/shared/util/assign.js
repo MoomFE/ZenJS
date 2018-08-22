@@ -2,20 +2,25 @@ import { isArray } from "../const/type";
 import entries from "../global/Object/entries";
 import isPlainObject from "./isPlainObject";
 import hasOwnProperty from "../global/Object/hasOwnProperty";
+import create from "../global/Object/create";
 
 
 /**
  * 将多个源对象的可枚举属性合并到第一个对象中
  * @param {Boolean} shallow 是否使用浅拷贝模式, 类似于使用 Object.assign
  */
-export default function assign( shallow, args, parent ){
+export default function assign( shallow, args, parent, noProto ){
 
   const length = args.length;
 
   /** 首个源对象下标 */
   let index = 1;
   /** 目标对象 */
-  let target = args[ 0 ] || {};
+  let target = args[ 0 ] || (
+    args[ 0 ] !== null ? {} : (
+      ( noProto = true ), create( null )
+    )
+  );
 
   /** 当前源对象 */
   let options;
@@ -68,10 +73,13 @@ export default function assign( shallow, args, parent ){
         if( ownValue[ isArray ] ){
           cloneValue = targetValue && targetValue[ isArray ] ? targetValue : [];
         }else{
-          cloneValue = targetValue && isPlainObject( targetValue ) ? targetValue : {};
+          cloneValue = targetValue && isPlainObject( targetValue ) ? targetValue : (
+            noProto ? create( null )
+                    : {}
+          );
         }
 
-        if( assign( false, [ cloneValue, ownValue ], options ) !== undefined ){
+        if( assign( false, [ cloneValue, ownValue ], options, noProto ) !== undefined ){
           target[ ownEntrieName ] = cloneValue;
         }
 
