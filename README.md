@@ -108,6 +108,8 @@
   - $assign
   - $equals
   - $each
+  - $get
+  - $set / $edit
   - $delete / $remove
   - $deleteValue / $removeValue
   - $self

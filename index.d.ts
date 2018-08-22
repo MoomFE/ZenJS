@@ -351,6 +351,31 @@ interface Object {
   $each( callback: Function ): any;
 
   /**
+   * 获取对象的某个值
+   * @param key 需要获取的值的 key
+   */
+  $get( key ): any;
+
+  /**
+   * 批量获取对象的值, 返回所有传入 key 和对应 value 的键值对
+   * @param keys 需要获取的值的 key
+   */
+  $get( ...keys: any[] ): any;
+
+  /**
+   * 设置或修改对象的某个值
+   * @param key 需要修改的值的 key
+   * @param value 需要设置的值
+   */
+  $set( key, value ): any;
+
+  /**
+   * 批量设置或修改对象的值
+   * @param obj key, value 的键值对
+   */
+  $set( obj ): any;
+
+  /**
    * 删除对象中指定值
    * @param args 可删除多个指定值
    */

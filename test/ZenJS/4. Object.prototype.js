@@ -2,6 +2,58 @@ describes.push({
   name: 'Object.prototype',
   describe: [
     {
+      name: '$get',
+      describe: [
+        {
+          name: 'Get a single value',
+          it: function(){
+            var obj = { z: 1, e: 2, n: 3, j: 4, s: 5 };
+
+            obj.$get('z').should.equals( 1 );
+            obj.$get('e').should.equals( 2 );
+            obj.$get('n').should.equals( 3 );
+            obj.$get('j').should.equals( 4 );
+            obj.$get('s').should.equals( 5 );
+          }
+        }, {
+          name: 'Get multiple values',
+          it: function(){
+            var obj = { z: 1, e: 2, n: 3, j: 4, s: 5 };
+
+            Object.$equals( obj.$get( 'z', 'e', 'n', 'j', 's' ), { z: 1, e: 2, n: 3, j: 4, s: 5 } ).should.true;
+            Object.$equals( obj.$get( 'z', 'e', 'n' ), { z: 1, e: 2, n: 3 } ).should.true;
+            Object.$equals( obj.$get( 'j', 's' ), { j: 4, s: 5 } ).should.true;
+          }
+        }
+      ]
+    }, {
+      name: '$set / $edit',
+      describe: [
+        {
+          name: 'Set a single value',
+          it: function(){
+            var obj = {};
+
+            Object.$equals( obj.$set( 'z', 1 ), { z: 1 } );
+            Object.$equals( obj.$set( 'e', 2 ), { z: 1, e: 2 } );
+            Object.$equals( obj.$set( 'n', 3 ), { z: 1, e: 2, n: 3 } );
+            Object.$equals( obj.$set( 'j', 4 ), { z: 1, e: 2, n: 3, j: 4 } );
+            Object.$equals( obj.$set( 's', 5 ), { z: 1, e: 2, n: 3, j: 4, s: 5 } );
+            Object.$equals( obj, { z: 1, e: 2, n: 3, j: 4, s: 5 } );
+          }
+        }, {
+          name: 'Set multiple values',
+          it: function(){
+            var obj = {};
+            
+            Object.$equals( obj.$set({ z: 1 }), { z: 1 } );
+            Object.$equals( obj.$set({ e: 2, n: 3 }), { z: 1, e: 2, n: 3 } );
+            Object.$equals( obj.$set({ z: 1, e: 2, n: 3, j: 4, s: 5 }), { z: 1, e: 2, n: 3, j: 4, s: 5 } );
+            Object.$equals( obj, { z: 1, e: 2, n: 3, j: 4, s: 5 } );
+          }
+        }
+      ]
+    }, {
       name: '$delete / $remove',
       describe: [
         {

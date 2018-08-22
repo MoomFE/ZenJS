@@ -1190,6 +1190,36 @@
   // import './$self/index';
   // import './$set/index';
 
+  defineValue(ObjectProto, '$get', function (key) {
+    var _this = this;
+
+    if (arguments.length < 2) {
+      return this[key];
+    }
+
+    var result = {};
+
+    slice.call(arguments).forEach(function (key) {
+      result[key] = _this[key];
+    });
+
+    return result;
+  });
+
+  defineValue(ObjectProto, '$set $edit', function (key, value) {
+    var _this = this;
+
+    if (isObject(key)) {
+      return this.$each(function (key, value) {
+        _this[key] = value;
+      });
+    }
+
+    this[key] = value;
+
+    return this;
+  });
+
   var concat = ArrayProto.concat;
 
   defineValue(ObjectProto, '$delete $remove', function () {
