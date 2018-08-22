@@ -1,7 +1,4 @@
-import Array from '../global/Array/index';
-import isArray from '../global/Array/isArray';
 import defineProperty from '../global/Object/defineProperty';
-import isObject from './isObject';
 import assign from '../polyfill/Object.assign';
 
 
@@ -13,23 +10,8 @@ import assign from '../polyfill/Object.assign';
  * @param {any} options2 将被定义或修改的属性描述符, 会覆盖前一个 options
  */
 export default function define( obj, name, options, options2 ){
-  let key;
 
   if( obj == null ){
-    return;
-  }
-
-  // define( [ window, document ], name, options )
-  if( isArray( obj ) && obj instanceof Array ){
-    obj.forEach( obj => define( obj, name, options, options2 ) );
-    return;
-  }
-
-  // define( window, { key: value }, options )
-  if( isObject( name ) ){
-    for( key in name ){
-      define( obj, key, name[ key ], options );
-    }
     return;
   }
 

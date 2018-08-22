@@ -12,18 +12,7 @@
   (factory());
 }(this, (function () { 'use strict';
 
-  var isArray = Array.isArray;
-
   var defineProperty = Object.defineProperty;
-
-  /**
-   * 判断传入对象是否是 Object 类型, 并且不为 null
-   * @param {any} obj 需要判断的对象
-   * @returns {Boolean}
-   */
-  function isObject(obj) {
-    return obj !== null && typeof obj === 'object';
-  }
 
   var StringProto = String.prototype;
 
@@ -44,7 +33,7 @@
 
   var isString = '__isString__';
   var isBoolean = '__isBoolean__';
-  var isArray$1 = '__isArray__';
+  var isArray = '__isArray__';
   var isFunction = '__isFunction__';
 
   var keys = Object.keys;
@@ -155,7 +144,7 @@
         ownValue = ownEntrie[1];
 
         // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
-        if (!shallow && ownValue && (isPlainObject(ownValue) || ownValue[isArray$1])) {
+        if (!shallow && ownValue && (isPlainObject(ownValue) || ownValue[isArray])) {
 
           // 防御下面这种无限引用
           // var target = {};
@@ -177,8 +166,8 @@
 
           targetValue = target[ownEntrieName];
 
-          if (ownValue[isArray$1]) {
-            cloneValue = targetValue && targetValue[isArray$1] ? targetValue : [];
+          if (ownValue[isArray]) {
+            cloneValue = targetValue && targetValue[isArray] ? targetValue : [];
           } else {
             cloneValue = targetValue && isPlainObject(targetValue) ? targetValue : {};
           }
@@ -211,25 +200,8 @@
    * @param {any} options2 将被定义或修改的属性描述符, 会覆盖前一个 options
    */
   function define(obj, name, options, options2) {
-    var key;
 
     if (obj == null) {
-      return;
-    }
-
-    // define( [ window, document ], name, options )
-    if (isArray(obj) && obj instanceof Array) {
-      obj.forEach(function (obj) {
-        return define(obj, name, options, options2);
-      });
-      return;
-    }
-
-    // define( window, { key: value }, options )
-    if (isObject(name)) {
-      for (key in name) {
-        define(obj, key, name[key], options);
-      }
       return;
     }
 
@@ -252,16 +224,9 @@
    * @param {any} options 将被定义或修改的属性描述符
    */
   function defineValue(obj, name, value, options) {
-    var key;
+    define(obj, name, { value: value }, options || definePropertyOptions);
 
-    if (isObject(name)) {
-      for (key in name) {
-        defineValue(obj, key, name[key], options);
-      }
-      return name;
-    }
-
-    return define(obj, name, { value: value }, options || definePropertyOptions), value;
+    return value;
   }
 
   /**
@@ -346,6 +311,8 @@
     return chunk(this, size);
   });
 
+  var isArray$1 = Array.isArray;
+
   var slice = ArrayProto.slice;
 
   defineValue(Array, '$copy', function (source, array) {
@@ -354,7 +321,7 @@
       return [];
     }
 
-    if (isArray(array)) {
+    if (isArray$1(array)) {
       return array.concat(source);
     }
 
@@ -398,7 +365,7 @@
       return false;
     }
 
-    if (obj[isArray$1]) {
+    if (obj[isArray]) {
       return true;
     }
 
@@ -681,7 +648,7 @@
     var _this = this;
 
     slice.call(arguments).forEach(function (arg) {
-      $add(_this, -1, isArray(arg) ? arg : [arg]);
+      $add(_this, -1, isArray$1(arg) ? arg : [arg]);
     });
 
     return this;
@@ -702,7 +669,7 @@
     index = fixArrayIndex(this, index, 1);
 
     args.forEach(function (arg) {
-      $add(_this2, increasedLength + index, isArray(arg) ? arg : [arg]);
+      $add(_this2, increasedLength + index, isArray$1(arg) ? arg : [arg]);
       // 用于修正 index, 后续的 arg 需要插入到前面的 arg 后面
       increasedLength = _this2.length - originLength;
     });
@@ -783,7 +750,7 @@
   }
 
   function getTraversal(key, predicate) {
-    var keyIsArray = key[isArray$1];
+    var keyIsArray = key[isArray];
 
     return function (object) {
       if (object == null || !keys(object).length) {
@@ -848,6 +815,15 @@
 
     return this.slice(index, num + index);
   });
+
+  /**
+   * 判断传入对象是否是 Object 类型, 并且不为 null
+   * @param {any} obj 需要判断的对象
+   * @returns {Boolean}
+   */
+  function isObject(obj) {
+    return obj !== null && typeof obj === 'object';
+  }
 
   defineValue(ArrayProto, '$set $edit', function (index, value) {
     var _this = this;
