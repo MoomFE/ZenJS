@@ -22,4 +22,4 @@ var index = (function (o, c, d) {
   };
 });
 
-module.exports = index;
+export default index;

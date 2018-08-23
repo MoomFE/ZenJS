@@ -27,4 +27,4 @@ var index = (function (o, c) {
   };
 });
 
-module.exports = index;
+export default index;

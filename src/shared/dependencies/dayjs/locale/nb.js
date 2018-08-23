@@ -29,4 +29,4 @@ var locale = {
 };
 dayjs.locale(locale, null, true);
 
-module.exports = locale;
+export default locale;

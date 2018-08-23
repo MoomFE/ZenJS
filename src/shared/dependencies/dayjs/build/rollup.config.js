@@ -12,7 +12,12 @@ module.exports = (config) => {
       plugins: [
         babel({
           exclude: 'node_modules/**'
-        })
+        }),
+        {
+          transformBundle( code ){
+            return code.replace( /module\.exports = ([a-z\s\n\r;]+)$/, 'export default $1' )
+          }
+        }
       ]
     },
     output: {
