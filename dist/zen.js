@@ -1275,6 +1275,10 @@
     return result > to ? to - result : result;
   });
 
+  defineValue(StringProto, '$toCapitalize', function (ignoreNext) {
+    return this.substr(0, 1).toUpperCase() + this.substr(1)[ignoreNext ? '$self' : 'toLowerCase']();
+  });
+
   /**
    * @type {Boolean} 当前是否是 Node 环境
    */
@@ -1290,10 +1294,6 @@
       if (obj[isArray]) return 'array';
     }
     return type;
-  });
-
-  defineValue(StringProto, '$toCapitalize', function (ignoreNext) {
-    return this.substr(0, 1).toUpperCase() + this.substr(1)[ignoreNext ? '$self' : 'toLowerCase']();
   });
 
   /**

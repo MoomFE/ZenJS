@@ -464,6 +464,16 @@ interface Math {
 
 }
 
+interface String {
+
+  /**
+   * 将字符串首字母大写
+   * @param ignoreNext 是否忽略除首字母外小写的操作
+   */
+  $toCapitalize( ignoreNext?: Boolean ): String;
+
+}
+
 interface Window {
 
   $typeof: $typeof
@@ -476,17 +486,6 @@ interface Window {
  */
 declare function $typeof( obj: any ): String;
 declare const $typeof: $typeof;
-
-
-interface String {
-
-  /**
-   * 将字符串首字母大写
-   * @param ignoreNext 是否忽略除首字母外小写的操作
-   */
-  $toCapitalize( ignoreNext?: Boolean ): String;
-
-}
 
 
 

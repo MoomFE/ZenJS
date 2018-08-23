@@ -120,11 +120,11 @@
 - Math
   - $random
 
-- Window / Global
-  - $typeof
-
 - String.prototype
   - $toCapitalize
+
+- Window / Global
+  - $typeof
 
   <!-- - $get
   - $inArray
