@@ -1901,6 +1901,8 @@
 
   var root = inBrowser ? window : inNode ? global : {};
 
+  defineValue(root, 'dayjs', dayjs);
+
   defineValue(root, '$typeof', function (obj) {
     if (obj == null) return obj + '';
     return obj[isArray] ? 'array' : typeof obj;
@@ -1951,7 +1953,7 @@
     return toString.call(obj) === '[object RegExp]';
   }
 
-  var ZenJS = root.ZenJS = assign(false, [null, {
+  var ZenJS = assign(false, [null, {
 
         polyfill: {
               assign: assign$1,
@@ -1991,5 +1993,7 @@
         }
 
   }]);
+
+  defineValue(root, 'ZenJS', ZenJS);
 
 })));

@@ -9,3 +9,14 @@ import './8. String.prototype/index';
 import './9. Date/index';
 import './66. Root/index';
 import './666. ZenJS/index';
+
+
+
+
+
+
+import defineValue from '../shared/util/defineValue';
+import root from '../shared/const/root';
+import ZenJS from '../shared/global/ZenJS/index';
+
+defineValue( root, 'ZenJS', ZenJS );
