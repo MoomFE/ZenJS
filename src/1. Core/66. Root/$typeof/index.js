@@ -4,12 +4,7 @@ import { isArray } from "../../../shared/const/type";
 
 
 defineValue( root, '$typeof', function( obj ){
-  let type;
-
   if( obj == null ) return obj + '';
-  if( ( type = typeof obj ) === 'object' ){
-    if( obj[ isArray ] )
-      return 'array';
-  }
-  return type;
+  return obj[ isArray ] ? 'array'
+                        : typeof obj;
 });

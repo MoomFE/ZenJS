@@ -1287,13 +1287,8 @@
   var root = inBrowser ? window : inNode ? global : {};
 
   defineValue(root, '$typeof', function (obj) {
-    var type;
-
     if (obj == null) return obj + '';
-    if ((type = typeof obj) === 'object') {
-      if (obj[isArray]) return 'array';
-    }
-    return type;
+    return obj[isArray] ? 'array' : typeof obj;
   });
 
   /**
