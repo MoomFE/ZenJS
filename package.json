@@ -50,5 +50,8 @@
   "bugs": {
     "url": "https://github.com/MoomFE/ZenJS/issues"
   },
-  "homepage": "https://github.com/MoomFE/ZenJS#readme"
+  "homepage": "https://github.com/MoomFE/ZenJS#readme",
+  "dependencies": {
+    "dayjs": "^1.7.5"
+  }
 }

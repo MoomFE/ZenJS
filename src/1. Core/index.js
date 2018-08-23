@@ -6,5 +6,6 @@ import './5. Number/index';
 import './6. Math/index';
 import './7. String/index';
 import './8. String.prototype/index';
+import './9. Date/index';
 import './66. Root/index';
 import './666. ZenJS/index';
