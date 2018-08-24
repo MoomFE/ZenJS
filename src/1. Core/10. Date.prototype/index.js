@@ -12,7 +12,7 @@ import DateProto from "../../shared/global/Date/prototype/index";
 import DAYJS from './$dayjs/index';
 
 
-const ignore = 'parse_init_clone_valueOf_toDate_toJSON_toISOString_toString_unix'.split('_');
+const ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString_unix_valueOf'.split('_');
 const isDayjs = dayjs.isDayjs;
 
 dayjs.extend(( option, Dayjs ) => {
