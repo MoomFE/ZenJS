@@ -589,7 +589,7 @@ interface Date {
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  $startOf( unit : String ): Number;
+  $startOf( unit : String ): Date;
 
   /**
    * 设置当前时间为指定单位的末尾时间
@@ -602,7 +602,7 @@ interface Date {
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  $endOf( unit: String ): Number;
+  $endOf( unit: String ): Date;
 
   /**
    * 接收一系列的时间日期字符串并替换成相应的值

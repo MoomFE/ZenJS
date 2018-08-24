@@ -123,6 +123,34 @@
 - String.prototype
   - $toCapitalize
 
+- Date
+  - $parse
+
+- Date.prototype
+  - $dayjs
+  - $isValid
+  - $year
+  - $month
+  - $date
+  - $day
+  - $hour
+  - $minute
+  - $second
+  - $millisecond
+  - $set
+  - $add
+  - $subtract
+  - $startOf
+  - $endOf
+  - $format
+  - $diff
+  - $daysInMonth
+  - $toArray
+  - $toObject
+  - $isBefore
+  - $isSame
+  - $isAfter
+
 - Window / Global
   - $typeof
 
