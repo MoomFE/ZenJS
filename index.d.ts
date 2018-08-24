@@ -474,6 +474,215 @@ interface String {
 
 }
 
+interface DateConstructor{
+
+  /**
+   * 解析传入时间字符串, 返回原生的 Date 对象
+   * @param date 标准的 ISO 8601 时间字符串
+   */
+  $parse( date: String | Date ): Date;
+
+}
+
+interface Date {
+
+  /**
+   * 返回当前对象的 dayjs 对象
+   */
+  $dayjs(): Dayjs;
+
+  /**
+   * 检测当前时间对象是否是一个有效的时间
+   */
+  $isValid(): Boolean;
+
+  /**
+   * 获取年份
+   */
+  $year(): Number;
+
+  /**
+   * 获取月份
+   */
+  $month(): Number;
+
+  /**
+   * 获取日期
+   */
+  $date(): Number;
+
+  /**
+   * 获取星期
+   */
+  $day(): Number;
+
+  /**
+   * 获取小时
+   */
+  $hour(): Number;
+
+  /**
+   * 获取分钟
+   */
+  $minute(): Number;
+
+  /**
+   * 获取秒
+   */
+  $second(): Number;
+
+  /**
+   * 获取毫秒
+   */
+  $millisecond(): Number;
+
+  /**
+   * 设置时间
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   * @param value 给传入单位设置的值
+   */
+  $set( unit : String, value : Number ): Date;
+
+  /**
+   * 增加时间
+   * @param value 给当前时间对象增加的时间值
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $add( value : Number, unit : String ): Date;
+
+  /**
+   * 减少时间
+   * @param value 给当前时间的指定单位增加的时间值
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $subtract( value : Number, unit : String ): Date;
+
+  /**
+   * 设置当前时间为指定单位的开头时间
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $startOf( unit : String ): Number;
+
+  /**
+   * 设置当前时间为指定单位的末尾时间
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $endOf( unit: String ): Number;
+
+  /**
+   * 接收一系列的时间日期字符串并替换成相应的值
+   * @param formatStr ( YY: 两位数的年份 )
+   *                  ( YYYY: 四位数的年份 )
+   *                  ( M: 月份, 从 1 开始 )
+   *                  ( MM: 月份, 两位数 )
+   *                  ( MMM: 简写的月份名称 )
+   *                  ( MMMM: 完整的月份名称 )
+   *                  ( D: 月份里的一天 )
+   *                  ( DD: 月份里的一天，两位数 )
+   *                  ( d: 一周中的一天，星期天是 0 )
+   *                  ( dd: 最简写的一周中一天的名称 )
+   *                  ( ddd: 简写的一周中一天的名称 )
+   *                  ( dddd: 一周中一天的名称 )
+   *                  ( H: 小时 )
+   *                  ( HH: 小时, 两位数 )
+   *                  ( m: 分钟 )
+   *                  ( mm: 分钟, 两位数 )
+   *                  ( s: 秒 )
+   *                  ( ss: 秒, 两位数 )
+   *                  ( SSS: 秒, 三位数 )
+   *                  ( Z: UTC 的偏移量 )
+   *                  ( ZZ: UTC 的偏移量, 数字前面加上 0 )
+   *                  ( A: AM PM )
+   *                  ( a: am pm )
+   */
+  $format( formatStr: String ): String;
+
+  /**
+   * 获取当前时间和传入时间的时间差，默认毫秒
+   * @param input 需要和当前时间比较的时间
+   * @param units 单位,
+   *              [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *              [ month, M ] 月
+   *              [ year, y ] 年
+   *              [ hour, h ] 时
+   *              [ minute, m ] 分
+   *              [ second, s ] 秒
+   *              [ millisecond, ms ] 毫秒
+   * @param float 
+   */
+  $diff( input: String | Date, units: String, float: Boolean ): String;
+
+  /**
+   * 返回月份的天数
+   */
+  $daysInMonth(): Number;
+
+  /**
+   * 返回包含时间数值的数组
+   */
+  $toArray(): Array;
+
+  /**
+   * 返回包含时间数值的对象
+   */
+  $toObject(): any;
+
+  /**
+   * 检查当前时间是否在传入时间之前
+   * @param input 需要和当前时间比较的时间
+   */
+  $isBefore( input: String | Date ): Boolean;
+
+  /**
+   * 检查当前时间是否和传入时间相同
+   * @param input 需要和当前时间比较的时间
+   */
+  $isSame( input: String | Date ): Boolean;
+
+  /**
+   * 检查当前时间是否在传入时间之后
+   * @param input 需要和当前时间比较的时间
+   */
+  $isAfter( input: String | Date ): Boolean;
+
+}
+
+
 interface Window {
 
   $typeof: $typeof
