@@ -1891,7 +1891,7 @@
   dayjs.en = Ls[L];
 
   defineValue(Date, '$parse', function (date) {
-    console.log(dayjs);
+    return dayjs(date).toDate();
   });
 
   /**
@@ -1902,6 +1902,40 @@
   var root = inBrowser ? window : inNode ? global : {};
 
   defineValue(root, 'dayjs', dayjs);
+
+  var DateProto = Date.prototype;
+
+  var DAYJS = '__ZENJS_DAYJS__';
+  var ignore = 'parse_init_clone_valueOf_toDate_toJSON_toISOString_toString_unix'.split('_');
+  var isDayjs$1 = dayjs.isDayjs;
+
+  dayjs.extend(function (option, Dayjs) {
+    keys(Dayjs.prototype).forEach(function (key) {
+      key.indexOf('$') === 0 || ignore.indexOf(key) > -1 || install(key);
+    });
+  });
+
+  function install(name) {
+    defineValue(DateProto, '$' + name, function () {
+      var $dayjs = this.$dayjs();
+      var result = $dayjs[name].apply($dayjs, arguments);
+
+      if (isDayjs$1(result)) {
+        return (this[DAYJS] = result).toDate();
+      }
+      return result;
+    });
+  }
+
+  defineValue(DateProto, '$dayjs', function () {
+    var $dayjs = this[DAYJS];
+
+    if (!$dayjs || $dayjs.valueOf() !== +this) {
+      $dayjs = this[DAYJS] = dayjs(this);
+    }
+
+    return $dayjs;
+  });
 
   defineValue(root, '$typeof', function (obj) {
     if (obj == null) return obj + '';
