@@ -1931,7 +1931,7 @@
     var $dayjs = this[DAYJS];
 
     if (!$dayjs || $dayjs.valueOf() !== +this) {
-      $dayjs = this[DAYJS] = dayjs(this);
+      return this[DAYJS] = dayjs(this);
     }
 
     return $dayjs;

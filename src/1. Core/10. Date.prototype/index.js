@@ -15,7 +15,7 @@ dayjs.extend(( option, Dayjs ) => {
 });
 
 function install( name ){
-  defineValue( DateProto, '$'+name, function(){
+  defineValue( DateProto, '$' + name, function(){
     let $dayjs = this.$dayjs();
     let result = $dayjs[ name ].apply( $dayjs, arguments );
 
@@ -30,7 +30,7 @@ defineValue( DateProto, '$dayjs', function(){
   let $dayjs = this[ DAYJS ];
 
   if( !$dayjs || $dayjs.valueOf() !== +this ){
-    $dayjs = this[ DAYJS ] = dayjs( this );
+    return this[ DAYJS ] = dayjs( this );
   }
 
   return $dayjs;
