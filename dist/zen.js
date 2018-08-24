@@ -1932,7 +1932,9 @@
       var result = $dayjs[name].apply($dayjs, arguments);
 
       if (isDayjs$1(result)) {
-        return (this[DAYJS] = result).toDate();
+        this.setTime(result.valueOf());
+        this[DAYJS] = result;
+        return this;
       }
       return result;
     });
