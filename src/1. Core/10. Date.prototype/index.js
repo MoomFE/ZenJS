@@ -1,10 +1,17 @@
+import './$dayjs/index';
+
+
+
+
+
+
 import dayjs from "../../shared/dependencies/dayjs/dayjs";
 import keys from "../../shared/global/Object/keys";
 import defineValue from "../../shared/util/defineValue";
 import DateProto from "../../shared/global/Date/prototype/index";
+import DAYJS from './$dayjs/index';
 
 
-const DAYJS = '__ZENJS_DAYJS__';
 const ignore = 'parse_init_clone_valueOf_toDate_toJSON_toISOString_toString_unix'.split('_');
 const isDayjs = dayjs.isDayjs;
 
@@ -25,13 +32,3 @@ function install( name ){
     return result;
   });
 }
-
-defineValue( DateProto, '$dayjs', function(){
-  let $dayjs = this[ DAYJS ];
-
-  if( !$dayjs || $dayjs.valueOf() !== +this ){
-    return this[ DAYJS ] = dayjs( this );
-  }
-
-  return $dayjs;
-});

@@ -1906,6 +1906,17 @@
   var DateProto = Date.prototype;
 
   var DAYJS = '__ZENJS_DAYJS__';
+
+  defineValue(DateProto, '$dayjs', function () {
+    var $dayjs = this[DAYJS];
+
+    if (!$dayjs || $dayjs.valueOf() !== +this) {
+      return this[DAYJS] = dayjs(this);
+    }
+
+    return $dayjs;
+  });
+
   var ignore = 'parse_init_clone_valueOf_toDate_toJSON_toISOString_toString_unix'.split('_');
   var isDayjs$1 = dayjs.isDayjs;
 
@@ -1926,16 +1937,6 @@
       return result;
     });
   }
-
-  defineValue(DateProto, '$dayjs', function () {
-    var $dayjs = this[DAYJS];
-
-    if (!$dayjs || $dayjs.valueOf() !== +this) {
-      return this[DAYJS] = dayjs(this);
-    }
-
-    return $dayjs;
-  });
 
   defineValue(root, '$typeof', function (obj) {
     if (obj == null) return obj + '';
