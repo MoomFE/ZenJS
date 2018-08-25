@@ -17,6 +17,11 @@ const banner =
 const resolve = require('rollup-plugin-node-resolve');
 const replace = require('rollup-plugin-replace');
 const babel = require('rollup-plugin-babel');
+const uglify = require('uglify-js');
+const zlib = require('zlib');
+const fs = require('fs');
+const readmePath = __dirname.replace( /scripts$/, 'README.md' );
+const codeSize = {};
 
 const plugins = [
   resolve(),
@@ -31,11 +36,105 @@ const plugins = [
     transformBundle( code ){
       return code.replace( /\s*=\s*void 0(,|;)/g, '$1' );
     }
+  },
+  {
+    name: 'Compressed code',
+    transformBundle( code, config ){
+      const isMinify = /min\.js$/.test( config.file );
+
+      if( isMinify ){
+        const minify = uglify.minify( code );
+
+        if( minify.error ){
+          code = '';
+          console.error(
+            '\n******************************************************************'+
+            `\n* Minify ERROR: ${ minify.error.message }` +
+            `\n* Line: ${ minify.error.line }` +
+            `\n* Col: ${ minify.error.col }` +
+            '\n******************************************************************'
+          );
+        }else{
+          code = banner + '\n' + minify.code;
+        }
+      }
+
+      return code;
+    }
+  },
+  {
+    name: 'Write the file size to the README',
+    transformBundle( code, config ){
+      const file = config.file;
+      const name = file.replace( /^dist\//, '' );
+      const rReadmeSearch = new RegExp(`(\\|\\s${ name }\\s+\\|\\s)[0-9\\.\\skb]+(\\s\\|\\s)[0-9\\.\\skb]+(\\s\\|)`)
+      const size = getSize( code );
+      const gzipSize = getSize( zlib.gzipSync( code ) );
+
+      fs.writeFileSync(
+        readmePath,
+        fs.readFileSync( readmePath, 'utf-8' )
+          .replace( rReadmeSearch, `$1${ size }$2${ gzipSize }$3` ),
+        'utf-8'
+      );
+
+      codeSize[ file ] = {
+        size,
+        gzipSize
+      };
+
+      return code;
+    }
   }
 ];
 
 
+
+const defaultConfig = {
+  input: 'src/build/index.js',
+  output: {
+    file: 'dist/zen.js',
+    format: 'umd',
+    banner
+  },
+  plugins
+};
+
+
+
+const extend = require('extend');
+const rollup = require('rollup');
+
+async function build( config ){
+
+  const start = +new Date();
+  const rollupConfig = extend( true, {}, defaultConfig, config );
+  const output = rollupConfig.output;
+
+  await new Promise( async resolve => {
+    const bundle = await rollup.rollup( rollupConfig );
+    const OutputChunk = await bundle.write( output );
+    const size = codeSize[ output.file ];
+
+    console.log(
+      `\n${ output.file } 已构建完毕! ${ new Date() - start + 'ms' }` +
+      `\n      size: ${ size.size }` +
+      `\n      gzip: ${ size.gzipSize }`
+    );
+
+    resolve();
+  });
+
+}
+
+function getSize( code ){
+  return ( code.length / 1024 ).toFixed( 2 ) + 'kb';
+}
+
+
 module.exports = {
   banner,
-  plugins
+  plugins,
+  defaultConfig,
+  build
 }
