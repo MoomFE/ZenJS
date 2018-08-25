@@ -1920,6 +1920,7 @@ dayjs.extend(function (option, Dayjs) {
   keys(Dayjs.prototype).forEach(function (key) {
     key.indexOf('$') === 0 || ignore.indexOf(key) > -1 || install(key);
   });
+  install = undefined;
 });
 
 function install(name) {

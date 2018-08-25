@@ -18,7 +18,8 @@ const isDayjs = dayjs.isDayjs;
 dayjs.extend(( option, Dayjs ) => {
   keys( Dayjs.prototype ).forEach( key => {
     ( key.indexOf('$') === 0 || ignore.indexOf( key ) > -1 ) || install( key );
-  })
+  });
+  install = undefined;
 });
 
 function install( name ){
