@@ -2025,4 +2025,13 @@ var ZenJS = root.ZenJS = assign(false, [null, {
 
 }]);
 
+var util = ZenJS.util,
+    polyfill = ZenJS.polyfill;
+
+
+defineValue(ZenJS, 'install', function (fn) {
+  fn(ZenJS, util, polyfill);
+  return ZenJS;
+});
+
 export default ZenJS;
