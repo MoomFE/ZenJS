@@ -1,5 +1,3 @@
-'use strict';
-
 var index = (function (o, c) {
   var proto = c.prototype;
 

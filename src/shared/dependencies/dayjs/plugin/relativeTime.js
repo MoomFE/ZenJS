@@ -1,5 +1,3 @@
-'use strict';
-
 var S = 'second';
 var MIN = 'minute';
 var H = 'hour';

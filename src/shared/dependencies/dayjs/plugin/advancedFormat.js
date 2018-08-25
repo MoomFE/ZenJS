@@ -1,5 +1,3 @@
-'use strict';
-
 var FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'; // regex
 
 var index = (function (o, c, d) {

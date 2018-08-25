@@ -1,5 +1,3 @@
-'use strict';
-
 var MS = 'millisecond';
 var D = 'day';
 var W = 'week';
