@@ -2,7 +2,7 @@ const { build } = require('./shared');
 
 
 const configuration = [
-  // 只包含核心代码, 没有 DOM API, 没有安装插件
+  // Default 版本, 只包含核心代码, 没有 DOM API, 没有安装插件
   {}, {
     output: {
       file: 'dist/zen.min.js'
@@ -18,7 +18,7 @@ const configuration = [
       format: 'es'
     }
   },
-  // 包含核心代码及 DOM API, 没有安装插件
+  // DOM 版本, 包含核心代码及 DOM API, 没有安装插件
   {
     input: 'src/build/all.js',
     output: {
