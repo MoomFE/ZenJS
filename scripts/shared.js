@@ -90,6 +90,8 @@ const plugins = [
 
 
 
+const extend = require('extend');
+
 const defaultConfig = {
   input: 'src/build/index.js',
   output: {
@@ -101,9 +103,14 @@ const defaultConfig = {
   plugins
 };
 
+const domConfig = extend( true, {}, defaultConfig, {
+  input: 'src/build/all.js',
+  output: {
+    file: 'dist/zen.all.js'
+  }
+});
 
 
-const extend = require('extend');
 const rollup = require('rollup');
 
 async function build( config ){
@@ -137,5 +144,6 @@ module.exports = {
   banner,
   plugins,
   defaultConfig,
+  domConfig,
   build
 }

@@ -1,1 +1,6 @@
-module.exports = require('./shared').defaultConfig;
+const shared = require('./shared');
+
+module.exports = [
+  shared.defaultConfig,
+  shared.domConfig
+];
