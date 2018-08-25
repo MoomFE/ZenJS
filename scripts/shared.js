@@ -89,9 +89,6 @@ const plugins = [
 ];
 
 
-
-const extend = require('extend');
-
 const defaultConfig = {
   input: 'src/build/index.js',
   output: {
@@ -103,20 +100,12 @@ const defaultConfig = {
   plugins
 };
 
-const domConfig = extend( true, {}, defaultConfig, {
-  input: 'src/build/all.js',
-  output: {
-    file: 'dist/zen.all.js'
-  }
-});
-
 
 const rollup = require('rollup');
 
-async function build( config ){
+async function build( rollupConfig ){
 
   const start = +new Date();
-  const rollupConfig = extend( true, {}, defaultConfig, config );
   const output = rollupConfig.output;
 
   await new Promise( async resolve => {
@@ -144,6 +133,5 @@ module.exports = {
   banner,
   plugins,
   defaultConfig,
-  domConfig,
   build
 }
