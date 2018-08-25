@@ -1,12 +1,3 @@
-import $assign from "../../Object/$assign/util";
-import isNumber from "../../shared/util/isNumber";
-import stringify from "../../shared/global/JSON/stringify";
-import String from "../../shared/global/String/index";
-import document from "../../shared/global/Document/index";
-import parse from "../../shared/global/JSON/parse";
-import defineValue from "../../shared/util/defineValue";
-
-
 /**
  * Transplant from JavaScript Cookie
  * Version: 2.2.0
@@ -26,9 +17,13 @@ const rDecodeValue = /%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g
 const rDecodeKey = /%(23|24|26|2B|5E|60|7C)/g;
 const rBrackets = /[\(\)]/g;
 
+
+const assign = ZenJS.polyfill.assign;
+const { isNumber, defineValue } = ZenJS.util;
+
 function set( key, value, attributes ){
 
-  attributes = $assign( true, { path: '/' }, attributes );
+  attributes = assign( { path: '/' }, attributes );
 
   if( isNumber( attributes.expires ) ){
     attributes.expires = new Date( new Date() * 1 + attributes.expires * 864e+5 );
@@ -38,7 +33,7 @@ function set( key, value, attributes ){
   attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
 
   try {
-    const result = stringify( value );
+    const result = JSON.stringify( value );
 
     if( rObject.test( result ) ){
       value = result;
@@ -75,7 +70,6 @@ function set( key, value, attributes ){
   );
 }
 
-
 function get( key, json ){
 
   const jar = {};
@@ -83,7 +77,7 @@ function get( key, json ){
   const length = cookies.length;
   let i = 0,
       parts, cookie, name;
-
+    
   for( ; i < length; i++ ){
     parts = cookies[i].split('=');
     cookie = parts.slice( 1 ).join('=');
@@ -114,29 +108,24 @@ function get( key, json ){
   return key !== undefined ? jar[ key ] : jar;
 }
 
+defineValue( document, '$cookie', function( key, value, attributes ){
+  const length = arguments.length;
 
-defineValue( document, {
-
-  $cookie( key, value, attributes ){
-    const length = arguments.length;
-
-    // getter JSON
-    if( !length ){
-      return get( key, true );
-    }
-    // getter one
-    if( length === 1 ){
-      return get( key || key + '', false );
-    }
-    // setter
-    return set( key, value, attributes );
-  },
-
-  '$deleteCookie $removeCookie': function( key, attributes ){
-    set(
-      key, '',
-      $assign( true, attributes, { expires: -1 } )
-    );
+  // getter JSON
+  if( !length ){
+    return get( key, true );
   }
+  // getter one
+  if( length === 1 ){
+    return get( key || key + '', false );
+  }
+  // setter
+  return set( key, value, attributes );
+});
 
+defineValue( document, '$deleteCookie $removeCookie', function( key, attributes ){
+  set(
+    key, '',
+    assign( attributes, { expires: -1 } )
+  );
 });
