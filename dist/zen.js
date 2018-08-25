@@ -7,9 +7,9 @@
  */
 
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (factory());
+  (global.ZenJS = factory());
 }(this, (function () { 'use strict';
 
   var defineProperty = Object.defineProperty;
@@ -1990,7 +1990,7 @@
     return toString.call(obj) === '[object RegExp]';
   }
 
-  var ZenJS = assign(false, [null, {
+  var ZenJS = root.ZenJS = assign(false, [null, {
 
         polyfill: {
               assign: assign$1,
@@ -2031,6 +2031,6 @@
 
   }]);
 
-  defineValue(root, 'ZenJS', ZenJS);
+  return ZenJS;
 
 })));

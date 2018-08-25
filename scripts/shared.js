@@ -95,6 +95,7 @@ const defaultConfig = {
   output: {
     file: 'dist/zen.js',
     format: 'umd',
+    name: 'ZenJS',
     banner
   },
   plugins

@@ -1986,7 +1986,7 @@ function isRegExp(obj) {
   return toString.call(obj) === '[object RegExp]';
 }
 
-var ZenJS = assign(false, [null, {
+var ZenJS = root.ZenJS = assign(false, [null, {
 
       polyfill: {
             assign: assign$1,
@@ -2027,4 +2027,4 @@ var ZenJS = assign(false, [null, {
 
 }]);
 
-defineValue(root, 'ZenJS', ZenJS);
+module.exports = ZenJS;

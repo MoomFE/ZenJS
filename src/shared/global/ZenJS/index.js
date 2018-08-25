@@ -23,9 +23,10 @@ import isSet from "../../util/isSet";
 import isMap from "../../util/isMap";
 import mapSetToArray from "../../util/mapSetToArray";
 import isReferenceType from "../../util/isReferenceType";
+import root from "../../const/root";
 
 
-const ZenJS = _assign( false, [ null, {
+const ZenJS =  root.ZenJS = _assign( false, [ null, {
 
     polyfill: {
       assign: assign,
