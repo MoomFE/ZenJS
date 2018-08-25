@@ -1,4 +1,3 @@
-import root from "../../const/root";
 import _assign from "../../util/assign";
 import assign from "../Object/assign";
 import entries from "../Object/entries";
