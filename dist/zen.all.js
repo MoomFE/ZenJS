@@ -1275,6 +1275,40 @@
     return result > to ? to - result : result;
   });
 
+  var fromCharCode = String.fromCharCode;
+
+  function stringRandom() /* uppercase */{
+    var uppercase = parametersDefault(arguments, 0, false);
+
+    return fromCharCode(uppercase ? intRandom(65, 90) : intRandom(97, 122));
+  }
+
+  defineValue(String, '$random', stringRandom);
+
+  defineValue(String, '$someRandom', function () /* length, uppercase, number */{
+
+    var args = arguments;
+    var uppercase = parametersDefault(args, 1, false);
+    var number = parametersDefault(args, 2, false);
+
+    var result = '';
+    var length = parametersDefault(args, 0, 12);
+
+    while (length-- > 0) {
+      // 指定了也随机大写字母, 则几率是三分之一
+      // 否则只是随机小写字母及数字, 则几率是二分之一
+      if (number && intRandom(0, uppercase ? 2 : 1) === 0) {
+        result += intRandom(0, 9);
+      }
+      // 随机大小写字母
+      else {
+          result += stringRandom(uppercase && intRandom(0, 1) === 0);
+        }
+    }
+
+    return result;
+  });
+
   var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$])/g;
 
   /**

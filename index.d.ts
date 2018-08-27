@@ -464,6 +464,24 @@ interface Math {
 
 }
 
+interface StringConstructor {
+
+  /**
+   * 随机26个字母中的一个
+   * @param uppercase 是否大写 - default: false
+   */
+  $random( uppercase?: false ): String;
+
+  /**
+   * 随机指定长度的字符串
+   * @param length 随机的字符串长度 - default: 12
+   * @param uppercase 是否随机大写字母 - default: false
+   * @param number 是否随机数字 - default: false
+   */
+  $someRandom( length: Number = 12, uppercase?: false, number?: false ): String;
+
+}
+
 interface String {
 
   /**
@@ -1200,9 +1218,6 @@ declare const $typeof: $typeof;
 //    */
 //   $emit( types, ...data?: any[] ): this;
 // }
-
-//  { $ramdom(): Number;
-
 // } {
 //   /**
 //    * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
@@ -1297,29 +1312,6 @@ declare const $typeof: $typeof;
 //   $each( obj: any, callback: ( key: String, value: any, obj: any ) => Boolean ): any;
 // }
 
-// interface String {
-//   /**
-//    * 对当前字符串进行全局替换
-//    * @param searchValue 匹配字符串中被替换的部分
-//    * @param replaceValue 进行替换的字符串
-//    */
-//   $replaceAll( searchValue: RegExp | String, replaceValue: String ): String;
-// }
-
-// interface StringConstructor {
-//   /**
-//    * 随机26个字母中的一个
-//    * @param uppercase 是否大写 - default: false
-//    */
-//   $random( uppercase?: false ): String;
-//   /**
-//    * 随机指定长度的字符串
-//    * @param length 字符串长度 - default: 12
-//    * @param hasUppercase 是否随机大写字母 - default: false
-//    * @param hasNumber 是否随机数字( 不会随机到首位 ) - default: false
-//    */
-//   $someRandom( length: Number = 12, hasUppercase?: false, hasNumber?: false ): String;
-// }
 
 
 
