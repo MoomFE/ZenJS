@@ -1271,6 +1271,128 @@ defineValue(Math, '$random', function () {
   return result > to ? to - result : result;
 });
 
+/**
+ * 获取传入数字的小数位长度
+ * @param {Number} num
+ * @returns {Number}
+ */
+function getDecimalLength(num) {
+  return (('' + num).split('.')[1] || '').length;
+}
+
+var max = Math.max;
+
+var pow = Math.pow;
+
+/**
+ * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
+ * String.prototype.repeat polyfill
+ * @param {String} str 需要重复的字符串
+ * @param {Number} count 需要重复的次数
+ */
+function repeat(str, count) {
+  var result = '';
+
+  while (count--) {
+    result += str;
+  }
+
+  return result;
+}
+
+var NumberProto = Number.prototype;
+
+function defineOperation(name, handlerFn) {
+  defineValue(Math, name, handlerFn);
+  defineValue(NumberProto, name, function (num) {
+    return handlerFn(this, num);
+  });
+}
+
+/**
+ * 
+ * @param {Number} num1 
+ * @param {Number} num2 
+ * @param {Function} handlerFn 
+ * @param {Function} lastHandlerFn 
+ */
+function handler(num1, num2, handlerFn, lastHandlerFn) {
+  var decimal1 = getDecimalLength(num1 = num1 || 0);
+  var decimal2 = getDecimalLength(num2 = num2 || 0);
+  var maxDecimal = max(decimal1, decimal2);
+  var exponent = maxDecimal ? pow(10, maxDecimal) : 1;
+
+  if (maxDecimal) {
+    num1 = integer(num1, decimal1, maxDecimal);
+    num2 = integer(num2, decimal2, maxDecimal);
+  }
+
+  var result = handlerFn(num1, num2);
+
+  if (lastHandlerFn) {
+    return lastHandlerFn(result, exponent);
+  }
+
+  return result / exponent;
+}
+
+/**
+ * 将传入数字乘以一定的倍数, 不使用乘法的方式, 防止出现乘法精度不准的问题
+ * @param {Number} num 需要处理的数字
+ * @param {Number} decimal 当前数字的小数位
+ * @param {Number} maxDecimal 最大小数位
+ */
+function integer(num, decimal, maxDecimal) {
+  num = ('' + num).replace('.', '');
+
+  if (decimal !== maxDecimal) {
+    num += repeat('0', maxDecimal - decimal);
+  }
+
+  return Number(num);
+}
+
+// add
+defineOperation('$jia $add', $add$1);
+function $add$1(num1, num2) {
+  return handler(num1, num2, function (num1, num2) {
+    return num1 + num2;
+  });
+}
+
+// subtract
+defineOperation('$jian $subtract', function (num1, num2) {
+  return handler(num1, num2, function (num1, num2) {
+    return num1 - num2;
+  });
+});
+
+// multiply
+defineOperation('$cheng $multiply', function (num1, num2) {
+  return handler(num1, num2, function (num1, num2) {
+    return num1 * num2;
+  }, function (result, exponent) {
+    return result / pow(exponent, 2);
+  });
+});
+
+// divide
+defineOperation('$chu $divide', function (num1, num2) {
+  return handler(num1, num2, function (num1, num2) {
+    return num1 / num2;
+  }, function (result) {
+    return result;
+  });
+});
+
+defineValue(Math, '$mean', function () {
+  var count = slice.call(arguments).reduce(function (count, next) {
+    return $add$1(count, next);
+  });
+
+  return count / arguments.length;
+});
+
 var fromCharCode = String.fromCharCode;
 
 function stringRandom() /* uppercase */{

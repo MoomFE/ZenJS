@@ -442,6 +442,62 @@ interface NumberConstructor {
 
 }
 
+interface Number {
+
+  /**
+   * 将传入数字与当前数字相加, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $add( num: Number ): Number;
+  /**
+   * 将传入数字与当前数字相加, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $jia( num: Number ): Number;
+
+  /**
+   * 将传入数字与当前数字相减, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $subtract( num: Number ): Number;
+  /**
+   * 将传入数字与当前数字相减, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $jian( num: Number ): Number;
+
+  /**
+   * 将传入数字与当前数字相乘, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $multiply( num: Number ): Number;
+  /**
+   * 将传入数字与当前数字相乘, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $cheng( num: Number ): Number;
+
+  /**
+   * 将传入数字与当前数字相除, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $divide( num: Number ): Number;
+  /**
+   * 将传入数字与当前数字相除, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $chu( num: Number ): Number;
+
+}
+
 interface Math {
 
   /**
@@ -461,6 +517,64 @@ interface Math {
    * 在 0 到 9 之间随机一个数字
    */
   $random(): Number;
+
+  /**
+   * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $add( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $jia( num1: Number, num2: Number ): Number;
+
+  /**
+   * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $subtract( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $jian( num1: Number, num2: Number ): Number;
+
+  /**
+   * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $multiply( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $cheng( num1: Number, num2: Number ): Number;
+
+  /**
+   * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $divide( num1: Number, num2: Number ): Number;
+  /**
+   * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
+   * @param num1 数字1
+   * @param num2 数字2
+   */
+  $chu( num1: Number, num2: Number ): Number;
+
+  /**
+   * 传入多个数字, 求出传入参数的平均值
+   * @param args 任意个数数字
+   */
+  $mean( ...args?: Number[] ): Number;
 
 }
 
@@ -706,7 +820,6 @@ interface Date {
   $isAfter( input: String | Date ): Boolean;
 
 }
-
 
 interface Window {
 
@@ -1218,111 +1331,12 @@ declare const $typeof: $typeof;
 //    */
 //   $emit( types, ...data?: any[] ): this;
 // }
-// } {
-//   /**
-//    * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
-//    * @param num1 数字1
-//    * @param num2 数字2
-//    */
-//   $plus( num1: Number, num2: Number ): Number;
-//   /**
-//    * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
-//    * @param num1 数字1
-//    * @param num2 数字2
-//    */
-//   $minus( num1: Number, num2: Number ): Number;
-//   /**
-//    * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
-//    * @param num1 数字1
-//    * @param num2 数字2
-//    */
-//   $multiply( num1: Number, num2: Number ): Number;
-//   /**
-//    * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
-//    * @param num1 数字1
-//    * @param num2 数字2
-//    */
-//   $divide( num1: Number, num2: Number ): Number;
-//   /**
-//    * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
-//    * @param num1 数字1
-//    * @param num2 数字2
-//    */
-//   $jia( num1: Number, num2: Number ): Number;
-//   /**
-//    * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
-//    * @param num1 数字1
-//    * @param num2 数字2
-//    */
-//   $jian( num1: Number, num2: Number ): Number;
-//   /**
-//    * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
-//    * @param num1 数字1
-//    * @param num2 数字2
-//    */
-//   $cheng( num1: Number, num2: Number ): Number;
-//   /**
-//    * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
-//    * @param num1 数字1
-//    * @param num2 数字2
-//    */
-//   $chu( num1: Number, num2: Number ): Number;
 //   /**
 //    * 传入多个数字, 求出传入参数的平均值
 //    * @param args 任意个数数字
 //    */
 //   $mean( ...args?: Number[] ): Number;
 // }
-
-// interface Object {
-//   /**
-//    * 从对象中删除与传入值相同的对象
-//    * @param value 需要删除的对象
-//    * @param congruence 是否使用全等进行判断 - default: true
-//    */
-//   $deleteValue( value: any, congruence?: true ): any;
-//   /**
-//    * 获取对象的某个值
-//    * @param key 需要获取的 key
-//    */
-//   $get( key: String ): String;
-//   /**
-//    * 设置对象的某个值
-//    * @param key 需要设置的 key
-//    * @param value 需要设置的 value
-//    */
-//   $set( key: String, value: any ): any;
-//   /**
-//    * 批量给对象设置值
-//    * @param obj 批量修改对象内的值
-//    */
-//   $set( obj: any ): any;
-//   /**
-//    * 返回当前对象
-//    */
-//   readonly __self__: any;
-// }
-
-// interface ObjectConstructor {
-//   /**
-//    * 遍历对象, 并调用传入方法
-//    * @param obj 需要遍历的对象
-//    * @param callback 遍历对象时调用的方法, 方法返回 false 时, 退出遍历
-//    */
-//   $each( obj: any, callback: ( key: String, value: any, obj: any ) => Boolean ): any;
-// }
-
-
-
-
-
-// interface Window {
-//   Zen: ZenJS,
-//   ZenJS: ZenJS,
-//   $querystring: $querystring,
-//   $ready: $ready,
-//   $typeof: $typeof
-// };
 
 
 // interface ZenJS {
