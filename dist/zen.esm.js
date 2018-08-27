@@ -1289,8 +1289,9 @@ defineValue(StringProto, '$replaceAll', function (searchValue, replaceValue) {
 
   if (searchValue[isString]) {
     searchValue = searchValue.replace(rkeyword, '\\$1');
-  } else if (isRegExp(searchValue) && !searchValue.global) {
-    flags += searchValue.flags || '';
+  } else if (isRegExp(searchValue)) {
+    if (searchValue.global) flags = searchValue.flags || '';else flags += searchValue.flags || '';
+
     searchValue = searchValue.source;
   }
 

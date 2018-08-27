@@ -467,6 +467,13 @@ interface Math {
 interface String {
 
   /**
+   * 对当前字符串进行全局替换
+   * @param searchValue 字符串或正则, 匹配字符串中被替换的部分
+   * @param replaceValue 进行替换的字符串, 也可传入方法用来返回新字符串 - default: ''
+   */
+  $replaceAll( searchValue: String | RegExp, replaceValue: String | Function ): String;
+
+  /**
    * 将字符串首字母大写
    * @param ignoreNext 是否忽略除首字母外小写的操作
    */
@@ -685,6 +692,10 @@ interface Date {
 
 interface Window {
 
+  /**
+   * 判断传入参数的类型
+   * @param obj 需要判断类型的参数
+   */
   $typeof: $typeof
 
 }
