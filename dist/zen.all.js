@@ -1275,6 +1275,34 @@
     return result > to ? to - result : result;
   });
 
+  var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$])/g;
+
+  /**
+   * 判断传入对象是否是 RegExp 类型
+   * @param {any} obj 需要判断的对象
+   * @returns {Boolean}
+   */
+  function isRegExp(obj) {
+    return toString.call(obj) === '[object RegExp]';
+  }
+
+  defineValue(StringProto, '$replaceAll', function (searchValue, replaceValue) {
+    var flags = 'g';
+
+    if (searchValue == null) {
+      return this;
+    }
+
+    if (searchValue[isString]) {
+      searchValue = searchValue.replace(rkeyword, '\\$1');
+    } else if (isRegExp(searchValue) && !searchValue.global) {
+      flags += searchValue.flags || '';
+      searchValue = searchValue.source;
+    }
+
+    return this.replace(new RegExp(searchValue, flags), replaceValue || '');
+  });
+
   defineValue(StringProto, '$toCapitalize', function (ignoreNext) {
     return this.substr(0, 1).toUpperCase() + this.substr(1)[ignoreNext ? '$self' : 'toLowerCase']();
   });
@@ -1924,7 +1952,6 @@
     keys(Dayjs.prototype).forEach(function (key) {
       key.indexOf('$') === 0 || ignore.indexOf(key) > -1 || install(key);
     });
-    install = undefined;
   });
 
   function install(name) {
@@ -1980,15 +2007,6 @@
    */
   function returnFalse() {
     return false;
-  }
-
-  /**
-   * 判断传入对象是否是 RegExp 类型
-   * @param {any} obj 需要判断的对象
-   * @returns {Boolean}
-   */
-  function isRegExp(obj) {
-    return toString.call(obj) === '[object RegExp]';
   }
 
   var ZenJS = root.ZenJS = assign(false, [null, {
