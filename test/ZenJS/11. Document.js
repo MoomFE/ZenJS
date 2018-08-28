@@ -11,6 +11,18 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$ready',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            document.$ready(function(){
+              document.readyState.should.equals('complete')
+            });
+          }
+        }
+      ]
     }
   ]
 });

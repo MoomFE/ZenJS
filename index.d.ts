@@ -879,6 +879,14 @@ interface Document {
    */
   $id( elmentId: String ): Element;
 
+  /**
+   * 当前页面加载完成后执行传入代码
+   *
+   * @param func DOM 载入完成后执行的方法
+   * @param data 需要传入方法的数据
+   */
+  $ready( func: () => void, data?: any ): void;
+
 }
 
 

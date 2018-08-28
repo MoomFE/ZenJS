@@ -925,7 +925,7 @@
   /**
    * @type {Element}
    */
-  var DomElement = inBrowser ? window.Element : undefined;
+  var DomElement = inBrowser ? window.Element : {};
 
   var rType = /^\[object\s([^\]]+)]$/;
 
@@ -2192,6 +2192,25 @@
 
   if (inBrowser) {
     defineValue(document, '$id', document.getElementById);
+  }
+
+  var addEventListener = 'addEventListener';
+
+  var removeEventListener = 'removeEventListener';
+
+  var DOMContentLoaded = 'DOMContentLoaded';
+
+  if (inBrowser) {
+    defineValue(document, '$ready', function (func, data) {
+      if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
+        func.apply(window, data);
+      } else {
+        document[addEventListener](DOMContentLoaded, function callback(event) {
+          document[removeEventListener](DOMContentLoaded, callback);
+          func.apply(window, data);
+        });
+      }
+    });
   }
 
   /**

@@ -921,7 +921,7 @@ var inBrowser = typeof window !== 'undefined';
 /**
  * @type {Element}
  */
-var DomElement = inBrowser ? window.Element : undefined;
+var DomElement = inBrowser ? window.Element : {};
 
 var rType = /^\[object\s([^\]]+)]$/;
 

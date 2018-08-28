@@ -13,7 +13,7 @@ const DomEventTarget = supportsEventTarget
                       ? window.EventTarget.prototype
                       : inBrowser
                         ? [ window, document, ElementProto ]
-                        : undefined;
+                        : {};
 
 if( supportsEventTarget ){
   defineValue( DomEventTarget, addEventListenerPrivate, DomEventTarget[ addEventListener ] );

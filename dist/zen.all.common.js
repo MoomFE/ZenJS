@@ -921,7 +921,7 @@ var inBrowser = typeof window !== 'undefined';
 /**
  * @type {Element}
  */
-var DomElement = inBrowser ? window.Element : undefined;
+var DomElement = inBrowser ? window.Element : {};
 
 var rType = /^\[object\s([^\]]+)]$/;
 
@@ -2185,6 +2185,29 @@ function parse(str) {
 }
 
 defineValue(root, '$querystring', assign(false, [null, { stringify: stringify, parse: parse }]));
+
+if (inBrowser) {
+  defineValue(document, '$id', document.getElementById);
+}
+
+var addEventListener = 'addEventListener';
+
+var removeEventListener = 'removeEventListener';
+
+var DOMContentLoaded = 'DOMContentLoaded';
+
+if (inBrowser) {
+  defineValue(document, '$ready', function (func, data) {
+    if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
+      func.apply(window, data);
+    } else {
+      document[addEventListener](DOMContentLoaded, function callback(event) {
+        document[removeEventListener](DOMContentLoaded, callback);
+        func.apply(window, data);
+      });
+    }
+  });
+}
 
 /**
  * 在一个对象上定义/修改一个新属性的 get 描述符
