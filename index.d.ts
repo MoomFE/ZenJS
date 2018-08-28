@@ -285,7 +285,7 @@ interface ObjectConstructor {
 
   /**
    * 将多个源对象的可枚举属性合并到第一个对象中
-   * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign
+   * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign, 可不填 - Default: false
    */
   $assign( shallow? = false, ...args?: any[] ): any;
 
@@ -334,7 +334,7 @@ interface Object {
 
   /**
    * 将多个源对象的可枚举属性合并到当前对象中
-   * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign
+   * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign, 可不填 - Default: false
    */
   $assign( shallow? = false, ...args?: any[] ): any;
 
