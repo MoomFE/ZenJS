@@ -867,6 +867,20 @@ interface $querystring {
 }
 
 
+/*
+ * DOM API
+ */
+
+interface Document {
+
+  /**
+   * document.getElementById 的引用
+   * @param elmentId ID
+   */
+  $id( elmentId: String ): Element;
+
+}
+
 
 // interface Document {
 //   /**
@@ -897,11 +911,6 @@ interface $querystring {
 //    * @param attributes cookie 的配置
 //    */
 //   $removeCookie( key: String, attributes?: any );
-//   /**
-//    * document.getElementById 的引用
-//    * @param elmentId ID
-//    */
-//   $id( elmentId: String ): Element;
 //   /**
 //    * 页面加载完成后执行传入代码
 //    * -- 方法可以用 function[ call / apply ] 的方式使用, 可传入其他 document, 比如 iframe 的 document

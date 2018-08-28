@@ -56,7 +56,7 @@
 ### All : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.all.js             | 51.63kb | 14.08kb | \|  | UMD       | Browser |
+| zen.all.js             | 51.71kb | 14.11kb | \|  | UMD       | Browser |
 | zen.all.min.js         | 18.63kb | 6.85kb | \|  | UMD       | Browser |
 | zen.all.common.js      | 47.98kb | 13.84kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
 | zen.all.esm.js         | 47.96kb | 13.82kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
@@ -172,6 +172,9 @@
   - $querystring
     - stringify
     - parse
+
+- Document
+  - $id
 
   <!-- - $get
   - $inArray

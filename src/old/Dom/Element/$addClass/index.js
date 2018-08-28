@@ -40,6 +40,7 @@ if( inBrowser ){
     return elem;
   }
   
+  // will-change
   
   defineValue( ElementProto, {
     $addClass( className ){
