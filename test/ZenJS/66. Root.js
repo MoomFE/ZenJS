@@ -18,6 +18,27 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$querystring',
+      describe: [
+        {
+          name: 'stringify',
+          it: function(){
+            $querystring.stringify({ asd: 123 }).should.equals('asd=123');
+            $querystring.stringify({ asd: 123, sdf: 234, dfg: 345 }).should.equals('asd=123&sdf=234&dfg=345');
+            $querystring.stringify({ asd: 123, sdf: 234, dfg: 345 },'|').should.equals('asd=123|sdf=234|dfg=345');
+            $querystring.stringify({ asd: 123, sdf: 234, dfg: 345 },'|',',').should.equals('asd,123|sdf,234|dfg,345');
+          }
+        }, {
+          name: 'parse',
+          it: function(){
+            Object.$equals( $querystring.parse('asd=123'), { asd: '123' } ).should.true
+            Object.$equals( $querystring.parse('asd=123&sdf=234&dfg=345'), { asd: '123', sdf: '234', dfg: '345' } ).should.true
+            Object.$equals( $querystring.parse('asd=123|sdf=234|dfg=345','|'), { asd: '123', sdf: '234', dfg: '345' } ).should.true
+            Object.$equals( $querystring.parse('asd,123|sdf,234|dfg,345','|',','), { asd: '123', sdf: '234', dfg: '345' } ).should.true
+          }
+        }
+      ]
     }
   ]
 })

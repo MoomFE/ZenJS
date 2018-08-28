@@ -829,14 +829,42 @@ interface Window {
    */
   $typeof: $typeof
 
+  /**
+   * $querystring 模块提供了一些实用函数, 用于解析与格式化 URL 查询字符串
+   */
+  $querystring: $querystring
+
 }
+
 
 /**
  * 判断传入参数的类型
  * @param obj 需要判断类型的参数
  */
 declare function $typeof( obj: any ): String;
-declare const $typeof: $typeof;
+
+
+/**
+ * $querystring 模块提供了一些实用函数, 用于解析与格式化 URL 查询字符串
+ */
+declare const $querystring: $querystring;
+
+interface $querystring {
+  /**
+   * 将对象进行序列化成 URL 查询字符串
+   * @param obj 需要序列化的对象
+   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
+   * @param eq 在字符串中分隔键和值的字符串 -default: '='
+   */
+  stringify( obj, sep: String = '&', eq: String = '=' ): String;
+  /**
+   * 将 URL 查询字符串反序列化为对象
+   * @param str 需要反序列化的字符串
+   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
+   * @param eq 在字符串中分隔键和值的字符串 -default: '='
+   */
+  parse( str, sep: String = '&', eq: String = '=' ): any;
+}
 
 
 
@@ -1533,22 +1561,7 @@ declare const $typeof: $typeof;
 //   }
 // }
 
-// interface $querystring {
-//   /**
-//    * 将对象进行序列化成 URL 查询字符串
-//    * @param obj 需要序列化的对象
-//    * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
-//    * @param eq 在字符串中分隔键和值的字符串 -default: '='
-//    */
-//   stringify( obj, sep: String = '&', eq: String = '=' ): String;
-//   /**
-//    * 将 URL 查询字符串反序列化为对象
-//    * @param str 需要反序列化的字符串
-//    * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
-//    * @param eq 在字符串中分隔键和值的字符串 -default: '='
-//    */
-//   parse( str, sep: String = '&', eq: String = '=' ): any;
-// }
+
 
 // /**
 //  * 页面及页面资源载入完成后传入代码
@@ -1563,7 +1576,5 @@ declare const $typeof: $typeof;
 // declare const Zen: ZenJS;
 
 // declare const ZenJS: ZenJS;
-
-// declare const $querystring: $querystring;
 
 // declare const $ready: $ready;

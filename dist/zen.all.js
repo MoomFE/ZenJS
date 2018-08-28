@@ -2130,6 +2130,66 @@
     return obj[isArray] ? 'array' : typeof obj;
   });
 
+  var rBackSlant = /\+/g;
+
+  function toString$1(obj) {
+    switch (typeof obj) {
+      case 'string':
+        return obj;
+      case 'boolean':
+        return obj ? 'true' : 'false';
+      case 'number':
+        return isFinite(obj) ? obj : '';
+      default:
+        return '';
+    }
+  }
+
+  function stringify(obj) {
+    var args = arguments;
+    var sep = parametersDefault(args, 1, '&');
+    var eq = parametersDefault(args, 2, '=');
+
+    if (isObject(obj)) {
+      return keys(obj).map(function (key) {
+        return encodeURIComponent(toString$1(key)) + eq + encodeURIComponent(toString$1(obj[key]));
+      }).join(sep);
+    }
+
+    return '';
+  }
+
+  function parse(str) {
+    var args = arguments;
+    var sep = parametersDefault(args, 1, '&');
+    var eq = parametersDefault(args, 2, '=');
+    var result = {};
+
+    if (isString$1(str) === false) {
+      return result;
+    }
+
+    str.split(sep).forEach(function (_value) {
+      var cache = _value.replace(rBackSlant, '%20');
+      var index = cache.indexOf(eq);
+      var key,
+          value;
+
+      if (index > -1) {
+        key = cache.substr(0, index);
+        value = cache.substr(index + 1);
+      } else {
+        key = cache;
+      }
+
+      result[decodeURIComponent(key)] = decodeURIComponent(value);
+    });
+
+    return result;
+  }
+
+  defineValue(root, '$querystring', assign(false, [null, { stringify: stringify, parse: parse }]));
+
   /**
    * 在一个对象上定义/修改一个新属性的 get 描述符
    * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
