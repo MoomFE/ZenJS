@@ -1,7 +1,7 @@
 import defineValue from "../../../shared/util/defineValue";
 import Math from "../../../shared/global/Math/index";
 import slice from "../../../shared/global/Array/prototype/slice";
-import { $add } from "../$add/index";
+import { $add, $divide } from "../$add/index";
 
 
 defineValue( Math, '$mean', function(){
@@ -9,5 +9,5 @@ defineValue( Math, '$mean', function(){
     return $add( count, next );
   });
 
-  return count / arguments.length;
+  return $divide( count, arguments.length );
 });

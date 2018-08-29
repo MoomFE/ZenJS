@@ -79,10 +79,11 @@ defineOperation( '$cheng $multiply', ( num1, num2 ) => {
 });
 
 // divide
-defineOperation( '$chu $divide', ( num1, num2 ) => {
+defineOperation( '$chu $divide', $divide );
+export function $divide( num1, num2 ){
   return handler(
     num1, num2,
     ( num1, num2 ) => num1 / num2,
     ( result ) => result
   );
-});
+}

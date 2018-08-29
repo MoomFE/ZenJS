@@ -1381,20 +1381,21 @@
   });
 
   // divide
-  defineOperation('$chu $divide', function (num1, num2) {
+  defineOperation('$chu $divide', $divide);
+  function $divide(num1, num2) {
     return handler(num1, num2, function (num1, num2) {
       return num1 / num2;
     }, function (result) {
       return result;
     });
-  });
+  }
 
   defineValue(Math, '$mean', function () {
     var count = slice.call(arguments).reduce(function (count, next) {
       return $add$1(count, next);
     });
 
-    return count / arguments.length;
+    return $divide(count, arguments.length);
   });
 
   var fromCharCode = String.fromCharCode;

@@ -205,6 +205,12 @@ describes.push({
             Math.$mean( -1, 1 ).should.equals( 0 );
             Math.$mean( -1, 3 ).should.equals( 1 );
           }
+        }, {
+          name: 'The same can solve the accuracy problem',
+          it: function(){
+            Math.$mean( 0.1, 0.2 ).should.equals( 0.15 );
+            Math.$mean( 0.1, 0.2, 33.47, 0, 0, 0, 0, 0, 0, 0 ).should.equals( 3.377 );
+          }
         }
       ]
     }
