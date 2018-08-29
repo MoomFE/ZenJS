@@ -889,6 +889,29 @@ interface Document {
 
 }
 
+interface Window {
+
+  /**
+   * 当前页面及页面资源载入完成后传入代码
+   *
+   * @param func 页面及页面资源载入完成后执行的方法
+   * @param data 需要传入方法的数据
+   */
+  $ready: $ready;
+
+}
+
+/**
+ * 当前页面及页面资源载入完成后传入代码
+ *
+ * @param func 页面及页面资源载入完成后执行的方法
+ * @param data 需要传入方法的数据
+ */
+declare function $ready( func: () => void, data?: any ): void;
+
+
+
+
 
 // interface Document {
 //   /**
@@ -919,14 +942,6 @@ interface Document {
 //    * @param attributes cookie 的配置
 //    */
 //   $removeCookie( key: String, attributes?: any );
-//   /**
-//    * 页面加载完成后执行传入代码
-//    * -- 方法可以用 function[ call / apply ] 的方式使用, 可传入其他 document, 比如 iframe 的 document
-//    *
-//    * @param func DOM 载入完成后执行的方法
-//    * @param data 需要传入方法的数据
-//    */
-//   $ready( func: () => void, data?: any ): void;
 //   /**
 //    * 调用原生 querySelectorAll 方法
 //    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
@@ -1580,18 +1595,9 @@ interface Document {
 
 
 
-// /**
-//  * 页面及页面资源载入完成后传入代码
-//  * -- 方法可以用 Function[ call / apply ] 的方式使用, 可传入其他 window, 比如 iframe 的 window
-//  *
-//  * @param func 页面及页面资源载入完成后执行的方法
-//  * @param data 需要传入方法的数据
-//  */
-// declare function $ready( func: () => void, data?: any ): void;
+
 
 
 // declare const Zen: ZenJS;
 
 // declare const ZenJS: ZenJS;
-
-// declare const $ready: $ready;

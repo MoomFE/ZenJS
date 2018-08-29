@@ -2196,13 +2196,28 @@ var removeEventListener = 'removeEventListener';
 
 var DOMContentLoaded = 'DOMContentLoaded';
 
+var load = 'load';
+
 if (inBrowser) {
   defineValue(document, '$ready', function (func, data) {
     if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
       func.apply(window, data);
     } else {
-      document[addEventListener](DOMContentLoaded, function callback(event) {
+      document[addEventListener](DOMContentLoaded, function callback() {
         document[removeEventListener](DOMContentLoaded, callback);
+        func.apply(window, data);
+      });
+    }
+  });
+}
+
+if (inBrowser) {
+  defineValue(window, '$ready', function (func, data) {
+    if (document.readyState === 'complete') {
+      func.apply(window, data);
+    } else {
+      window[addEventListener](load, function callback() {
+        window[removeEventListener](load, callback);
         func.apply(window, data);
       });
     }

@@ -8,7 +8,7 @@ if( inBrowser ){
     if( document.readyState === 'complete' || ( document.readyState !== 'loading' && !document.documentElement.doScroll ) ){
       func.apply( window, data );
     }else{
-      document[ addEventListener ]( DOMContentLoaded, function callback( event ){
+      document[ addEventListener ]( DOMContentLoaded, function callback(){
         document[ removeEventListener ]( DOMContentLoaded, callback );
         func.apply( window, data );
       });

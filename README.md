@@ -56,10 +56,10 @@
 ### All : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.all.js             | 52.30kb | 14.26kb | \|  | UMD       | Browser |
-| zen.all.min.js         | 18.95kb | 6.99kb | \|  | UMD       | Browser |
-| zen.all.common.js      | 48.61kb | 14.01kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.all.esm.js         | 48.60kb | 14.00kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.all.js             | 52.67kb | 14.29kb | \|  | UMD       | Browser |
+| zen.all.min.js         | 19.12kb | 7.02kb | \|  | UMD       | Browser |
+| zen.all.common.js      | 48.96kb | 14.04kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.all.esm.js         | 48.94kb | 14.03kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -175,6 +175,9 @@
 
 - Document
   - $id
+  - $ready
+
+- Window
   - $ready
 
   <!-- - $get
