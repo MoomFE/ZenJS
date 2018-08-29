@@ -1091,7 +1091,21 @@ interface Window {
 declare function $ready( func: () => void, data?: any ): void;
 
 
+interface Element {
 
+  /**
+   * 判断当前节点是否符合传入的要求
+   * @param selector DOM 节点或 CSS 选择器
+   */
+  $is( selector: Element | String ): Boolean;
+
+  /**
+   * 判断当前节点是否不符合传入的要求
+   * @param selector DOM 节点或 CSS 选择器
+   */
+  $not( selector: Element | String ): Boolean;
+
+}
 
 
 // interface Document {

@@ -2232,6 +2232,35 @@
     });
   }
 
+  var ElementProto = inBrowser ? DomElement.prototype : undefined;
+
+  var matches;
+
+  if (inBrowser) {
+    (matches = ElementProto.matches) || ['webkit', 'o', 'ms', 'moz'].$each(function (core) {
+      var matchesKey = core + 'MatchesSelector';
+      var matchesValue = ElementProto[matchesKey];
+
+      if (matchesValue) {
+        matches = matchesValue;
+        return false;
+      }
+    });
+  }
+
+  var matches$1 = matches;
+
+  if (inBrowser) {
+
+    defineValue(ElementProto, '$is', function (selector) {
+      return selector.nodeType ? this === selector : isString$1(selector) ? matches$1.call(this, selector) : false;
+    });
+
+    defineValue(ElementProto, '$not', function (selector) {
+      return !this.$is(selector);
+    });
+  }
+
   /**
    * 在一个对象上定义/修改一个新属性的 get 描述符
    * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义

@@ -1,12 +1,18 @@
 import inBrowser from "../const/inBrowser";
-import ElementProto from "../global/Element/prototype/index";
+import ElementProto from "../global/DomElement/prototype/index";
 
+let matches;
 
 if( inBrowser ){
-  ElementProto.matches || [ 'webkit', 'o', 'ms', 'moz' ].$each( core => {
-    const matches = core + 'MatchesSelector';
-    if( ElementProto[ matches ] ){
-      return !( ElementProto.matches = ElementProto[ matches ] );
+  ( matches = ElementProto.matches ) || [ 'webkit', 'o', 'ms', 'moz' ].$each( core => {
+    const matchesKey = core + 'MatchesSelector';
+    const matchesValue = ElementProto[ matchesKey ];
+
+    if( matchesValue ){
+      matches = matchesValue;
+      return false;
     }
   });
 }
+
+export default matches;

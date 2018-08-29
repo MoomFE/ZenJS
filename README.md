@@ -56,10 +56,10 @@
 ### All : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.all.js             | 52.83kb | 14.36kb | \|  | UMD       | Browser |
-| zen.all.min.js         | 19.15kb | 7.03kb | \|  | UMD       | Browser |
-| zen.all.common.js      | 49.11kb | 14.12kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.all.esm.js         | 49.09kb | 14.10kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.all.js             | 53.55kb | 14.55kb | \|  | UMD       | Browser |
+| zen.all.min.js         | 19.43kb | 7.16kb | \|  | UMD       | Browser |
+| zen.all.common.js      | 49.79kb | 14.31kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.all.esm.js         | 49.77kb | 14.29kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -179,6 +179,10 @@
 
 - Window
   - $ready
+
+- Element.prototype
+  - $is
+  - $not
 
   <!-- - $get
   - $inArray
