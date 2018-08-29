@@ -1,5 +1,5 @@
 import defineProperty from '../global/Object/defineProperty';
-import assign from '../polyfill/Object.assign';
+import assign from '../global/Object/assign';
 
 
 /**
