@@ -246,7 +246,7 @@
   }
 
   /**
-   * 判断传入对象是否是 Number 类型
+   * 判断传入对象是否是 Number 类型, 并且不为 NaN 和 Infinity
    * @param {any} obj 需要判断的对象
    * @returns {Boolean}
    */
@@ -403,7 +403,7 @@
   }
 
   /**
-   * 判断传入的两个参数是否相等
+   * 判断传入的两个参数是否相等 ( == )
    * @param {any} one 需要判断的第一参数
    * @param {any} two 需要判断的第二参数
    * @returns {Boolean}
@@ -413,7 +413,7 @@
   }
 
   /**
-   * 判断传入的两个参数是否全等
+   * 判断传入的两个参数是否全等 ( === )
    * @param {any} one 需要判断的第一参数
    * @param {any} two 需要判断的第二参数
    * @returns {Boolean}
@@ -487,7 +487,7 @@
   var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
 
   /**
-   * 判断传入对象是否是 Map 类型
+   * 判断传入对象是否是 Map 对象
    * @param {any} obj 需要判断的对象
    * @returns {Boolean}
    */
@@ -496,7 +496,7 @@
   }
 
   /**
-   * 判断传入对象是否是 Set 类型
+   * 判断传入对象是否是 Set 对象
    * @param {any} obj 需要判断的对象
    * @returns {Boolean}
    */
@@ -931,7 +931,7 @@
 
   /**
    * 判断一个对象是否是引用类型
-   * @param {*} obj 需要判断的对象
+   * @param {any} obj 需要判断的对象
    */
   function isReferenceType(obj) {
     var type = typeof obj;
@@ -2075,19 +2075,6 @@
   dayjs.isDayjs = isDayjs;
   dayjs.en = Ls[L];
 
-  defineValue(Date, '$parse', function (date) {
-    return dayjs(date).toDate();
-  });
-
-  /**
-   * @type {Boolean} 当前是否是 Node 环境
-   */
-  var inNode = typeof global !== 'undefined';
-
-  var root = inBrowser ? window : inNode ? global : {};
-
-  defineValue(root, 'dayjs', dayjs);
-
   var DateProto = Date.prototype;
 
   var DAYJS = '__ZENJS_DAYJS__';
@@ -2101,6 +2088,22 @@
 
     return $dayjs;
   });
+
+  defineValue(Date, '$parse', function (date) {
+    var $dayjs = dayjs(date);
+    var $date = $dayjs.toDate().$set(DAYJS, $dayjs);
+
+    return $date;
+  });
+
+  /**
+   * @type {Boolean} 当前是否是 Node 环境
+   */
+  var inNode = typeof global !== 'undefined';
+
+  var root = inBrowser ? window : inNode ? global : {};
+
+  defineValue(root, 'dayjs', dayjs);
 
   var ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString_unix_valueOf'.split('_');
   var isDayjs$1 = dayjs.isDayjs;
@@ -2242,7 +2245,7 @@
   }
 
   /**
-   * 返回传入值
+   * 返回传入的第一个参数
    * @param {any} arg 
    * @returns {any} arg
    */
@@ -2251,6 +2254,7 @@
   }
 
   /**
+   * 始终返回 true
    * @returns {Boolean} true
    */
   function returnTrue() {
@@ -2258,6 +2262,7 @@
   }
 
   /**
+   * 始终返回 false
    * @returns {Boolean} false
    */
   function returnFalse() {

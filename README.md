@@ -48,18 +48,18 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 51.62kb | 14.08kb | \|  | UMD       | Browser |
-| zen.min.js         | 18.63kb | 6.85kb | \|  | UMD       | Browser |
-| zen.common.js      | 47.97kb | 13.83kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 47.95kb | 13.82kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 51.76kb | 14.15kb | \|  | UMD       | Browser |
+| zen.min.js         | 18.64kb | 6.86kb | \|  | UMD       | Browser |
+| zen.common.js      | 48.10kb | 13.91kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 48.09kb | 13.89kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### All : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.all.js             | 52.67kb | 14.29kb | \|  | UMD       | Browser |
-| zen.all.min.js         | 19.12kb | 7.02kb | \|  | UMD       | Browser |
-| zen.all.common.js      | 48.96kb | 14.04kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.all.esm.js         | 48.94kb | 14.03kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.all.js             | 52.81kb | 14.36kb | \|  | UMD       | Browser |
+| zen.all.min.js         | 19.14kb | 7.03kb | \|  | UMD       | Browser |
+| zen.all.common.js      | 49.09kb | 14.11kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.all.esm.js         | 49.07kb | 14.09kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
