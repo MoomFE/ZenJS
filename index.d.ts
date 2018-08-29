@@ -834,6 +834,8 @@ interface Window {
    */
   $querystring: $querystring
 
+  ZenJS: ZenJS
+
 }
 
 
@@ -864,6 +866,185 @@ interface $querystring {
    * @param eq 在字符串中分隔键和值的字符串 -default: '='
    */
   parse( str, sep: String = '&', eq: String = '=' ): any;
+}
+
+
+declare const ZenJS: ZenJS;
+
+interface ZenJS {
+
+  /**
+   * 提供了一部分在低级浏览器上不支持的方法,
+   * 如果浏览器支持该方法, 使用时将直接返回浏览器自带方法.
+   */
+  polyfill: {
+
+    /**
+     * 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象. 它将返回目标对象.
+     * Object.assign polyfill
+     */
+    assign( ...args: any[] ): any;
+
+    /**
+     * 方法返回一个给定对象自身可枚举属性的键值对数组.
+     * Object.entries polyfill
+     */
+    entries( obj: any ): Array[];
+
+  },
+
+  /**
+   * 提供了一些内部使用的工具包
+   */
+  util: {
+
+    /**
+     * 判断传入的两个参数是否全等 ( === )
+     * @param one 需要判断的第一参数
+     * @param two 需要判断的第二参数
+     */
+    congruence( one: any, two: any ): Boolean;
+
+    /**
+     * 判断传入的两个参数是否相等 ( == )
+     * @param one 需要判断的第一参数
+     * @param two 需要判断的第二参数
+     */
+    equals( one: any, two: any ): Boolean;
+
+    /**
+     * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
+     * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+     * @param name 要定义或修改的属性的名称
+     * @param options 将被定义或修改的属性描述符
+     * @param options2 将被定义或修改的属性描述符, 会覆盖前一个 options
+     */
+    define( obj: any, name: String, options: any, options2: any );
+
+    /**
+     * 在一个对象上定义/修改一个新属性的 value 描述符
+     * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+     * @param {String} name 要定义或修改的属性的名称
+     * @param {Function} value 将被定义或修改的 value 描述符
+     * @param {any} options 将被定义或修改的属性描述符
+     */
+    defineValue( obj: any, name: String, value: Function, options: any );
+
+    /**
+     * 在一个对象上定义/修改一个新属性的 get 描述符
+     * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+     * @param {String} name 要定义或修改的属性的名称
+     * @param {Function} get 将被定义或修改的 get 描述符
+     * @param {any} options 将被定义或修改的属性描述符
+     */
+    defineGet( obj: any, name: String, get: Function, options: any );
+
+    /**
+     * 在传入的两个正整数中随机一个数字
+     * @param {Number} from 
+     * @param {Number} to 
+     */
+    intRandom( from:Number, to:Number ): Number;
+
+    /**
+     * 返回传入的第一个参数
+     * @param {any} arg 
+     */
+    returnArg( arg: any ): any;
+
+    /**
+     * 始终返回 true
+     */
+    returnTrue(): true;
+
+    /**
+     * 始终返回 false
+     */
+    returnFalse(): false;
+
+    /**
+     * 获取方法指定位参数, 若未传入参数, 则取默认值
+     * @param args arguments
+     * @param index 需要在 argument 中取得默认值的下标
+     * @param defaultValue 若未传入值时取得默认值
+     */
+    parametersDefault( args: IArguments, index: Number, defaultValue: any ): any;
+
+    /**
+     * 获取方法从指定位开始的剩余参数
+     * @param { IArguments } args arguments
+     * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
+     */
+    parametersRest( args: IArguments, index: Number ): Array[];
+
+    /**
+     * 判断传入对象是否是 String 类型
+     * @param obj 需要判断的对象
+     */
+    isString( obj: any ): Boolean;
+
+    /**
+     * 判断传入对象是否是 Boolean 类型
+     * @param obj 需要判断的对象
+     */
+    isBoolean( obj: any ): Boolean;
+
+    /**
+     * 判断传入对象是否是 Array 类型
+     * @param obj 需要判断的对象
+     */
+    isArray( obj: any ): Boolean;
+
+    /**
+     * 判断传入对象是否是 Number 类型, 并且不为 NaN 和 Infinity
+     * @param obj 需要判断的对象
+     */
+    isNumber( obj: any ): Boolean;
+
+    /**
+     * 判断传入对象是否是 RegExp 类型
+     * @param obj 需要判断的对象
+     */
+    isRegExp( obj: any ): Boolean;
+
+    /**
+     * 判断传入对象是否是 Set 对象
+     * @param obj 需要判断的对象
+     */
+    isSet( obj: any ): Boolean;
+
+    /**
+     * 判断传入对象是否是 Map 对象
+     * @param obj 需要判断的对象
+     */
+    isMap( obj: any ): Boolean;
+
+    /**
+     * 判断传入对象是否是 Function 类型
+     * @param obj 需要判断的对象
+     */
+    isFunction( obj: any ): Boolean;
+
+    /**
+     * 判断传入对象是否是 Object 类型, 并且不为 null
+     * @param obj 需要判断的对象
+     */
+    isObject( obj: any ): Boolean;
+
+    /**
+     * 判断一个对象是否是引用类型
+     * @param obj 需要判断的对象
+     */
+    isReferenceType( obj: any ): Boolean;
+
+    /**
+     * 将 Map 或 Set 类型转换为数组类型,
+     * 执行到这之前必须确定传进来的是 Map 或 Set 类型
+     */
+    mapSetToArray( mapOrSet: Map | Set )
+
+  }
+
 }
 
 
@@ -1397,207 +1578,3 @@ declare function $ready( func: () => void, data?: any ): void;
 //    */
 //   $mean( ...args?: Number[] ): Number;
 // }
-
-
-// interface ZenJS {
-//   /**
-//    * 一些可修改的配置
-//    */
-//   config: {
-//     /**
-//      * 注入到浏览器中的功能, 将会改变浏览器默认行为
-//      */
-//     inject: {
-//       /**
-//        * ZenJS 重写的 $on 和 $off 对浏览器自带的 addEventListener 和 removeEventListener 的注入 - default: true
-//        */
-//       event: true;
-//     },
-//     event: {
-//       /**
-//        * 当事件绑定的方法返回 false 时,
-//        * 是否阻止浏览器默认行为且停止事件冒泡 - default: false
-//        */
-//       returnFalse: false,
-//       /**
-//        * 绑定事件时, 是否允许使用修饰符 - default: true
-//        */
-//       modifiers: true
-//     }
-//   },
-//   /**
-//    * 创建一个可写的事件对象
-//    * @param event 原生事件对象
-//    */
-//   Event( event: DocumentEventMap ): any,
-//   /**
-//    * 关于事件绑定/解绑/触发的方法( 内部使用 )
-//    */
-//   EventListener: {
-//     /**
-//      * 绑定事件( 内部使用 )
-//      * @param elem 需要绑定事件的对象
-//      * @param types 需要绑定的事件集
-//      * @param selector 事件委托的选择器
-//      * @param listener 绑定的事件
-//      * @param options 事件绑定参数
-//      */
-//     add( elem: Element, types: Array, selector: String, listener: Function, options: Object );
-//     /**
-//      * 触发事件时调用的方法( 内部使用 )
-//      * @param nativeEvent 当前触发的事件对象
-//      */
-//     dispatch( nativeEvent: DocumentEventMap ): any;
-//     /**
-//      * 移除事件( 内部使用 )
-//      * @param elem 需要移除事件的对象
-//      * @param types 需要解绑的事件集
-//      * @param listener 解绑的事件
-//      * @param selector 事件委托的选择器
-//      */
-//     remove( elem: Element, types: String, listener: Function, selector: String );
-//     /**
-//      * 触发绑定在元素上的事件( 只触发事件 && 内部使用 )
-//      * @param elem 需要触发事件的对象
-//      * @param types 需要触发的事件集
-//      */
-//     emit( elem: Element, types: String );
-//   },
-//   /**
-//    * 唯一编号, 每次读取会自动递增
-//    */
-//   readonly guid: Number,
-//   /**
-//    * ZenJS 工具包
-//    */
-//   util: {
-//     /**
-//      * 变量判断
-//      */
-//     is: {
-//       /**
-//        * 判断传入的两个参数是否相等
-//        * @param one 需要判断的第一参数
-//        * @param two 需要判断的第二参数
-//        */
-//       equals( one: any, two: any ): Boolean;
-//       /**
-//        * 判断传入的两个参数是否全等
-//        * @param one 需要判断的第一参数
-//        * @param two 需要判断的第二参数
-//        */
-//       congruence( one: any, two: any ): Boolean;
-//     },
-//     /**
-//      * 变量类型判断
-//      */
-//     types: {
-//       /**
-//        * 判断传入对象是否是 Array 类型
-//        * @param obj 需要判断的对象
-//        */
-//       isArray( obj: any ): Boolean;
-//       /**
-//        * 判断传入对象是否是 Boolean 类型
-//        * @param obj 需要判断的对象
-//        */
-//       isBoolean( obj: any ): Boolean;
-//       /**
-//        * 判断传入对象是否是 Function 类型
-//        * @param obj 需要判断的对象
-//        */
-//       isFunction( obj: any ): Boolean;
-//       /**
-//        * 判断传入对象是否是 Number 类型
-//        * @param obj 需要判断的对象
-//        */
-//       isNumber( obj: any ): Boolean;
-//       /**
-//        * 判断传入对象是否是 Object 类型, 并且不为 null
-//        * @param obj 需要判断的对象
-//        */
-//       isObject( obj: any ): Boolean;
-//       /**
-//        * 判断传入对象是否是 RegExp 类型
-//        * @param obj 需要判断的对象
-//        */
-//       isRegExp( obj: any ): Boolean;
-//       /**
-//        * 判断传入对象是否是 String 类型
-//        * @param obj 需要判断的对象
-//        */
-//       isString( obj: any ): Boolean;
-//     },
-//     /**
-//      * 方法参数处理
-//      */
-//     parameters: {
-//       /**
-//        * 获取方法指定位参数, 若未传入参数, 则取默认值
-//        * @param args arguments
-//        * @param index 需要在 argument 中取得默认值的下标
-//        * @param defaultValue 若未传入值时取得默认值
-//        */
-//       default( args: IArguments, index: Number, defaultValue: any ): any;
-//       /**
-//        * 获取方法从指定位开始的剩余参数
-//        * @param args arguments
-//        * @param index 需要在 arguments 中开始取参数的下标 - default: 0
-//        */
-//       rest( args: IArguments, index: Number = 0 ): any[];
-//     },
-//     /**
-//      * 实用方法
-//      */
-//     fn: {
-//       /**
-//        * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
-//        * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-//        * @param name 要定义或修改的属性的名称
-//        * @param options 将被定义或修改的属性描述符
-//        * @param options2 将被定义或修改的属性描述符, 会覆盖前一个 options
-//        */
-//       define( obj: any, name: String, options: any, options2: any );
-//       /**
-//        * 在一个对象上定义/修改一个新属性的 get 描述符
-//        * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-//        * @param name 要定义或修改的属性的名称
-//        * @param get 将被定义或修改的 get 描述符
-//        * @param options 将被定义或修改的属性描述符
-//        */
-//       defineGet( obj: any, name: String, get: Function, options: any );
-//       /**
-//        * 在一个对象上定义/修改一个新属性的 value 描述符
-//        * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-//        * @param name 要定义或修改的属性的名称
-//        * @param value 将被定义或修改的 value 描述符
-//        * @param options 将被定义或修改的属性描述符
-//        */
-//       defineValue( obj: any, name: String, value: Function, options: any );
-//       returnTrue(): true;
-//       returnFalse(): false;
-//     },
-//     /**
-//      * 浏览器特性判断
-//      */
-//     supports: {
-//       /**
-//        * 判断浏览器是否支持事件的 passive 选项
-//        */
-//       readonly passiveEvent: Boolean,
-//       /**
-//        * 判断浏览器是否支持 EventTarget
-//        */
-//       readonly EventTarget: Boolean
-//     }
-//   }
-// }
-
-
-
-
-
-
-// declare const Zen: ZenJS;
-
-// declare const ZenJS: ZenJS;
