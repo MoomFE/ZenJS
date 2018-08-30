@@ -184,6 +184,7 @@
   - $is
   - $not
   - $first / $firstChild
+  - $last / $lastChild
 
   <!-- - $get
   - $inArray

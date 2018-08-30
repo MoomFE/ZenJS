@@ -71,6 +71,28 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$last / $lastChild',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var div = window.div;
+            var span = div.appendChild( window.span );
+            var a = div.appendChild( window.a );
+            var a2 = div.appendChild( window.a ).$set('id','test');
+
+            div.$last().should.equals( a2 );
+            div.$last('*').should.equals( a2 );
+            div.$last('a').should.equals( a2 );
+            div.$last(':last-child').should.equals( a2 );
+            div.$last('#test').should.equals( a2 );
+            div.$last('span').should.equals( span );
+
+            isLikeNull( div.$last('input') ).should.true;
+          }
+        }
+      ]
     }
   ]
 });
