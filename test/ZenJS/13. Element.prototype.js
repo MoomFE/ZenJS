@@ -3,42 +3,74 @@ describes.push({
   describe: [
     {
       name: '$is',
-      it: function(){
-        var div = window.div;
-
-        div.$is( 'div' ).should.true;
-        div.$is( div ).should.true;
-        div.$is( window.div ).should.false;
-        div.$is('#test').should.false;
-        div.$is('.test').should.false;
-        div.$is('#test.test').should.false;
-
-        div.id = 'test';
-        div.className = 'test';
-
-        div.$is('#test').should.true;
-        div.$is('.test').should.true;
-        div.$is('#test.test').should.true;
-      }
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var div = window.div;
+    
+            div.$is( 'div' ).should.true;
+            div.$is( div ).should.true;
+            div.$is( window.div ).should.false;
+            div.$is('#test').should.false;
+            div.$is('.test').should.false;
+            div.$is('#test.test').should.false;
+    
+            div.id = 'test';
+            div.className = 'test';
+    
+            div.$is('#test').should.true;
+            div.$is('.test').should.true;
+            div.$is('#test.test').should.true;
+          }
+        }
+      ]
     }, {
       name: '$not',
-      it: function(){
-        var div = window.div;
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var div = window.div;
 
-        div.$not( 'div' ).should.false;
-        div.$not( div ).should.false;
-        div.$not( window.div ).should.true;
-        div.$not('#test').should.true;
-        div.$not('.test').should.true;
-        div.$not('#test.test').should.true;
+            div.$not( 'div' ).should.false;
+            div.$not( div ).should.false;
+            div.$not( window.div ).should.true;
+            div.$not('#test').should.true;
+            div.$not('.test').should.true;
+            div.$not('#test.test').should.true;
 
-        div.id = 'test';
-        div.className = 'test';
+            div.id = 'test';
+            div.className = 'test';
 
-        div.$not('#test').should.false;
-        div.$not('.test').should.false;
-        div.$not('#test.test').should.false;
-      }
+            div.$not('#test').should.false;
+            div.$not('.test').should.false;
+            div.$not('#test.test').should.false;
+          }
+        }
+      ]
+    }, {
+      name: '$first / $firstChild',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var div = window.div;
+            var span = div.appendChild( window.span );
+            var a = div.appendChild( window.a );
+            var a2 = div.appendChild( window.a ).$set('id','test');
+
+            div.$first().should.equals( span );
+            div.$first('*').should.equals( span );
+            div.$first('span').should.equals( span );
+            div.$first(':first-child').should.equals( span );
+            div.$first('a').should.equals( a );
+            div.$first('#test').should.equals( a2 );
+            
+            isLikeNull( div.$first('input') ).should.true;
+          }
+        }
+      ]
     }
   ]
 });

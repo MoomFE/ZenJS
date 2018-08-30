@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 53.55kb | 14.55kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 19.43kb | 7.16kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 49.79kb | 14.31kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 49.77kb | 14.29kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 55.04kb | 15.07kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 19.90kb | 7.31kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 51.18kb | 14.81kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 51.16kb | 14.79kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -183,6 +183,7 @@
 - Element.prototype
   - $is
   - $not
+  - $first / $firstChild
 
   <!-- - $get
   - $inArray

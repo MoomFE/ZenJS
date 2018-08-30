@@ -1105,6 +1105,20 @@ interface Element {
    */
   $not( selector: Element | String ): Boolean;
 
+  /**
+   * 获取当前节点下首个匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回首个子节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $first( filter?: Element | String | Function ): Element | null;
+
+  /**
+   * 获取当前节点下首个匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回首个子节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $firstChild( filter?: Element | String | Function ): Element | null;
+
 }
 
 
@@ -1233,18 +1247,6 @@ interface Element {
 //    * @param filter 过滤条件: CSS 选择器或方法
 //    */
 //   $children( filter?: String | Function ): Element[];
-//   /**
-//    * 获取当前节点下首个匹配过滤条件的子节点,
-//    * 若未传入过滤条件, 则返回首个子节点
-//    * @param filter 过滤条件: CSS 选择器或方法
-//    */
-//   $first( filter?: String | Function ): Element | null;
-//   /**
-//    * 获取当前节点下首个匹配过滤条件的子节点,
-//    * 若未传入过滤条件, 则返回首个子节点
-//    * @param filter 过滤条件: CSS 选择器或方法
-//    */
-//   $firstChild( filter?: String | Function ): Element | null;
 //   /**
 //    * 获取当前节点下最后一个匹配过滤条件的子节点,
 //    * 若未传入过滤条件, 则返回最后一个子节点
