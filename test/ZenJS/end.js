@@ -8,6 +8,11 @@ describe( 'ZenJS', function(){
           if( Array.isArray( _describe.describe ) ) access( _describe.describe );
           else _describe.describe();
         });
+      }
+      else if( _describe.default ){
+        describe( _describe.name, function(){
+          it( 'Normal use', _describe.default );
+        });
       };
     });
   })();

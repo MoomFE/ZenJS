@@ -1125,12 +1125,41 @@ interface Element {
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $last( filter?: String | Function ): Element | null;
+
   /**
    * 获取当前节点下最后一个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回最后一个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $lastChild( filter?: String | Function ): Element | null;
+
+  /**
+   * 获取当前节点的下一个匹配过滤条件的节点,
+   * 若未传入过滤条件, 则直接返回当前节点的下一个节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $next( filter?: String | Function ): Element | null;
+
+  /**
+   * 获取当前节点的上一个匹配过滤条件的节点,
+   * 若未传入过滤条件, 则直接返回当前节点的上一个节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $prev( filter?: String | Function ): Element | null;
+
+  /**
+   * 获取从当前节点后面的所有匹配过滤条件的兄弟节点,
+   * 若未传入过滤条件, 则直接返回当前节点后面的所有兄弟节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $nextAll( filter?: String | Function ): Element[];
+
+  /**
+   * 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
+   * 若未传入过滤条件, 则直接返回当前节点前面的所有兄弟节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $prevAll( filter?: String | Function ): Element[];
 
 }
 
@@ -1270,30 +1299,6 @@ interface Element {
 //    * @param selector CSS 选择器或选择器
 //    */
 //   $not( selector: Element | String ): Boolean;
-//   /**
-//    * 获取当前节点的下一个匹配过滤条件的节点,
-//    * 若未传入过滤条件, 则直接返回当前节点的下一个节点
-//    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
-//    */
-//   $next( filter?: String | Function ): Element | null;
-//   /**
-//    * 获取当前节点的上一个匹配过滤条件的节点,
-//    * 若未传入过滤条件, 则直接返回当前节点的上一个节点
-//    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
-//    */
-//   $prev( filter?: String | Function ): Element | null;
-//   /**
-//    * 获取从当前节点后面的所有匹配过滤条件的兄弟节点,
-//    * 若未传入过滤条件, 则直接返回当前节点后面的所有兄弟节点
-//    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
-//    */
-//   $nextAll( filter?: String | Function ): Element[];
-//   /**
-//    * 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
-//    * 若未传入过滤条件, 则直接返回当前节点前面的所有兄弟节点
-//    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
-//    */
-//   $prevAll( filter?: String | Function ): Element[];
 //   /**
 //    * 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
 //    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器

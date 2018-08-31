@@ -3,96 +3,136 @@ describes.push({
   describe: [
     {
       name: '$is',
-      describe: [
-        {
-          name: 'Normal use',
-          it: function(){
-            var div = window.div;
-    
-            div.$is( 'div' ).should.true;
-            div.$is( div ).should.true;
-            div.$is( window.div ).should.false;
-            div.$is('#test').should.false;
-            div.$is('.test').should.false;
-            div.$is('#test.test').should.false;
-    
-            div.id = 'test';
-            div.className = 'test';
-    
-            div.$is('#test').should.true;
-            div.$is('.test').should.true;
-            div.$is('#test.test').should.true;
-          }
-        }
-      ]
+      default: function(){
+        var div = window.div;
+
+        div.$is( 'div' ).should.true;
+        div.$is( div ).should.true;
+        div.$is( window.div ).should.false;
+        div.$is('#test').should.false;
+        div.$is('.test').should.false;
+        div.$is('#test.test').should.false;
+
+        div.id = 'test';
+        div.className = 'test';
+
+        div.$is('#test').should.true;
+        div.$is('.test').should.true;
+        div.$is('#test.test').should.true;
+      }
     }, {
       name: '$not',
-      describe: [
-        {
-          name: 'Normal use',
-          it: function(){
-            var div = window.div;
+      default: function(){
+        var div = window.div;
 
-            div.$not( 'div' ).should.false;
-            div.$not( div ).should.false;
-            div.$not( window.div ).should.true;
-            div.$not('#test').should.true;
-            div.$not('.test').should.true;
-            div.$not('#test.test').should.true;
+        div.$not( 'div' ).should.false;
+        div.$not( div ).should.false;
+        div.$not( window.div ).should.true;
+        div.$not('#test').should.true;
+        div.$not('.test').should.true;
+        div.$not('#test.test').should.true;
 
-            div.id = 'test';
-            div.className = 'test';
+        div.id = 'test';
+        div.className = 'test';
 
-            div.$not('#test').should.false;
-            div.$not('.test').should.false;
-            div.$not('#test.test').should.false;
-          }
-        }
-      ]
+        div.$not('#test').should.false;
+        div.$not('.test').should.false;
+        div.$not('#test.test').should.false;
+      }
     }, {
       name: '$first / $firstChild',
-      describe: [
-        {
-          name: 'Normal use',
-          it: function(){
-            var div = window.div;
-            var span = div.appendChild( window.span );
-            var a = div.appendChild( window.a );
-            var a2 = div.appendChild( window.a ).$set('id','test');
+      default: function(){
+        var div = window.div;
+        var span = div.appendChild( window.span );
+        var a = div.appendChild( window.a );
+        var a2 = div.appendChild( window.a ).$set('id','test');
 
-            div.$first().should.equals( span );
-            div.$first('*').should.equals( span );
-            div.$first('span').should.equals( span );
-            div.$first(':first-child').should.equals( span );
-            div.$first('a').should.equals( a );
-            div.$first('#test').should.equals( a2 );
-            
-            isLikeNull( div.$first('input') ).should.true;
-          }
-        }
-      ]
+        div.$first().should.equals( span );
+        div.$first('*').should.equals( span );
+        div.$first('span').should.equals( span );
+        div.$first(':first-child').should.equals( span );
+        div.$first('a').should.equals( a );
+        div.$first('#test').should.equals( a2 );
+        
+        isLikeNull( div.$first('input') ).should.true;
+      }
     }, {
       name: '$last / $lastChild',
-      describe: [
-        {
-          name: 'Normal use',
-          it: function(){
-            var div = window.div;
-            var span = div.appendChild( window.span );
-            var a = div.appendChild( window.a );
-            var a2 = div.appendChild( window.a ).$set('id','test');
+      default: function(){
+        var div = window.div;
+        var span = div.appendChild( window.span );
+        var a = div.appendChild( window.a );
+        var a2 = div.appendChild( window.a ).$set('id','test');
 
-            div.$last().should.equals( a2 );
-            div.$last('*').should.equals( a2 );
-            div.$last('a').should.equals( a2 );
-            div.$last(':last-child').should.equals( a2 );
-            div.$last('#test').should.equals( a2 );
-            div.$last('span').should.equals( span );
+        div.$last().should.equals( a2 );
+        div.$last('*').should.equals( a2 );
+        div.$last('a').should.equals( a2 );
+        div.$last(':last-child').should.equals( a2 );
+        div.$last('#test').should.equals( a2 );
+        div.$last('span').should.equals( span );
 
-            isLikeNull( div.$last('input') ).should.true;
-          }
-        }
-      ]
+        isLikeNull( div.$last('input') ).should.true;
+      }
+    }, {
+      name: '$next',
+      default: function(){
+        var div = window.div;
+        var span = div.appendChild( window.span );
+        var input = div.appendChild( window.input );
+        var a = div.appendChild( window.a );
+
+        span.$next().should.equals( input );
+        span.$next('*').should.equals( input );
+        span.$next('input').should.equals( input );
+        span.$next('a').should.equals( a );
+
+        isLikeNull( span.$next('div') ).should.true;
+      }
+    }, {
+      name: '$prev',
+      default: function(){
+        var div = window.div;
+        var span = div.appendChild( window.span );
+        var input = div.appendChild( window.input );
+        var a = div.appendChild( window.a );
+
+        a.$prev().should.equals( input );
+        a.$prev('*').should.equals( input );
+        a.$prev('input').should.equals( input );
+        a.$prev('span').should.equals( span );
+
+        isLikeNull( a.$prev('div') ).should.true;
+      }
+    }, {
+      name: '$nextAll',
+      default: function(){
+        var div = window.div;
+        var span = div.appendChild( window.span );
+        var input = div.appendChild( window.input );
+        var a = div.appendChild( window.a );
+
+        Object.$equals( span.$nextAll(), [ input, a ] ).should.true;
+        Object.$equals( span.$nextAll('*'), [ input, a ] ).should.true;
+        Object.$equals( span.$nextAll('input'), [ input ] ).should.true;
+        Object.$equals( span.$nextAll('a'), [ a ] ).should.true;
+
+        Object.$equals( span.$nextAll('div'), [] ).should.true;
+      }
+    }, {
+      name: '$prevAll',
+      default: function(){
+        var div = window.div;
+        var span = div.appendChild( window.span );
+        var input = div.appendChild( window.input );
+        var a = div.appendChild( window.a );
+
+        Object.$equals( a.$prevAll(), [ input, span ] ).should.true;
+        Object.$equals( a.$prevAll('*'), [ input, span ] ).should.true;
+        Object.$equals( a.$prevAll('input'), [ input ] ).should.true;
+        Object.$equals( a.$prevAll('span'), [ span ] ).should.true;
+
+        Object.$equals( a.$prevAll('div'), [] ).should.true;
+      }
     }
   ]
 });
@@ -350,132 +390,6 @@ describes.push({
 //         div.$child('div').$equals([]).should.true;
 
 //         ( div.$child === div.$children ).should.true;
-
-//       }
-//     }, {
-//       name: '$first / $firstChild',
-//       it: function(){
-
-//         var div = window.div;
-//         var span = div.appendChild( window.span );
-//         var a = div.appendChild( window.a );
-
-//         div.$first().should.equals( span );
-//         div.$first('span').should.equals( span );
-//         div.$first('a').should.equals( a );
-//         isNull( div.$first('div') ).should.true;
-
-//         ( div.$first === div.$firstChild ).should.true;
-
-//       }
-//     }, {
-//       name: '$last / $lastChild',
-//       it: function(){
-
-//         var div = window.div;
-//         var span = div.appendChild( window.span );
-//         var a = div.appendChild( window.a );
-
-//         div.$last().should.equals( a );
-//         div.$last('span').should.equals( span );
-//         div.$last('a').should.equals( a );
-//         isNull( div.$last('div') ).should.true;
-
-//         ( div.$last === div.$lastChild ).should.true;
-
-//       }
-//     }, {
-//       name: '$is',
-//       it: function(){
-//         var div1 = div;
-
-//         div.$is( div ).should.false;
-//         div1.$is( div1 ).should.true;
-
-//         div.$is( 'span' ).should.false;
-//         div.$is( 'div' ).should.true;
-
-//         div.$is( window ).should.false;
-//       }
-//     }, {
-//       name: '$not',
-//       it: function(){
-//         var div1 = div;
-
-//         div.$not( div ).should.true;
-//         div1.$not( div1 ).should.false;
-
-//         div.$not( 'span' ).should.true;
-//         div.$not( 'div' ).should.false;
-
-//         div.$not( window ).should.true;
-//       }
-//     }, {
-//       name: '$next',
-//       it: function(){
-
-//         var div = window.div,
-//             div1 = div.appendChild( window.div ),
-//             div2 = div.appendChild( window.div ),
-//             div3 = div.appendChild( window.div.$set( 'id', 'div3' ) );
-
-//         div1.$next().should.equals( div2 );
-//         div1.$next('div').should.equals( div2 );
-//         div1.$next('#div3').should.equals( div3 );
-//         isLikeNull( div3.$next() ).should.true;
-//         isLikeNull( div3.$next('div') ).should.true;
-//       }
-//     }, {
-//       name: '$prev',
-//       it: function(){
-
-//         var div = window.div,
-//             div1 = div.appendChild( window.div.$set( 'id', 'div3' ) ),
-//             div2 = div.appendChild( window.div ),
-//             div3 = div.appendChild( window.div );
-
-//         div3.$prev().should.equals( div2 );
-//         div3.$prev('div').should.equals( div2 );
-//         div3.$prev('#div3').should.equals( div1 );
-//         isLikeNull( div1.$prev() ).should.true;
-//         isLikeNull( div1.$prev('div') ).should.true;
-
-//       }
-//     }, {
-//       name: '$nextAll',
-//       it: function(){
-
-//         var div = window.div,
-//             div1 = div.appendChild( window.div.$set( 'id', 'div3' ) ),
-//             div2 = div.appendChild( window.div ),
-//             div3 = div.appendChild( window.div );
-
-//         Object.$equals( div1.$nextAll(), [ div2, div3 ] ).should.true;
-//         Object.$equals( div2.$nextAll(), [ div3 ] ).should.true;
-//         Object.$equals( div3.$nextAll(), [  ] ).should.true;
-
-//         Object.$equals( div1.$nextAll('div'), [ div2, div3 ] ).should.true;
-//         Object.$equals( div2.$nextAll('div'), [ div3 ] ).should.true;
-//         Object.$equals( div3.$nextAll('div'), [  ] ).should.true;
-
-//       }
-//     }, {
-//       name: '$prevAll',
-//       it: function(){
-
-//         var div = window.div,
-//             div1 = div.appendChild( window.div.$set( 'id', 'div3' ) ),
-//             div2 = div.appendChild( window.div ),
-//             div3 = div.appendChild( window.div );
-
-//         Object.$equals( div3.$prevAll(), [ div1, div2 ] ).should.true;
-//         Object.$equals( div2.$prevAll(), [ div1 ] ).should.true;
-//         Object.$equals( div1.$prevAll(), [  ] ).should.true;
-
-//         Object.$equals( div3.$prevAll('div'), [ div1, div2 ] ).should.true;
-//         Object.$equals( div2.$prevAll('div'), [ div1 ] ).should.true;
-//         Object.$equals( div1.$prevAll('div'), [  ] ).should.true;
-
 //       }
 //     }, {
 //       name: '$parent',

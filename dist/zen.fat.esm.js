@@ -2304,6 +2304,17 @@ function Filter(node, filter, handler, checkSelf) {
   });
 }
 
+function dir(elem, handler) {
+  var matched = [];
+  var index = 0;
+
+  while (elem = elem[handler]) {
+    matched[index++] = elem;
+  }
+
+  return matched;
+}
+
 if (inBrowser) {
 
   defineValue(ElementProto, '$first $firstChild', function (filter) {
@@ -2314,6 +2325,20 @@ if (inBrowser) {
     return Filter(this.lastElementChild, filter, 'previousElementSibling', true);
   });
 }
+
+inBrowser && [['$next', 'nextElementSibling'], ['$prev', 'previousElementSibling']].forEach(function (arr) {
+
+  var name = arr[0];
+  var fn = arr[1];
+
+  defineValue(ElementProto, name, function (filter) {
+    return Filter(this, filter, fn);
+  });
+
+  defineValue(ElementProto, name + 'All', function (filter) {
+    return Filter(dir(this, fn), filter);
+  });
+});
 
 /**
  * 在一个对象上定义/修改一个新属性的 get 描述符
