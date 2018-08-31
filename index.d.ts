@@ -1187,7 +1187,21 @@ interface Element {
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    * @param checkSelf 是否从当前节点开始检测, 不从当前节点的父节点开始
    */
-  $parents( filter?: Element | String | Function, checkSelf?: Boolean ): Element | null
+  $parents( filter?: Element | String | Function, checkSelf?: Boolean ): Element | null;
+
+  /**
+   * 添加当前元素到目标元素的尾部
+   * @param elem 目标元素
+   * @returns 返回当前元素
+   */
+  $appendTo( elem: Element ): Element;
+
+  /**
+   * 添加当前元素到目标元素的元素
+   * @param elem 目标元素
+   * @returns 返回当前元素
+   */
+  $prependTo( elem: Element ): Element;
 
 }
 
@@ -1285,16 +1299,6 @@ interface Element {
 //    * @param toggle 若值为 true, 则规定只添加类, 反之只移除
 //    */
 //   $toggleClass( className: Stirng, toggle: Boolean ): Element;
-//   /**
-//    * 添加元素到当前元素内的尾部
-//    * @param elem 需要添加的元素
-//    */
-//   $append( elem: Element ): Element;
-//   /**
-//    * 添加元素到当前元素内的头部
-//    * @param elem 需要添加的元素
-//    */
-//   $prepend( elem: Element ): Element;
 //   /**
 //    * 将元素插入到当前元素前面
 //    * @param elem 需要插入的元素

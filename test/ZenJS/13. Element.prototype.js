@@ -175,6 +175,26 @@ describes.push({
 
         isLikeNull( div2.$parents('span') ).should.true;
       }
+    }, {
+      name: '$appendTo',
+      default: function(){
+        var div = window.div;
+        var span = window.span.$appendTo( div );
+        var input = window.input.$appendTo( div );
+
+        div.$first().should.equals( span );
+        div.$last().should.equals( input );
+      }
+    }, {
+      name: '$prependTo',
+      default: function(){
+        var div = window.div;
+        var span = window.span.$prependTo( div );
+        var input = window.input.$prependTo( div );
+
+        div.$first().should.equals( input );
+        div.$last().should.equals( span );
+      }
     }
   ]
 });
