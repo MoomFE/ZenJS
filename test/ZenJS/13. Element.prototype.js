@@ -133,6 +133,22 @@ describes.push({
 
         Object.$equals( a.$prevAll('div'), [] ).should.true;
       }
+    }, {
+      name: '$child / $children',
+      default: function(){
+        var div = window.div;
+        var span = div.appendChild( window.span );
+        var input = div.appendChild( window.input );
+        var a = div.appendChild( window.a );
+
+        Object.$equals( div.$child(), [ span, input, a ] ).should.true;
+        Object.$equals( div.$child('*'), [ span, input, a ] ).should.true;
+        Object.$equals( div.$child('span'), [ span ] ).should.true;
+        Object.$equals( div.$child('input'), [ input ] ).should.true;
+        Object.$equals( div.$child('a'), [ a ] ).should.true;
+
+        Object.$equals( div.$child('div'), [] ).should.true;
+      }
     }
   ]
 });

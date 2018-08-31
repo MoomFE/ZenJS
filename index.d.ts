@@ -1161,6 +1161,20 @@ interface Element {
    */
   $prevAll( filter?: String | Function ): Element[];
 
+  /**
+   * 获取当前节点下的所有匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回所有子节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $child( filter?: String | Function ): Element[];
+
+  /**
+   * 获取当前节点下的所有匹配过滤条件的子节点,
+   * 若未传入过滤条件, 则返回所有子节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $children( filter?: String | Function ): Element[];
+
 }
 
 
@@ -1277,18 +1291,6 @@ interface Element {
 //    * @param elem 需要插入的元素
 //    */
 //   $after( elem: Element ): Element;
-//   /**
-//    * 获取当前节点下的所有匹配过滤条件的子节点,
-//    * 若未传入过滤条件, 则返回所有子节点
-//    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
-//    */
-//   $child( filter?: String | Function ): Element[];
-//   /**
-//    * 获取当前节点下的所有匹配过滤条件的子节点,
-//    * 若未传入过滤条件, 则返回所有子节点
-//    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
-//    */
-//   $children( filter?: String | Function ): Element[];
 //   /**
 //    * 对当前节点进行判断是否符合传入的要求
 //    * @param selector CSS 选择器或选择器

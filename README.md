@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 55.58kb | 15.20kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 20.15kb | 7.39kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 51.69kb | 14.94kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 51.67kb | 14.92kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 55.73kb | 15.23kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 20.23kb | 7.41kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 51.83kb | 14.97kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 51.81kb | 14.95kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -189,6 +189,7 @@
   - $prev
   - $nextAll
   - $prevAll
+  - $child / $children
 
   <!-- - $get
   - $inArray

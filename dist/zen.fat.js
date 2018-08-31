@@ -2346,6 +2346,12 @@
     });
   });
 
+  if (inBrowser) {
+    defineValue(ElementProto, '$child $children', function (filter) {
+      return Filter(slice.call(this.children), filter);
+    });
+  }
+
   /**
    * 在一个对象上定义/修改一个新属性的 get 描述符
    * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
