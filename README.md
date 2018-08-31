@@ -56,9 +56,9 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 56.29kb | 15.31kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 20.52kb | 7.49kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 52.36kb | 15.05kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.js             | 56.54kb | 15.33kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 20.66kb | 7.51kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 52.59kb | 15.08kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
 | zen.fat.esm.js         | 52.35kb | 15.03kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
@@ -192,6 +192,8 @@
   - $child / $children
   - $parent
   - $parents
+  - $append
+  - $prepend
   - $appendTo
   - $prependTo
 

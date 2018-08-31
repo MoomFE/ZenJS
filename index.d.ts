@@ -1190,6 +1190,20 @@ interface Element {
   $parents( filter?: Element | String | Function, checkSelf?: Boolean ): Element | null;
 
   /**
+   * 添加元素到当前元素内的尾部
+   * @param elem 需要添加的元素
+   * @returns 返回当前元素
+   */
+  $append( elem: Element ): Element;
+
+  /**
+   * 添加元素到当前元素内的头部
+   * @param elem 需要添加的元素
+   * @returns 返回当前元素
+   */
+  $prepend( elem: Element ): Element;
+
+  /**
    * 添加当前元素到目标元素的尾部
    * @param elem 目标元素
    * @returns 返回当前元素
