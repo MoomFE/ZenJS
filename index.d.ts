@@ -1217,6 +1217,20 @@ interface Element {
    */
   $prependTo( elem: Element ): Element;
 
+  /**
+   * 将目标元素插入到当前元素前面
+   * @param elem 目标元素
+   * @returns 返回当前元素
+   */
+  $before( elem: Element ): Element;
+
+  /**
+   * 将目标元素插入到当前元素后面
+   * @param elem 目标元素
+   * @returns 返回当前元素
+   */
+  $after( elem: Element ): Element;
+
 }
 
 
@@ -1313,16 +1327,6 @@ interface Element {
 //    * @param toggle 若值为 true, 则规定只添加类, 反之只移除
 //    */
 //   $toggleClass( className: Stirng, toggle: Boolean ): Element;
-//   /**
-//    * 将元素插入到当前元素前面
-//    * @param elem 需要插入的元素
-//    */
-//   $before( elem: Element ): Element;
-//   /**
-//    * 将元素插入到当前元素后面
-//    * @param elem 需要插入的元素
-//    */
-//   $after( elem: Element ): Element;
 //   /**
 //    * 调用原生 querySelectorAll 方法
 //    * @param selectors 包含一个或多个要匹配的选择器的 DOMString

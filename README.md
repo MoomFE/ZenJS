@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 56.54kb | 15.33kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 20.66kb | 7.51kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 52.59kb | 15.08kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 52.35kb | 15.03kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 56.93kb | 15.38kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 20.85kb | 7.54kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 52.96kb | 15.12kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 52.95kb | 15.11kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -196,6 +196,8 @@
   - $prepend
   - $appendTo
   - $prependTo
+  - $before
+  - $after
 
   <!-- - $get
   - $inArray

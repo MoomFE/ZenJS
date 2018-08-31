@@ -219,6 +219,24 @@ describes.push({
         div.$first().should.equals( input );
         div.$last().should.equals( span );
       }
+    }, {
+      name: '$before',
+      default: function(){
+        var div = window.div;
+        var input = window.input;
+        var span = window.span.$appendTo( div ).$before( input );
+
+        span.$prev().should.equals( input );
+      }
+    }, {
+      name: '$after',
+      default: function(){
+        var div = window.div;
+        var input = window.input;
+        var span = window.span.$appendTo( div ).$after( input );
+
+        span.$next().should.equals( input );
+      }
     }
   ]
 });
@@ -417,50 +435,6 @@ describes.push({
 //         div.$toggleClass('test2',false).className.should.equals('test1');
 //         div.$toggleClass('test2 test3',true).className.should.equals('test1 test2 test3');
 
-//       }
-//     }, {
-//       name: '$append',
-//       it: function(){
-//         var div = window.div;
-//         var div1 = div.appendChild( window.div );
-        
-//         div.children.length.should.equals( 1 );
-//         div.$append( window.div );
-//         div1._index.should.equals( 0 );
-//         div.children.length.should.equals( 2 );
-//       }
-//     }, {
-//       name: '$prepend',
-//       it: function(){
-//         var div = window.div;
-//         var div1 = div.appendChild( window.div );
-        
-//         div.children.length.should.equals( 1 );
-//         div.$prepend( window.div );
-//         div1._index.should.equals( 1 );
-//         div.children.length.should.equals( 2 );
-//       }
-//     }, {
-//       name: '$before',
-//       it: function(){
-//         var div = window.div;
-//         var div1 = div.appendChild( window.div );
-
-//         div.children.length.should.equals( 1 );
-//         div1.$before( window.div );
-//         div1._index.should.equals( 1 );
-//         div.children.length.should.equals( 2 );
-//       }
-//     }, {
-//       name: '$after',
-//       it: function(){
-//         var div = window.div;
-//         var div1 = div.appendChild( window.div );
-
-//         div.children.length.should.equals( 1 );
-//         div1.$after( window.div );
-//         div1._index.should.equals( 0 );
-//         div.children.length.should.equals( 2 );
 //       }
 //     }, {
 //       name: '$query',
