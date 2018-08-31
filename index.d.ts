@@ -1124,56 +1124,70 @@ interface Element {
    * 若未传入过滤条件, 则返回最后一个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $last( filter?: String | Function ): Element | null;
+  $last( filter?: Element | String | Function ): Element | null;
 
   /**
    * 获取当前节点下最后一个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回最后一个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $lastChild( filter?: String | Function ): Element | null;
+  $lastChild( filter?: Element | String | Function ): Element | null;
 
   /**
    * 获取当前节点的下一个匹配过滤条件的节点,
    * 若未传入过滤条件, 则直接返回当前节点的下一个节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $next( filter?: String | Function ): Element | null;
+  $next( filter?: Element | String | Function ): Element | null;
 
   /**
    * 获取当前节点的上一个匹配过滤条件的节点,
    * 若未传入过滤条件, 则直接返回当前节点的上一个节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $prev( filter?: String | Function ): Element | null;
+  $prev( filter?: Element | String | Function ): Element | null;
 
   /**
    * 获取从当前节点后面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点后面的所有兄弟节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $nextAll( filter?: String | Function ): Element[];
+  $nextAll( filter?: Element | String | Function ): Element[];
 
   /**
    * 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点前面的所有兄弟节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $prevAll( filter?: String | Function ): Element[];
+  $prevAll( filter?: Element | String | Function ): Element[];
 
   /**
    * 获取当前节点下的所有匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回所有子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $child( filter?: String | Function ): Element[];
+  $child( filter?: Element | String | Function ): Element[];
 
   /**
    * 获取当前节点下的所有匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回所有子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $children( filter?: String | Function ): Element[];
+  $children( filter?: Element | String | Function ): Element[];
+
+  /**
+   * 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $parent( filter?: Element | String | Function ): Element | null;
+
+  /**
+   * 获取当前节点的符合过滤条件的父节点, 未查找到会一直继续向上查找,
+   * 若未传入过滤条件, 则直接返回当前节点的父节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   * @param checkSelf 是否从当前节点开始检测, 不从当前节点的父节点开始
+   */
+  $parents( filter?: Element | String | Function, checkSelf?: Boolean ): Element | null
 
 }
 
@@ -1291,28 +1305,6 @@ interface Element {
 //    * @param elem 需要插入的元素
 //    */
 //   $after( elem: Element ): Element;
-//   /**
-//    * 对当前节点进行判断是否符合传入的要求
-//    * @param selector CSS 选择器或选择器
-//    */
-//   $is( selector: Element | String ): Boolean;
-//   /**
-//    * 对当前节点进行判断是否不符合传入的要求
-//    * @param selector CSS 选择器或选择器
-//    */
-//   $not( selector: Element | String ): Boolean;
-//   /**
-//    * 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
-//    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
-//    */
-//   $parent( filter?: String | Function ): Element | null;
-//   /**
-//    * 获取当前节点的符合过滤条件的父节点, 未查找到会一直继续向上查找,
-//    * 若未传入过滤条件, 则直接返回当前节点的父节点
-//    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
-//    * @param checkSelf 是否从当前节点开始检测, 不从当前节点的父节点开始
-//    */
-//   $parents( filter?: String | Function, checkSelf?: Boolean ): Element | null
 //   /**
 //    * 调用原生 querySelectorAll 方法
 //    * @param selectors 包含一个或多个要匹配的选择器的 DOMString

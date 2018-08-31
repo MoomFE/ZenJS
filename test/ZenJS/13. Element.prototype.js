@@ -149,6 +149,32 @@ describes.push({
 
         Object.$equals( div.$child('div'), [] ).should.true;
       }
+    }, {
+      name: '$parent',
+      default: function(){
+        var div = window.div;
+        var div2 = div.appendChild( window.div );
+
+        div2.$parent().should.equals( div );
+        div2.$parent('*').should.equals( div );
+        div2.$parent('div').should.equals( div );
+
+        isLikeNull( div2.$parent('span') ).should.true;
+      }
+    }, {
+      name: '$parents',
+      default: function(){
+        var div = window.div.$set('id','test');
+        var div2 = div.appendChild( window.div );
+        var div3 = div2.appendChild( window.div );
+
+        div3.$parents().should.equals( div2 );
+        div3.$parents('*').should.equals( div2 );
+        div3.$parents('div').should.equals( div2 );
+        div3.$parents('#test').should.equals( div );
+
+        isLikeNull( div2.$parents('span') ).should.true;
+      }
     }
   ]
 });
@@ -391,63 +417,6 @@ describes.push({
 //         div1.$after( window.div );
 //         div1._index.should.equals( 0 );
 //         div.children.length.should.equals( 2 );
-//       }
-//     }, {
-//       name: '$child / $children',
-//       it: function(){
-
-//         var div = window.div;
-//         var span = div.appendChild( window.span );
-//         var a = div.appendChild( window.a );
-
-//         div.$child().$equals([ span, a ]).should.true;
-//         div.$child('span').$equals([ span ]).should.true;
-//         div.$child('a').$equals([ a ]).should.true;
-//         div.$child('div').$equals([]).should.true;
-
-//         ( div.$child === div.$children ).should.true;
-//       }
-//     }, {
-//       name: '$parent',
-//       it: function(){
-
-//         var div = window.div,
-//             div_div = div.appendChild( window.div ),
-//             div_span = div.appendChild( span ),
-//             div_span_a = div_span.appendChild( a );
-
-//         isLikeNull( div.$parent() ).should.true;
-//         div_div.$parent().should.equals( div );
-//         div_span.$parent().should.equals( div );
-//         div_span_a.$parent().should.equals( div_span );
-
-//         isLikeNull( div.$parent('div') ).should.true;
-//         isLikeNull( div_span_a.$parent('div') ).should.true;
-//         div_div.$parent('div').should.equals( div );
-//         div_span.$parent('div').should.equals( div );
-
-//       }
-//     }, {
-//       name: '$parents',
-//       it: function(){
-
-//         var div = window.div,
-//             div_div = div.appendChild( window.div ),
-//             div_div_div = div_div.appendChild( window.div );
-
-//         div.id = 'div';
-//         div_div.id = 'div_div';
-
-//         isLikeNull( div.$parents() ).should.true;
-//         isLikeNull( div_div.$parents('span') ).should.true;
-
-//         div_div.$parents().should.equals( div );
-//         div_div.$parents('div').should.equals( div );
-//         div_div_div.$parents('div').should.equals( div_div );
-//         div_div_div.$parents('#div').should.equals( div );
-
-//         // checkSelf
-//         div_div_div.$parents( null, true ).should.equals( div_div_div );
 //       }
 //     }, {
 //       name: '$query',

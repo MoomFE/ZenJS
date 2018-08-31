@@ -2346,6 +2346,17 @@ if (inBrowser) {
   });
 }
 
+if (inBrowser) {
+
+  defineValue(ElementProto, '$parent', function (filter) {
+    return Filter(this.parentElement, filter, null, true);
+  });
+
+  defineValue(ElementProto, '$parents', function (filter, checkSelf) {
+    return Filter(this, filter, 'parentElement', checkSelf);
+  });
+}
+
 /**
  * 在一个对象上定义/修改一个新属性的 get 描述符
  * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
