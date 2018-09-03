@@ -1,3 +1,4 @@
+import './$addClass/index';
 import './$is/index';
 import './$first/index';
 import './$next/index';
