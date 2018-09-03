@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 56.94kb | 15.38kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 20.86kb | 7.54kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 52.97kb | 15.13kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 52.96kb | 15.11kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 57.25kb | 15.44kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 21.00kb | 7.58kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 53.25kb | 15.18kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 53.24kb | 15.16kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -193,6 +193,7 @@
   - $child / $children
   - $parent
   - $parents
+  - $siblings
   - $append
   - $prepend
   - $appendTo

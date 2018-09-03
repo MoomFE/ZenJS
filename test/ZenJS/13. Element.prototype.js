@@ -176,6 +176,22 @@ describes.push({
         isLikeNull( div2.$parents('span') ).should.true;
       }
     }, {
+      name: '$siblings',
+      default: function(){
+        var div = window.div.$set('id','test');
+        var div2 = div.appendChild( window.div );
+        var div3 = div.appendChild( window.div );
+        var span = div.appendChild( window.span );
+        var input = div.appendChild( window.input );
+
+        Object.$equals( div2.$siblings(), [ div3, span, input ] ).should.true;
+        Object.$equals( div2.$siblings('*'), [ div3, span, input ] ).should.true;
+        Object.$equals( div2.$siblings(':last-child'), [ input ] ).should.true;
+        Object.$equals( div2.$siblings('div'), [ div3 ] ).should.true;
+        Object.$equals( div2.$siblings('span'), [ span ] ).should.true;
+        Object.$equals( div2.$siblings('input'), [ input ] ).should.true;
+      }
+    }, {
       name: '$append',
       default: function(){
         var div = window.div;
@@ -466,27 +482,6 @@ describes.push({
 //         div.$first().should.equals( div1 );
 //         div1.$replaceWith( div2 );
 //         div.$first().should.equals( div2 );
-//       }
-//     }, {
-//       name: '$siblings',
-//       it: function(){
-
-//         var div = window.div;
-//         var div1 = div.appendChild( window.div );
-//         var div2 = div.appendChild( window.div );
-//         var span = div.appendChild( window.span );
-//         var a = div.appendChild( window.a );
-
-//         div1.$siblings().$equals([ div2, span, a ]).should.true;
-//         div1.$siblings('div').$equals([ div2 ]).should.true;
-//         div1.$siblings('span').$equals([ span ]).should.true;
-//         div1.$siblings('a').$equals([ a ]).should.true;
-
-//         span.$siblings().$equals([ div1, div2, a ]).should.true;
-//         span.$siblings('div').$equals([ div1, div2 ]).should.true;
-//         span.$siblings('span').$equals([]).should.true;
-//         span.$siblings('a').$equals([ a ]).should.true;
-
 //       }
 //     }
 //   ]

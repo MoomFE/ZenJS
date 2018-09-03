@@ -1198,6 +1198,13 @@ interface Element {
   $parents( filter?: Element | String | Function, checkSelf?: Boolean ): Element | null;
 
   /**
+   * 获取当前节点的所有符合过滤条件的兄弟节点
+   * 若未传入过滤条件, 则直接返回当前节点的所有兄弟节点
+   * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
+   */
+  $siblings( filter?: String | Function ): Element | null;
+
+  /**
    * 添加元素到当前元素内的尾部
    * @param elem 需要添加的元素
    * @returns 返回当前元素
@@ -1363,12 +1370,6 @@ interface Element {
 //    * @param elem
 //    */
 //   $replace( elem: Element );
-//   /**
-//    * 获取当前节点的所有符合过滤条件的兄弟节点
-//    * 若未传入过滤条件, 则直接返回当前节点的所有兄弟节点
-//    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
-//    */
-//   $siblings( filter?: String | Function ): Element | null;
 //   /**
 //    * 对当前元素下的文本进行全选操作
 //    */

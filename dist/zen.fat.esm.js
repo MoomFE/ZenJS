@@ -2358,6 +2358,19 @@ if (inBrowser) {
 }
 
 if (inBrowser) {
+  defineValue(ElementProto, '$siblings', function (filter) {
+    var parent = this.parentElement;
+
+    if (parent) {
+      var children = slice.call(parent.children);
+
+      return Filter(children.$splice(children.indexOf(this), 1), filter);
+    }
+    return [];
+  });
+}
+
+if (inBrowser) {
 
   defineValue(ElementProto, '$append', function (elem) {
     return this.appendChild(elem), this;
