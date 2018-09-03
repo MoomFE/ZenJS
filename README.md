@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 57.42kb | 15.45kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 21.08kb | 7.60kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 53.42kb | 15.20kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 53.40kb | 15.18kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 57.64kb | 15.50kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 21.20kb | 7.63kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 53.62kb | 15.24kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 53.61kb | 15.22kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -201,6 +201,8 @@
   - $before
   - $after
   - $delete / $remove
+  - $query / $find
+  - $queryFirst / $findFirst
 
   <!-- - $get
   - $inArray

@@ -264,6 +264,16 @@ describes.push({
         div2.$delete();
         Object.$equals( div.$child(), [ div3 ] ).should.true;
       }
+    }, {
+      name: '$query / $find',
+      default: function(){
+        Object.$equals( div.$query, div.querySelectorAll ).should.true;
+      }
+    }, {
+      name: '$queryFirst / $findFirst',
+      default: function(){
+        Object.$equals( div.$queryFirst, div.querySelector ).should.true;
+      }
     }
   ]
 });
@@ -462,16 +472,6 @@ describes.push({
 //         div.$toggleClass('test2',false).className.should.equals('test1');
 //         div.$toggleClass('test2 test3',true).className.should.equals('test1 test2 test3');
 
-//       }
-//     }, {
-//       name: '$query',
-//       it: function(){
-//         div.$query.should.equal( div.querySelectorAll );
-//       }
-//     }, {
-//       name: '$queryFirst',
-//       it: function(){
-//         div.$queryFirst.should.equal( div.querySelector );
 //       }
 //     }, {
 //       name: '$replaceWith / $replace',

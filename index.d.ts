@@ -1256,6 +1256,30 @@ interface Element {
    */
   $remove();
 
+  /**
+   * 调用原生 querySelectorAll 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $query( selectors ): NodeListOf<Element>;
+
+  /**
+   * 调用原生 querySelectorAll 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $find( selectors ): NodeListOf<Element>;
+
+  /**
+   * 调用原生  querySelector 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $queryFirst( selectors ): Element | null;
+
+  /**
+   * 调用原生  querySelector 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $findFirst( selectors ): Element | null;
+
 }
 
 
@@ -1288,16 +1312,6 @@ interface Element {
 //    * @param attributes cookie 的配置
 //    */
 //   $removeCookie( key: String, attributes?: any );
-//   /**
-//    * 调用原生 querySelectorAll 方法
-//    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
-//    */
-//   $query( selectors ): NodeListOf<Element>;
-//   /**
-//    * 调用原生  querySelector 方法
-//    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
-//    */
-//   $queryFirst( selectors ): Element | null;
 // }
 
 // interface Element {
