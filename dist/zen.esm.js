@@ -881,7 +881,7 @@ defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
   return $add(this, fixArrayIndex(this, toIndex), this.splice(start, moveCount));
 });
 
-['push', 'pop', 'unshift', 'shift'].forEach(function (key) {
+['push', 'pop', 'unshift', 'shift', 'splice'].forEach(function (key) {
   defineValue(ArrayProto, '$' + key, function () {
     this[key].apply(this, arguments);
     return this;

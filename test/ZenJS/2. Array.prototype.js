@@ -744,6 +744,14 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$splice',
+      default: function(){
+        var arr = [ 1, 2, 3, 4, 5 ];
+
+        arr.$splice( 1, 1 ).should.equals( arr );
+        Object.$equals( arr, [ 1, 3, 4, 5 ] );
+      }
     }
   ]
 });

@@ -258,26 +258,34 @@ interface Array<T> {
   $moveRange( start: Number, moveCount: Number, toIndex: Number ): any[];
 
   /**
-   * 将一个或多个元素添加到数组的末尾, 并返回数组.
+   * 将一个或多个元素添加到数组的末尾, 并返回当前数组
    * @param args 需要插入到数组末尾的对象
    */
   $push( ...args: any[] ): any[];
 
   /**
-   * 从数组中删除最后一个元素, 并返回数组.
+   * 从数组中删除最后一个元素, 并返回当前数组
    */
   $pop(): any[];
 
   /**
-   * 将一个或多个元素添加到数组的开头, 并返回数组.
+   * 将一个或多个元素添加到数组的开头, 并返回当前数组
    * @param args 需要插入到数组开头的对象
    */
   $unshift( ...args: any[] ): any[];
 
   /**
-   * 从数组中删除第一个元素, 并返回数组.
+   * 从数组中删除第一个元素, 并返回当前数组
    */
   $shift(): any[];
+
+  /**
+   * 通过删除现有元素和 / 或添加新元素来更改一个数组的内容, 并返回当前数组
+   * @param start 指定修改的开始位置
+   * @param deleteCount 整数, 表示要移除的数组元素的个数
+   * @param args 要添加进数组的元素
+   */
+  $splice( start: Number, deleteCount?: Number, ...args?: any ): any[];
 
 }
 

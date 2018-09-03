@@ -48,18 +48,18 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 51.79kb | 14.15kb | \|  | UMD       | Browser |
-| zen.min.js         | 18.65kb | 6.86kb | \|  | UMD       | Browser |
+| zen.js             | 51.80kb | 14.15kb | \|  | UMD       | Browser |
+| zen.min.js         | 18.66kb | 6.87kb | \|  | UMD       | Browser |
 | zen.common.js      | 48.13kb | 13.91kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 48.11kb | 13.89kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.esm.js         | 48.12kb | 13.90kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 56.93kb | 15.38kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 20.85kb | 7.54kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 52.96kb | 15.12kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 52.95kb | 15.11kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 56.94kb | 15.38kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 20.86kb | 7.54kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 52.97kb | 15.13kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 52.96kb | 15.11kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -96,6 +96,7 @@
   - $pop
   - $unshift
   - $shift
+  - $splice
 
 - Object
   - $assign
