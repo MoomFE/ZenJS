@@ -6,3 +6,4 @@ import './$parent/index';
 import './$siblings/index';
 import './$append/index';
 import './$before/index';
+import './$remove/index';

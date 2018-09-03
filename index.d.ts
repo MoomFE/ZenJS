@@ -1246,6 +1246,16 @@ interface Element {
    */
   $after( elem: Element ): Element;
 
+  /**
+   * 移除当前节点
+   */
+  $delete();
+
+  /**
+   * 移除当前节点
+   */
+  $remove();
+
 }
 
 
@@ -1352,14 +1362,6 @@ interface Element {
 //    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
 //    */
 //   $queryFirst( selectors ): Element;
-//   /**
-//    * 移除当前节点
-//    */
-//   $delete();
-//   /**
-//    * 移除当前节点
-//    */
-//   $remove();
 //   /**
 //    * 将当前元素替换为新的元素
 //    * @param elem

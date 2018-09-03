@@ -253,6 +253,17 @@ describes.push({
 
         span.$next().should.equals( input );
       }
+    }, {
+      name: '$delete / $remove',
+      default: function(){
+        var div = window.div;
+        var div2 = window.div.$prependTo( div );
+        var div3 = window.div.$prependTo( div );
+
+        Object.$equals( div.$child(), [ div2, div3 ] ).should.true;
+        div2.$delete();
+        Object.$equals( div.$child(), [ div3 ] ).should.true;
+      }
     }
   ]
 });
@@ -461,16 +472,6 @@ describes.push({
 //       name: '$queryFirst',
 //       it: function(){
 //         div.$queryFirst.should.equal( div.querySelector );
-//       }
-//     }, {
-//       name: '$delete / $remove',
-//       it: function(){
-//         var div = window.div;
-//         var childDiv = div.appendChild( window.div );
-
-//         div.children.length.should.equals( 1 );
-//         childDiv.$remove();
-//         div.children.length.should.equals( 0 );
 //       }
 //     }, {
 //       name: '$replaceWith / $replace',
