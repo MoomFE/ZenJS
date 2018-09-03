@@ -8,3 +8,4 @@ import './$append/index';
 import './$before/index';
 import './$remove/index';
 import './$query/index';
+import './$replaceWith/index';

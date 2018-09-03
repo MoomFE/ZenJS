@@ -1076,6 +1076,30 @@ interface Document {
    */
   $ready( func: () => void, data?: any ): void;
 
+  /**
+   * 调用原生 querySelectorAll 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $query( selectors ): NodeListOf<Element>;
+
+  /**
+   * 调用原生 querySelectorAll 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $find( selectors ): NodeListOf<Element>;
+
+  /**
+   * 调用原生  querySelector 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $queryFirst( selectors ): Element | null;
+
+  /**
+   * 调用原生  querySelector 方法
+   * @param selectors 包含一个或多个要匹配的选择器的 DOMString
+   */
+  $findFirst( selectors ): Element | null;
+
 }
 
 interface Window {
@@ -1280,6 +1304,18 @@ interface Element {
    */
   $findFirst( selectors ): Element | null;
 
+  /**
+   * 将当前元素替换为新的元素
+   * @param elem
+   */
+  $replaceWith( elem: Element );
+
+  /**
+   * 将当前元素替换为新的元素
+   * @param elem
+   */
+  $replace( elem: Element );
+
 }
 
 
@@ -1376,16 +1412,6 @@ interface Element {
 //    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
 //    */
 //   $queryFirst( selectors ): Element;
-//   /**
-//    * 将当前元素替换为新的元素
-//    * @param elem
-//    */
-//   $replaceWith( elem: Element );
-//   /**
-//    * 将当前元素替换为新的元素
-//    * @param elem
-//    */
-//   $replace( elem: Element );
 //   /**
 //    * 对当前元素下的文本进行全选操作
 //    */

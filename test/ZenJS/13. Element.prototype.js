@@ -274,6 +274,17 @@ describes.push({
       default: function(){
         Object.$equals( div.$queryFirst, div.querySelector ).should.true;
       }
+    }, {
+      name: '$replaceWith / $replace',
+      default: function(){
+        var div = window.div;
+        var div2 = window.div.$prependTo( div );
+        var div3 = window.div;
+
+        div.$first().should.equals( div2 );
+        div2.$replace( div3 );
+        div.$first().should.equals( div3 );
+      }
     }
   ]
 });
@@ -472,17 +483,6 @@ describes.push({
 //         div.$toggleClass('test2',false).className.should.equals('test1');
 //         div.$toggleClass('test2 test3',true).className.should.equals('test1 test2 test3');
 
-//       }
-//     }, {
-//       name: '$replaceWith / $replace',
-//       it: function(){
-//         var div = window.div;
-//         var div1 = div.appendChild( window.div );
-//         var div2 = window.div;
-
-//         div.$first().should.equals( div1 );
-//         div1.$replaceWith( div2 );
-//         div.$first().should.equals( div2 );
 //       }
 //     }
 //   ]
