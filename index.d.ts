@@ -1365,6 +1365,18 @@ interface Element {
    */
   _height: Number;
 
+  /**
+   * 读取时返回元素的 value 值;
+   * 写入时设置元素的 value 值
+   */
+  _val: String;
+
+  /**
+   * 读取时返回元素的 value 值;
+   * 写入时设置元素的 value 值
+   */
+  _value: String;
+
 }
 
 
@@ -1400,11 +1412,6 @@ interface Element {
 // }
 
 // interface Element {
-//   /**
-//    * 读取时返回元素的 value 值
-//    * 写入时设置元素的 value 值
-//    */
-//   _val: String;
 //   /**
 //    * 读取时返回元素的 innerHTML 值
 //    * 写入时设置元素的 innerHTML 值

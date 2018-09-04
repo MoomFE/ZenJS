@@ -1,12 +1,12 @@
-import inBrowser from "../../shared/const/inBrowser";
-import define from "../../shared/util/define";
-import ElementProto from "../../shared/global/Element/prototype/index";
-import isString from "../../shared/util/isString";
-import rreturn from "../../shared/const/rreturn";
-import isNumber from "../../shared/util/isNumber";
-import isArray from "../../shared/global/Array/isArray";
-import rnothtmlwhite from "../../shared/const/rnothtmlwhite";
-import $toArray from "../../Array/$toArray/index";
+import inBrowser from "../../../shared/const/inBrowser";
+import define from "../../../shared/util/define";
+import ElementProto from "../../../shared/global/DomElement/prototype/index";
+import isString from "../../../shared/util/isString";
+import rreturn from "../../../shared/const/rreturn";
+import { isNumber } from "../../../shared/util/isNumber";
+import isArray from "../../../shared/global/Array/isArray";
+import rnothtmlwhite from "../../../shared/const/rnothtmlwhite";
+import $toArray from "../../../1. Core/1. Array/$toArray/index";
 
 
 /**
@@ -16,42 +16,44 @@ import $toArray from "../../Array/$toArray/index";
  */
 
 
-inBrowser && define( ElementProto, '_val _value', {
-  get(){
-    // 兼容性处理
-    const hooks = valHooks[ this.type ] || valHooks[ this._nodeName ];
-    let result;
-
-    if( hooks && 'get' in hooks && ( result = hooks.get( this ) ) !== undefined ){
-      return result;
+if( inBrowser ){
+  define( ElementProto, '_val _value', {
+    get(){
+      // 兼容性处理
+      const hooks = valHooks[ this.type ] || valHooks[ this._nodeName ];
+      let result;
+  
+      if( hooks && 'get' in hooks && ( result = hooks.get( this ) ) !== undefined ){
+        return result;
+      }
+  
+      if( isString( result = this.value ) ){
+        return result.replace( rreturn, '' );
+      }
+  
+      return result == null ? '' : result;
+    },
+    set( value ){
+  
+      if( value == null ){
+        value = '';
+      }
+      else if( isNumber( value ) ){
+        value += '';
+      }
+      else if( isArray( value ) ){
+        value = value.map( val => val == null ? '' : val + '' );
+      }
+  
+      const hooks = valHooks[ this.type ] || valHooks[ this._nodeName ];
+  
+      if( !hooks || !( 'set' in hooks ) || hooks.set( this, value ) === undefined ){
+        this.value = value;
+      }
+  
     }
-
-    if( isString( result = this.value ) ){
-      return result.replace( rreturn, '' );
-    }
-
-    return result == null ? '' : result;
-  },
-  set( value ){
-
-    if( value == null ){
-      value = '';
-    }
-    else if( isNumber( value ) ){
-      value += '';
-    }
-    else if( isArray( value ) ){
-      value = value.map( val => val == null ? '' : val + '' );
-    }
-
-    const hooks = valHooks[ this.type ] || valHooks[ this._nodeName ];
-
-    if( !hooks || !( 'set' in hooks ) || hooks.set( this, value ) === undefined ){
-      this.value = value;
-    }
-
-  }
-});
+  });
+}
 
 
 const valHooks = {
