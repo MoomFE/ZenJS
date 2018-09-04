@@ -17,6 +17,7 @@ import $toArray from "../../../1. Core/1. Array/$toArray/index";
 
 
 if( inBrowser ){
+
   define( ElementProto, '_val _value', {
     get(){
       // 兼容性处理
@@ -53,91 +54,90 @@ if( inBrowser ){
   
     }
   });
-}
 
-
-const valHooks = {
-  option: {
-    get( elem ){
-      const value = elem.getAttribute( 'value' );
-      return value == null ? (
-                                elem.textContent.match( rnothtmlwhite ) || []
-                             ).join(' ')
-                           : value;
-    }
-  },
-  select: {
-    get( elem ){
-      const options = elem.options;
-      const index = elem.selectedIndex;
-      const one = elem.type === 'select-one';
-      const max = one ? index + 1 : options.length;
-      let values = one ? null : [];
-      let value, option, i;
-
-      if( index < 0 ){
-        i = max;
-      }else{
-        i = one ? index : 0;
+  const valHooks = {
+    option: {
+      get( elem ){
+        const value = elem.getAttribute( 'value' );
+        return value == null ? (
+                                  elem.textContent.match( rnothtmlwhite ) || []
+                               ).join(' ')
+                             : value;
       }
-
-      for( ; i < max; i++ ){
-        option = options[ i ];
-
-        if(
-          ( option.selected || i === index )
-          && !option.disabled
-          && (
-            !option.parentNode.disabled
-            || option.parentNode._nodeName !== 'optgroup'
-          )
-        ){
-          value = valHooks.option.get( option );
-
-          if( one ){
-            return value;
-          }
-
-          values.push( value );
-        }
-      }
-
-      return values;
     },
-    set( elem, value ){
-      const options = elem.options;
-      const values = $toArray( value );
-      let i = options.length;
-      let optionSet, option;
-
-      while( i-- ){
-        option = options[ i ];
-
-        if( option.selected = values.$inArray( valHooks.option.get( option ) ) ){
-          optionSet = true;
+    select: {
+      get( elem ){
+        const options = elem.options;
+        const index = elem.selectedIndex;
+        const one = elem.type === 'select-one';
+        const max = one ? index + 1 : options.length;
+        let values = one ? null : [];
+        let value, option, i;
+  
+        if( index < 0 ){
+          i = max;
+        }else{
+          i = one ? index : 0;
         }
+  
+        for( ; i < max; i++ ){
+          option = options[ i ];
+  
+          if(
+            ( option.selected || i === index )
+            && !option.disabled
+            && (
+              !option.parentNode.disabled
+              || option.parentNode._nodeName !== 'optgroup'
+            )
+          ){
+            value = valHooks.option.get( option );
+  
+            if( one ){
+              return value;
+            }
+  
+            values.push( value );
+          }
+        }
+  
+        return values;
+      },
+      set( elem, value ){
+        const options = elem.options;
+        const values = $toArray( value );
+        let i = options.length;
+        let optionSet, option;
+  
+        while( i-- ){
+          option = options[ i ];
+  
+          if( option.selected = values.$inArray( valHooks.option.get( option ) ) ){
+            optionSet = true;
+          }
+        }
+  
+        if( !optionSet ){
+          elem.selectedIndex = -1;
+        }
+  
+        return values;
       }
-
-      if( !optionSet ){
-        elem.selectedIndex = -1;
-      }
-
-      return values;
     }
   }
-}
 
+  const input = document.createElement('input');
+        input.type = 'checkbox';
+  
+  // checkbox 的默认值应该为 'on'
+  if( input.value !== '' ){
+    [ 'radio', 'checkbox' ].forEach( type => {
+      valHooks[ type ] = {
+        get( elem ){
+          return elem.getAttribute( 'value' ) === null ? 'on' : elem.value;
+        }
+      };
+    });
+  }
 
-const input = document.createElement('input');
-      input.type = 'checkbox';
-
-// checkbox 的默认值应该为 'on'
-if( input.value !== '' ){
-  [ 'radio', 'checkbox' ].forEach( type => {
-    valHooks[ type ] = {
-      get( elem ){
-        return elem.getAttribute( 'value' ) === null ? 'on' : elem.value;
-      }
-    };
-  });
 }

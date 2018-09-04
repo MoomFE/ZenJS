@@ -2645,6 +2645,7 @@ var rreturn = /\r/g;
  */
 
 if (inBrowser) {
+
   define(ElementProto, '_val _value', {
     get: function () {
       // 兼容性处理
@@ -2680,84 +2681,84 @@ if (inBrowser) {
       }
     }
   });
-}
 
-var valHooks = {
-  option: {
-    get: function (elem) {
-      var value = elem.getAttribute('value');
-      return value == null ? (elem.textContent.match(rnothtmlwhite) || []).join(' ') : value;
-    }
-  },
-  select: {
-    get: function (elem) {
-      var options = elem.options;
-      var index = elem.selectedIndex;
-      var one = elem.type === 'select-one';
-      var max = one ? index + 1 : options.length;
-      var values = one ? null : [];
-      var value,
-          option,
-          i;
-
-      if (index < 0) {
-        i = max;
-      } else {
-        i = one ? index : 0;
-      }
-
-      for (; i < max; i++) {
-        option = options[i];
-
-        if ((option.selected || i === index) && !option.disabled && (!option.parentNode.disabled || option.parentNode._nodeName !== 'optgroup')) {
-          value = valHooks.option.get(option);
-
-          if (one) {
-            return value;
-          }
-
-          values.push(value);
-        }
-      }
-
-      return values;
-    },
-    set: function (elem, value) {
-      var options = elem.options;
-      var values = $toArray(value);
-      var i = options.length;
-      var optionSet,
-          option;
-
-      while (i--) {
-        option = options[i];
-
-        if (option.selected = values.$inArray(valHooks.option.get(option))) {
-          optionSet = true;
-        }
-      }
-
-      if (!optionSet) {
-        elem.selectedIndex = -1;
-      }
-
-      return values;
-    }
-  }
-};
-
-var input = document.createElement('input');
-input.type = 'checkbox';
-
-// checkbox 的默认值应该为 'on'
-if (input.value !== '') {
-  ['radio', 'checkbox'].forEach(function (type) {
-    valHooks[type] = {
+  var valHooks = {
+    option: {
       get: function (elem) {
-        return elem.getAttribute('value') === null ? 'on' : elem.value;
+        var value = elem.getAttribute('value');
+        return value == null ? (elem.textContent.match(rnothtmlwhite) || []).join(' ') : value;
       }
-    };
-  });
+    },
+    select: {
+      get: function (elem) {
+        var options = elem.options;
+        var index = elem.selectedIndex;
+        var one = elem.type === 'select-one';
+        var max = one ? index + 1 : options.length;
+        var values = one ? null : [];
+        var value,
+            option,
+            i;
+
+        if (index < 0) {
+          i = max;
+        } else {
+          i = one ? index : 0;
+        }
+
+        for (; i < max; i++) {
+          option = options[i];
+
+          if ((option.selected || i === index) && !option.disabled && (!option.parentNode.disabled || option.parentNode._nodeName !== 'optgroup')) {
+            value = valHooks.option.get(option);
+
+            if (one) {
+              return value;
+            }
+
+            values.push(value);
+          }
+        }
+
+        return values;
+      },
+      set: function (elem, value) {
+        var options = elem.options;
+        var values = $toArray(value);
+        var i = options.length;
+        var optionSet,
+            option;
+
+        while (i--) {
+          option = options[i];
+
+          if (option.selected = values.$inArray(valHooks.option.get(option))) {
+            optionSet = true;
+          }
+        }
+
+        if (!optionSet) {
+          elem.selectedIndex = -1;
+        }
+
+        return values;
+      }
+    }
+  };
+
+  var input = document.createElement('input');
+  input.type = 'checkbox';
+
+  // checkbox 的默认值应该为 'on'
+  if (input.value !== '') {
+    ['radio', 'checkbox'].forEach(function (type) {
+      valHooks[type] = {
+        get: function (elem) {
+          return elem.getAttribute('value') === null ? 'on' : elem.value;
+        }
+      };
+    });
+  }
 }
 
 /*
