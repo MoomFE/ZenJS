@@ -230,7 +230,7 @@
    * @param {Function} value 将被定义或修改的 value 描述符
    * @param {any} options 将被定义或修改的属性描述符
    */
-  function defineValue$1(obj, name, value, options) {
+  function defineValue(obj, name, value, options) {
     define(obj, name, { value: value }, options || definePropertyOptions);
 
     return value;
@@ -312,9 +312,9 @@
     });
   }
 
-  defineValue$1(Array, '$chunk', chunk);
+  defineValue(Array, '$chunk', chunk);
 
-  defineValue$1(ArrayProto, '$chunk', function (size) {
+  defineValue(ArrayProto, '$chunk', function (size) {
     return chunk(this, size);
   });
 
@@ -322,7 +322,7 @@
 
   var slice = ArrayProto.slice;
 
-  defineValue$1(Array, '$copy', function (source, array) {
+  defineValue(Array, '$copy', function (source, array) {
 
     if (!source || !source.length) {
       return [];
@@ -335,7 +335,7 @@
     return slice.call(source);
   });
 
-  defineValue$1(Array, '$create', create$1);
+  defineValue(Array, '$create', create$1);
 
   function $each(array, callback) {
 
@@ -358,9 +358,9 @@
     return array;
   }
 
-  defineValue$1(Array, '$each', $each);
+  defineValue(Array, '$each', $each);
 
-  defineValue$1(ArrayProto, '$each', function (callback) {
+  defineValue(ArrayProto, '$each', function (callback) {
     return $each(this, callback);
   });
 
@@ -474,13 +474,13 @@
     return true;
   }
 
-  defineValue$1(Array, '$equals', equals$1);
+  defineValue(Array, '$equals', equals$1);
 
-  defineValue$1(ArrayProto, '$equals', function (obj, predicate) {
+  defineValue(ArrayProto, '$equals', function (obj, predicate) {
     return equals$1(this, obj, predicate);
   });
 
-  defineValue$1(Array, '$isArrayLike', isArrayLike);
+  defineValue(Array, '$isArrayLike', isArrayLike);
 
   var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
 
@@ -554,7 +554,7 @@
     return [];
   }
 
-  defineValue$1(Array, '$toArray', $toArray);
+  defineValue(Array, '$toArray', $toArray);
 
   /**
    * 获取方法从指定位开始的剩余参数
@@ -608,11 +608,11 @@
     return self;
   }
 
-  defineValue$1(ArrayProto, '$add', function (index) {
+  defineValue(ArrayProto, '$add', function (index) {
     return $add(this, index, parametersRest(arguments, 1));
   });
 
-  defineValue$1(ArrayProto, '$delete $remove', function (index, noop, returnDeleted) {
+  defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted) {
 
     var length = this.length;
 
@@ -626,7 +626,7 @@
     return returnDeleted ? deleted : this;
   });
 
-  defineValue$1(ArrayProto, '$deleteValue $removeValue', function (_value) {
+  defineValue(ArrayProto, '$deleteValue $removeValue', function (_value) {
 
     var length = this.length,
         index;
@@ -651,7 +651,7 @@
     return this;
   });
 
-  defineValue$1(ArrayProto, '$concat', function () {
+  defineValue(ArrayProto, '$concat', function () {
     var _this = this;
 
     slice.call(arguments).forEach(function (arg) {
@@ -661,7 +661,7 @@
     return this;
   });
 
-  defineValue$1(ArrayProto, '$concatTo', function (index) {
+  defineValue(ArrayProto, '$concatTo', function (index) {
     var _this2 = this;
 
     var args = parametersRest(arguments, 1);
@@ -684,7 +684,7 @@
     return this;
   });
 
-  defineValue$1(ArrayProto, '$findIndex', function (predicate, key) {
+  defineValue(ArrayProto, '$findIndex', function (predicate, key) {
     return findIndex(this, predicate, key, arguments);
   });
 
@@ -804,13 +804,13 @@
     return true;
   }
 
-  defineValue$1(ArrayProto, '$find', function (predicate, key) {
+  defineValue(ArrayProto, '$find', function (predicate, key) {
     var index = findIndex(this, predicate, key, arguments);
 
     return index === -1 ? null : this[index];
   });
 
-  defineValue$1(ArrayProto, '$get', function () {
+  defineValue(ArrayProto, '$get', function () {
     var args = arguments;
     var index = fixArrayIndex(this, parametersDefault(args, 0, 0));
 
@@ -832,7 +832,7 @@
     return obj !== null && typeof obj === 'object';
   }
 
-  defineValue$1(ArrayProto, '$set $edit', function (index, value) {
+  defineValue(ArrayProto, '$set $edit', function (index, value) {
     var _this = this;
 
     if (isObject(index)) {
@@ -856,7 +856,7 @@
     array.splice(index, 1, value);
   }
 
-  defineValue$1(ArrayProto, '$inArray', function (_value) {
+  defineValue(ArrayProto, '$inArray', function (_value) {
 
     var index,
         length = this.length;
@@ -878,17 +878,17 @@
     return false;
   });
 
-  defineValue$1(ArrayProto, '$move', function (from, to) {
+  defineValue(ArrayProto, '$move', function (from, to) {
     this.splice(fixArrayIndex(this, to), 0, this.splice(from, 1)[0]);
     return this;
   });
 
-  defineValue$1(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
+  defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
     return $add(this, fixArrayIndex(this, toIndex), this.splice(start, moveCount));
   });
 
   ['push', 'pop', 'unshift', 'shift', 'splice'].forEach(function (key) {
-    defineValue$1(ArrayProto, '$' + key, function () {
+    defineValue(ArrayProto, '$' + key, function () {
       this[key].apply(this, arguments);
       return this;
     });
@@ -903,14 +903,14 @@
     return typeof obj === 'boolean';
   }
 
-  defineValue$1(Object, '$assign', function (shallow) {
+  defineValue(Object, '$assign', function (shallow) {
     if (isBoolean$1(shallow)) {
       return assign(shallow, parametersRest(arguments, 1));
     }
     return assign(false, arguments);
   });
 
-  defineValue$1(ObjectProto, '$assign', function (shallow) {
+  defineValue(ObjectProto, '$assign', function (shallow) {
     if (isBoolean$1(shallow)) {
       return assign(shallow, [this].concat(parametersRest(arguments, 1)));
     }
@@ -925,7 +925,7 @@
   /**
    * @type {Element}
    */
-  var DomElement = inBrowser ? window.Element : {};
+  var DomElement = inBrowser ? window.Element : undefined;
 
   var rType = /^\[object\s([^\]]+)]$/;
 
@@ -1061,7 +1061,7 @@
      * @param {Element} obj2 
      */
     element: function (obj, obj2) {
-      return obj.innerHTML === obj2.innerHTML;
+      return obj.outerHTML === obj2.outerHTML;
     },
 
 
@@ -1110,11 +1110,11 @@
     }
   }
 
-  defineValue$1(Object, '$equals', function (obj, obj2) {
+  defineValue(Object, '$equals', function (obj, obj2) {
     return equals$2(obj, obj2);
   });
 
-  defineValue$1(ObjectProto, '$equals', function (obj2) {
+  defineValue(ObjectProto, '$equals', function (obj2) {
     return equals$2(this, obj2);
   });
 
@@ -1142,9 +1142,9 @@
     return obj;
   }
 
-  defineValue$1(Object, '$each', each);
+  defineValue(Object, '$each', each);
 
-  defineValue$1(ObjectProto, '$each', function (callback) {
+  defineValue(ObjectProto, '$each', function (callback) {
     return each(this, callback);
   });
 
@@ -1159,9 +1159,9 @@
     return true;
   }
 
-  defineValue$1(Object, '$isEmptyObject', isEmptyObject);
+  defineValue(Object, '$isEmptyObject', isEmptyObject);
 
-  defineValue$1(Object, '$isPlainObject', isPlainObject);
+  defineValue(Object, '$isPlainObject', isPlainObject);
 
   // import './$create/index';
   // import './$delete/index';
@@ -1173,7 +1173,7 @@
   // import './$self/index';
   // import './$set/index';
 
-  defineValue$1(ObjectProto, '$get', function (key) {
+  defineValue(ObjectProto, '$get', function (key) {
     var _this = this;
 
     if (arguments.length < 2) {
@@ -1189,7 +1189,7 @@
     return result;
   });
 
-  defineValue$1(ObjectProto, '$set $edit', function (key, value) {
+  defineValue(ObjectProto, '$set $edit', function (key, value) {
     var _this = this;
 
     if (isObject(key)) {
@@ -1205,7 +1205,7 @@
 
   var concat = ArrayProto.concat;
 
-  defineValue$1(ObjectProto, '$delete $remove', function () {
+  defineValue(ObjectProto, '$delete $remove', function () {
     var _this = this;
 
     concat.apply([], arguments).forEach(function (key) {
@@ -1215,7 +1215,7 @@
     return this;
   });
 
-  defineValue$1(ObjectProto, '$deleteValue $removeValue', function (_value) {
+  defineValue(ObjectProto, '$deleteValue $removeValue', function (_value) {
     var _this = this;
 
     var args = autoGetPredicate(arguments, _value, 1);
@@ -1235,9 +1235,9 @@
     return this;
   }
 
-  defineValue$1(ObjectProto, '$self', self);
+  defineValue(ObjectProto, '$self', self);
 
-  defineValue$1(Number, '$isNumber', $isNumber);
+  defineValue(Number, '$isNumber', $isNumber);
 
   var floor = Math.floor;
 
@@ -1254,7 +1254,7 @@
 
   var abs = Math.abs;
 
-  defineValue$1(Math, '$random', function () {
+  defineValue(Math, '$random', function () {
     var args = arguments;
 
     var from = parametersDefault(args, 0, 0);
@@ -1307,8 +1307,8 @@
   var NumberProto = Number.prototype;
 
   function defineOperation(name, handlerFn) {
-    defineValue$1(Math, name, handlerFn);
-    defineValue$1(NumberProto, name, function (num) {
+    defineValue(Math, name, handlerFn);
+    defineValue(NumberProto, name, function (num) {
       return handlerFn(this, num);
     });
   }
@@ -1390,7 +1390,7 @@
     });
   }
 
-  defineValue$1(Math, '$mean', function () {
+  defineValue(Math, '$mean', function () {
     var count = slice.call(arguments).reduce(function (count, next) {
       return $add$1(count, next);
     });
@@ -1406,9 +1406,9 @@
     return fromCharCode(uppercase ? intRandom(65, 90) : intRandom(97, 122));
   }
 
-  defineValue$1(String, '$random', stringRandom);
+  defineValue(String, '$random', stringRandom);
 
-  defineValue$1(String, '$someRandom', function () /* length, uppercase, number */{
+  defineValue(String, '$someRandom', function () /* length, uppercase, number */{
 
     var args = arguments;
     var uppercase = parametersDefault(args, 1, false);
@@ -1443,7 +1443,7 @@
     return toString.call(obj) === '[object RegExp]';
   }
 
-  defineValue$1(StringProto, '$replaceAll', function (searchValue, replaceValue) {
+  defineValue(StringProto, '$replaceAll', function (searchValue, replaceValue) {
     var flags = 'g';
 
     if (searchValue == null) {
@@ -1461,7 +1461,7 @@
     return this.replace(new RegExp(searchValue, flags), replaceValue || '');
   });
 
-  defineValue$1(StringProto, '$toCapitalize', function (ignoreNext) {
+  defineValue(StringProto, '$toCapitalize', function (ignoreNext) {
     return this.substr(0, 1).toUpperCase() + this.substr(1)[ignoreNext ? '$self' : 'toLowerCase']();
   });
 
@@ -2080,7 +2080,7 @@
 
   var DAYJS = '__ZENJS_DAYJS__';
 
-  defineValue$1(DateProto, '$dayjs', function () {
+  defineValue(DateProto, '$dayjs', function () {
     var $dayjs = this[DAYJS];
 
     if (!$dayjs || $dayjs.valueOf() !== +this) {
@@ -2090,7 +2090,7 @@
     return $dayjs;
   });
 
-  defineValue$1(Date, '$parse', function (date) {
+  defineValue(Date, '$parse', function (date) {
     var $dayjs = dayjs(date);
     var $date = $dayjs.toDate().$set(DAYJS, $dayjs);
 
@@ -2104,7 +2104,7 @@
 
   var root = inBrowser ? window : inNode ? global : {};
 
-  defineValue$1(root, 'dayjs', dayjs);
+  defineValue(root, 'dayjs', dayjs);
 
   var ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString_unix_valueOf'.split('_');
   var isDayjs$1 = dayjs.isDayjs;
@@ -2116,7 +2116,7 @@
   });
 
   function install(name) {
-    defineValue$1(DateProto, '$' + name, function () {
+    defineValue(DateProto, '$' + name, function () {
       var $dayjs = this.$dayjs();
       var result = $dayjs[name].apply($dayjs, arguments);
 
@@ -2129,7 +2129,7 @@
     });
   }
 
-  defineValue$1(root, '$typeof', function (obj) {
+  defineValue(root, '$typeof', function (obj) {
     if (obj == null) return obj + '';
     return obj[isArray] ? 'array' : typeof obj;
   });
@@ -2192,10 +2192,10 @@
     return result;
   }
 
-  defineValue$1(root, '$querystring', assign(false, [null, { stringify: stringify, parse: parse }]));
+  defineValue(root, '$querystring', assign(false, [null, { stringify: stringify, parse: parse }]));
 
   if (inBrowser) {
-    defineValue$1(document, '$id', document.getElementById);
+    defineValue(document, '$id', document.getElementById);
   }
 
   var addEventListener = 'addEventListener';
@@ -2207,7 +2207,7 @@
   var load = 'load';
 
   if (inBrowser) {
-    defineValue$1(document, '$ready', function (func, data) {
+    defineValue(document, '$ready', function (func, data) {
       if (document.readyState === 'complete' || document.readyState !== 'loading' && !document.documentElement.doScroll) {
         func.apply(window, data);
       } else {
@@ -2220,7 +2220,7 @@
   }
 
   if (inBrowser) {
-    defineValue$1(window, '$ready', function (func, data) {
+    defineValue(window, '$ready', function (func, data) {
       if (document.readyState === 'complete') {
         func.apply(window, data);
       } else {
@@ -2236,7 +2236,7 @@
 
   var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
-  function access(elem, _className, handle, isToggle) {
+  function access(elem, _className, handle) {
 
     var classList = elem.classList;
     var className = (_className || '').match(rnothtmlwhite) || [];
@@ -2255,11 +2255,20 @@
       // 以防传入空等值时返回 true
       return length !== 0;
     }
+    // 切换 class
+    else if (handle === null) {
+        className.forEach(function (name) {
+          classList[classList.contains(name) ? 'remove' : 'add'](name);
+        });
+      }
+      // 正常添加删除
+      else {
+          className.forEach(function (name) {
+            return classList[handle](name);
+          });
+        }
 
-    // 正常添加删除
-    className.forEach(function (name) {
-      return classList[handle](name);
-    });
+    return elem;
   }
 
   if (inBrowser) {
@@ -2276,9 +2285,9 @@
       return access(this, className, 'has');
     });
 
-    defineValue(ElementProto, '$toggleClass', function (className) {
-      // 饿了, 吃饭去
-      return access(this, className);
+    defineValue(ElementProto, '$toggleClass', function (className, tSwitch) {
+      var handle = arguments.length > 1 ? tSwitch ? 'add' : 'remove' : null;
+      return access(this, className, handle);
     });
   }
 
@@ -2300,11 +2309,11 @@
 
   if (inBrowser) {
 
-    defineValue$1(ElementProto, '$is', function (selector) {
+    defineValue(ElementProto, '$is', function (selector) {
       return selector.nodeType ? this === selector : isString$1(selector) ? matches$1.call(this, selector) : false;
     });
 
-    defineValue$1(ElementProto, '$not', function (selector) {
+    defineValue(ElementProto, '$not', function (selector) {
       return !this.$is(selector);
     });
   }
@@ -2371,11 +2380,11 @@
 
   if (inBrowser) {
 
-    defineValue$1(ElementProto, '$first $firstChild', function (filter) {
+    defineValue(ElementProto, '$first $firstChild', function (filter) {
       return Filter(this.firstElementChild, filter, 'nextElementSibling', true);
     });
 
-    defineValue$1(ElementProto, '$last $lastChild', function (filter) {
+    defineValue(ElementProto, '$last $lastChild', function (filter) {
       return Filter(this.lastElementChild, filter, 'previousElementSibling', true);
     });
   }
@@ -2385,34 +2394,34 @@
     var name = arr[0];
     var fn = arr[1];
 
-    defineValue$1(ElementProto, name, function (filter) {
+    defineValue(ElementProto, name, function (filter) {
       return Filter(this, filter, fn);
     });
 
-    defineValue$1(ElementProto, name + 'All', function (filter) {
+    defineValue(ElementProto, name + 'All', function (filter) {
       return Filter(dir(this, fn), filter);
     });
   });
 
   if (inBrowser) {
-    defineValue$1(ElementProto, '$child $children', function (filter) {
+    defineValue(ElementProto, '$child $children', function (filter) {
       return Filter(slice.call(this.children), filter);
     });
   }
 
   if (inBrowser) {
 
-    defineValue$1(ElementProto, '$parent', function (filter) {
+    defineValue(ElementProto, '$parent', function (filter) {
       return Filter(this.parentElement, filter, null, true);
     });
 
-    defineValue$1(ElementProto, '$parents', function (filter, checkSelf) {
+    defineValue(ElementProto, '$parents', function (filter, checkSelf) {
       return Filter(this, filter, 'parentElement', checkSelf);
     });
   }
 
   if (inBrowser) {
-    defineValue$1(ElementProto, '$siblings', function (filter) {
+    defineValue(ElementProto, '$siblings', function (filter) {
       var parent = this.parentElement;
 
       if (parent) {
@@ -2426,33 +2435,33 @@
 
   if (inBrowser) {
 
-    defineValue$1(ElementProto, '$append', function (elem) {
+    defineValue(ElementProto, '$append', function (elem) {
       return this.appendChild(elem), this;
     });
 
-    defineValue$1(ElementProto, '$prepend', function (elem) {
+    defineValue(ElementProto, '$prepend', function (elem) {
       return this.insertBefore(elem, this.firstElementChild), this;
     });
 
-    defineValue$1(ElementProto, '$appendTo', function (elem) {
+    defineValue(ElementProto, '$appendTo', function (elem) {
       return elem.appendChild(this), this;
     });
 
-    defineValue$1(ElementProto, '$prependTo', function (elem) {
+    defineValue(ElementProto, '$prependTo', function (elem) {
       return elem.insertBefore(this, elem.firstElementChild), this;
     });
   }
 
   if (inBrowser) {
 
-    defineValue$1(ElementProto, '$before', function (elem, parent) {
+    defineValue(ElementProto, '$before', function (elem, parent) {
       if (parent = this.parentNode) {
         parent.insertBefore(elem, this);
       }
       return this;
     });
 
-    defineValue$1(ElementProto, '$after', function (elem, parent) {
+    defineValue(ElementProto, '$after', function (elem, parent) {
       if (parent = this.parentNode) {
         parent.insertBefore(elem, this.nextElementSibling);
       }
@@ -2461,7 +2470,7 @@
   }
 
   if (inBrowser) {
-    defineValue$1(ElementProto, '$delete $remove', function (parent) {
+    defineValue(ElementProto, '$delete $remove', function (parent) {
       if (parent = this.parentNode) {
         parent.removeChild(this);
       }
@@ -2470,13 +2479,13 @@
 
   if (inBrowser) {
     [document, ElementProto].forEach(function (elem) {
-      defineValue$1(elem, '$query $find', elem.querySelectorAll);
-      defineValue$1(elem, '$queryFirst $findFirst', elem.querySelector);
+      defineValue(elem, '$query $find', elem.querySelectorAll);
+      defineValue(elem, '$queryFirst $findFirst', elem.querySelector);
     });
   }
 
   if (inBrowser) {
-    defineValue$1(ElementProto, '$replaceWith $replace', function (elem, parent) {
+    defineValue(ElementProto, '$replaceWith $replace', function (elem, parent) {
       if (parent = this.parentNode) {
         parent.replaceChild(elem, this);
       }
@@ -2534,7 +2543,7 @@
               equals: equals,
 
               define: define,
-              defineValue: defineValue$1,
+              defineValue: defineValue,
               defineGet: defineGet,
 
               intRandom: intRandom,

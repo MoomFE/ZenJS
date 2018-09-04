@@ -2,6 +2,78 @@ describes.push({
   name: 'Element.prototype',
   describe: [
     {
+      name: '$addClass',
+      default: function(){
+        /** @type {Element} */
+        var div = window.div;
+
+        div.$addClass('a');
+        div.className.should.equals('a');
+
+        div.$addClass('a');
+        div.className.should.equals('a');
+
+        div.$addClass('a b c');
+        div.className.should.equals('a b c');
+      }
+    }, {
+      name: '$removeClass',
+      default: function(){
+        /** @type {Element} */
+        var div = window.div.$addClass('a b c');
+
+        div.$removeClass('b');
+        div.className.should.equals('a c');
+
+        div.$removeClass('a c');
+        div.className.should.equals('');
+      }
+    }, {
+      name: '$hasClass',
+      default: function(){
+        /** @type {Element} */
+        var div = window.div.$addClass('a b c');
+
+        div.$hasClass('a').should.true;
+        div.$hasClass('b').should.true;
+        div.$hasClass('c').should.true;
+        div.$hasClass('a b').should.true;
+        div.$hasClass('b c').should.true;
+        div.$hasClass('a c').should.true;
+        div.$hasClass('a b c').should.true;
+        div.$hasClass('a c b').should.true;
+        div.$hasClass('b a c').should.true;
+        div.$hasClass('b c a').should.true;
+        div.$hasClass('c a b').should.true;
+        div.$hasClass('c b a').should.true;
+
+        div.$hasClass().should.false;
+        div.$hasClass('').should.false;
+        div.$hasClass('d').should.false;
+        div.$hasClass('a d').should.false;
+      }
+    }, {
+      name: '$toggleClass',
+      default: function(){
+        /** @type {Element} */
+        var div = window.div.$addClass('a b c');
+
+        div.$toggleClass('a');
+        div.className.should.equals('b c');
+
+        div.$toggleClass('a');
+        div.className.should.equals('b c a');
+
+        div.$toggleClass( 'a', true );
+        div.className.should.equals('b c a');
+
+        div.$toggleClass( 'a', false );
+        div.className.should.equals('b c');
+
+        div.$toggleClass( 'c d' );
+        div.className.should.equals('b d');
+      }
+    }, {
       name: '$is',
       default: function(){
         var div = window.div;
@@ -415,75 +487,5 @@ describes.push({
 //         div._height.should.equals( 0 );
 //         div.style.height.should.equals('123px');
 //       }
-//     }, {
-//       name: '$addClass',
-//       it: function(){
-
-//         var div = window.div;
-
-//         div.$addClass('test1').should.equals( div );
-//         div.className.should.equals('test1');
-//         div.$addClass('test1').className.should.equals('test1');
-//         div.$addClass('test2').className.should.equals('test1 test2');
-
-//         div.className = '';
-//         div.$addClass('test1 test2').className.should.equals('test1 test2');
-//         div.$addClass('test3').className.should.equals('test1 test2 test3');
-//         div.$addClass().className.should.equals('test1 test2 test3');
-//       }
-//     }, {
-//       name: '$removeClass',
-//       it: function(){
-
-//         var div = window.div;
-
-//         div.$addClass('test1');
-//         div.$removeClass('test1').should.equals( div );
-
-//         div.$addClass('test1 test2');
-//         div.$removeClass('test2').className.should.equals('test1');
-
-//         div.$addClass('test2');
-//         div.$removeClass('').className.should.equals('test1 test2');
-
-//       }
-//     }, {
-//       name: '$hasClass',
-//       it: function(){
-
-//         var div = window.div;
-
-//         div.$hasClass().should.false;
-//         div.$hasClass('').should.false;
-//         div.$hasClass('test1').should.false;
-
-//         div.$addClass('test1');
-//         div.$hasClass('test1').should.true;
-//         div.$hasClass('test2').should.false;
-
-//         div.$addClass('test2');
-//         div.$hasClass('test1 test2').should.true;
-//         div.$hasClass('test1 test3').should.false;
-
-//       }
-//     }, {
-//       name: '$toggleClass',
-//       it: function(){
-
-//         var div = window.div;
-
-//         div.$toggleClass().className.should.equals('');
-//         div.$toggleClass('test1').className.should.equals('test1');
-//         div.$toggleClass('test1').className.should.equals('');
-//         div.$toggleClass('test1 test2').className.should.equals('test1 test2');
-//         div.$removeClass('test1').$toggleClass('test1 test2').className.should.equals('test1');
-
-//         div.$toggleClass('test1',true).className.should.equals('test1');
-//         div.$toggleClass('test2',true).className.should.equals('test1 test2');
-//         div.$toggleClass('test2',false).className.should.equals('test1');
-//         div.$toggleClass('test2 test3',true).className.should.equals('test1 test2 test3');
-
-//       }
-//     }
 //   ]
 // });

@@ -49,17 +49,17 @@
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
 | zen.js             | 51.80kb | 14.15kb | \|  | UMD       | Browser |
-| zen.min.js         | 18.66kb | 6.87kb | \|  | UMD       | Browser |
-| zen.common.js      | 48.13kb | 13.91kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 48.12kb | 13.90kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.min.js         | 18.67kb | 6.87kb | \|  | UMD       | Browser |
+| zen.common.js      | 48.14kb | 13.92kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 48.13kb | 13.90kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 59.11kb | 15.85kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 21.78kb | 7.80kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 55.01kb | 15.58kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 55.00kb | 15.57kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 59.28kb | 15.89kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 21.86kb | 7.83kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 55.16kb | 15.63kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 55.14kb | 15.61kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -182,6 +182,10 @@
   - $ready
 
 - Element.prototype
+  - $addClass
+  - $removeClass / $deleteClass
+  - $hasClass
+  - $toggleClass
   - $is
   - $not
   - $first / $firstChild
@@ -205,54 +209,10 @@
   - $queryFirst / $findFirst
   - $replaceWith / $replace
 
-  <!-- - $get
-  - $inArray
-  - $set / $edit
-  - $move
-  - $moveRange
-  - $push
-  - $unshift
-  - $pop
-  - $shift
-
+<!--
 - document
   - $cookie
   - $deleteCookie / $removeCookie
-  - $id
-  - $ready
-  - $query
-  - $queryFirst
-
-- Element.prototype
-  - \_index
-  - \_nodeName
-  - \_width
-  - \_height
-  - \_val / \_value
-  - \_html
-  - $addClass
-  - $deleteClass / $removeClass
-  - $hasClass
-  - $toggleClass
-  - $append
-  - $prepend
-  - $before
-  - $after
-  - $child / $children
-  - $first / $firstChild
-  - $last / $lastChild
-  - $query
-  - $queryFirst
-  - $delete / $remove
-  - $replaceWith / $replace
-  - $parent
-  - $parents
-  - $next
-  - $prev
-  - $nextAll
-  - $prevAll
-  - $siblings
-  - $selectText
 
 - EventTarget.prototype
   - $data
@@ -262,34 +222,7 @@
   - $one / $once
   - $off
   - $emit
-
-- Object
-  - $create
-  - $each
-  - $isEmptyObject
-  - $isPlainObject
-
-- Object.prototype
-  - $delete / $remove
-  - $deleteValue / $removeValue
-  - $get
-  - $set / $edit
-  - $self
-  - \_\_self\_\_
-
-- String
-  - $random
-  - $someRandom
-
-- String.prototype
-  - $toCapitalize
-  - $replaceAll
-
-- window
-  - $ready
-  - $typeof
-  - $querystring.stringify
-  - $querystring.parse -->
+-->
 
 <br>
 

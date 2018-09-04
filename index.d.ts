@@ -614,8 +614,8 @@ interface String {
   $replaceAll( searchValue: String | RegExp, replaceValue: String | Function ): String;
 
   /**
-   * 将字符串首字母大写
-   * @param ignoreNext 是否忽略除首字母外小写的操作
+   * 将字符串首字母大写, 其他字母小写
+   * @param ignoreNext 是否忽略其他字母小写的操作
    */
   $toCapitalize( ignoreNext?: Boolean ): String;
 
@@ -863,15 +863,15 @@ interface $querystring {
   /**
    * 将对象进行序列化成 URL 查询字符串
    * @param obj 需要序列化的对象
-   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
-   * @param eq 在字符串中分隔键和值的字符串 -default: '='
+   * @param sep 在字符串中分隔不同键值对的字符串 - default: '&'
+   * @param eq 在字符串中分隔键和值的字符串 - default: '='
    */
   stringify( obj, sep: String = '&', eq: String = '=' ): String;
   /**
    * 将 URL 查询字符串反序列化为对象
    * @param str 需要反序列化的字符串
-   * @param sep 在字符串中分隔不同键值对的字符串 -default: '&'
-   * @param eq 在字符串中分隔键和值的字符串 -default: '='
+   * @param sep 在字符串中分隔不同键值对的字符串 - default: '&'
+   * @param eq 在字符串中分隔键和值的字符串 - default: '='
    */
   parse( str, sep: String = '&', eq: String = '=' ): any;
 }
@@ -1124,6 +1124,31 @@ declare function $ready( func: () => void, data?: any ): void;
 
 
 interface Element {
+
+  /**
+   * 向元素添加一个或多个类
+   * @param className 类名
+   */
+  $addClass( className: Stirng ): Element;
+
+  /**
+   * 向元素移除一个或多个类
+   * @param className 类名
+   */
+  $removeClass( className: Stirng ): Element;
+
+  /**
+   * 判断元素是否有一个或多个类
+   * @param className 类名
+   */
+  $hasClass( className: Stirng ): Boolean;
+
+  /**
+   * 设置或移除元素的一个或多个类进行切换
+   * @param className 类名
+   * @param toggle 若值为 true, 则规定只添加类, 反之只移除
+   */
+  $toggleClass( className: Stirng, toggle: Boolean ): Element;
 
   /**
    * 判断当前节点是否符合传入的要求
@@ -1381,27 +1406,6 @@ interface Element {
 //    * 写入时设置元素的 innerHTML 值
 //    */
 //   _html: String;
-//   /**
-//    * 向元素添加一个或多个类
-//    * @param className 类名
-//    */
-//   $addClass( className: Stirng ): Element;
-//   /**
-//    * 向元素移除一个或多个类
-//    * @param className 类名
-//    */
-//   $removeClass( className: Stirng ): Element;
-//   /**
-//    * 判断元素是否有一个或多个类
-//    * @param className 类名
-//    */
-//   $hasClass( className: Stirng ): Boolean;
-//   /**
-//    * 设置或移除元素的一个或多个类进行切换
-//    * @param className 类名
-//    * @param toggle 若值为 true, 则规定只添加类, 反之只移除
-//    */
-//   $toggleClass( className: Stirng, toggle: Boolean ): Element;
 //   /**
 //    * 调用原生 querySelectorAll 方法
 //    * @param selectors 包含一个或多个要匹配的选择器的 DOMString

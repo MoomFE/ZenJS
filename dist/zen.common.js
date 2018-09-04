@@ -921,7 +921,7 @@ var inBrowser = typeof window !== 'undefined';
 /**
  * @type {Element}
  */
-var DomElement = inBrowser ? window.Element : {};
+var DomElement = inBrowser ? window.Element : undefined;
 
 var rType = /^\[object\s([^\]]+)]$/;
 
@@ -1057,7 +1057,7 @@ var types = {
    * @param {Element} obj2 
    */
   element: function (obj, obj2) {
-    return obj.innerHTML === obj2.innerHTML;
+    return obj.outerHTML === obj2.outerHTML;
   },
 
 

@@ -1,9 +1,10 @@
 import inBrowser from "../../../shared/const/inBrowser";
+import defineValue from "../../../shared/util/defineValue";
 import ElementProto from "../../../shared/global/DomElement/prototype/index";
 import rnothtmlwhite from "../../../shared/const/rnothtmlwhite";
 
 
-function access( elem, _className, handle, isToggle ){
+function access( elem, _className, handle ){
 
   const classList = elem.classList;
   const className = ( _className || '' ).match( rnothtmlwhite ) || [];
@@ -22,9 +23,18 @@ function access( elem, _className, handle, isToggle ){
     // 以防传入空等值时返回 true
     return length !== 0;
   }
-
+  // 切换 class
+  else if( handle === null ){
+    className.forEach( name => {
+      classList[ classList.contains( name ) ? 'remove' : 'add' ]( name );
+    });
+  }
   // 正常添加删除
-  className.forEach( name => classList[ handle ]( name ) );
+  else{
+    className.forEach( name => classList[ handle ]( name ) );
+  }
+
+  return elem;
 }
 
 if( inBrowser ){
@@ -41,10 +51,10 @@ if( inBrowser ){
     return access( this, className, 'has' );
   });
 
-  defineValue( ElementProto, '$toggleClass', function( className ){
-    const isToggle = arguments.length > 1;
-    // 饿了, 吃饭去
-    return access( this, className );
+  defineValue( ElementProto, '$toggleClass', function( className, tSwitch ){
+    const handle = arguments.length > 1 ? tSwitch ? 'add' : 'remove'
+                                        : null;
+    return access( this, className, handle );
   });
 
 }
