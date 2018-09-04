@@ -2551,6 +2551,17 @@ if (inBrowser) {
   });
 }
 
+if (inBrowser) {
+  define(ElementProto, '_html', {
+    get: function () {
+      return this.innerHTML;
+    },
+    set: function (value) {
+      this.innerHTML = value;
+    }
+  });
+}
+
 var rreturn = /\r/g;
 
 /**

@@ -438,8 +438,15 @@ describes.push({
         div.style.height.should.equals('123px');
       }
     }, {
+      name: '_html',
+      default: function(){
+        var div = window.div;
+        div._html = 123;
+        div._html.should.equals('123');
+      }
+    }, {
       name: '_val / _value',
-      it: function(){
+      default: function(){
         var input = window.input;
             input.type = 'text';
         
@@ -480,13 +487,6 @@ describes.push({
 // describes.push({
 //   name: 'Element.prototype',
 //   describe: [
-//     {
-//       name: '_html',
-//       it: function(){
-//         var div = window.div;
-//         div._html = 123;
-//         div._html.should.equals('123');
-//       }
-//     }
+//     
 //   ]
 // });

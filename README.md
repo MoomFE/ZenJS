@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 63.41kb | 16.97kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 23.51kb | 8.45kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 59.01kb | 16.68kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 58.99kb | 16.66kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 63.61kb | 17.00kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 23.60kb | 8.47kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 59.19kb | 16.71kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 59.17kb | 16.69kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -212,6 +212,7 @@
   - _index
   - _width
   - _height
+  - _html
   - _val / _value
 
 <!--

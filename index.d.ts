@@ -1366,6 +1366,12 @@ interface Element {
   _height: Number;
 
   /**
+   * 读取时返回元素的 innerHTML 值
+   * 写入时设置元素的 innerHTML 值
+   */
+  _html: String;
+
+  /**
    * 读取时返回元素的 value 值;
    * 写入时设置元素的 value 值
    */
@@ -1412,11 +1418,7 @@ interface Element {
 // }
 
 // interface Element {
-//   /**
-//    * 读取时返回元素的 innerHTML 值
-//    * 写入时设置元素的 innerHTML 值
-//    */
-//   _html: String;
+
 //   /**
 //    * 调用原生 querySelectorAll 方法
 //    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
