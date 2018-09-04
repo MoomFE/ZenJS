@@ -1056,7 +1056,13 @@ interface ZenJS {
      */
     mapSetToArray( mapOrSet: Map | Set )
 
-  }
+  },
+
+  /**
+   * 创建一个可写的事件对象
+   * @param event 原生事件对象
+   */
+  Event( src: DocumentEventMap ): any;
 
 }
 
