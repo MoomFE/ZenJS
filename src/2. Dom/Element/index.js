@@ -11,3 +11,4 @@ import './$remove/index';
 import './$query/index';
 import './$replaceWith/index';
 import './_nodeName/index';
+import './_index/index';

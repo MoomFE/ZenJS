@@ -367,6 +367,54 @@ describes.push({
         select._nodeName.should.equals('select');
         option._nodeName.should.equals('option');
       }
+    }, {
+      name: '_index',
+      default: function(){
+
+        var div = window.div;
+        var div0 = div.appendChild( window.div );
+        var div1 = div.appendChild( window.div );
+        var div2 = div.appendChild( window.div );
+        var div3 = div.appendChild( window.div );
+        var div4 = div.appendChild( window.div );
+        var div5 = div.appendChild( window.div );
+        var div6 = div.appendChild( window.div );
+
+        // [ div0, div1, div2, div3, div4, div5, div6 ]
+        div0._index.should.equals( 0 );
+        div1._index.should.equals( 1 );
+        div2._index.should.equals( 2 );
+        div3._index.should.equals( 3 );
+        div4._index.should.equals( 4 );
+        div5._index.should.equals( 5 );
+        div6._index.should.equals( 6 );
+
+        // [ div1, div0, div2, div3, div4, div5, div6 ]
+        div0._index = 1;
+        div0._index.should.equals( 1 );
+        div1._index.should.equals( 0 );
+
+        // [ div1, div2, div3, div4, div5, div6, div0 ]
+        div0._index = 666;
+        div0._index.should.equals( 6 );
+        div1._index.should.equals( 0 );
+        div2._index.should.equals( 1 );
+        div3._index.should.equals( 2 );
+        div4._index.should.equals( 3 );
+        div5._index.should.equals( 4 );
+        div6._index.should.equals( 5 );
+
+        // [ div0, div1, div2, div3, div4, div5, div6 ]
+        div0._index = 0;
+        div0._index.should.equals( 0 );
+        div1._index.should.equals( 1 );
+        div2._index.should.equals( 2 );
+        div3._index.should.equals( 3 );
+        div4._index.should.equals( 4 );
+        div5._index.should.equals( 5 );
+        div6._index.should.equals( 6 );
+
+      }
     }
   ]
 });
@@ -380,54 +428,6 @@ describes.push({
 //         var div = window.div;
 //         div._html = 123;
 //         div._html.should.equals('123');
-//       }
-//     }, {
-//       name: '_index',
-//       it: function(){
-
-//         var div = window.div;
-//         var div0 = div.appendChild( window.div );
-//         var div1 = div.appendChild( window.div );
-//         var div2 = div.appendChild( window.div );
-//         var div3 = div.appendChild( window.div );
-//         var div4 = div.appendChild( window.div );
-//         var div5 = div.appendChild( window.div );
-//         var div6 = div.appendChild( window.div );
-
-//         // [ div0, div1, div2, div3, div4, div5, div6 ]
-//         div0._index.should.equals( 0 );
-//         div1._index.should.equals( 1 );
-//         div2._index.should.equals( 2 );
-//         div3._index.should.equals( 3 );
-//         div4._index.should.equals( 4 );
-//         div5._index.should.equals( 5 );
-//         div6._index.should.equals( 6 );
-
-//         // [ div1, div0, div2, div3, div4, div5, div6 ]
-//         div0._index = 1;
-//         div0._index.should.equals( 1 );
-//         div1._index.should.equals( 0 );
-
-//         // [ div1, div2, div3, div4, div5, div6, div0 ]
-//         div0._index = 666;
-//         div0._index.should.equals( 6 );
-//         div1._index.should.equals( 0 );
-//         div2._index.should.equals( 1 );
-//         div3._index.should.equals( 2 );
-//         div4._index.should.equals( 3 );
-//         div5._index.should.equals( 4 );
-//         div6._index.should.equals( 5 );
-
-//         // [ div0, div1, div2, div3, div4, div5, div6 ]
-//         div0._index = 0;
-//         div0._index.should.equals( 0 );
-//         div1._index.should.equals( 1 );
-//         div2._index.should.equals( 2 );
-//         div3._index.should.equals( 3 );
-//         div4._index.should.equals( 4 );
-//         div5._index.should.equals( 5 );
-//         div6._index.should.equals( 6 );
-
 //       }
 //     }, {
 //       name: '_val / _value',
