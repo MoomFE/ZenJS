@@ -357,6 +357,16 @@ describes.push({
         div2.$replace( div3 );
         div.$first().should.equals( div3 );
       }
+    }, {
+      name: '_nodeName',
+      default: function(){
+        div._nodeName.should.equals('div');
+        a._nodeName.should.equals('a');
+        span._nodeName.should.equals('span');
+        input._nodeName.should.equals('input');
+        select._nodeName.should.equals('select');
+        option._nodeName.should.equals('option');
+      }
     }
   ]
 });
@@ -418,16 +428,6 @@ describes.push({
 //         div5._index.should.equals( 5 );
 //         div6._index.should.equals( 6 );
 
-//       }
-//     }, {
-//       name: '_nodeName',
-//       it: function(){
-//         div._nodeName.should.equals('div');
-//         a._nodeName.should.equals('a');
-//         span._nodeName.should.equals('span');
-//         input._nodeName.should.equals('input');
-//         select._nodeName.should.equals('select');
-//         option._nodeName.should.equals('option');
 //       }
 //     }, {
 //       name: '_val / _value',

@@ -2505,6 +2505,12 @@
     return get;
   }
 
+  if (inBrowser) {
+    defineGet(ElementProto, '_nodeName', function () {
+      return this.nodeName.toLowerCase();
+    });
+  }
+
   /**
    * 返回传入的第一个参数
    * @param {any} arg 

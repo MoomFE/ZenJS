@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 59.28kb | 15.89kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 21.86kb | 7.83kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 55.16kb | 15.63kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 55.14kb | 15.61kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 59.40kb | 15.92kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 21.93kb | 7.86kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 55.27kb | 15.65kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 55.26kb | 15.63kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -208,6 +208,7 @@
   - $query / $find
   - $queryFirst / $findFirst
   - $replaceWith / $replace
+  - _nodeName
 
 <!--
 - document
