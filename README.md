@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 66.13kb | 17.81kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 24.67kb | 8.90kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 61.56kb | 17.52kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 61.54kb | 17.50kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 67.83kb | 18.25kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 25.27kb | 9.12kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 63.14kb | 17.94kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 63.12kb | 17.93kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -215,15 +215,17 @@
   - _html
   - _val / _value
 
+- EventTarget.prototype
+  - $data
+  - $hasData
+  - $deleteData / $removeData
+
 <!--
 - document
   - $cookie
   - $deleteCookie / $removeCookie
 
 - EventTarget.prototype
-  - $data
-  - $hasData
-  - $deleteData / $removeData
   - $on
   - $one / $once
   - $off

@@ -2763,6 +2763,83 @@ if (inBrowser) {
   }
 }
 
+/**
+ * @type {EventTarget}
+ */
+var DomEventTarget = inBrowser ? 'EventTarget' in window ? EventTarget.prototype : [window, document, ElementProto] : undefined;
+
+var DATA = '__ZENJS_DATA__';
+
+/**
+ * 获取存储在元素上的整个数据集, 如数据集不存在则创建
+ * @param {Element} elem
+ * @returns {Object}
+ */
+function getDatas(elem) {
+  return elem[DATA] || (defineValue(elem, DATA, {}), elem[DATA]);
+}
+
+if (inBrowser) {
+
+  defineValue(DomEventTarget, '$data', function $data(name, value, weakRead) {
+    var self = this || window;
+    var Data = getDatas(self);
+
+    // $data( {} )
+    // $data( {}, weakRead )
+    if (isObject(name)) {
+      for (var key in name) {
+        $data.call(self, key, name[key], value);
+      }
+      return self;
+    }
+
+    // 读取
+    // $data( name )
+    // $data( name, value, true )
+    if (weakRead || arguments.length < 2) {
+      if (name == null) return Data;
+      if (weakRead && !(name in Data)) return Data[name] = value;
+      return Data[name];
+    }
+
+    // $data( name, value )
+    Data[name] = value;
+    return slef;
+  });
+
+  defineValue(DomEventTarget, '$hasData', function (name) {
+    var Data = getDatas(this || window);
+
+    if (isEmptyObject(Data)) {
+      return false;
+    }
+
+    if (name == null) {
+      return true;
+    }
+
+    return name in Data;
+  });
+
+  defineValue(EventTarget, '$deleteData $removeData', function (names) {
+    var self = this || window;
+
+    if (names == null) {
+      self[DATA] = {};
+      return self;
+    }
+
+    var Data = getDatas(self);
+
+    (names.match(rnothtmlwhite) || []).forEach(function (name) {
+      delete Data[name];
+    });
+
+    return self;
+  });
+}
+
 /*
  * event.target : 触发事件的元素
  * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
