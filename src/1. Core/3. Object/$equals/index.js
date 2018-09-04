@@ -133,7 +133,7 @@ const types = {
    * @param {Element} obj2 
    */
   element( obj, obj2 ){
-    return obj.innerHTML === obj2.innerHTML;
+    return obj.outerHTML === obj2.outerHTML;
   },
 
   /**
