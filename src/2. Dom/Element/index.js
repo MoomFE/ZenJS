@@ -12,3 +12,4 @@ import './$query/index';
 import './$replaceWith/index';
 import './_nodeName/index';
 import './_index/index';
+import './_width/index';

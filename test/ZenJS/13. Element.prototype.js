@@ -415,6 +415,28 @@ describes.push({
         div6._index.should.equals( 6 );
 
       }
+    }, {
+      name: '_width',
+      default: function(){
+        var div = window.div;
+
+        div._width.should.equals( 0 );
+
+        div._width = 123;
+        div._width.should.equals( 0 );
+        div.style.width.should.equals('123px');
+      }
+    }, {
+      name: '_height',
+      default: function(){
+        var div = window.div;
+
+        div._height.should.equals( 0 );
+
+        div._height = 123;
+        div._height.should.equals( 0 );
+        div.style.height.should.equals('123px');
+      }
     }
   ]
 });
@@ -465,27 +487,6 @@ describes.push({
 
 //         [ '2', '3' ].$equals( select2._val ).should.true;
 //       }
-//     }, {
-//       name: '_width',
-//       it: function(){
-//         var div = window.div;
-
-//         div._width.should.equals( 0 );
-
-//         div._width = 123;
-//         div._width.should.equals( 0 );
-//         div.style.width.should.equals('123px');
-//       }
-//     }, {
-//       name: '_height',
-//       it: function(){
-//         var div = window.div;
-
-//         div._height.should.equals( 0 );
-
-//         div._height = 123;
-//         div._height.should.equals( 0 );
-//         div.style.height.should.equals('123px');
-//       }
+//     }
 //   ]
 // });

@@ -1342,16 +1342,28 @@ interface Element {
   $replace( elem: Element );
 
   /**
-   * 读取时获取元素的小写 nodeName
+   * 读取时获取元素的小写 nodeName;
    * 不可写入
    */
   _nodeName: String;
 
   /**
-   * 读取时获取元素在父元素的下标
+   * 读取时获取元素在父元素的下标;
    * 写入时将元素的下标设置为写入值 ( 将会移动元素 )
    */
   _index: Number;
+
+  /**
+   * 读取时返回元素的宽度;
+   * 写入时设置元素的宽度
+   */
+  _width: Number;
+
+  /**
+   * 读取时返回元素的高度;
+   * 写入时设置元素的高度
+   */
+  _height: Number;
 
 }
 
@@ -1388,16 +1400,6 @@ interface Element {
 // }
 
 // interface Element {
-//   /**
-//    * 读取时返回元素的宽度
-//    * 写入时设置元素的宽度
-//    */
-//   _width: Number;
-//   /**
-//    * 读取时返回元素的高度
-//    * 写入时设置元素的高度
-//    */
-//   _height: Number;
 //   /**
 //    * 读取时返回元素的 value 值
 //    * 写入时设置元素的 value 值

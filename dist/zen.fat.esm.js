@@ -2534,6 +2534,23 @@ if (inBrowser) {
   });
 }
 
+if (inBrowser) {
+  ['width', 'height'].forEach(function (prop) {
+    define(ElementProto, "_" + prop, {
+      get: function () {
+        try {
+          return this.getBoundingClientRect()[prop];
+        } catch (error) {
+          return 0;
+        }
+      },
+      set: function (value) {
+        this.style[prop] = $isNumber(value) ? value + 'px' : value;
+      }
+    });
+  });
+}
+
 /**
  * 返回传入的第一个参数
  * @param {any} arg 
