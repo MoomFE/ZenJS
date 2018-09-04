@@ -882,6 +882,11 @@ declare const ZenJS: ZenJS;
 interface ZenJS {
 
   /**
+   * GUID, 自动自增
+   */
+  guid: Number;
+
+  /**
    * 提供了一部分在低级浏览器上不支持的方法,
    * 如果浏览器支持该方法, 使用时将直接返回浏览器自带方法.
    */

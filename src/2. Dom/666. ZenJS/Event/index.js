@@ -1,10 +1,9 @@
-import ZenJS from "../../shared/global/ZenJS/index";
-import returnFalse from '../../shared/util/returnFalse';
-import returnTrue from '../../shared/util/returnTrue';
-import $assign from "../../Object/$assign/util";
-import defineProperty from "../../shared/global/Object/defineProperty";
-import inBrowser from "../../shared/const/inBrowser";
-import isFunction from "../../shared/util/isFunction";
+import ZenJS from "../../../shared/global/ZenJS/index";
+import assign from "../../../shared/global/Object/assign";
+import defineProperty from "../../../shared/global/Object/defineProperty";
+import isFunction from "../../../shared/util/isFunction";
+import returnTrue from "../../../shared/util/returnTrue";
+import returnFalse from "../../../shared/util/returnFalse";
 
 
 /*
@@ -19,9 +18,9 @@ import isFunction from "../../shared/util/isFunction";
  */
 
 
-export default function Event( src, props ){
+const Event = ZenJS.Event = function( src, props ){
 
-  if( this instanceof ZenJS.Event === false ){
+  if( this instanceof Event === false ){
     return new ZenJS.Event( src, props );
   }
 
@@ -52,12 +51,13 @@ export default function Event( src, props ){
   }
 
   if( props ){
-    $assign( this, props );
+    assign( this, props );
   }
 
   this.timeStamp = src && src.timeStamp || Date.now();
 
 }
+
 
 const EventProto = Event.prototype = {
   constructor: Event
@@ -71,34 +71,23 @@ const EventProto = Event.prototype = {
   }
 });
 
-if( inBrowser ){
-  ZenJS.Event = Event;
-}
 
-const addProp = Event.addProp = function addProp( name, get ){
-  defineProperty(
-    EventProto,
-    name, {
-      enumerable: true,
-      configurable: true,
-
-      get: isFunction( get )
-        ? function(){
-          if( this.originalEvent ){
-            return get( this.originalEvent );
-          }
-        }
-        : function(){
-          return this[ name ];
-        },
-      set(){
-        this[ name ] = value;
+const addProp = Event.addProp = function( name, get ){
+  defineProperty( EventProto, name, {
+    enumerable: true,
+    configurable: true,
+    get: isFunction( get )
+      ? function(){
+        if( this.originalEvent ) return get( this.originalEvent );
       }
+      : function(){
+        return this[ name ];
+      },
+    set( value ){
+      this[ name ] = value;
     }
-  );
+  });
 };
-
-
 
 const rkeyEvent = /^key/,
       rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/;

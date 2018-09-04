@@ -2273,6 +2273,14 @@
 
   }]);
 
+  var guid = 1;
+
+  defineProperty(ZenJS, 'guid', {
+    get: function () {
+      return guid++;
+    }
+  });
+
   return ZenJS;
 
 })));

@@ -2190,6 +2190,93 @@ function parse(str) {
 
 defineValue(root, '$querystring', assign(false, [null, { stringify: stringify, parse: parse }]));
 
+/**
+ * 在一个对象上定义/修改一个新属性的 get 描述符
+ * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+ * @param {String} name 要定义或修改的属性的名称
+ * @param {Function} get 将被定义或修改的 get 描述符
+ * @param {any} options 将被定义或修改的属性描述符
+ */
+function defineGet(obj, name, get, options) {
+  define(obj, name, { get: get }, options || defineGetPropertyOptions);
+
+  return get;
+}
+
+/**
+ * 返回传入的第一个参数
+ * @param {any} arg 
+ * @returns {any} arg
+ */
+function returnArg(arg) {
+  return arg;
+}
+
+/**
+ * 始终返回 true
+ * @returns {Boolean} true
+ */
+function returnTrue() {
+  return true;
+}
+
+/**
+ * 始终返回 false
+ * @returns {Boolean} false
+ */
+function returnFalse() {
+  return false;
+}
+
+var ZenJS = root.ZenJS = assign(false, [null, {
+
+      polyfill: {
+            assign: assign$1,
+            entries: entries
+      },
+
+      util: {
+
+            congruence: congruence,
+            equals: equals,
+
+            define: define,
+            defineValue: defineValue,
+            defineGet: defineGet,
+
+            intRandom: intRandom,
+
+            returnArg: returnArg,
+            returnTrue: returnTrue,
+            returnFalse: returnFalse,
+
+            parametersDefault: parametersDefault,
+            parametersRest: parametersRest,
+
+            isString: isString$1,
+            isBoolean: isBoolean$1,
+            isArray: isArray$1,
+            isNumber: isNumber,
+            isRegExp: isRegExp,
+            isSet: isSet,
+            isMap: isMap,
+            isFunction: isFunction$1,
+            isObject: isObject,
+            isReferenceType: isReferenceType,
+
+            mapSetToArray: mapSetToArray
+      }
+
+}]);
+
+var guid = 1;
+
+defineProperty(ZenJS, 'guid', {
+  get: function () {
+    return guid++;
+  }
+});
+
 if (inBrowser) {
   defineValue(document, '$id', document.getElementById);
 }
@@ -2488,19 +2575,6 @@ if (inBrowser) {
   });
 }
 
-/**
- * 在一个对象上定义/修改一个新属性的 get 描述符
- * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
- * @param {String} name 要定义或修改的属性的名称
- * @param {Function} get 将被定义或修改的 get 描述符
- * @param {any} options 将被定义或修改的属性描述符
- */
-function defineGet(obj, name, get, options) {
-  define(obj, name, { get: get }, options || defineGetPropertyOptions);
-
-  return get;
-}
-
 if (inBrowser) {
   defineGet(ElementProto, '_nodeName', function () {
     return this.nodeName.toLowerCase();
@@ -2688,70 +2762,95 @@ if (input.value !== '') {
   });
 }
 
-/**
- * 返回传入的第一个参数
- * @param {any} arg 
- * @returns {any} arg
+/*
+ * event.target : 触发事件的元素
+ * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
+ * event.delegateTarget : 绑定事件的元素
+ * event.relatedTarget : 事件的相关节点, mouseover 时移出的节点, mouseout 时移入的节点
+ *
+ * event.preventDefault() : 阻止浏览器默认行为
+ * event.stopPropagation() : 停止将事件冒泡到父节点
+ * event.stopImmediatePropagation() : 停止将事件冒泡到父节点且停止当前元素后续事件执行
  */
-function returnArg(arg) {
-  return arg;
-}
 
-/**
- * 始终返回 true
- * @returns {Boolean} true
- */
-function returnTrue() {
-  return true;
-}
+var Event = ZenJS.Event = function (src, props) {
 
-/**
- * 始终返回 false
- * @returns {Boolean} false
- */
-function returnFalse() {
-  return false;
-}
+  if (this instanceof Event === false) {
+    return new ZenJS.Event(src, props);
+  }
 
-var ZenJS = root.ZenJS = assign(false, [null, {
+  // Event object
+  if (src && src.type) {
 
-      polyfill: {
-            assign: assign$1,
-            entries: entries
-      },
+    this.originalEvent = src;
 
-      util: {
+    this.isDefaultPrevented = src.defaultPrevented || src.defaultPrevented === undefined && src.returnValue === false ? returnTrue : returnFalse;
 
-            congruence: congruence,
-            equals: equals,
+    this.target = src.target && src.target.nodeType === 3 ? src.target.parentNode : src.target;
 
-            define: define,
-            defineValue: defineValue,
-            defineGet: defineGet,
-
-            intRandom: intRandom,
-
-            returnArg: returnArg,
-            returnTrue: returnTrue,
-            returnFalse: returnFalse,
-
-            parametersDefault: parametersDefault,
-            parametersRest: parametersRest,
-
-            isString: isString$1,
-            isBoolean: isBoolean$1,
-            isArray: isArray$1,
-            isNumber: isNumber,
-            isRegExp: isRegExp,
-            isSet: isSet,
-            isMap: isMap,
-            isFunction: isFunction$1,
-            isObject: isObject,
-            isReferenceType: isReferenceType,
-
-            mapSetToArray: mapSetToArray
+    for (var key in src) {
+      if (!(key in this)) {
+        this[key] = src[key];
       }
+    }
+  }
+  // Event type
+  else {
+      this.type = src;
+    }
 
-}]);
+  if (props) {
+    assign$1(this, props);
+  }
+
+  this.timeStamp = src && src.timeStamp || Date.now();
+};
+
+var EventProto = Event.prototype = {
+  constructor: Event
+};
+
+['preventDefault', 'stopPropagation', 'stopImmediatePropagation'].forEach(function (fn) {
+  EventProto[fn] = function () {
+    if (this.originalEvent) {
+      this.originalEvent[fn]();
+    }
+  };
+});
+
+var addProp = Event.addProp = function (name, get) {
+  defineProperty(EventProto, name, {
+    enumerable: true,
+    configurable: true,
+    get: isFunction$1(get) ? function () {
+      if (this.originalEvent) return get(this.originalEvent);
+    } : function () {
+      return this[name];
+    },
+    set: function (value) {
+      this[name] = value;
+    }
+  });
+};
+
+var rkeyEvent = /^key/,
+    rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/;
+
+addProp('which', function (event) {
+  var button;
+
+  if (event.which == null && rkeyEvent.test(event.type)) {
+    return event.charCode != null ? event.charCode : event.keyCode;
+  }
+
+  if (!event.which && (button = event.button) !== undefined && rmouseEvent.test(event.type)) {
+    if (button & 1) return 1;
+    if (button & 2) return 3;
+    if (button & 4) return 2;
+    return 0;
+  }
+
+  return event.which;
+});
 
 module.exports = ZenJS;

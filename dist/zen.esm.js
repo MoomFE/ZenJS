@@ -2267,4 +2267,12 @@ var ZenJS = root.ZenJS = assign(false, [null, {
 
 }]);
 
+var guid = 1;
+
+defineProperty(ZenJS, 'guid', {
+  get: function () {
+    return guid++;
+  }
+});
+
 export default ZenJS;
