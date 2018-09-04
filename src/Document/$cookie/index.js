@@ -5,6 +5,7 @@ import String from "../../shared/global/String/index";
 import document from "../../shared/global/Document/index";
 import parse from "../../shared/global/JSON/parse";
 import defineValue from "../../shared/util/defineValue";
+import inBrowser from "../../shared/const/inBrowser";
 
 
 /**
@@ -114,29 +115,30 @@ function get( key, json ){
   return key !== undefined ? jar[ key ] : jar;
 }
 
+if( inBrowser ){
+  defineValue( document, {
 
-defineValue( document, {
-
-  $cookie( key, value, attributes ){
-    const length = arguments.length;
-
-    // getter JSON
-    if( !length ){
-      return get( key, true );
+    $cookie( key, value, attributes ){
+      const length = arguments.length;
+  
+      // getter JSON
+      if( !length ){
+        return get( key, true );
+      }
+      // getter one
+      if( length === 1 ){
+        return get( key || key + '', false );
+      }
+      // setter
+      return set( key, value, attributes );
+    },
+  
+    '$deleteCookie $removeCookie': function( key, attributes ){
+      set(
+        key, '',
+        $assign( true, attributes, { expires: -1 } )
+      );
     }
-    // getter one
-    if( length === 1 ){
-      return get( key || key + '', false );
-    }
-    // setter
-    return set( key, value, attributes );
-  },
-
-  '$deleteCookie $removeCookie': function( key, attributes ){
-    set(
-      key, '',
-      $assign( true, attributes, { expires: -1 } )
-    );
-  }
-
-});
+  
+  });
+}

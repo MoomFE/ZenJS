@@ -1,5 +1,5 @@
 /*!
- * Zen.js v2.3.0
+ * Zen.js v2.3.1
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Zhang_Wei
@@ -714,6 +714,11 @@
   var parse = JSON.parse;
 
   /**
+   * @type {Boolean} 当前是否是浏览器环境
+   */
+  var inBrowser = typeof window !== 'undefined';
+
+  /**
    * Transplant from JavaScript Cookie
    * Version: 2.2.0
    * Homepage: https://github.com/js-cookie/js-cookie
@@ -814,33 +819,30 @@
     return key !== undefined ? jar[key] : jar;
   }
 
-  defineValue(document, {
-    $cookie: function (key, value, attributes) {
-      var length = arguments.length;
+  if (inBrowser) {
+    defineValue(document, {
+      $cookie: function (key, value, attributes) {
+        var length = arguments.length;
 
-      // getter JSON
-      if (!length) {
-        return get(key, true);
+        // getter JSON
+        if (!length) {
+          return get(key, true);
+        }
+        // getter one
+        if (length === 1) {
+          return get(key || key + '', false);
+        }
+        // setter
+        return set(key, value, attributes);
+      },
+
+
+      '$deleteCookie $removeCookie': function (key, attributes) {
+        set(key, '', $assign(true, attributes, { expires: -1 }));
       }
-      // getter one
-      if (length === 1) {
-        return get(key || key + '', false);
-      }
-      // setter
-      return set(key, value, attributes);
-    },
 
-
-    '$deleteCookie $removeCookie': function (key, attributes) {
-      set(key, '', $assign(true, attributes, { expires: -1 }));
-    }
-
-  });
-
-  /**
-   * @type {Boolean} 当前是否是浏览器环境
-   */
-  var inBrowser = typeof window !== 'undefined';
+    });
+  }
 
   inBrowser && defineValue(document, '$id', document.getElementById);
 
@@ -1030,18 +1032,20 @@
     }
   };
 
-  var input = document.createElement('input');
-  input.type = 'checkbox';
+  if (inBrowser) {
+    var input = document.createElement('input');
+    input.type = 'checkbox';
 
-  // checkbox 的默认值应该为 'on'
-  if (input.value !== '') {
-    ['radio', 'checkbox'].forEach(function (type) {
-      valHooks[type] = {
-        get: function (elem) {
-          return elem.getAttribute('value') === null ? 'on' : elem.value;
-        }
-      };
-    });
+    // checkbox 的默认值应该为 'on'
+    if (input.value !== '') {
+      ['radio', 'checkbox'].forEach(function (type) {
+        valHooks[type] = {
+          get: function (elem) {
+            return elem.getAttribute('value') === null ? 'on' : elem.value;
+          }
+        };
+      });
+    }
   }
 
   function $isNumber(obj) {
@@ -1421,7 +1425,7 @@
    * ZenJS
    */
   var ZenJS = $create$1(true, {
-    version: '2.3.0'
+    version: '2.3.1'
   });
 
   if (inBrowser) {

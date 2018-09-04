@@ -125,17 +125,18 @@ const valHooks = {
   }
 }
 
-
-const input = document.createElement('input');
+if( inBrowser ){
+  const input = document.createElement('input');
       input.type = 'checkbox';
 
-// checkbox 的默认值应该为 'on'
-if( input.value !== '' ){
-  [ 'radio', 'checkbox' ].forEach( type => {
-    valHooks[ type ] = {
-      get( elem ){
-        return elem.getAttribute( 'value' ) === null ? 'on' : elem.value;
-      }
-    };
-  });
+  // checkbox 的默认值应该为 'on'
+  if( input.value !== '' ){
+    [ 'radio', 'checkbox' ].forEach( type => {
+      valHooks[ type ] = {
+        get( elem ){
+          return elem.getAttribute( 'value' ) === null ? 'on' : elem.value;
+        }
+      };
+    });
+  }
 }
