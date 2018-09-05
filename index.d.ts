@@ -1396,6 +1396,51 @@ interface Element {
 
 }
 
+interface EventTarget {
+
+  /**
+   * 返回存储在对象上的全部数据
+   */
+  $data(): any;
+
+  /**
+   * 读取指定名称的数据
+   * @param name 需要读取的数据名称
+   */
+  $data( name: String ): any;
+
+  /**
+   * 将数据读取或存储
+   * @param name 需要存储的数据名称
+   * @param value 存储的数据
+   * @param weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
+   */
+  $data( name: String, value: any, weakRead?: Boolean ): any;
+
+  /**
+   * 判断当前对象下是否存有数据
+   */
+  $hasData(): Boolean;
+
+  /**
+   * 传入数据名称, 判断当前对象下是否存储了这个数据
+   * @param {String} name 需要判断的数据名称
+   */
+  $hasData( name: String ): Boolean;
+
+  /**
+   * 删除存储在对象上的全部数据
+   */
+  $deleteData(): any;
+
+  /**
+   * 传入数据名称, 删除当前对象下存储的相应名称的数据
+   * @param {String} name 需要删除的数据名称, 多个可使用空格分隔
+   */
+  $deleteData( names: String ): any;
+
+}
+
 
 // interface Document {
 //   /**
@@ -1447,40 +1492,6 @@ interface Element {
 // }
 
 // interface EventTarget{
-//   /**
-//    * 返回存储在对象上的全部数据
-//    */
-//   $data(): any;
-//   /**
-//    * 读取指定名称的数据
-//    * @param name 需要读取的数据名称
-//    */
-//   $data( name: String ): any;
-//   /**
-//    * 将数据读取或存储
-//    * @param name 需要存储的数据名称
-//    * @param value 存储的数据
-//    * @param weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
-//    */
-//   $data( name: String, value: any, weakRead?: Boolean ): any;
-//   /**
-//    * 判断当前对象下是否存有数据
-//    */
-//   $hasData(): Boolean;
-//   /**
-//    * 传入数据名称, 判断当前对象下是否存储了这个数据
-//    * @param {String} name 需要判断的数据名称
-//    */
-//   $hasData( name: String ): Boolean;
-//   /**
-//    * 删除存储在对象上的全部数据
-//    */
-//   $deleteData(): this;
-//   /**
-//    * 传入数据名称, 删除当前对象下存储的相应名称的数据
-//    * @param {String} name 需要删除的数据名称, 多个可使用空格分隔
-//    */
-//   $deleteData( names:String ): this;
 //   /**
 //    * 传入键值对事件进行绑定
 //    * @param obj 事件: 方法

@@ -2805,7 +2805,7 @@ if (inBrowser) {
 
     // $data( name, value )
     Data[name] = value;
-    return slef;
+    return self;
   });
 
   defineValue(DomEventTarget, '$hasData', function (name) {
@@ -2822,7 +2822,7 @@ if (inBrowser) {
     return name in Data;
   });
 
-  defineValue(EventTarget, '$deleteData $removeData', function (names) {
+  defineValue(DomEventTarget, '$deleteData $removeData', function (names) {
     var self = this || window;
 
     if (names == null) {

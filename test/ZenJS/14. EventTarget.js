@@ -1,99 +1,134 @@
+describes.push({
+  name: 'EventTarget',
+  describe: [
+    {
+      name: '$data',
+      describe: function(){
+        /** @type {Element} */
+        var div = window.div;
+
+        it( 'adding data', function(){
+          div.$data( 'Data', 'div' ).should.equals( div );
+          window.$data( 'Data', 'window' ).should.equals( window );
+          document.$data( 'Data', 'document' ).should.equals( document );
+        });
+
+        it( 'Read data', function(){
+          div.$data( 'Data' ).should.equals( 'div' );
+          window.$data( 'Data' ).should.equals( 'window' );
+          document.$data( 'Data' ).should.equals( 'document' );
+        });
+
+        it( 'Read all data', function(){
+          Object.$equals( div.$data(), { Data: 'div' } );
+          Object.$equals( window.$data(), { Data: 'window' } );
+          Object.$equals( document.$data(), { Data: 'document' } );
+        });
+
+        it( 'Add data in bulk', function(){
+          div.$data({ a: 1, b: 2 }).should.equals( div );
+          window.$data({ a: 1, b: 2 }).should.equals( window );
+          document.$data({ a: 1, b: 2 }).should.equals( document );
+          Object.$equals( div.$data(), { Data: 'div', a: 1, b: 2 } );
+          Object.$equals( window.$data(), { Data: 'window', a: 1, b: 2 } );
+          Object.$equals( document.$data(), { Data: 'document', a: 1, b: 2 } );
+        });
+
+        it( 'Initialize add method', function(){
+          div.$data( 'b', 3, true ).should.equals( 2 );
+          window.$data( 'b', 3, true ).should.equals( 2 );
+          document.$data( 'b', 3, true ).should.equals( 2 );
+          Object.$equals( div.$data(), { Data: 'div', a: 1, b: 2 } );
+          Object.$equals( window.$data(), { Data: 'window', a: 1, b: 2 } );
+          Object.$equals( document.$data(), { Data: 'document', a: 1, b: 2 } );
+
+          div.$data( 'c', 3, true ).should.equals( 3 );
+          window.$data( 'c', 3, true ).should.equals( 3 );
+          document.$data( 'c', 3, true ).should.equals( 3 );
+          Object.$equals( div.$data(), { Data: 'div', a: 1, b: 2, c: 3 } );
+          Object.$equals( window.$data(), { Data: 'window', a: 1, b: 2, c: 3 } );
+          Object.$equals( document.$data(), { Data: 'document', a: 1, b: 2, c: 3 } );
+        });
+
+        it( 'Use $data directly', function(){
+          $data( 'Data' ).should.equals( 'window' );
+
+          window.__ZENJS_DATA__ = {};
+          document.__ZENJS_DATA__ = {};
+        });
+      }
+    }, {
+      name: '$hasData',
+      describe: function(){
+        /** @type {Element} */
+        var div = window.div;
+
+        it( 'No incoming parameter detection has value', function(){
+          div.$hasData().should.false;
+          div.$data('Data','div').$hasData().should.true;
+          window.$hasData().should.false;
+          window.$data('Data','window').$hasData().should.true;
+          document.$hasData().should.false;
+          document.$data('Data','document').$hasData().should.true;
+        });
+
+        it( 'Incoming parameter detection for value', function(){
+          div.$hasData('Data').should.true;
+          window.$hasData('Data').should.true;
+          document.$hasData('Data').should.true;
+          div.$hasData('noData').should.false;
+          window.$hasData('noData').should.false;
+          document.$hasData('noData').should.false;
+        });
+
+        it( 'Use $hasData directly', function(){
+          $hasData('Data').should.true;
+          $hasData('noData').should.false;
+
+          window.__ZENJS_DATA__ = {};
+          document.__ZENJS_DATA__ = {};
+        });
+      }
+    }, {
+      name: 'deleteData',
+      describe: function(){
+        /** @type {Element} */
+        var div = window.div;
+
+        it( 'Delete single data', function(){
+          div.$data({ Data: 'div', a: 1, b: 2 });
+          window.$data({ Data: 'window', a: 1, b: 2 });
+          document.$data({ Data: 'document', a: 1, b: 2 });
+
+          div.$deleteData('Data').should.equals( div );
+          window.$deleteData('Data').should.equals( window );
+          document.$deleteData('Data').should.equals( document );
+
+          div.$hasData('Data').should.false;
+          window.$hasData('Data').should.false;
+          document.$hasData('Data').should.false;
+          div.$hasData('a').should.true;
+          window.$hasData('a').should.true;
+          document.$hasData('a').should.true;
+        });
+
+        it( 'Delete all data', function(){
+          div.$deleteData().should.equals( div );
+          window.$deleteData().should.equals( window );
+          document.$deleteData().should.equals( document );
+          div.$hasData().should.false;
+          window.$hasData().should.false;
+          document.$hasData().should.false;
+        });
+      }
+    }
+  ]
+});
+
 // describes.push({
 //   name: 'EventTarget',
 //   describe: [
 //     {
-//       name: '$data',
-//       it: function(){
-//         // 存储数据返回对象本身
-//         isElement( div.$data('Data','div') ).should.true;
-//         isElement( div.$data({Data:'div'}) ).should.true;
-//         isElement( div.$data({Data:'div'},true) ).should.true;
-//         isWindow( window.$data('Data','window') ).should.true;
-//         isWindow( window.$data('Data','window') ).should.true;
-//         isWindow( window.$data({'Data':'window'}) ).should.true;
-//         isWindow( window.$data({'Data':'window'},true) ).should.true;
-//         document.$data('Data','document').should.equals( document );
-//         document.$data({'Data':'document'}).should.equals( document );
-//         document.$data({'Data':'document'},true).should.equals( document );
-//         // 有对应数据返回对应数据
-//         div.$data('Data','div').$data('Data').should.equals( 'div' );
-//         window.$data('Data').should.equals( 'window' );
-//         document.$data('Data').should.equals( 'document' );
-//         // 无对应数据时返回 undefined
-//         isUndef( div.$data('noData') ).should.true;
-//         isUndef( window.$data('noData') ).should.true;
-//         isUndef( document.$data('noData') ).should.true;
-//         // 未传入数据名, 返回全部数据集
-//         JSON.stringify( div.$data('Data','div').$data() ).should.equals( '{"Data":"div"}' );
-//         JSON.stringify( window.$data() ).should.equals( '{"Data":"window"}' );
-//         JSON.stringify( document.$data() ).should.equals( '{"Data":"document"}' );
-//         // 初始化添加方式
-//         div.$data('Data','div').$data('Data','no',true).should.equals( 'div' );
-//         div.$data('Data','yes',true).should.equals( 'yes' );
-//         window.$data('Data','no',true).should.equals( 'window' );
-//         window.$data('Data1','yes',true).should.equals( 'yes' );
-//         document.$data('Data','no',true).should.equals( 'document' );
-//         document.$data('Data1','yes',true).should.equals( 'yes' );
-//         // 批量添加
-//         JSON.stringify( div.$data({Data1:'div',Data2:'div'}).$data() ).should.equals( '{"Data1":"div","Data2":"div"}' );
-//         JSON.stringify( window.$data({'Data':'window','Data1':'yes'}).$data() ).should.equals( '{"Data":"window","Data1":"yes"}' );
-//         JSON.stringify( document.$data({'Data':'document','Data1':'yes'}).$data() ).should.equals( '{"Data":"document","Data1":"yes"}' );
-//         // 直接使用 $data 而不使用 window.$data
-//         $data('Data').should.equals('window');
-//       }
-//     }, {
-//       name: '$hasData',
-//       it: function(){
-//         // 未传入对象则检测是否存过数据
-//         div.$hasData().should.false;
-//         div.$data('Data','div').$hasData().should.true;
-//         window.__ZENJS_DATA__ = {};
-//         window.$hasData().should.false;
-//         window.$data('Data','window').$hasData().should.true;
-//         document.__ZENJS_DATA__ = {};
-//         document.$hasData().should.false;
-//         document.$data('Data','document').$hasData().should.true;
-//         // 传入对象检测相应对象
-//         div.$hasData('noData').should.false;
-//         div.$data('Data','div').$hasData('Data').should.true;
-//         window.$hasData('noData').should.false;
-//         window.$hasData('Data').should.true;
-//         document.$hasData('noData').should.false;
-//         document.$hasData('Data').should.true;
-//         // 直接使用 $data 而不使用 window.$data
-//         $hasData('noData').should.false;
-//         $hasData('Data').should.true;
-//       }
-//     }, {
-//       name: '$deleteData',
-//       it: function(){
-//         // 始终返回自身
-//         isElement( div.$deleteData() ).should.true;
-//         isElement( div.$deleteData('noData') ).should.true;
-//         isElement( div.$deleteData('noData1 noData2') ).should.true;
-//         isWindow( window.$deleteData() ).should.true;
-//         isWindow( window.$deleteData( 'noData' ) ).should.true;
-//         isWindow( window.$deleteData( 'noData1 noData2' ) ).should.true;
-//         document.$deleteData().should.equals( document );
-//         document.$deleteData( 'noData' ).should.equals( document );
-//         document.$deleteData( 'noData1 noData2' ).should.equals( document );
-//         // 删除单个数据
-//         div.$data('Data','div').$deleteData('Data').$hasData('Data').should.false;
-//         div.$data('Data','div').$deleteData('Data1').$hasData('Data').should.true;
-//         window.$data('Data','window').$deleteData('Data').$hasData('Data').should.false;
-//         window.$data('Data','window').$deleteData('Data1').$hasData('Data').should.true;
-//         document.$data('Data','document').$deleteData('Data').$hasData('Data').should.false;
-//         document.$data('Data','document').$deleteData('Data1').$hasData('Data').should.true;
-//         // 删除全部数据
-//         div.$data('Data','div').$deleteData().$hasData().should.false;
-//         window.$deleteData().$hasData().should.false;
-//         document.$deleteData().$hasData().should.false;
-//         // 直接使用 $data 而不使用 window.$data
-//         $data('Data','window');
-//         $deleteData().$hasData().should.false;
-//       }
-//     }
-//     , {
 //       name: '$on',
 //       it: function(){
 //         // 测试数据存储
