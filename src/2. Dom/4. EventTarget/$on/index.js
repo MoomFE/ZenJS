@@ -11,7 +11,6 @@ import inBrowser from "../../../shared/const/inBrowser";
 import defineValue from "../../../shared/util/defineValue";
 import DomEventTarget from "../../../shared/global/DomEventTarget/index";
 import EventListener from "../../666. ZenJS/EventListener/index";
-import rtypenamespace from "../../../shared/const/rtypenamespace";
 
 
 /**

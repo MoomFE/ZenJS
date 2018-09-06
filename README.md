@@ -219,6 +219,8 @@
   - $data
   - $hasData
   - $deleteData / $removeData
+  - $on
+  - $one / $once
 
 <!--
 - document
@@ -226,8 +228,6 @@
   - $deleteCookie / $removeCookie
 
 - EventTarget.prototype
-  - $on
-  - $one / $once
   - $off
   - $emit
 -->
