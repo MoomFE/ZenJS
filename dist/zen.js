@@ -2269,6 +2269,13 @@
               isReferenceType: isReferenceType,
 
               mapSetToArray: mapSetToArray
+        },
+
+        config: {
+              event: {
+                    modifiers: true,
+                    returnFalse: true
+              }
         }
 
   }]);

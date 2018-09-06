@@ -1,11 +1,12 @@
-import rtypenamespace from '../../shared/const/rtypenamespace';
-import ZenJS from '../../shared/global/ZenJS/index';
-import { addEventListenerPrivate } from '../../shared/const/event';
-import modifiers from './modifiers';
+import ZenJS from "../../../shared/global/ZenJS/index";
+import rtypenamespace from "../../../shared/const/rtypenamespace";
+import { addEventListener } from "../../../shared/const/event";
+import modifiers from "./modifiers";
 
 
 /**
- * 事件处理 => 添加事件3: 绑定事件
+ * 事件处理 => 绑定事件
+ * @private
  * @param {Element} elem 需要绑定事件的对象
  * @param {Array} types 需要绑定的事件集
  * @param {String} selector 事件委托的选择器
@@ -15,68 +16,60 @@ import modifiers from './modifiers';
  */
 export default function add( elem, types, selector, listener, options, data ){
 
-  let
-    /** 存放当前元素下的所有事件 */
-    events = elem.$data( 'events', {}, true ),
-    /** 事件总数 */
-    length = types.length,
+  /** 存放当前元素下的所有事件 */
+  const events = elem.$data( 'events', {}, true );
 
-    tmp,
-    type,
-    namespace,
-    handleOptions;
+  /** 事件 GUID */
+  const guid = listener.guid || ( listener.guid = ZenJS.guid );
+  
+  /** 事件总数 */
+  let length = types.length;
 
-  const guid = listener.guid || (
-    listener.guid = ZenJS.guid
-  );
+  let tmp,
+      type,
+      namespace,
+      handleOptions;
 
+  // 遍历绑定所有事件
   while( length-- ){
 
     /** 分离事件名称和命名空间 */
     tmp = rtypenamespace.exec( types[ length ] ) || [];
+
     /** 事件名称 */
     type = tmp[ 1 ];
 
-    if( !type ){
-      continue;
-    }
+    if( !type ) continue;
 
     /** 命名空间 */
     namespace = ( tmp[ 2 ] || '' ).split( '.' ).sort();
 
+    // 处理功能性命名空间
     if( ZenJS.config.event.modifiers && modifiers( 'add', namespace, elem, type, events ) === false ){
       continue;
     }
 
-    /** 该事件的所有参数 */
+    /** 该事件所有相关参数 */
     handleOptions = {
-      elem,
-      type,
-      guid,
+      elem, selector, type, namespace, listener, guid, options,
       data,
-      listener,
-      selector,
-      options,
-      namespace,
       namespaceStr: namespace.join('.'),
-      handle: function(){
+      handler(){
         return ZenJS.EventListener.dispatch.apply( handleOptions, arguments );
       }
     };
 
-    (
-      events[ type ] || (
-        events[ type ] = []
-      )
-    ).push( handleOptions );
+    // 存储相关数据
+    ( events[ type ] || ( events[ type ] = [] ) ).push( handleOptions );
 
+    // 绑定事件
     if( options.passive ){
-      elem[ addEventListenerPrivate ]( type, handleOptions.handle, {
+      elem[ addEventListener ]( type, handleOptions.handler, {
         passive: true,
         capture: options.capture || false
       });
     }else{
-      elem[ addEventListenerPrivate ]( type, handleOptions.handle, options.capture || false );
+      elem[ addEventListener ]( type, handleOptions.handler, options.capture || false );
     }
   }
 }

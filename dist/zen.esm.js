@@ -2263,6 +2263,13 @@ var ZenJS = root.ZenJS = assign(false, [null, {
             isReferenceType: isReferenceType,
 
             mapSetToArray: mapSetToArray
+      },
+
+      config: {
+            event: {
+                  modifiers: true,
+                  returnFalse: true
+            }
       }
 
 }]);

@@ -1231,11 +1231,11 @@
     return this;
   });
 
-  function self() {
+  function self$1() {
     return this;
   }
 
-  defineValue(ObjectProto, '$self', self);
+  defineValue(ObjectProto, '$self', self$1);
 
   defineValue(Number, '$isNumber', $isNumber);
 
@@ -2269,6 +2269,13 @@
               isReferenceType: isReferenceType,
 
               mapSetToArray: mapSetToArray
+        },
+
+        config: {
+              event: {
+                    modifiers: true,
+                    returnFalse: true
+              }
         }
 
   }]);
@@ -2378,26 +2385,24 @@
     });
   }
 
-  var matches;
-
-  if (inBrowser) {
-    (matches = ElementProto.matches) || ['webkit', 'o', 'ms', 'moz'].$each(function (core) {
+  if (inBrowser && !ElementProto.matches) {
+    ['webkit', 'o', 'ms', 'moz'].$each(function (core) {
       var matchesKey = core + 'MatchesSelector';
       var matchesValue = ElementProto[matchesKey];
 
       if (matchesValue) {
-        matches = matchesValue;
+        ElementProto.matches = matchesValue;
         return false;
       }
     });
   }
 
-  var matches$1 = matches;
+  var matches = ElementProto.matches;
 
   if (inBrowser) {
 
     defineValue(ElementProto, '$is', function (selector) {
-      return selector.nodeType ? this === selector : isString$1(selector) ? matches$1.call(this, selector) : false;
+      return selector.nodeType ? this === selector : isString$1(selector) ? this.matches(selector) : false;
     });
 
     defineValue(ElementProto, '$not', function (selector) {
@@ -2841,6 +2846,369 @@
       });
 
       return self;
+    });
+  }
+
+  /**
+   * @type {Boolean} 当前环境是否支持 addEventListener 的 passive 属性
+   */
+  var supportsPassiveEvent = false;
+
+  try {
+
+    var options = defineProperty({}, 'passive', {
+      get: function () {
+        supportsPassiveEvent = true;
+      }
+    });
+
+    window[addEventListener]('test', null, options);
+  } catch (e) {}
+
+  var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
+
+  /**
+   * 根据传入命名空间, 调用一些功能或做一些判断
+   * @param {String} name 需要解析哪一块的功能命名空间
+   * @param {Array} namespace 元素的命名空间列表
+   * @param {Element} elem 绑定事件的元素
+   * @param {String} type 绑定的事件
+   * @param {Object} options 其他属性
+   */
+  function modifiers(name, namespace, elem, type, options) {
+
+    // 没有命名空间
+    if (namespace === 0) {
+      return;
+    }
+
+    /** 当前功能的修饰符列表 */
+    var handlers = ModifiersList[name];
+
+    var result;
+
+    namespace.filter(function (name) {
+      return name in handlers;
+    }).$each(function (handler) {
+      return result = handlers[handler](elem, type, options, namespace);
+    });
+
+    return result;
+  }
+
+  var ModifiersList = {
+    /**
+     * 添加事件时
+     */
+    add: {},
+    /**
+     * 触发事件时
+     */
+    dispatch: {
+
+      /**
+       * 当事件是从绑定的元素本身触发时才触发回调
+       */
+      self: function (elem, type, namespace, event) {
+        return event.target === event.currentTarget;
+      }
+    }
+  };
+
+  var add = ModifiersList.add;
+  var dispatch = ModifiersList.dispatch;
+
+  /**
+   * .once || .one
+   * 当命名空间有 .once 或 .one, 则会去已绑定的事件中进行查找,
+   * 如果之前绑定过相同的命名空间 ( 也同样有 .once 或 .one ), 则本次绑定无效
+   */
+  add.once = add.one = function (elem, type, namespace, events) {
+    events = events[type] || [];
+    return events.$findIndex({ namespace: namespace }, equals$1) === -1;
+  };
+
+  /**
+   * .ctrl || .shift || .alt || .meta
+   * 当按下了对应键盘按键时才触发回调
+   */
+  ['ctrl', 'shift', 'alt', 'meta'].forEach(function (key) {
+    dispatch[key] = function (elem, type, namespace, event) {
+      return !!event[key + 'Key'];
+    };
+  });
+
+  /**
+   * .left || .middle || .right
+   * 当按下了对应鼠标按键时才触发回调
+   */
+  ['left', 'middle', 'right'].forEach(function (button, index) {
+    dispatch[button] = function (elem, type, namespace, event) {
+      return !('button' in event && event.button !== index);
+    };
+  });
+
+  /**
+   * 事件处理 => 绑定事件
+   * @private
+   * @param {Element} elem 需要绑定事件的对象
+   * @param {Array} types 需要绑定的事件集
+   * @param {String} selector 事件委托的选择器
+   * @param {Function} listener 绑定的事件
+   * @param {Object} options 事件绑定参数
+   * @param {Object} data 绑定事件时向方法传入的数据
+   */
+  function add$1(elem, types, selector, listener, options, data) {
+
+    /** 存放当前元素下的所有事件 */
+    var events = elem.$data('events', {}, true);
+
+    /** 事件 GUID */
+    var guid = listener.guid || (listener.guid = ZenJS.guid);
+
+    /** 事件总数 */
+    var length = types.length;
+
+    var tmp,
+        type,
+        namespace,
+        handleOptions;
+
+    // 遍历绑定所有事件
+    while (length--) {
+
+      /** 分离事件名称和命名空间 */
+      tmp = rtypenamespace.exec(types[length]) || [];
+
+      /** 事件名称 */
+      type = tmp[1];
+
+      if (!type) continue;
+
+      /** 命名空间 */
+      namespace = (tmp[2] || '').split('.').sort();
+
+      // 处理功能性命名空间
+      if (ZenJS.config.event.modifiers && modifiers('add', namespace, elem, type, events) === false) {
+        continue;
+      }
+
+      /** 该事件所有相关参数 */
+      handleOptions = {
+        elem: elem, selector: selector, type: type, namespace: namespace, listener: listener, guid: guid, options: options,
+        data: data,
+        namespaceStr: namespace.join('.'),
+        handler: function () {
+          return ZenJS.EventListener.dispatch.apply(handleOptions, arguments);
+        }
+      };
+
+      // 存储相关数据
+      (events[type] || (events[type] = [])).push(handleOptions);
+
+      // 绑定事件
+      if (options.passive) {
+        elem[addEventListener](type, handleOptions.handler, {
+          passive: true,
+          capture: options.capture || false
+        });
+      } else {
+        elem[addEventListener](type, handleOptions.handler, options.capture || false);
+      }
+    }
+  }
+
+  /**
+   * 事件处理 => 触发事件
+   * @param {DocumentEventMap} nativeEvent 当前触发的事件对象
+   */
+  function dispatch$1(nativeEvent) {
+
+    /** 重写的 event 事件对象 */
+    var event = nativeEvent instanceof ZenJS.Event ? nativeEvent : new ZenJS.Event(nativeEvent);
+
+    /** 新 argument, 存放了新的 event 事件对象 */
+    var args = slice.call(arguments).$set(0, event);
+
+    var selector = this.selector;
+    var elem = this.elem;
+    var target = event.target,
+        type = event.type;
+
+
+    event.delegateTarget = elem;
+    event.handleOptions = this;
+    event.data = this.data;
+
+    // 有事件委托
+    if (selector && !(type === 'click' && event.button >= 1)) {
+      // 从被点击的元素开始, 一层一层往上找
+      for (; target !== self; target = target.parentNode || elem) {
+        // 是元素节点
+        // 点击事件, 将不处理禁用的元素
+        if (target.nodeType === 1 && cur.disabled === false && target.matches(selector)) {
+          elem = event.currentTarget = target;
+          break;
+        }
+      }
+
+      if (event.delegateTarget === elem) {
+        return;
+      }
+    } else {
+      if (!event.currentTarget) event.currentTarget = elem;
+      if (!target) event.target = elem;
+    }
+
+    // 处理功能性命名空间
+    if (ZenJS.config.event.modifiers && modifiers('dispatch', this.namespace, elem, type, event) === false) {
+      return;
+    }
+
+    var result = this.listener.apply(self, args);
+
+    // 返回 false, 阻止浏览器默认事件和冒泡
+    if (result === false && ZenJS.config.event.returnFalse) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    return false;
+  }
+
+  var EventListener = assign(false, [null, {
+    add: add$1,
+    dispatch: dispatch$1,
+    modifiers: modifiers
+  }]);
+
+  if (inBrowser) {
+    ZenJS.EventListener = EventListener;
+  }
+
+  /**
+   * 事件处理 => 参数处理
+   * @param {Element} elem 需要绑定事件的对象
+   * @param {String} types 需要绑定的事件集
+   * @param {String} selector 事件委托的选择器
+   * @param {Function} listener 绑定的事件
+   * @param {Object} options 事件绑定参数
+   * @param {Boolean} once 事件只执行一次
+   */
+  function on(elem, types, selector, listener, options, once) {
+    var events;
+    var data;
+
+    // 1. on( elem, { type: listener || Boolean } )
+    // 2. on( elem, { type: listener || Boolean }, options )
+    // 3. on( elem, { type: listener || Boolean }, options, selector )
+    // 4. on( elem, { type: listener || Boolean }, selector )
+    // 5. on( elem, { type: listener || Boolean }, selector, options )
+    if (isObject(types)) {
+      events = types;
+
+      if (isString$1(selector)) {
+        // 4, 5
+        options = listener;
+      } else {
+        // 1, 2, 3
+        options = selector;
+        selector = listener;
+      }
+    }
+    // on( elem, selector, { type: listener || Boolean } )
+    // on( elem, selector, { type: listener || Boolean }, options )
+    else if (isObject(selector)) {
+        events = selector;
+        selector = types;
+        options = listener;
+      }
+
+    if (events) {
+      for (var type in events) {
+        on(elem, type, events[type], selector, options);
+      }
+      return elem;
+    }
+
+    if (!types) return elem;else {
+      types = types.match(rnothtmlwhite);
+
+      if (types == null || types.length === 0) {
+        return elem;
+      }
+    }
+
+    // on( elem, types, listener || Boolean )
+    // on( elem, types, listener || Boolean, selector )
+    // on( elem, types, listener || Boolean, selector, options )
+    if (!isString$1(selector)) {
+
+      // on( elem, types, listener || Boolean, options )
+      var _ref = [listener, selector];
+      selector = _ref[0];
+      listener = _ref[1];
+      if (!isString$1(selector)) {
+        if (options === undefined) options = selector;
+        selector = undefined;
+      }
+    }
+
+    if (isBoolean$1(listener)) {
+      listener = listener ? returnTrue : returnFalse;
+    }
+
+    if (!listener) {
+      return elem;
+    }
+
+    // useCapture
+    if (isBoolean$1(options)) {
+      options = { capture: options };
+    }
+
+    options = options || {};
+
+    if (options.data) {
+      data = options.data;
+      delete options.data;
+    }
+
+    keys(options).forEach(function (key) {
+      options[key] ? options[key] = true : delete options[key];
+    });
+
+    if (once || 'one' in options || 'once' in options) {
+      var origListener = listener;
+
+      listener = function (event) {
+        elem.$off(event);
+        return origListener.apply(this, arguments);
+      };
+
+      listener.guid = origListener.guid || (origListener.guid = ZenJS.guid);
+
+      delete options.one;
+      delete options.once;
+    }
+
+    if ('passive' in options && !supportsPassiveEvent) {
+      delete options.passive;
+    }
+
+    EventListener.add(elem, types, selector, listener, options, data);
+
+    return elem;
+  }
+
+  if (inBrowser) {
+
+    defineValue(DomEventTarget, '$on', function (types, selector, listener, options) {
+      return on(this, types, selector, listener, options);
+    });
+
+    defineValue(DomEventTarget, '$one $once', function (types, selector, listener, options) {
+      return on(this, types, selector, listener, options, true);
     });
   }
 
