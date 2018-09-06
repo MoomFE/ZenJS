@@ -6,7 +6,7 @@ import parametersDefault from "../../../shared/util/parametersDefault";
 import { getPredicate } from "../../../shared/util/getPredicate";
 
 
-function equals( array, array2 ){
+export default function equals( array, array2 ){
 
   // 可比较数组及类数组的内容
   if( !( isArrayLike( array ) && isArrayLike( array2 ) ) ){
