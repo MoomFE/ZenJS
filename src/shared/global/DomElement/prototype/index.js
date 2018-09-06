@@ -1,6 +1,6 @@
-import Element from '../index';
+import DomElement from '../index';
 import inBrowser from '../../../const/inBrowser';
 
-const ElementProto = inBrowser ? Element.prototype : undefined;
+const ElementProto = inBrowser ? DomElement.prototype : undefined;
 
 export default ElementProto;
