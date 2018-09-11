@@ -3026,7 +3026,7 @@
     var event = nativeEvent instanceof ZenJS.Event ? nativeEvent : new ZenJS.Event(nativeEvent);
 
     /** 新 argument, 存放了新的 event 事件对象 */
-    var args = slice.call(arguments).$set(0, event);
+    var args = slice.call(arguments).$splice(0, 1, event);
 
     var selector = this.selector;
     var elem = this.elem;
