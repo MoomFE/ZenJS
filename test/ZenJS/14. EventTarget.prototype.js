@@ -90,7 +90,7 @@ describes.push({
         });
       }
     }, {
-      name: 'deleteData',
+      name: '$deleteData',
       describe: function(){
         /** @type {Element} */
         var div = window.div;
@@ -121,6 +121,16 @@ describes.push({
           document.$hasData().should.false;
         });
       }
+    }, {
+      name: '$on',
+      describe: [
+        {
+          name: '',
+          it: function(){
+            
+          }
+        }
+      ]
     }
   ]
 });
