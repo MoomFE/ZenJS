@@ -2950,9 +2950,8 @@ add.once = add.one = function (elem, type, namespace, events) {
  * @param {String} selector 事件委托的选择器
  * @param {Function} listener 绑定的事件
  * @param {Object} options 事件绑定参数
- * @param {Object} data 绑定事件时向方法传入的数据
  */
-function add$1(elem, types, selector, listener, options, data) {
+function add$1(elem, types, selector, listener, options) {
 
   /** 存放当前元素下的所有事件 */
   var events = elem.$data('events', {}, true);
@@ -2990,7 +2989,6 @@ function add$1(elem, types, selector, listener, options, data) {
     /** 该事件所有相关参数 */
     handleOptions = {
       elem: elem, selector: selector, type: type, namespace: namespace, listener: listener, guid: guid, options: options,
-      data: data,
       namespaceStr: namespace.join('.'),
       handler: function () {
         return ZenJS.EventListener.dispatch.apply(handleOptions, arguments);
@@ -3032,7 +3030,6 @@ function dispatch$1(nativeEvent) {
 
   event.delegateTarget = elem;
   event.handleOptions = this;
-  event.data = this.data;
 
   // 有事件委托
   if (selector && !(type === 'click' && event.button >= 1)) {
@@ -3091,7 +3088,6 @@ if (inBrowser) {
  */
 function on(elem, types, selector, listener, options, once) {
   var events;
-  var data;
 
   // 1. on( elem, { type: listener || Boolean } )
   // 2. on( elem, { type: listener || Boolean }, options )
@@ -3163,11 +3159,6 @@ function on(elem, types, selector, listener, options, once) {
 
   options = options || {};
 
-  if (options.data) {
-    data = options.data;
-    delete options.data;
-  }
-
   keys(options).forEach(function (key) {
     options[key] ? options[key] = true : delete options[key];
   });
@@ -3190,7 +3181,7 @@ function on(elem, types, selector, listener, options, once) {
     delete options.passive;
   }
 
-  EventListener.add(elem, types, selector, listener, options, data);
+  EventListener.add(elem, types, selector, listener, options);
 
   return elem;
 }

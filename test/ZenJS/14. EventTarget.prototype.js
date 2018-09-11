@@ -1,5 +1,5 @@
 describes.push({
-  name: 'EventTarget',
+  name: 'EventTarget.prototype',
   describe: [
     {
       name: '$data',

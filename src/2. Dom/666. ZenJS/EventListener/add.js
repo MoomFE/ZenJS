@@ -12,9 +12,8 @@ import modifiers from "./modifiers";
  * @param {String} selector 事件委托的选择器
  * @param {Function} listener 绑定的事件
  * @param {Object} options 事件绑定参数
- * @param {Object} data 绑定事件时向方法传入的数据
  */
-export default function add( elem, types, selector, listener, options, data ){
+export default function add( elem, types, selector, listener, options ){
 
   /** 存放当前元素下的所有事件 */
   const events = elem.$data( 'events', {}, true );
@@ -52,7 +51,6 @@ export default function add( elem, types, selector, listener, options, data ){
     /** 该事件所有相关参数 */
     handleOptions = {
       elem, selector, type, namespace, listener, guid, options,
-      data,
       namespaceStr: namespace.join('.'),
       handler(){
         return ZenJS.EventListener.dispatch.apply( handleOptions, arguments );

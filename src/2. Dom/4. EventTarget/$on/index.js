@@ -24,7 +24,6 @@ import EventListener from "../../666. ZenJS/EventListener/index";
  */
 function on( elem, types, selector, listener, options, once ){
   let events;
-  let data;
 
   // 1. on( elem, { type: listener || Boolean } )
   // 2. on( elem, { type: listener || Boolean }, options )
@@ -93,11 +92,6 @@ function on( elem, types, selector, listener, options, once ){
 
   options = options || {};
 
-  if( options.data ){
-    data = options.data;
-    delete options.data;
-  }
-
   keys( options ).forEach( key => {
     options[ key ] ? options[ key ] = true
                    : delete options[ key ];
@@ -121,7 +115,7 @@ function on( elem, types, selector, listener, options, once ){
     delete options.passive;
   }
 
-  EventListener.add( elem, types, selector, listener, options, data );
+  EventListener.add( elem, types, selector, listener, options );
 
   return elem;
 }

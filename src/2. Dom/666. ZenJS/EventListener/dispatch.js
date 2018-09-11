@@ -23,7 +23,6 @@ export default function dispatch( nativeEvent ){
 
   event.delegateTarget = elem;
   event.handleOptions = this;
-  event.data = this.data;
 
   // 有事件委托
   if( selector && !( type === 'click' && event.button >= 1 ) ){
