@@ -125,9 +125,15 @@ describes.push({
       name: '$on',
       describe: [
         {
-          name: '',
+          name: 'Test if all parameters are accepted correctly',
           it: function(){
-            
+            var EventCallback = function(){};
+            var EventData = div.$on( 'click', EventCallback ).$data('events');
+
+            $typeof( EventData.click ).should.equals('array');
+            EventData.click.length.should.equals( 1 );
+
+            console.log( EventData.click )
           }
         }
       ]

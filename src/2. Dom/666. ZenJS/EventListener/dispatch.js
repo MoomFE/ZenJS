@@ -16,6 +16,7 @@ export default function dispatch( nativeEvent ){
   /** 新 argument, 存放了新的 event 事件对象 */
   const args = slice.call( arguments ).$splice( 0, 1, event );
 
+  /** 事件委托选择器 */
   const { selector } = this;
 
   let { elem } = this;
