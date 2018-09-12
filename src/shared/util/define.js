@@ -1,5 +1,6 @@
 import defineProperty from '../global/Object/defineProperty';
 import assign from '../global/Object/assign';
+import isArray from '../global/Array/isArray';
 
 
 /**
@@ -15,6 +16,12 @@ export default function define( obj, name, options, options2 ){
     return;
   }
 
+  // define( [ window, document ], name, options )
+  if( isArray( obj ) && obj instanceof Array ){
+    obj.forEach( obj => define( obj, name, options, options2 ) );
+    return;
+  }
+
   name.split(' ').forEach( name => {
     defineProperty(
       obj, name, assign(
@@ -22,4 +29,5 @@ export default function define( obj, name, options, options2 ){
       )
     );
   });
+
 }

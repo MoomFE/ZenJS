@@ -188,6 +188,8 @@ var assign$1 = Object.assign || function () {
   return assign(true, arguments);
 };
 
+var isArray$1 = Array.isArray;
+
 /**
  * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
  * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
@@ -198,6 +200,14 @@ var assign$1 = Object.assign || function () {
 function define(obj, name, options, options2) {
 
   if (obj == null) {
+    return;
+  }
+
+  // define( [ window, document ], name, options )
+  if (isArray$1(obj) && obj instanceof Array) {
+    obj.forEach(function (obj) {
+      return define(obj, name, options, options2);
+    });
     return;
   }
 
@@ -311,8 +321,6 @@ defineValue(Array, '$chunk', chunk);
 defineValue(ArrayProto, '$chunk', function (size) {
   return chunk(this, size);
 });
-
-var isArray$1 = Array.isArray;
 
 var slice = ArrayProto.slice;
 
