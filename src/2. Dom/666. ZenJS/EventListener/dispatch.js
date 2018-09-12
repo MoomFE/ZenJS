@@ -7,19 +7,20 @@ import modifiers from "./modifiers";
  * 事件处理 => 触发事件
  * @param {DocumentEventMap} nativeEvent 当前触发的事件对象
  */
-export default function dispatch( elem, oArgs, handleOptions ){
+export default function dispatch( self, oArgs, handleOptions ){
 
   /** 重写的 event 事件对象 */
   const event = new ZenJS.Event( oArgs[ 0 ] );
 
   /** 新 argument, 存放了新的 event 事件对象 */
-  const args = slice.call( arguments ).$splice( 0, 1, event );
+  const args = slice.call( oArgs ).$splice( 0, 1, event );
 
   /** 事件委托选择器 */
   const { selector } = this;
 
   /**  */
   let { target, type } = event;
+  let { elem } = handleOptions;
 
   event.delegateTarget = elem;
   event.handleOptions = handleOptions;
@@ -62,5 +63,5 @@ export default function dispatch( elem, oArgs, handleOptions ){
     event.stopPropagation();
   }
 
-  return false;
+  return result;
 }

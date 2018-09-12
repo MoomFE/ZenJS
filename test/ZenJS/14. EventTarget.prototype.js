@@ -354,6 +354,46 @@ describes.push({
             Object.$equals( EventData.selector ).should.true;
             Object.$equals( EventData.type, 'click' ).should.true;
           }
+        }, {
+          name: ''
+        }
+      ]
+    }, {
+      name: '$one / $once',
+      describe: [
+        {
+          name: 'Test if all parameters are received correctly',
+          it: function(){
+            var EventData;
+            var EventListener = function( event ){ return event };
+
+            EventData = div.$on( 'click.btn.ripple', EventListener, { one: true } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$one( 'click.btn.ripple', EventListener ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$once( 'click.btn.ripple', EventListener ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+          }
         }
       ]
     }

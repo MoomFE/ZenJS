@@ -1227,11 +1227,11 @@ defineValue(ObjectProto, '$deleteValue $removeValue', function (_value) {
   return this;
 });
 
-function self$1() {
+function self() {
   return this;
 }
 
-defineValue(ObjectProto, '$self', self$1);
+defineValue(ObjectProto, '$self', self);
 
 defineValue(Number, '$isNumber', $isNumber);
 
@@ -3016,13 +3016,13 @@ function add$1(elem, types, selector, listener, options) {
  * 事件处理 => 触发事件
  * @param {DocumentEventMap} nativeEvent 当前触发的事件对象
  */
-function dispatch$1(elem, oArgs, handleOptions) {
+function dispatch$1(self, oArgs, handleOptions) {
 
   /** 重写的 event 事件对象 */
   var event = new ZenJS.Event(oArgs[0]);
 
   /** 新 argument, 存放了新的 event 事件对象 */
-  var args = slice.call(arguments).$splice(0, 1, event);
+  var args = slice.call(oArgs).$splice(0, 1, event);
 
   /** 事件委托选择器 */
   var selector = this.selector;
@@ -3031,6 +3031,7 @@ function dispatch$1(elem, oArgs, handleOptions) {
 
   var target = event.target,
       type = event.type;
+  var elem = handleOptions.elem;
 
 
   event.delegateTarget = elem;
@@ -3074,7 +3075,7 @@ function dispatch$1(elem, oArgs, handleOptions) {
     event.stopPropagation();
   }
 
-  return false;
+  return result;
 }
 
 var EventListener = assign(false, [null, {
@@ -3226,7 +3227,7 @@ var Event = ZenJS.Event = function (src, props) {
     return new ZenJS.Event(src, props);
   }
 
-  if (src instanceof ZenJS) {
+  if (src instanceof Event) {
     return src;
   }
 
