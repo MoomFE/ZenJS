@@ -3177,7 +3177,7 @@
       options[key] ? options[key] = true : delete options[key];
     });
 
-    if (once || 'one' in options || 'once' in options) {
+    if (once || options.one || options.once) {
       var origListener = listener;
 
       listener = function (event) {

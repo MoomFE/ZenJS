@@ -97,7 +97,7 @@ function on( elem, types, selector, listener, options, once ){
                    : delete options[ key ];
   });
 
-  if( once || 'one' in options || 'once' in options ){
+  if( once || options.one || options.once ){
     const origListener = listener;
 
     listener = function( event ){
