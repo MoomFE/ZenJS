@@ -355,9 +355,38 @@ describes.push({
             Object.$equals( EventData.type, 'click' ).should.true;
           }
         }, {
-          name: 'Event binding test',
+          name: 'Event binding',
           it: function(){
+            var div = window.$div;
+            var index = 0;
 
+            div.$on( 'click', function(){ index++ } );
+
+            div.click();
+            index.should.equals( 1 );
+
+            div.click();
+            div.click();
+            index.should.equals( 3 );
+          }
+        }, {
+          name: 'Event binding - delegate',
+          it: function(){
+            var div = window.$div;
+            var span = div.appendChild( window.span );
+            var index = 0;
+
+            div.$on( 'click', 'span', function(){ index++ } );
+
+            div.click();
+            index.should.equals( 0 );
+
+            span.click();
+            index.should.equals( 1 );
+
+            span.click();
+            span.click();
+            index.should.equals( 3 );
           }
         }
       ]

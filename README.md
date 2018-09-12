@@ -57,8 +57,8 @@
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
 | zen.fat.js             | 76.98kb | 20.67kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 27.88kb | 10.12kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 71.68kb | 20.31kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.min.js         | 27.87kb | 10.12kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 71.69kb | 20.32kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
 | zen.fat.esm.js         | 71.67kb | 20.30kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
