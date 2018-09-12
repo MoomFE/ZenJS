@@ -2994,7 +2994,6 @@ function add$1(elem, types, selector, listener, options) {
       namespaceStr: namespace.join('.'),
       handler: function () {
         return ZenJS.EventListener.dispatch(this, arguments, handleOptions);
-        return ZenJS.EventListener.dispatch.apply(handleOptions, arguments);
       }
     };
 
