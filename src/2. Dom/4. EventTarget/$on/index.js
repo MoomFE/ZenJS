@@ -71,9 +71,9 @@ function on( elem, types, selector, listener, options, once ){
     [ selector, listener ] = [ listener, selector ];
 
     // on( elem, types, listener || Boolean, options )
-    if( !isString( selector ) ){
-      if( options === undefined ) options = selector;
-      selector = undefined;
+    // on( elem, types, listener || Boolean, options, selector )
+    if( !isString( selector ) && ( options === undefined || isString( options ) ) ){
+      [ options, selector ] = [ selector, options ];
     }
   }
 

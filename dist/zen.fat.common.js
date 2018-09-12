@@ -3145,12 +3145,14 @@ function on(elem, types, selector, listener, options, once) {
   if (!isString$1(selector)) {
 
     // on( elem, types, listener || Boolean, options )
+    // on( elem, types, listener || Boolean, options, selector )
     var _ref = [listener, selector];
     selector = _ref[0];
     listener = _ref[1];
-    if (!isString$1(selector)) {
-      if (options === undefined) options = selector;
-      selector = undefined;
+    if (!isString$1(selector) && (options === undefined || isString$1(options))) {
+      var _ref2 = [selector, options];
+      options = _ref2[0];
+      selector = _ref2[1];
     }
   }
 
