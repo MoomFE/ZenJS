@@ -111,7 +111,7 @@ function on( elem, types, selector, listener, options, once ){
     delete options.once;
   }
 
-  if( 'passive' in options && !supportsPassiveEvent ){
+  if( options.passive && !supportsPassiveEvent ){
     delete options.passive;
   }
 
