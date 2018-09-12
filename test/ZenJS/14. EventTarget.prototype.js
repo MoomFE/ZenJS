@@ -134,10 +134,225 @@ describes.push({
             $typeof( EventData.click[0] ).should.equals('object');
           }
         }, {
-          name: 'Test if all parameters are accepted correctly',
+          name: 'Test if all parameters are received correctly - namespace',
           it: function(){
-            var EventCallback = function(){};
-            var EventData = div.$on( 'click', EventCallback ).$data('events');
+            var EventData;
+            var EventListener = function( event ){ return event };
+
+            EventData = div.$on( 'click.btn', EventListener ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', EventListener ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on({ 'click.btn.ripple': EventListener }).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+          }
+        }, {
+          name: 'Test if all parameters are received correctly - options',
+          it: function(){
+            var EventData;
+            var EventListener = function( event ){ return event };
+
+            EventData = div.$on( 'click.btn.ripple', EventListener, true ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, { capture: true } ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', EventListener, { capture: true } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, { capture: true } ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', EventListener, { one: true } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( { 'click.btn.ripple': EventListener }, { one: true } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            /**
+             * @type {Boolean} 当前环境是否支持 addEventListener 的 passive 属性
+             */
+            let supportsPassiveEvent = false;
+
+            try{
+              const options = defineProperty( {}, 'passive', {
+                get: () => {
+                  supportsPassiveEvent = true;
+                }
+              });
+              window.addEventListener( 'test', null, options );
+            }catch(e){}
+
+            if( supportsPassiveEvent ){
+              EventData = div.$on( 'click.btn.ripple', EventListener, { passive: true } ).$data('events').click[0];
+              Object.$equals( EventData.elem, div ).should.true;
+              Object.$equals( EventData.listener, EventListener ).should.true;
+              Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+              Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+              Object.$equals( EventData.options, { passive: true } ).should.true;
+              Object.$equals( EventData.selector ).should.true;
+              Object.$equals( EventData.type, 'click' ).should.true;
+            }
+          }
+        }, {
+          name: 'Test if all parameters are received correctly - delegate',
+          it: function(){
+            var EventData;
+            var EventListener = function( event ){ return event };
+
+            EventData = div.$on( 'click.btn.ripple', '.div', EventListener, { one: true } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', EventListener, '.div', { one: true } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', EventListener, { one: true }, '.div' ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( { 'click.btn.ripple': EventListener }, '.div', { one: true } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( '.div', { 'click.btn.ripple': EventListener }, { one: true } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( { 'click.btn.ripple': EventListener }, { one: true }, '.div' ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.false;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+            
+          }
+        }, {
+          name: 'Test if all parameters are received correctly',
+          it: function(){
+            var EventData;
+            var EventListener = function( event ){ return event };
+
+            EventData = div.$on( 'click.btn.ripple', '.div', EventListener, { capture: false } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, EventListener ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', '.div', false, { capture: false } ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', '.div', false, false ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', false, false, '.div' ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', false, '.div', false ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector, '.div' ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
+
+            EventData = div.$on( 'click.btn.ripple', false, false ).$data('events').click[0];
+            Object.$equals( EventData.elem, div ).should.true;
+            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
+            Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
+            Object.$equals( EventData.options, {} ).should.true;
+            Object.$equals( EventData.selector ).should.true;
+            Object.$equals( EventData.type, 'click' ).should.true;
           }
         }
       ]
@@ -149,101 +364,6 @@ describes.push({
 //   name: 'EventTarget',
 //   describe: [
 //     {
-//       name: '$on',
-//       it: function(){
-//         // 测试数据存储
-//         div.$on( 'click', false ).$hasData('events').should.true;
-//         div.$on( 'click', false ).$data('events').click.should.to.be.an('array');
-//         div.$on( 'click', false ).$data('events').click.length.should.equals( 1 );
-//         div.$on( 'click', false ).$on( 'click', false ).$data('events').click.length.should.equals( 2 );
-//         (
-//           typeof div.$on( 'click', false ).$data('events').click[0] === 'object'
-//         ).should.true;
-//         // 测试命名空间存储
-//         div.$on( 'click', false ).$data('events').click[0].namespaceStr.should.equals('');
-//         div.$on( 'click.a', false ).$data('events').click[0].namespaceStr.should.equals('a');
-//         div.$on( 'click.a.b', false ).$data('events').click[0].namespaceStr.should.equals('a.b');
-//         // 测试可选参数
-//         (
-//           typeof div.$on('click', false).$data('events').click[0].options === 'object'
-//         ).should.true;
-//           // 可选参数为 false 时, 不会添加到参数中
-//           JSON.stringify( div.$on( 'click', false, false ).$data('events').click[0].options ).should.equals('{}');
-//           JSON.stringify( div.$on( 'click', false, { capture: false } ).$data('events').click[0].options ).should.equals('{}');
-//           JSON.stringify( div.$on( 'click', false, { passive: false } ).$data('events').click[0].options ).should.equals('{}');
-//           JSON.stringify( div.$on( 'click', false, { once: false } ).$data('events').click[0].options ).should.equals('{}');
-//           JSON.stringify( div.$on( 'click', false, { one: false } ).$data('events').click[0].options ).should.equals('{}');
-//           // useCapture
-//           JSON.stringify( div.$on( 'click', false, true ).$data('events').click[0].options ).should.equals('{"capture":true}');
-//           JSON.stringify( div.$on( 'click', false, { capture: true } ).$data('events').click[0].options ).should.equals('{"capture":true}');
-//           // once
-//           JSON.stringify( div.$on( 'click', false, { once: true } ).$data('events').click[0].options ).should.equals('{}');
-//           JSON.stringify( div.$on( 'click', false, { one: true } ).$data('events').click[0].options ).should.equals('{}');
-//           (
-//             div.$on( 'click', false ).$data('events').click[0].listener ===
-//             div.$on( 'click', false ).$data('events').click[0].listener
-//           ).should.true;
-//           (
-//             div.$on( 'click', false ).$data('events').click[0].listener !==
-//             div.$on( 'click', false, { once: true } ).$data('events').click[0].listener
-//           ).should.true;
-//           (
-//             div.$on( 'click', false ).$data('events').click[0].listener !==
-//             div.$on( 'click', false, { one: true } ).$data('events').click[0].listener
-//           ).should.true;
-//           // passive
-//           if( ZenJS.util.supports.passiveEvent ){
-//             JSON.stringify( div.$on( 'click', false, { passive: true } ).$data('events').click[0].options ).should.equals('{"passive":true}');
-//           }else{
-//             JSON.stringify( div.$on( 'click', false, { passive: true } ).$data('events').click[0].options ).should.equals('{}');
-//           }
-//         // 测试各种传值方式
-//         var test = div.$on( 'click', 'div', false, false ).$data('events');
-
-//         Object.$equals( test, div.$on( { click: false }, 'div', false ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( { click: false }, false, 'div' ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, false ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, { capture: false } ).$data('events') ).should.true;
-
-//         test = div.$on( 'click', 'div', false, true ).$data('events');
-//         Object.$equals( test, div.$on( { click: false }, 'div', true ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( { click: false }, true, 'div' ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, true ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, { capture: true } ).$data('events') ).should.true;
-
-//         test = div.$on( 'click', 'div', true, true ).$data('events');
-//         Object.$equals( test, div.$on( { click: true }, 'div', true ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( { click: true }, true, 'div' ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: true }, true ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: true }, { capture: true } ).$data('events') ).should.true;
-
-//         test = div.$on( 'click', 'div', true, true ).$data('events');
-//         Object.$equals( test, div.$on( { click: true }, 'div', true ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( { click: true }, true, 'div' ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: true }, true ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: true }, { capture: true } ).$data('events') ).should.true;
-
-//         test = div.$on( 'click', 'div', false, { once: true } ).$data('events');
-//         Object.$equals( test, div.$on( { click: false }, 'div', { once: true } ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( { click: false }, { once: true }, 'div' ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, { once: true } ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, { once: true } ).$data('events') ).should.true;
-
-//         Object.$equals( test, div.$on( { click: false }, 'div', { one: true } ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( { click: false }, { one: true }, 'div' ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, { one: true } ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, { one: true } ).$data('events') ).should.true;
-
-//         test = div.$on( 'click', 'div', false, { passive: true } ).$data('events');
-//         Object.$equals( test, div.$on( { click: false }, 'div', { passive: true } ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( { click: false }, { passive: true }, 'div' ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, { passive: true } ).$data('events') ).should.true;
-//         Object.$equals( test, div.$on( 'div', { click: false }, { passive: true } ).$data('events') ).should.true;
-
-//         test = div.$on( 'click', false ).$on( 'dblclick', false ).$data('events');
-//         Object.$equals( test, div.$on( 'click dblclick', false ).$data('events') ).should.true;
-//       }
-//     }, {
 //       name: '$one / $once',
 //       it: function(){
 //         var test = div.$one( 'click', 'div', false ).$data('events');
