@@ -215,7 +215,7 @@ describes.push({
 
             try{
               const options = defineProperty( {}, 'passive', {
-                get: () => {
+                get: function(){
                   supportsPassiveEvent = true;
                 }
               });
@@ -355,7 +355,10 @@ describes.push({
             Object.$equals( EventData.type, 'click' ).should.true;
           }
         }, {
-          name: ''
+          name: 'Event binding test',
+          it: function(){
+
+          }
         }
       ]
     }, {
