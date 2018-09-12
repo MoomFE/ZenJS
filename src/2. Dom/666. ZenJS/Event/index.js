@@ -24,6 +24,10 @@ const Event = ZenJS.Event = function( src, props ){
     return new ZenJS.Event( src, props );
   }
 
+  if( src instanceof ZenJS ){
+    return src;
+  }
+
   // Event object
   if( src && src.type ){
 

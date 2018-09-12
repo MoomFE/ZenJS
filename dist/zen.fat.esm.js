@@ -2991,6 +2991,7 @@ function add$1(elem, types, selector, listener, options) {
       elem: elem, selector: selector, type: type, namespace: namespace, listener: listener, guid: guid, options: options,
       namespaceStr: namespace.join('.'),
       handler: function () {
+        return ZenJS.EventListener.dispatch(this, arguments, handleOptions);
         return ZenJS.EventListener.dispatch.apply(handleOptions, arguments);
       }
     };
@@ -3014,27 +3015,30 @@ function add$1(elem, types, selector, listener, options) {
  * 事件处理 => 触发事件
  * @param {DocumentEventMap} nativeEvent 当前触发的事件对象
  */
-function dispatch$1(nativeEvent) {
+function dispatch$1(elem, oArgs, handleOptions) {
 
   /** 重写的 event 事件对象 */
-  var event = nativeEvent instanceof ZenJS.Event ? nativeEvent : new ZenJS.Event(nativeEvent);
+  var event = new ZenJS.Event(oArgs[0]);
 
   /** 新 argument, 存放了新的 event 事件对象 */
   var args = slice.call(arguments).$splice(0, 1, event);
 
+  /** 事件委托选择器 */
   var selector = this.selector;
-  var elem = this.elem;
+
+  /**  */
+
   var target = event.target,
       type = event.type;
 
 
   event.delegateTarget = elem;
-  event.handleOptions = this;
+  event.handleOptions = handleOptions;
 
   // 有事件委托
   if (selector && !(type === 'click' && event.button >= 1)) {
     // 从被点击的元素开始, 一层一层往上找
-    for (; target !== self; target = target.parentNode || elem) {
+    for (; target !== elem; target = target.parentNode || elem) {
       // 是元素节点
       // 点击事件, 将不处理禁用的元素
       if (target.nodeType === 1 && cur.disabled === false && target.matches(selector)) {
@@ -3046,17 +3050,22 @@ function dispatch$1(nativeEvent) {
     if (event.delegateTarget === elem) {
       return;
     }
-  } else {
-    if (!event.currentTarget) event.currentTarget = elem;
-    if (!target) event.target = elem;
+  }
+
+  if (!event.currentTarget) {
+    event.currentTarget = elem;
+  }
+
+  if (!target) {
+    event.target = elem;
   }
 
   // 处理功能性命名空间
-  if (ZenJS.config.event.modifiers && modifiers('dispatch', this.namespace, elem, type, event) === false) {
+  if (ZenJS.config.event.modifiers && modifiers('dispatch', handleOptions.namespace, elem, type, event) === false) {
     return;
   }
 
-  var result = this.listener.apply(self, args);
+  var result = handleOptions.listener.apply(self, args);
 
   // 返回 false, 阻止浏览器默认事件和冒泡
   if (result === false && ZenJS.config.event.returnFalse) {
@@ -3212,6 +3221,10 @@ var Event = ZenJS.Event = function (src, props) {
 
   if (this instanceof Event === false) {
     return new ZenJS.Event(src, props);
+  }
+
+  if (src instanceof ZenJS) {
+    return src;
   }
 
   // Event object

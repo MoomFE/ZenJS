@@ -125,15 +125,19 @@ describes.push({
       name: '$on',
       describe: [
         {
+          name: 'Basic data storage',
+          it: function(){
+            var EventData = div.$on( 'click', false ).$data('events');
+
+            $typeof( EventData.click ).should.equals('array');
+            EventData.click.length.should.equals( 1 );
+            $typeof( EventData.click[0] ).should.equals('object');
+          }
+        }, {
           name: 'Test if all parameters are accepted correctly',
           it: function(){
             var EventCallback = function(){};
             var EventData = div.$on( 'click', EventCallback ).$data('events');
-
-            $typeof( EventData.click ).should.equals('array');
-            EventData.click.length.should.equals( 1 );
-
-            console.log( EventData.click )
           }
         }
       ]

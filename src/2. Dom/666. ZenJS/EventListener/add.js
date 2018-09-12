@@ -53,6 +53,7 @@ export default function add( elem, types, selector, listener, options ){
       elem, selector, type, namespace, listener, guid, options,
       namespaceStr: namespace.join('.'),
       handler(){
+        return ZenJS.EventListener.dispatch( this, arguments, handleOptions );
         return ZenJS.EventListener.dispatch.apply( handleOptions, arguments );
       }
     };
