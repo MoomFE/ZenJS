@@ -19,11 +19,6 @@
    */
 
   var rDecode = /(%[0-9A-Z]{2})+/g;
-
-  function decode(s) {
-    return s.replace(rDecode, decodeURIComponent);
-  }
-
   var rObject = /^[\{\[]/;
   var rDecodeValue = /%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g;
   var rDecodeKey = /%(23|24|26|2B|5E|60|7C)/g;
@@ -34,6 +29,10 @@
       isNumber = _ZenJS$util.isNumber,
       defineValue = _ZenJS$util.defineValue;
 
+
+  function decode(s) {
+    return s.replace(rDecode, decodeURIComponent);
+  }
 
   function set(key, value, attributes) {
 
