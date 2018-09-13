@@ -66,7 +66,7 @@ export default function remove( elem, types, listener, selector ){
               : !handleOptions.selector
           ){
             // 移除事件
-            elem[ removeEventListener ]( type, handleOptions.listener );
+            elem[ removeEventListener ]( type, handleOptions.handler );
             // 移除事件缓存
             handlers.splice( handlersLength, 1 );
           }

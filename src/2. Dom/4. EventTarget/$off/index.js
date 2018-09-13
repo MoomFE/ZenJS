@@ -22,11 +22,11 @@ function off( types, selector, listener ){
   if( types instanceof ZenJS.Event ){
     const handleOptions = types.handleOptions;
     const namespace = handleOptions.namespaceStr;
-    const types = namespace ? `${ handleOptions.type }.${ namespace }` : handleOptions.type;
+    const handleTypes = namespace ? `${ handleOptions.type }.${ namespace }` : handleOptions.type;
 
     return off.call(
-      handleOptions.delegateTarget,
-      types,
+      handleOptions.elem,
+      handleTypes,
       handleOptions.selector,
       handleOptions.listener
     );

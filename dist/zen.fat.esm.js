@@ -3147,7 +3147,7 @@ function remove(elem, types, listener, selector) {
           // 允许所有没事件委托的事件通过
           : !handleOptions.selector) {
             // 移除事件
-            elem[removeEventListener](type, handleOptions.listener);
+            elem[removeEventListener](type, handleOptions.handler);
             // 移除事件缓存
             handlers.splice(handlersLength, 1);
           }
@@ -3301,11 +3301,11 @@ function off(types, selector, listener) {
 
   // $off( ZenJS.Event )
   if (types instanceof ZenJS.Event) {
-    var handleOptions = _types.handleOptions;
+    var handleOptions = types.handleOptions;
     var namespace = handleOptions.namespaceStr;
-    var _types = namespace ? handleOptions.type + "." + namespace : handleOptions.type;
+    var handleTypes = namespace ? handleOptions.type + "." + namespace : handleOptions.type;
 
-    return off.call(handleOptions.delegateTarget, _types, handleOptions.selector, handleOptions.listener);
+    return off.call(handleOptions.elem, handleTypes, handleOptions.selector, handleOptions.listener);
   }
 
   // $off( object, selector )
