@@ -2873,7 +2873,7 @@
     window[addEventListener]('test', null, options);
   } catch (e) {}
 
-  var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
+  var rtypenamespace$1 = /^([^.]*)(?:\.(.+)|)/;
 
   /**
    * 根据传入命名空间, 调用一些功能或做一些判断
@@ -2985,7 +2985,7 @@
     while (length--) {
 
       /** 分离事件名称和命名空间 */
-      tmp = rtypenamespace.exec(types[length]) || [];
+      tmp = rtypenamespace$1.exec(types[length]) || [];
 
       /** 事件名称 */
       type = tmp[1];
@@ -3116,7 +3116,7 @@
     while (length--) {
 
       /** 分离事件名称和命名空间 */
-      tmp = rtypenamespace.exec(types[length]) || [];
+      tmp = rtypenamespace$1.exec(types[length]) || [];
 
       /** 事件名称 */
       type = tmp[1];
@@ -3167,11 +3167,70 @@
     }
   }
 
+  /**
+   * 事件处理 => 触发事件
+   * @param {Element} elem 
+   * @param {Array} types 
+   * @param {Array} data 
+   */
+  function emit(elem, types, data) {
+
+    /** 存放当前元素下的所有事件 */
+    var events = elem.$data('events', {}, true);
+
+    /** 事件总数 */
+    var length = types.length;
+
+    var tmp,
+        type,
+        namespace,
+        rNamespace,
+        handlers,
+        handlersLength,
+        handleOptions;
+
+    while (length--) {
+
+      /** 分离事件名称和命名空间 */
+      tmp = rtypenamespace.exec(types[length]) || [];
+
+      /** 事件名称 */
+      type = tmp[1];
+
+      if (!type) continue;
+
+      /** 事件集 */
+      handlers = events[type] || [];
+      /** 事件集数量 */
+      handlersLength = handlers.length;
+
+      if (!handlersLength) continue;
+
+      /** 命名空间 */
+      namespace = (tmp[2] || '').split('.').sort().join('.');
+      /** 匹配命名空间 */
+      rNamespace = tmp[2] && new RegExp('^' + namespace + '$');
+
+      while (handlersLength--) {
+        handleOptions = handlers[handlersLength];
+
+        // 检查命名空间是否相同 ( 如果有 )
+        if (!rNamespace || rNamespace.test(handleOptions.namespaceStr)) {
+          // 检查事件委托 ( 不触发有事件委托的方法 )
+          if (!handleOptions.selector) {
+            handleOptions.handle.apply(handleOptions.elem, [type].concat(data));
+          }
+        }
+      }
+    }
+  }
+
   var EventListener = ZenJS$1.EventListener = assign(false, [null, {
     add: add$1,
     dispatch: dispatch$1,
     modifiers: modifiers,
-    remove: remove
+    remove: remove,
+    emit: emit
   }]);
 
   /**
@@ -3350,6 +3409,28 @@
 
   if (inBrowser) {
     defineValue(DomEventTarget, '$off', off);
+  }
+
+  /**
+   * 触发事件 => 参数处理
+   * @param {String} types 
+   * @param {any} args 
+   */
+  function emit$1(types) {
+
+    if (!types) return this;else {
+      types = types.match(rnothtmlwhite);
+
+      if (type == null || types.length === 0) {
+        return this;
+      }
+    }
+
+    return EventListener.emit(this, types, parametersRest(arguments, 1));
+  }
+
+  if (inBrowser) {
+    defineValue(DomEventTarget, '$emit', emit$1);
   }
 
   /*
