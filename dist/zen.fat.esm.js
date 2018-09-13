@@ -2867,7 +2867,7 @@ try {
   window[addEventListener]('test', null, options);
 } catch (e) {}
 
-var rtypenamespace$1 = /^([^.]*)(?:\.(.+)|)/;
+var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
 
 /**
  * 根据传入命名空间, 调用一些功能或做一些判断
@@ -2979,7 +2979,7 @@ function add$1(elem, types, selector, listener, options) {
   while (length--) {
 
     /** 分离事件名称和命名空间 */
-    tmp = rtypenamespace$1.exec(types[length]) || [];
+    tmp = rtypenamespace.exec(types[length]) || [];
 
     /** 事件名称 */
     type = tmp[1];
@@ -3084,6 +3084,51 @@ function dispatch$1(self, oArgs, handleOptions) {
   return result;
 }
 
+function init(elem, types, whileFn, whileEndFn) {
+
+    /** 存放当前元素下的所有事件 */
+    var events = elem.$data('events', {}, true);
+
+    /** 事件总数 */
+    var length = types.length;
+
+    var tmp,
+        type,
+        namespace,
+        rNamespace,
+        handlers,
+        handlersLength;
+
+    while (length--) {
+
+        /** 分离事件名称和命名空间 */
+        tmp = rtypenamespace.exec(types[length]) || [];
+
+        /** 事件名称 */
+        type = tmp[1];
+
+        if (!type) continue;
+
+        /** 事件集 */
+        handlers = events[type] || [];
+        /** 事件集数量 */
+        handlersLength = handlers.length;
+
+        if (!handlersLength) continue;
+
+        /** 命名空间 */
+        namespace = (tmp[2] || '').split('.').sort().join('.');
+        /** 匹配命名空间 */
+        rNamespace = tmp[2] && new RegExp('^' + namespace + '$');
+
+        while (handlersLength--) {
+            whileFn(handlers[handlersLength], rNamespace, type, handlers, handlersLength);
+        }
+
+        whileEndFn && whileEndFn(handlers, events, type);
+    }
+}
+
 /**
  * 事件处理 => 移除事件
  * @param {Element} elem 
@@ -3092,73 +3137,33 @@ function dispatch$1(self, oArgs, handleOptions) {
  * @param {String} selector 
  */
 function remove(elem, types, listener, selector) {
-
-  /** 存放当前元素下的所有事件 */
-  var events = elem.$data('events', {}, true);
-
-  /** 事件总数 */
-  var length = types.length;
-
-  var tmp,
-      type,
-      namespace,
-      rNamespace,
-      handlers,
-      handlersLength,
-      handleOptions;
-
-  while (length--) {
-
-    /** 分离事件名称和命名空间 */
-    tmp = rtypenamespace$1.exec(types[length]) || [];
-
-    /** 事件名称 */
-    type = tmp[1];
-
-    if (!type) continue;
-
-    /** 事件集 */
-    handlers = events[type] || [];
-    /** 事件集数量 */
-    handlersLength = handlers.length;
-
-    if (!handlersLength) continue;
-
-    /** 命名空间 */
-    namespace = (tmp[2] || '').split('.').sort().join('.');
-    /** 匹配命名空间 */
-    rNamespace = tmp[2] && new RegExp('^' + namespace + '$');
-
-    while (handlersLength--) {
-      handleOptions = handlers[handlersLength];
-
-      // 检查注入到方法上的 guid 是否相同 ( 如果有 )
-      if (!listener || listener.guid === handleOptions.guid) {
-        // 检查命名空间是否相同 ( 如果有 )
-        if (!rNamespace || rNamespace.test(handleOptions.namespaceStr)) {
-          // 检查事件委托
-          if (selector
-          // 允许所有绑定的事件通过, 不管有没有事件委托
-          ? selector === '**' ||
-          // 允许所有有事件委托的事件通过
-          selector === '*' && handleOptions.selector ||
-          // 事件委托必须相同才能通过
-          selector === handleOptions.selector
-          // 允许所有没事件委托的事件通过
-          : !handleOptions.selector) {
-            // 移除事件
-            elem[removeEventListener](type, handleOptions.handler);
-            // 移除事件缓存
-            handlers.splice(handlersLength, 1);
-          }
+  init(elem, types, function (handleOptions, rNamespace, type, handlers, handlersLength) {
+    // 检查注入到方法上的 guid 是否相同 ( 如果有 )
+    if (!listener || listener.guid === handleOptions.guid) {
+      // 检查命名空间是否相同 ( 如果有 )
+      if (!rNamespace || rNamespace.test(handleOptions.namespaceStr)) {
+        // 检查事件委托
+        if (selector
+        // 允许所有绑定的事件通过, 不管有没有事件委托
+        ? selector === '**' ||
+        // 允许所有有事件委托的事件通过
+        selector === '*' && handleOptions.selector ||
+        // 事件委托必须相同才能通过
+        selector === handleOptions.selector
+        // 允许所有没事件委托的事件通过
+        : !handleOptions.selector) {
+          // 移除事件
+          elem[removeEventListener](type, handleOptions.handler);
+          // 移除事件缓存
+          handlers.splice(handlersLength, 1);
         }
       }
     }
-
+  }, function (handlers, events, type) {
     if (!handlers.length) {
       delete events[type];
     }
-  }
+  });
 }
 
 /**
@@ -3168,55 +3173,15 @@ function remove(elem, types, listener, selector) {
  * @param {Array} data 
  */
 function emit(elem, types, data) {
-
-  /** 存放当前元素下的所有事件 */
-  var events = elem.$data('events', {}, true);
-
-  /** 事件总数 */
-  var length = types.length;
-
-  var tmp,
-      type,
-      namespace,
-      rNamespace,
-      handlers,
-      handlersLength,
-      handleOptions;
-
-  while (length--) {
-
-    /** 分离事件名称和命名空间 */
-    tmp = rtypenamespace.exec(types[length]) || [];
-
-    /** 事件名称 */
-    type = tmp[1];
-
-    if (!type) continue;
-
-    /** 事件集 */
-    handlers = events[type] || [];
-    /** 事件集数量 */
-    handlersLength = handlers.length;
-
-    if (!handlersLength) continue;
-
-    /** 命名空间 */
-    namespace = (tmp[2] || '').split('.').sort().join('.');
-    /** 匹配命名空间 */
-    rNamespace = tmp[2] && new RegExp('^' + namespace + '$');
-
-    while (handlersLength--) {
-      handleOptions = handlers[handlersLength];
-
-      // 检查命名空间是否相同 ( 如果有 )
-      if (!rNamespace || rNamespace.test(handleOptions.namespaceStr)) {
-        // 检查事件委托 ( 不触发有事件委托的方法 )
-        if (!handleOptions.selector) {
-          handleOptions.handle.apply(handleOptions.elem, [type].concat(data));
-        }
+  init(elem, types, function (handleOptions, rNamespace, type) {
+    // 检查命名空间是否相同 ( 如果有 )
+    if (!rNamespace || rNamespace.test(handleOptions.namespaceStr)) {
+      // 检查事件委托 ( 不触发有事件委托的方法 )
+      if (!handleOptions.selector) {
+        handleOptions.handle.apply(handleOptions.elem, [type].concat(data));
       }
     }
-  }
+  });
 }
 
 var EventListener = ZenJS$1.EventListener = assign(false, [null, {
