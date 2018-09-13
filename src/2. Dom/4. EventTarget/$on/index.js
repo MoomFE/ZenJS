@@ -14,7 +14,7 @@ import EventListener from "../../666. ZenJS/EventListener/index";
 
 
 /**
- * 事件处理 => 参数处理
+ * 绑定事件 => 参数处理
  * @param {Element} elem 需要绑定事件的对象
  * @param {String} types 需要绑定的事件集
  * @param {String} selector 事件委托的选择器

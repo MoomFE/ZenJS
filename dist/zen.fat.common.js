@@ -2236,7 +2236,7 @@ function returnFalse() {
   return false;
 }
 
-var ZenJS = root.ZenJS = assign(false, [null, {
+var ZenJS$1 = root.ZenJS = assign(false, [null, {
 
       polyfill: {
             assign: assign$1,
@@ -2286,7 +2286,7 @@ var ZenJS = root.ZenJS = assign(false, [null, {
 
 var guid = 1;
 
-defineProperty(ZenJS, 'guid', {
+defineProperty(ZenJS$1, 'guid', {
   get: function () {
     return guid++;
   }
@@ -2967,7 +2967,7 @@ function add$1(elem, types, selector, listener, options) {
   var events = elem.$data('events', {}, true);
 
   /** 事件 GUID */
-  var guid = listener.guid || (listener.guid = ZenJS.guid);
+  var guid = listener.guid || (listener.guid = ZenJS$1.guid);
 
   /** 事件总数 */
   var length = types.length;
@@ -2992,7 +2992,7 @@ function add$1(elem, types, selector, listener, options) {
     namespace = (tmp[2] || '').split('.').sort();
 
     // 处理功能性命名空间
-    if (ZenJS.config.event.modifiers && modifiers('add', namespace, elem, type, events) === false) {
+    if (ZenJS$1.config.event.modifiers && modifiers('add', namespace, elem, type, events) === false) {
       continue;
     }
 
@@ -3001,7 +3001,7 @@ function add$1(elem, types, selector, listener, options) {
       elem: elem, selector: selector, type: type, namespace: namespace, listener: listener, guid: guid, options: options,
       namespaceStr: namespace.join('.'),
       handler: function () {
-        return ZenJS.EventListener.dispatch(this, arguments, handleOptions);
+        return ZenJS$1.EventListener.dispatch(this, arguments, handleOptions);
       }
     };
 
@@ -3027,7 +3027,7 @@ function add$1(elem, types, selector, listener, options) {
 function dispatch$1(self, oArgs, handleOptions) {
 
   /** 重写的 event 事件对象 */
-  var event = new ZenJS.Event(oArgs[0]);
+  var event = new ZenJS$1.Event(oArgs[0]);
 
   /** 新 argument, 存放了新的 event 事件对象 */
   var args = slice.call(oArgs).$splice(0, 1, event);
@@ -3046,12 +3046,12 @@ function dispatch$1(self, oArgs, handleOptions) {
   event.handleOptions = handleOptions;
 
   // 有事件委托
-  if (selector && !(type === 'click' && event.which >= 1)) {
+  if (selector && !(type === 'click' && event.button >= 1)) {
     // 从被点击的元素开始, 一层一层往上找
     for (; target !== elem; target = target.parentNode || elem) {
       // 是元素节点
       // 点击事件, 将不处理禁用的元素
-      if (target.nodeType === 1 && cur.disabled === false && target.matches(selector)) {
+      if (target.nodeType === 1 && !(type === 'click' && target.disabled === true) && target.matches(selector)) {
         elem = event.currentTarget = target;
         break;
       }
@@ -3071,14 +3071,14 @@ function dispatch$1(self, oArgs, handleOptions) {
   }
 
   // 处理功能性命名空间
-  if (ZenJS.config.event.modifiers && modifiers('dispatch', handleOptions.namespace, elem, type, event) === false) {
+  if (ZenJS$1.config.event.modifiers && modifiers('dispatch', handleOptions.namespace, elem, type, event) === false) {
     return;
   }
 
   var result = handleOptions.listener.apply(self, args);
 
   // 返回 false, 阻止浏览器默认事件和冒泡
-  if (result === false && ZenJS.config.event.returnFalse) {
+  if (result === false && ZenJS$1.config.event.returnFalse) {
     event.preventDefault();
     event.stopPropagation();
   }
@@ -3086,18 +3086,92 @@ function dispatch$1(self, oArgs, handleOptions) {
   return result;
 }
 
-var EventListener = assign(false, [null, {
-  add: add$1,
-  dispatch: dispatch$1,
-  modifiers: modifiers
-}]);
+/**
+ * 事件处理 => 移除事件
+ * @param {Element} elem 
+ * @param {Array} types 
+ * @param {Function} listener 
+ * @param {String} selector 
+ */
+function remove(elem, types, listener, selector) {
 
-if (inBrowser) {
-  ZenJS.EventListener = EventListener;
+  /** 存放当前元素下的所有事件 */
+  var events = elem.$data('events', {}, true);
+
+  /** 事件总数 */
+  var length = types.length;
+
+  var tmp,
+      type,
+      namespace,
+      rNamespace,
+      handlers,
+      handlersLength,
+      handleOptions;
+
+  while (length--) {
+
+    /** 分离事件名称和命名空间 */
+    tmp = rtypenamespace.exec(types[length]) || [];
+
+    /** 事件名称 */
+    type = tmp[1];
+
+    if (!type) continue;
+
+    /** 事件集 */
+    handlers = events[type] || [];
+    /** 事件集数量 */
+    handlersLength = handlers.length;
+
+    if (!handlersLength) continue;
+
+    /** 命名空间 */
+    namespace = (tmp[2] || '').split('.').sort().join('.');
+    /** 匹配命名空间 */
+    rNamespace = tmp[2] && new RegExp('^' + namespace + '$');
+
+    while (handlersLength--) {
+      handleOptions = handlers[handlersLength];
+
+      // 检查注入到方法上的 guid 是否相同 ( 如果有 )
+      if (!listener || listener.guid === handleOptions.guid) {
+        // 检查命名空间是否相同 ( 如果有 )
+        if (!rNamespace || rNamespace.test(handleOptions.namespaceStr)) {
+          // 检查事件委托
+          if (selector
+          // 允许所有绑定的事件通过, 不管有没有事件委托
+          ? selector === '**' ||
+          // 允许所有有事件委托的事件通过
+          selector === '*' && handleOptions.selector ||
+          // 事件委托必须相同才能通过
+          selector === handleOptions.selector
+          // 允许所有没事件委托的事件通过
+          : !handleOptions.selector) {
+            // 移除事件
+            elem[removeEventListener](type, handleOptions.listener);
+            // 移除事件缓存
+            handlers.splice(handlersLength, 1);
+          }
+        }
+      }
+    }
+
+    if (!handlers.length) {
+      delete events[type];
+    }
+  }
 }
 
+var EventListener = ZenJS$1.EventListener = assign(false, [null, {
+  add: add$1,
+  dispatch: dispatch$1,
+  modifiers: modifiers,
+  remove: remove
+}]);
+
 /**
- * 事件处理 => 参数处理
+ * 绑定事件 => 参数处理
  * @param {Element} elem 需要绑定事件的对象
  * @param {String} types 需要绑定的事件集
  * @param {String} selector 事件委托的选择器
@@ -3192,7 +3266,7 @@ function on(elem, types, selector, listener, options, once) {
       return origListener.apply(this, arguments);
     };
 
-    listener.guid = origListener.guid || (origListener.guid = ZenJS.guid);
+    listener.guid = origListener.guid || (origListener.guid = ZenJS$1.guid);
 
     delete options.one;
     delete options.once;
@@ -3218,6 +3292,62 @@ if (inBrowser) {
   });
 }
 
+/**
+ * 移除事件 => 参数处理
+ * @param {*} types 
+ * @param {*} selector 
+ * @param {*} listener 
+ * @param {*} options 
+ */
+function off(types, selector, listener) {
+
+  // $off( ZenJS.Event )
+  if (types instanceof ZenJS.Event) {
+    var handleOptions = _types.handleOptions;
+    var namespace = handleOptions.namespaceStr;
+    var _types = namespace ? handleOptions.type + "." + namespace : handleOptions.type;
+
+    return off.call(handleOptions.delegateTarget, _types, handleOptions.selector, handleOptions.listener);
+  }
+
+  // $off( object, selector )
+  if (isObject(types)) {
+    for (var type in types) {
+      off.call(this, type, selector, types[type]);
+    }
+    return this;
+  }
+
+  if (!types) return this;else {
+    types = types.match(rnothtmlwhite);
+
+    if (types == null || types.length === 0) {
+      return this;
+    }
+  }
+
+  // $off( types, listener )
+  // $off( types, listener, selector )
+  if (selector !== undefined && !isString$1(selector)) {
+    var _ref = [listener, selector];
+    selector = _ref[0];
+    listener = _ref[1];
+  }
+
+  // $off( types, true || false )
+  if (isBoolean$1(listener)) {
+    listener = listener ? returnTrue : returnFalse;
+  }
+
+  EventListener.remove(this, types, listener, selector);
+
+  return this;
+}
+
+if (inBrowser) {
+  defineValue(DomEventTarget, '$off', off);
+}
+
 /*
  * event.target : 触发事件的元素
  * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
@@ -3229,10 +3359,10 @@ if (inBrowser) {
  * event.stopImmediatePropagation() : 停止将事件冒泡到父节点且停止当前元素后续事件执行
  */
 
-var Event = ZenJS.Event = function (src, props) {
+var Event = ZenJS$1.Event = function (src, props) {
 
   if (this instanceof Event === false) {
-    return new ZenJS.Event(src, props);
+    return new ZenJS$1.Event(src, props);
   }
 
   if (src instanceof Event) {
@@ -3313,4 +3443,4 @@ addProp('which', function (event) {
   return event.which;
 });
 
-module.exports = ZenJS;
+module.exports = ZenJS$1;

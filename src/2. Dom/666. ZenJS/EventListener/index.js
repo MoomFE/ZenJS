@@ -1,21 +1,19 @@
 import assign from "../../../shared/util/assign";
 import add from "./add";
-import inBrowser from "../../../shared/const/inBrowser";
 import ZenJS from "../../../shared/global/ZenJS/index";
 import dispatch from "./dispatch";
 import modifiers from "./modifiers";
+import remove from "./remove";
 
 
-const EventListener = assign( false, [
+const EventListener = ZenJS.EventListener = assign( false, [
   null, {
     add: add,
     dispatch: dispatch,
-    modifiers: modifiers
+    modifiers: modifiers,
+    remove: remove
   }
 ]);
 
-if( inBrowser ){
-  ZenJS.EventListener = EventListener;
-}
 
 export default EventListener;

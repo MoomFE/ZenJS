@@ -428,6 +428,27 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$off',
+      describe: [
+        {
+          name: 'Check if the data is deleted correctly',
+          it: function(){
+            var div = $div;
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+
+            div.$on( 'click', EventListener );
+            div.click();
+            index.should.equals( 1 );
+            div.$off( 'click', EventListener );
+            div.click();
+            index.should.equals( 1 );
+            Object.$equals( div.$data('events'), {} ).should.true;
+
+          }
+        }
+      ]
     }
   ]
 });
