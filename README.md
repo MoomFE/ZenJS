@@ -221,16 +221,12 @@
   - $deleteData / $removeData
   - $on
   - $one / $once
+  - $off
+  - $emit
 
-<!--
 - document
   - $cookie
   - $deleteCookie / $removeCookie
-
-- EventTarget.prototype
-  - $off
-  - $emit
--->
 
 <br>
 

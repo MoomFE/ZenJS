@@ -1439,270 +1439,112 @@ interface EventTarget {
    */
   $deleteData( names: String ): any;
 
+  /**
+   * 传入键值对事件进行绑定
+   * @param obj \{ 事件: 方法 }
+   * @param selector 事件代理选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $on( obj: any, selector?: String, options?: any ): any;
+
+  /**
+   * 传入事件名和方法对事件进行绑定
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param selector 事件代理选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $on( types: String, listener: Function, selector?: String, options?: any ): any;
+
+  /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param obj \{ 事件: 方法 }
+   * @param selector 事件代理选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $one( obj: any, selector?: String, options?: any ): any;
+
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param selector 事件代理选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $one( types: String, listener: Function, selector?: String, options?: any ): any;
+
+  /**
+   * 传入键值对事件进行绑定, 只会执行一次
+   * @param obj \{ 事件: 方法 }
+   * @param selector 事件代理选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $once( obj: any, selector?: String, options?: any ): any;
+
+  /**
+   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * @param types 需要绑定的事件名
+   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param selector 事件代理选择器
+   * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
+   */
+  $once( types: String, listener: Function, selector?: String, options?: any ): any;
+
+  /**
+   * 传入事件名和方法进行事件移除
+   * @param types 需要解绑的事件集
+   * @param selector 事件委托选择器,
+   *                 若不填, 则移除所有无事件委托选择器相关事件方法;
+   *                 若值为 "*", 则移除所有事件委托选择器相关事件方法;
+   *                 若值为 "**", 则移除所有相关事件方法, 不管有没有事件委托选择器;
+   *                 为其他值, 则会移除匹配到的事件委托选择器的相关事件方法
+   * @param listener 解绑的事件, 只会移除与传入方法匹配的相关事件方法
+   */
+  $off( types: String, selector?: String, listener?: Function ): any;
+
+  /**
+   * 触发绑定在元素上的事件( 只触发事件 )
+   * @param types 触发的事件名
+   * @param data 向方法传递的数据, 可为多个
+   */
+  $emit( types: String, ...data?: any[] ): any;
+
 }
 
 
-// interface Document {
-//   /**
-//    * 设置页面 cookie
-//    * @param key 需要设置的 cookie 的名称
-//    * @param value 需要设置的 cookie 的值
-//    * @param attributes cookie 的配置
-//    */
-//   $cookie( key: String, value: String, attributes?: any ): String;
-//   /**
-//    * 读取传入名称的页面 cookie
-//    * @param value 需要读取的 cookie 的值
-//    */
-//   $cookie( key: String ): String | undefined;
-//   /**
-//    * 读取页面所有 cookie, 以键值对返回
-//    */
-//   $cookie(): any;
-//   /**
-//    * 删除页面指定 cookie
-//    * @param key 需要删除的 cookie 名称
-//    * @param attributes cookie 的配置
-//    */
-//   $deleteCookie( key: String, attributes?: any );
-//   /**
-//    * 删除页面指定 cookie
-//    * @param key 需要删除的 cookie 名称
-//    * @param attributes cookie 的配置
-//    */
-//   $removeCookie( key: String, attributes?: any );
-// }
+interface Document {
 
-// interface Element {
+  /**
+   * 读取页面所有 cookie, 以键值对返回
+   */
+  $cookie(): any;
 
-//   /**
-//    * 调用原生 querySelectorAll 方法
-//    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
-//    */
-//   $query( selectors ): NodeListOf<Element>;
-//   /**
-//    * 调用原生 querySelector 方法
-//    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
-//    */
-//   $queryFirst( selectors ): Element;
-//   /**
-//    * 对当前元素下的文本进行全选操作
-//    */
-//   selectText();
-// }
+  /**
+   * 读取传入名称的页面 cookie
+   * @param value 需要读取的 cookie 的值
+   */
+  $cookie( key: String ): String | undefined;
 
-// interface EventTarget{
-//   /**
-//    * 传入键值对事件进行绑定
-//    * @param obj 事件: 方法
-//    */
-//   $on( obj: { type: Function } ): this;
-//   /**
-//    * 传入键值对事件进行绑定
-//    * @param obj 事件: 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $on( obj: { type: Function }, options?: any ): this;
-//   /**
-//    * 传入键值对事件进行绑定
-//    * @param obj 事件: 方法
-//    * @param selector 事件代理的选择器
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $on( obj: { type: Function }, selector?: String, options?: any ): this;
-//   /**
-//    * 传入键值对事件进行绑定
-//    * @param selector 事件代理的选择器
-//    * @param obj 事件: 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $on( selector: String, obj: { type: Function }, options?: any ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定
-//    * @param types 需要绑定的事件名
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    */
-//   $on( types: String, listener: Function ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定
-//    * @param types 需要绑定的事件名
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $on( types: String, listener: Function, options?: any ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定
-//    * @param types 需要绑定的事件名
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    * @param selector 事件代理的选择器
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $on( types: String, listener: Function, selector?: String, options?: any ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定
-//    * @param types 需要绑定的事件名
-//    * @param selector 事件代理的选择器
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    */
-//   $on( types: String, selector: String, listener?: Function ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定
-//    * @param types 需要绑定的事件名
-//    * @param selector 事件代理的选择器
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $on( types: String, selector: String, listener?: Function, options?: any ): this;
-//   /**
-//    * 传入键值对事件进行绑定, 只会执行一次
-//    * @param obj 事件: 方法
-//    */
-//   $one( obj: { type: Function } ): this;
-//   /**
-//    * 传入键值对事件进行绑定, 只会执行一次
-//    * @param obj 事件: 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $one( obj: { type: Function }, options?: any ): this;
-//   /**
-//    * 传入键值对事件进行绑定, 只会执行一次
-//    * @param obj 事件: 方法
-//    * @param selector 事件代理的选择器
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $one( obj: { type: Function }, selector?: String, options?: any ): this;
-//   /**
-//    * 传入键值对事件进行绑定, 只会执行一次
-//    * @param selector 事件代理的选择器
-//    * @param obj 事件: 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $one( selector: String, obj: { type: Function }, options?: any ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    */
-//   $one( types: String, listener: Function ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $one( types: String, listener: Function, options?: any ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    * @param selector 事件代理的选择器
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $one( types: String, listener: Function, selector?: String, options?: any ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param selector 事件代理的选择器
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    */
-//   $one( types: String, selector: String, listener?: Function ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param selector 事件代理的选择器
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $one( types: String, selector: String, listener?: Function, options?: any ): this;
-//   /**
-//    * 传入键值对事件进行绑定, 只会执行一次
-//    * @param obj 事件: 方法
-//    */
-//   $once( obj: { type: Function } ): this;
-//   /**
-//    * 传入键值对事件进行绑定, 只会执行一次
-//    * @param obj 事件: 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $once( obj: { type: Function }, options?: any ): this;
-//   /**
-//    * 传入键值对事件进行绑定, 只会执行一次
-//    * @param obj 事件: 方法
-//    * @param selector 事件代理的选择器
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $once( obj: { type: Function }, selector?: String, options?: any ): this;
-//   /**
-//    * 传入键值对事件进行绑定, 只会执行一次
-//    * @param selector 事件代理的选择器
-//    * @param obj 事件: 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $once( selector: String, obj: { type: Function }, options?: any ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    */
-//   $once( types: String, listener: Function ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $once( types: String, listener: Function, options?: any ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    * @param selector 事件代理的选择器
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $once( types: String, listener: Function, selector?: String, options?: any ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param selector 事件代理的选择器
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    */
-//   $once( types: String, selector: String, listener?: Function ): this;
-//   /**
-//    * 传入事件名和方法对事件进行绑定, 只会执行一次
-//    * @param types 需要绑定的事件名
-//    * @param selector 事件代理的选择器
-//    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
-//    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
-//    */
-//   $once( types: String, selector: String, listener?: Function, options?: any ): this;
-//   /**
-//    * 传入事件名和方法进行事件移除, 只会移除无委托选择器的相关事件方法
-//    * @param types 需要解绑的事件集
-//    */
-//   $off( types: String ): this;
-//   /**
-//    * 传入事件名和方法进行事件移除, 将会对事件委托选择器进行匹配, 将会移除匹配到的相关事件方法
-//    * @param types 需要解绑的事件集
-//    * @param selector 事件委托选择器, 若值为 "*", 则移除所有事件委托选择器相关事件方法, 若值为 "**", 则移除所有相关事件方法, 不管有没有事件委托选择器
-//    */
-//   $off( types: String, selector: String ): this;
-//   /**
-//    * 传入事件名和方法进行事件移除
-//    * @param types 需要解绑的事件集
-//    * @param selector 事件委托选择器, 若值为 "*", 则移除所有事件委托选择器相关事件方法, 若值为 "**", 则移除所有相关事件方法, 不管有没有事件委托选择器
-//    * @param listener 解绑的事件, 只会移除与传入方法匹配的相关事件方法
-//    */
-//   $off( types: String, selector: String, listener: Function ): this;
-//   /**
-//    * 触发绑定在元素上的事件( 只触发事件 )
-//    * @param types 触发的事件名
-//    * @param data 向方法传递的数据, 可为多个
-//    */
-//   $emit( types, ...data?: any[] ): this;
-// }
-//   /**
-//    * 传入多个数字, 求出传入参数的平均值
-//    * @param args 任意个数数字
-//    */
-//   $mean( ...args?: Number[] ): Number;
-// }
+  /**
+   * 设置页面 cookie
+   * @param key 需要设置的 cookie 的名称
+   * @param value 需要设置的 cookie 的值
+   * @param attributes cookie 的配置
+   */
+  $cookie( key: String, value: String, attributes?: any ): String;
+
+  /**
+   * 删除页面指定 cookie
+   * @param key 需要删除的 cookie 名称
+   * @param attributes cookie 的配置
+   */
+  $deleteCookie( key: String, attributes?: any );
+
+  /**
+   * 删除页面指定 cookie
+   * @param key 需要删除的 cookie 名称
+   * @param attributes cookie 的配置
+   */
+  $removeCookie( key: String, attributes?: any );
+
+}
