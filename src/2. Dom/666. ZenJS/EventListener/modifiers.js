@@ -62,7 +62,7 @@ const dispatch = ModifiersList.dispatch;
  */
 add.once = add.one = function( elem, type, events, namespace ){
   events = events[ type ] || [];
-  return events.$findIndex( { namespace }, equals ) === -1;
+  return events.$findIndex( equals, { namespace } ) === -1;
 };
 
 /**

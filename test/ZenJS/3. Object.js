@@ -228,6 +228,7 @@ describes.push({
           name: 'Date type',
           it: function(){
             // true
+            // 如果你看到这个没通过单元测试, 不要惊讶, 刷新下就可以了
             Object.$equals( new Date(), new Date() ).should.true;
             Object.$equals( new Date('2018/7/28'), new Date('2018/7/28') ).should.true;
             Object.$equals( new Date('2019/7/28'), new Date('2019/7/28') ).should.true;

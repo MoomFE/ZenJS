@@ -389,7 +389,7 @@ describes.push({
             index.should.equals( 3 );
           }
         }, {
-          name: 'Event binding - modifiers',
+          name: 'Event binding - modifiers - self',
           it: function(){
             var div = $div;
             var span = div.appendChild( window.span );
@@ -411,6 +411,18 @@ describes.push({
             div.click();
             index.should.equals( 1 );
             span.click();
+            index.should.equals( 1 );
+          }
+        }, {
+          name: 'Event binding - modifiers - one /once',
+          it: function(){
+            var div = $div;
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+
+            div.$on( 'click.one', EventListener );
+            div.$on( 'click.one', EventListener );
+            div.click();
             index.should.equals( 1 );
           }
         }

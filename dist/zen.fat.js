@@ -2954,7 +2954,7 @@
    */
   add.once = add.one = function (elem, type, events, namespace) {
     events = events[type] || [];
-    return events.$findIndex({ namespace: namespace }, equals$1) === -1;
+    return events.$findIndex(equals$1, { namespace: namespace }) === -1;
   };
 
   /**
