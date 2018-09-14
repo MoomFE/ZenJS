@@ -426,6 +426,33 @@ describes.push({
             Object.$equals( EventData.selector ).should.true;
             Object.$equals( EventData.type, 'click' ).should.true;
           }
+        }, {
+          name: 'Test availability',
+          it: function(){
+            var div = $div;
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+
+            div.$one( 'click', EventListener );
+            div.click();
+            div.click();
+            index.should.equals( 1 );
+
+            div.$once( 'click', EventListener );
+            div.click();
+            div.click();
+            index.should.equals( 2 );
+
+            div.$on( 'click', EventListener, { one: true } );
+            div.click();
+            div.click();
+            index.should.equals( 3 );
+
+            div.$on( 'click', EventListener, { once: true } );
+            div.click();
+            div.click();
+            index.should.equals( 4 );
+          }
         }
       ]
     }, {
