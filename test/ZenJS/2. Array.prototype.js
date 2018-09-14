@@ -389,10 +389,9 @@ describes.push({
             Object.$equals( arr.$findIndex( 'name', 'xxx' ), -1 ).should.true;
             Object.$equals( arr.$findIndex( 'name', 'zen' ), 0 ).should.true;
             Object.$equals( arr.$findIndex( 'name', 'zenjs' ), 1 ).should.true;
-            Object.$equals( arr.$findIndex( 'name', 'zenjs', 'type', 'js' ), 2 ).should.true;
             Object.$equals( arr.$findIndex( 'name', 'zenui' ), 3 ).should.true;
-            Object.$equals( arr.$findIndex( 'name', 'zenui', 'type', 'ui' ), 3 ).should.true;
-            Object.$equals( arr.$findIndex( 'name', 'zenui', 'type', 'js' ), -1 ).should.true;
+            Object.$equals( arr.$findIndex( 'type', 'js' ), 2 ).should.true;
+            Object.$equals( arr.$findIndex( 'type', 'ui' ), 3 ).should.true;
           }
         }
       ]

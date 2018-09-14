@@ -159,17 +159,20 @@ defineValue( ArrayProto, '$find', function( predicate, obj, fromIndex ){
 
 defineValue( ArrayProto, '$findIndex', function( predicate, obj, fromIndex ){
   const result = findIndex( this, 1, false, arguments, predicate, obj, fromIndex );
-  return ( result[ 0 ] || [] )[ 0 ];
+  return result.length ? result[ 0 ][ 0 ]
+                       : -1;
 });
 
 defineValue( ArrayProto, '$findLast', function( predicate, obj, fromIndex ){
   const result = findIndex( this, 1, true, arguments, predicate, obj, fromIndex );
-  return ( result[ 0 ] || [] )[ 1 ];
+  return result.length ? result[ 0 ][ 0 ]
+                       : -1;
 });
 
 defineValue( ArrayProto, '$findLastIndex', function( predicate, obj, fromIndex ){
   const result = findIndex( this, 1, true, arguments, predicate, obj, fromIndex );
-  return ( result[ 0 ] || [] )[ 0 ];
+  return result.length ? result[ 0 ][ 0 ]
+                       : -1;
 });
 
 defineValue( ArrayProto, '$findAll', function( predicate, obj, fromIndex ){
