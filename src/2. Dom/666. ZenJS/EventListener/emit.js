@@ -15,7 +15,7 @@ export default function emit( elem, types, data ){
       if( !rNamespace || rNamespace.test( handleOptions.namespaceStr ) ){
         // 检查事件委托 ( 不触发有事件委托的方法 )
         if( !handleOptions.selector ){
-          handleOptions.handle.apply( handleOptions.elem, [ type ].concat( data ) );
+          handleOptions.listener.apply( handleOptions.elem, [ type ].concat( data ) );
         }
       }
     }

@@ -17,15 +17,17 @@ function emit( types ){
   else{
     types = types.match( rnothtmlwhite );
 
-    if( type == null || types.length === 0 ){
+    if( types == null || types.length === 0 ){
       return this;
     }
   }
 
-  return EventListener.emit(
+  EventListener.emit(
     this, types,
     parametersRest( arguments, 1 )
   );
+
+  return this;
 }
 
 if( inBrowser ){

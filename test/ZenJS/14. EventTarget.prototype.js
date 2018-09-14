@@ -664,6 +664,41 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$emit',
+      describe: [
+        {
+          name: 'Test availability',
+          it: function(){
+            var div = $div;
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+
+            div.$on( 'click', EventListener );
+            div.$emit( 'click' );
+            index.should.equals( 1 );
+            div.$emit( 'click' ).$emit( 'click' );
+            index.should.equals( 3 );
+
+            div.$on( 'click.zenjs', EventListener );
+            div.$emit( 'click' );
+            index.should.equals( 5 );
+            div.$emit( 'click.zenjs' );
+            index.should.equals( 6 );
+          }
+        }, {
+          name: 'Test availability - pass data to methods',
+          it: function(){
+            var div = $div;
+
+            div.$on( 'click', function( event, name, type ){
+              name.should.equals( 'zenjs' );
+              type.should.equals( 'js' );
+            });
+            div.$emit( 'click', 'zenjs', 'js' );
+          }
+        }
+      ]
     }
   ]
 });

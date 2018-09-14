@@ -3180,7 +3180,7 @@ function emit(elem, types, data) {
     if (!rNamespace || rNamespace.test(handleOptions.namespaceStr)) {
       // 检查事件委托 ( 不触发有事件委托的方法 )
       if (!handleOptions.selector) {
-        handleOptions.handle.apply(handleOptions.elem, [type].concat(data));
+        handleOptions.listener.apply(handleOptions.elem, [type].concat(data));
       }
     }
   });
@@ -3382,12 +3382,14 @@ function emit$1(types) {
   if (!types) return this;else {
     types = types.match(rnothtmlwhite);
 
-    if (type == null || types.length === 0) {
+    if (types == null || types.length === 0) {
       return this;
     }
   }
 
-  return EventListener.emit(this, types, parametersRest(arguments, 1));
+  EventListener.emit(this, types, parametersRest(arguments, 1));
+
+  return this;
 }
 
 if (inBrowser) {
