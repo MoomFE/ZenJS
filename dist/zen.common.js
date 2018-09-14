@@ -814,6 +814,26 @@ defineValue(ArrayProto, '$find', function (predicate, key) {
   return index === -1 ? null : this[index];
 });
 
+// defineValue( ArrayProto, '$find', function( predicate, key, value, index ){
+
+// });
+
+// defineValue( ArrayProto, '$findIndex', function( predicate, key, value, index ){
+
+// });
+
+// defineValue( ArrayProto, '$findLast', function( predicate, key, value, index ){
+
+// });
+
+// defineValue( ArrayProto, '$findLastIndex', function( predicate, key, value, index ){
+
+// });
+
+// defineValue( ArrayProto, '$findAll', function( predicate, key, value, index ){
+
+// });
+
 defineValue(ArrayProto, '$get', function () {
   var args = arguments;
   var index = fixArrayIndex(this, parametersDefault(args, 0, 0));

@@ -388,6 +388,31 @@ describes.push({
             span.click();
             index.should.equals( 3 );
           }
+        }, {
+          name: 'Event binding - modifiers',
+          it: function(){
+            var div = $div;
+            var span = div.appendChild( window.span );
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+
+            div.$on( 'click', EventListener );
+            div.click();
+            index.should.equals( 1 );
+            span.click();
+            index.should.equals( 2 );
+
+            // ------
+            div = $div;
+            span = div.appendChild( window.span );
+            index = 0;
+
+            div.$on( 'click.self', EventListener );
+            div.click();
+            index.should.equals( 1 );
+            span.click();
+            index.should.equals( 1 );
+          }
         }
       ]
     }, {

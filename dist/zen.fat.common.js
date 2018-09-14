@@ -814,6 +814,26 @@ defineValue(ArrayProto, '$find', function (predicate, key) {
   return index === -1 ? null : this[index];
 });
 
+// defineValue( ArrayProto, '$find', function( predicate, key, value, index ){
+
+// });
+
+// defineValue( ArrayProto, '$findIndex', function( predicate, key, value, index ){
+
+// });
+
+// defineValue( ArrayProto, '$findLast', function( predicate, key, value, index ){
+
+// });
+
+// defineValue( ArrayProto, '$findLastIndex', function( predicate, key, value, index ){
+
+// });
+
+// defineValue( ArrayProto, '$findAll', function( predicate, key, value, index ){
+
+// });
+
 defineValue(ArrayProto, '$get', function () {
   var args = arguments;
   var index = fixArrayIndex(this, parametersDefault(args, 0, 0));
@@ -2883,7 +2903,7 @@ var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
 function modifiers(name, namespace, elem, type, options) {
 
   // 没有命名空间
-  if (namespace === 0) {
+  if (namespace.length === 0) {
     return;
   }
 
@@ -2914,7 +2934,7 @@ var ModifiersList = {
     /**
      * 当事件是从绑定的元素本身触发时才触发回调
      */
-    self: function (elem, type, namespace, event) {
+    self: function (elem, type, event) {
       return event.target === event.currentTarget;
     }
   }
@@ -2928,7 +2948,7 @@ var dispatch = ModifiersList.dispatch;
  * 当命名空间有 .once 或 .one, 则会去已绑定的事件中进行查找,
  * 如果之前绑定过相同的命名空间 ( 也同样有 .once 或 .one ), 则本次绑定无效
  */
-add.once = add.one = function (elem, type, namespace, events) {
+add.once = add.one = function (elem, type, events, namespace) {
   events = events[type] || [];
   return events.$findIndex({ namespace: namespace }, equals$1) === -1;
 };
@@ -2938,7 +2958,7 @@ add.once = add.one = function (elem, type, namespace, events) {
  * 当按下了对应键盘按键时才触发回调
  */
 ['ctrl', 'shift', 'alt', 'meta'].forEach(function (key) {
-  dispatch[key] = function (elem, type, namespace, event) {
+  dispatch[key] = function (elem, type, event) {
     return !!event[key + 'Key'];
   };
 });
@@ -2948,7 +2968,7 @@ add.once = add.one = function (elem, type, namespace, events) {
  * 当按下了对应鼠标按键时才触发回调
  */
 ['left', 'middle', 'right'].forEach(function (button, index) {
-  dispatch[button] = function (elem, type, namespace, event) {
+  dispatch[button] = function (elem, type, event) {
     return !('button' in event && event.button !== index);
   };
 });
