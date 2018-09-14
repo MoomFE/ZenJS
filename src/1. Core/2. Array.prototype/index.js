@@ -3,6 +3,7 @@ import './$delete/index';
 import './$deleteValue/index';
 import './$concat/index';
 import './$find/index';
+import './$findAll/index';
 import './$findIndex/index';
 import './$get/index';
 import './$set/index';
