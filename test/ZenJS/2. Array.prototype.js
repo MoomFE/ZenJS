@@ -221,16 +221,16 @@ describes.push({
           it: function(){
             var arr = [ 0, 0, 1, 2, 3 ];
 
-            Object.$equals( arr.$find(function( value ){ return value === -4 }), null ).should.true;
-            Object.$equals( arr.$find(function( value ){ return value === -3 }), null ).should.true;
-            Object.$equals( arr.$find(function( value ){ return value === -2 }), null ).should.true;
-            Object.$equals( arr.$find(function( value ){ return value === -1 }), null ).should.true;
+            Object.$equals( arr.$find(function( value ){ return value === -4 }), undefined ).should.true;
+            Object.$equals( arr.$find(function( value ){ return value === -3 }), undefined ).should.true;
+            Object.$equals( arr.$find(function( value ){ return value === -2 }), undefined ).should.true;
+            Object.$equals( arr.$find(function( value ){ return value === -1 }), undefined ).should.true;
             Object.$equals( arr.$find(function( value ){ return value }), 1 ).should.true;
             Object.$equals( arr.$find(function( value ){ return value === 0 }), 0 ).should.true;
             Object.$equals( arr.$find(function( value ){ return value === 1 }), 1 ).should.true;
             Object.$equals( arr.$find(function( value ){ return value === 2 }), 2 ).should.true;
             Object.$equals( arr.$find(function( value ){ return value === 3 }), 3 ).should.true;
-            Object.$equals( arr.$find(function( value ){ return value === 4 }), null ).should.true;
+            Object.$equals( arr.$find(function( value ){ return value === 4 }), undefined ).should.true;
 
             var arr = [
               { name: 'zen' },
@@ -255,13 +255,13 @@ describes.push({
               { name: 'zenui', type: 'ui' }
             ];
 
-            Object.$equals( arr.$find({ name: 'xxx' }), null ).should.true;
+            Object.$equals( arr.$find({ name: 'xxx' }), undefined ).should.true;
             Object.$equals( arr.$find({ name: 'zen' }), { name: 'zen' } ).should.true;
             Object.$equals( arr.$find({ name: 'zenjs' }), { name: 'zenjs' } ).should.true;
             Object.$equals( arr.$find({ name: 'zenjs', type: 'js' }), { name: 'zenjs', type: 'js' } ).should.true;
             Object.$equals( arr.$find({ name: 'zenui' }), { name: 'zenui', type: 'ui' } ).should.true;
             Object.$equals( arr.$find({ name: 'zenui', type: 'ui' }), { name: 'zenui', type: 'ui' } ).should.true;
-            Object.$equals( arr.$find({ name: 'zenui', type: 'js' }), null ).should.true;
+            Object.$equals( arr.$find({ name: 'zenui', type: 'js' }), undefined ).should.true;
           }
         }, {
           name: 'Pass in an array for lookup',
@@ -275,13 +275,13 @@ describes.push({
 
             Object.$equals( arr.$find([ 'name' ]), { name: 'zen' } ).should.true;
             Object.$equals( arr.$find([ 'type' ]), { name: 'zenjs', type: 'js' } ).should.true;
-            Object.$equals( arr.$find([ 'name', 'xxx' ]), null ).should.true;
+            Object.$equals( arr.$find([ 'name', 'xxx' ]), undefined ).should.true;
             Object.$equals( arr.$find([ 'name', 'zen' ]), { name: 'zen' } ).should.true;
             Object.$equals( arr.$find([ 'name', 'zenjs' ]), { name: 'zenjs' } ).should.true;
             Object.$equals( arr.$find([ 'name', 'zenjs', 'type', 'js' ]), { name: 'zenjs', type: 'js' } ).should.true;
             Object.$equals( arr.$find([ 'name', 'zenui' ]), { name: 'zenui', type: 'ui' } ).should.true;
             Object.$equals( arr.$find([ 'name', 'zenui', 'type', 'ui' ]), { name: 'zenui', type: 'ui' } ).should.true;
-            Object.$equals( arr.$find([ 'name', 'zenui', 'type', 'js' ]), null ).should.true;
+            Object.$equals( arr.$find([ 'name', 'zenui', 'type', 'js' ]), undefined ).should.true;
           }
         }, {
           name: 'Incoming parameters for lookup',
@@ -295,13 +295,12 @@ describes.push({
 
             Object.$equals( arr.$find( 'name' ), { name: 'zen' } ).should.true;
             Object.$equals( arr.$find( 'type' ), { name: 'zenjs', type: 'js' } ).should.true;
-            Object.$equals( arr.$find( 'name', 'xxx' ), null ).should.true;
+            Object.$equals( arr.$find( 'name', 'xxx' ), undefined ).should.true;
             Object.$equals( arr.$find( 'name', 'zen' ), { name: 'zen' } ).should.true;
             Object.$equals( arr.$find( 'name', 'zenjs' ), { name: 'zenjs' } ).should.true;
-            Object.$equals( arr.$find( 'name', 'zenjs', 'type', 'js' ), { name: 'zenjs', type: 'js' } ).should.true;
             Object.$equals( arr.$find( 'name', 'zenui' ), { name: 'zenui', type: 'ui' } ).should.true;
-            Object.$equals( arr.$find( 'name', 'zenui', 'type', 'ui' ), { name: 'zenui', type: 'ui' } ).should.true;
-            Object.$equals( arr.$find( 'name', 'zenui', 'type', 'js' ), null ).should.true;
+            Object.$equals( arr.$find( 'type', 'js' ), { name: 'zenjs', type: 'js' } ).should.true;
+            Object.$equals( arr.$find( 'type', 'ui' ), { name: 'zenui', type: 'ui' } ).should.true;
           }
         }
       ]

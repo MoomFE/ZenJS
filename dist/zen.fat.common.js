@@ -688,11 +688,13 @@ defineValue(ArrayProto, '$concatTo', function (index) {
   return this;
 });
 
-defineValue(ArrayProto, '$findIndex', function (predicate, key) {
-  return findIndex(this, predicate, key, arguments);
-});
-
-function findIndex(self, predicate, key, args) {
+/**
+ * @param {Array} self 进行遍历的数组
+ * @param {Number} count 保存的查找结果数量
+ * @param {Boolean} reverse 是否反向查询
+ * @param {IArguments} args 来源方法的 arguments
+ */
+function findIndex(self, count, reverse, args, predicate, obj, fromIndex) {
 
   var length;
 
@@ -701,19 +703,23 @@ function findIndex(self, predicate, key, args) {
     return -1;
   }
 
-  var traversal,
-      predicateIsFunction = predicate[isFunction];
+  /** 遍历 */
+  var traversal;
+  /** 首个参数是否是方法类型 */
+  var predicateIsFunction = predicate[isFunction];
 
+  // 首个参数是方法或布尔值
   if (predicateIsFunction || predicate[isBoolean]) {
 
-    // $findIndex( Function )
+    // $findIndex( Function, fromIndex )
     // 传入的方法是用作数组遍历时的手动进行检测
-    if (predicateIsFunction && args.length === 1) {
+    if (predicateIsFunction && (args.length === 1 || isNumber(obj))) {
       traversal = predicate;
+      fromIndex = obj || reverse ? -1 : 0;
     }
-    // $findIndex( Function | Boolean, key, value )
-    // $findIndex( Function | Boolean, Array )
-    // $findIndex( Function | Boolean, Object )
+    // $findIndex( Function | Boolean, key, value, fromIndex )
+    // $findIndex( Function | Boolean, Array, fromIndex )
+    // $findIndex( Function | Boolean, Object, fromIndex )
     // 传入的方法是用作值比对时进行检测
     else {
         // 正常参数校正 index 为从 1 的地方开始
@@ -723,51 +729,63 @@ function findIndex(self, predicate, key, args) {
           predicate = predicate ? congruence : equals;
         }
       }
-  } else {
-    // 首个参数不是对比的方法, 那么校正 key 的位置
-    key = args[0];
-    // 默认使用全等的比较方法
-    predicate = congruence;
   }
+  // $findIndex( key, value, fromIndex )
+  // $findIndex( Array, fromIndex )
+  // $findIndex( Object, fromIndex )
+  else {
+      // 首个参数不是对比的方法, 那么校正 obj 和 fromIndex 的位置
+      obj = args[0];
+      fromIndex = args[1];
+      // 默认使用全等的比较方法
+      predicate = congruence;
+    }
 
   // 指定值遍历时的检测方法
   if (!traversal) {
 
-    // 第一个参数不是数组或对象, 将所有传入参数转为数组
-    // $findIndex( 'key', 'value', 'key2', 'value2' ) -> [ 'key', 'value', 'key2', 'value2' ]
-    if (typeof key !== 'object') {
-      key = slice.call(args);
+    // 第一个参数不是数组或对象, 视为传入 key, value 进行匹配
+    if (typeof obj !== 'object') {
+      obj = fromIndex === undefined ? [obj] : [obj, fromIndex];
+      fromIndex = args[2];
     }
 
     // 将类数组类型的按照键值对进行分割
     // $findIndex( [ 'key', 'value', 'key2', 'value2' ] ) -> [ [ 'key', 'value' ], [ 'key2', 'value2' ] ]
-    if (isArrayLike(key)) {
-      key = chunk(key, 2);
+    if (isArrayLike(obj)) {
+      obj = chunk(obj, 2);
     }
 
-    traversal = getTraversal(key, predicate);
+    traversal = getTraversal(obj, predicate);
   }
 
-  var index = 0;
+  /** 初始开始遍历的 index */
+  var index = isNumber(fromIndex) ? fromIndex : reverse ? length - 1 : 0;
+  /** 值, 缓存 */
+  var value;
+  /** 每次自增的值 */
+  var add = reverse ? -1 : 1;
+  /** 返回值 */
+  var result = [];
 
   // 遍历数组内的对象, 交给检测方法进行检测
-  for (; index < length; index++) {
-    if (traversal(self[index])) {
-      return index;
+  for (; index >= 0 && index <= length - 1; index += add) {
+    if (traversal(value = self[index]) && result.$push([index, value]).length >= count) {
+      return result;
     }
   }
 
-  return -1;
+  return result;
 }
 
-function getTraversal(key, predicate) {
-  var keyIsArray = key[isArray];
+function getTraversal(obj, predicate) {
+  var objIsArray = obj[isArray];
 
   return function (object) {
     if (object == null || !keys(object).length) {
       return false;
     }
-    return (keyIsArray ? checkArray : checkObject)(key, object, predicate);
+    return (objIsArray ? checkArray : checkObject)(obj, object, predicate);
   };
 }
 
@@ -808,31 +826,31 @@ function checkObject(source, object, predicate) {
   return true;
 }
 
-defineValue(ArrayProto, '$find', function (predicate, key) {
-  var index = findIndex(this, predicate, key, arguments);
-
-  return index === -1 ? null : this[index];
+defineValue(ArrayProto, '$find', function (predicate, obj, fromIndex) {
+  var result = findIndex(this, 1, false, arguments, predicate, obj, fromIndex);
+  return (result[0] || [])[1];
 });
 
-// defineValue( ArrayProto, '$find', function( predicate, key, value, index ){
+defineValue(ArrayProto, '$findIndex', function (predicate, obj, fromIndex) {
+  var result = findIndex(this, 1, false, arguments, predicate, obj, fromIndex);
+  return (result[0] || [])[0];
+});
 
-// });
+defineValue(ArrayProto, '$findLast', function (predicate, obj, fromIndex) {
+  var result = findIndex(this, 1, true, arguments, predicate, obj, fromIndex);
+  return (result[0] || [])[1];
+});
 
-// defineValue( ArrayProto, '$findIndex', function( predicate, key, value, index ){
+defineValue(ArrayProto, '$findLastIndex', function (predicate, obj, fromIndex) {
+  var result = findIndex(this, 1, true, arguments, predicate, obj, fromIndex);
+  return (result[0] || [])[0];
+});
 
-// });
-
-// defineValue( ArrayProto, '$findLast', function( predicate, key, value, index ){
-
-// });
-
-// defineValue( ArrayProto, '$findLastIndex', function( predicate, key, value, index ){
-
-// });
-
-// defineValue( ArrayProto, '$findAll', function( predicate, key, value, index ){
-
-// });
+defineValue(ArrayProto, '$findAll', function (predicate, obj, fromIndex) {
+  return findIndex(this, Infinity, true, arguments, predicate, obj, fromIndex).map(function (arr) {
+    return arr[1];
+  });
+});
 
 defineValue(ArrayProto, '$get', function () {
   var args = arguments;
