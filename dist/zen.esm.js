@@ -1195,9 +1195,10 @@ defineValue(ObjectProto, '$set $edit', function (key, value) {
   var _this = this;
 
   if (isObject(key)) {
-    return this.$each(function (key, value) {
+    each(key, function (key, value) {
       _this[key] = value;
     });
+    return this;
   }
 
   this[key] = value;

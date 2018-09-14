@@ -130,5 +130,5 @@ defineValue(document, '$cookie', function (key, value, attributes) {
 });
 
 defineValue(document, '$deleteCookie $removeCookie', function (key, attributes) {
-  set(key, '', assign(attributes, { expires: -1 }));
+  set(key, '', assign(attributes || {}, { expires: -1 }));
 });

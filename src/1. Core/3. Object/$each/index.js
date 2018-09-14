@@ -4,7 +4,7 @@ import Object from "../../../shared/global/Object/index";
 import ObjectProto from "../../../shared/global/Object/prototype/index";
 
 
-function each( obj, callback ){
+export default function each( obj, callback ){
 
   if( obj == null ){
     return obj;

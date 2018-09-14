@@ -51,6 +51,14 @@ describes.push({
             Object.$equals( obj.$set({ z: 1, e: 2, n: 3, j: 4, s: 5 }), { z: 1, e: 2, n: 3, j: 4, s: 5 } );
             Object.$equals( obj, { z: 1, e: 2, n: 3, j: 4, s: 5 } );
           }
+        }, {
+          name: 'Set values for other objects',
+          it: function(){
+            var img = document.createElement('img');
+
+            img.$set({ src: 'http://www.zw-blog.com/favicon.png' });
+            img.src.should.equals('http://www.zw-blog.com/favicon.png');
+          }
         }
       ]
     }, {
