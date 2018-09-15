@@ -137,58 +137,162 @@ interface Array<T> {
   /**
    * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的值
    * @param traversal 遍历集合的方法
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $find( traversal: Function ) : Number;
+  $find( traversal: Function, fromIndex?: Number ) : any;
 
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param obj 需要筛选的一组 key: value 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $find( predicate?: true, obj: any ) : Number;
+  $find( predicate?: true, obj: any, fromIndex?: Number ) : any;
 
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $find( predicate?: true, arr: any[] ) : Number;
+  $find( predicate?: true, arr: any[], fromIndex?: Number ) : any;
 
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param key 需要匹配的 key 值
    * @param value 需要匹配的 value 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $find( predicate?: true, key: String, value: any ) : Number;
+  $find( predicate?: true, key: String, value: any, fromIndex?: Number ) : any;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的值的下标
    * @param traversal 遍历集合的方法
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( traversal: Function ) : Number;
+  $findIndex( traversal: Function, fromIndex?: Number ) : Number;
 
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param obj 需要筛选的一组 key: value 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( predicate?: true, obj: any ) : Number;
+  $findIndex( predicate?: true, obj: any, fromIndex?: Number ) : Number;
 
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( predicate?: true, arr: any[] ) : Number;
+  $findIndex( predicate?: true, arr: any[], fromIndex?: Number ) : Number;
 
   /**
    * 遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
    * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
    * @param key 需要匹配的 key 值
    * @param value 需要匹配的 value 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( predicate?: true, key: String, value: any ) : Number;
+  $findIndex( predicate?: true, key: String, value: any, fromIndex?: Number ) : Number;
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回首个符合传入方法检测的值
+   * @param traversal 遍历集合的方法
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLast( traversal: Function, fromIndex?: Number ) : any;
+
+  /**
+   * 逆序遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
+   * @param obj 需要筛选的一组 key: value 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLast( predicate?: true, obj: any, fromIndex?: Number ) : any;
+
+  /**
+   * 逆序遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
+   * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLast( predicate?: true, arr: any[], fromIndex?: Number ) : any;
+
+  /**
+   * 逆序遍历集合的内容, 查找到第一个符合传入筛选条件的值
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
+   * @param key 需要匹配的 key 值
+   * @param value 需要匹配的 value 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLast( predicate?: true, key: String, value: any, fromIndex?: Number ) : any;
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回首个符合传入方法检测的值的下标
+   * @param traversal 遍历集合的方法
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastIndex( traversal: Function, fromIndex?: Number ) : Number;
+
+  /**
+   * 逆序遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
+   * @param obj 需要筛选的一组 key: value 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastIndex( predicate?: true, obj: any, fromIndex?: Number ) : Number;
+
+  /**
+   * 逆序遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
+   * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastIndex( predicate?: true, arr: any[], fromIndex?: Number ) : Number;
+
+  /**
+   * 逆序遍历集合的内容, 查找到第一个符合传入筛选条件的值的下标
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
+   * @param key 需要匹配的 key 值
+   * @param value 需要匹配的 value 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastIndex( predicate?: true, key: String, value: any, fromIndex?: Number ) : Number;
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回所有符合传入方法检测的值
+   * @param traversal 遍历集合的方法
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAll( traversal: Function, fromIndex?: Number ) : any[];
+
+  /**
+   * 遍历集合的内容, 查找到所有符合传入筛选条件的值
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
+   * @param obj 需要筛选的一组 key: value 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAll( predicate?: true, obj: any, fromIndex?: Number ) : any[];
+
+  /**
+   * 遍历集合的内容, 查找到所有符合传入筛选条件的值
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
+   * @param arr 需要筛选的一组 [ key, value, ... ] 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAll( predicate?: true, arr: any[], fromIndex?: Number ) : any[];
+
+  /**
+   * 遍历集合的内容, 查找到所有符合传入筛选条件的值
+   * @param predicate 比对键值时所调用的方法, 将使用传入的方法对值进行检测, 若未传入值或传入 Boolean 值, 则视为是否使用全等进行判断 - default: true
+   * @param key 需要匹配的 key 值
+   * @param value 需要匹配的 value 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAll( predicate?: true, key: String, value: any, fromIndex?: Number ) : any[];
 
   /**
    * 获取指定下标的对象
@@ -790,7 +894,7 @@ interface Date {
    *              [ minute, m ] 分
    *              [ second, s ] 秒
    *              [ millisecond, ms ] 毫秒
-   * @param float 
+   * @param float
    */
   $diff( input: String | Date, units: String, float: Boolean ): String;
 
@@ -954,14 +1058,14 @@ interface ZenJS {
 
     /**
      * 在传入的两个正整数中随机一个数字
-     * @param {Number} from 
-     * @param {Number} to 
+     * @param {Number} from
+     * @param {Number} to
      */
     intRandom( from:Number, to:Number ): Number;
 
     /**
      * 返回传入的第一个参数
-     * @param {any} arg 
+     * @param {any} arg
      */
     returnArg( arg: any ): any;
 

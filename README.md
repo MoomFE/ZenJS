@@ -87,6 +87,9 @@
   - $concatTo
   - $find
   - $findIndex
+  - $findLast
+  - $findLastIndex
+  - $findAll
   - $get
   - $set / $edit
   - $inArray
