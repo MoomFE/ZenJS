@@ -1,5 +1,5 @@
 import { removeEventListener } from "../../../shared/const/event";
-import { init } from "./util";
+import { init, groups } from "./util";
 
 
 /**
@@ -33,6 +33,11 @@ export default function remove( elem, types, listener, selector ){
             elem[ removeEventListener ]( type, handleOptions.handler );
             // 移除事件缓存
             handlers.splice( handlersLength, 1 );
+            // 移除分组缓存
+            let group = handleOptions.group;
+            if( group && !groups[ group ].$deleteValue( handleOptions ).length ){
+              delete groups[ group ];
+            }
           }
         }
       }

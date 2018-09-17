@@ -8,6 +8,7 @@ import inBrowser from "../../../shared/const/inBrowser";
 import defineValue from "../../../shared/util/defineValue";
 import DomEventTarget from "../../../shared/global/DomEventTarget/index";
 import rnothtmlwhite from "../../../shared/const/rnothtmlwhite";
+import { groups } from "../../666. ZenJS/EventListener/util";
 
 /**
  * 移除事件 => 参数处理
@@ -20,23 +21,31 @@ function off( types, selector, listener ){
 
   // $off( ZenJS.Event )
   if( types instanceof ZenJS.Event ){
-    const handleOptions = types.handleOptions;
-    const namespace = handleOptions.namespaceStr;
-    const handleTypes = namespace ? `${ handleOptions.type }.${ namespace }` : handleOptions.type;
-
-    return off.call(
-      handleOptions.elem,
-      handleTypes,
-      handleOptions.selector,
-      handleOptions.listener
-    );
+    return offByHandleOptions( types.handleOptions );
   }
 
   // $off( object, selector )
+  // $off({
+  //   group: 'group1'
+  // })
   if( isObject( types ) ){
-    for( let type in types ){
-      off.call( this, type, selector, types[ type ] );
+    let group;
+
+    // $off({
+    //   group: 'group1'
+    // })
+    if( group = types.group ){
+      groups[ group ].slice().forEach( handleOptions => {
+        offByHandleOptions( handleOptions );
+      });
     }
+    // $off( object, selector )
+    else{
+      for( let type in types ){
+        off.call( this, type, selector, types[ type ] );
+      }
+    }
+
     return this;
   }
 
@@ -63,6 +72,18 @@ function off( types, selector, listener ){
   EventListener.remove( this, types, listener, selector );
 
   return this;
+}
+
+function offByHandleOptions( handleOptions ){
+  const namespace = handleOptions.namespaceStr;
+  const handleTypes = namespace ? `${ handleOptions.type }.${ namespace }` : handleOptions.type;
+
+  return off.call(
+    handleOptions.elem,
+    handleTypes,
+    handleOptions.selector,
+    handleOptions.listener
+  );
 }
 
 if( inBrowser ){

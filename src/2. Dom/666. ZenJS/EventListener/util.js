@@ -51,3 +51,13 @@ export function init( elem, types, whileFn, whileEndFn ){
     );
   }
 }
+
+/**
+ * 所有事件分组的存储
+ */
+export const groups = {
+  // group1: [
+  //   handleOptions1,
+  //   handleOptions2
+  // ]
+};

@@ -24,6 +24,7 @@ import EventListener from "../../666. ZenJS/EventListener/index";
  */
 function on( elem, types, selector, listener, options, once ){
   let events;
+  let group;
 
   // 1. on( elem, { type: listener || Boolean } )
   // 2. on( elem, { type: listener || Boolean }, options )
@@ -92,6 +93,13 @@ function on( elem, types, selector, listener, options, once ){
 
   options = options || {};
 
+  // group
+  // 事件分组功能, 分到同一组的事件可进行同时移除
+  if( options.group ){
+    group = options.group;
+    delete options.group;
+  }
+
   keys( options ).forEach( key => {
     options[ key ] ? options[ key ] = true
                    : delete options[ key ];
@@ -115,7 +123,7 @@ function on( elem, types, selector, listener, options, once ){
     delete options.passive;
   }
 
-  EventListener.add( elem, types, selector, listener, options );
+  EventListener.add( elem, types, selector, listener, options, group );
 
   return elem;
 }

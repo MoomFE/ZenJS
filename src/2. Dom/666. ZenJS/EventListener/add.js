@@ -2,6 +2,7 @@ import ZenJS from "../../../shared/global/ZenJS/index";
 import rtypenamespace from "../../../shared/const/rtypenamespace";
 import { addEventListener } from "../../../shared/const/event";
 import modifiers from "./modifiers";
+import { groups } from "./util";
 
 
 /**
@@ -12,15 +13,16 @@ import modifiers from "./modifiers";
  * @param {String} selector 事件委托的选择器
  * @param {Function} listener 绑定的事件
  * @param {Object} options 事件绑定参数
+ * @param {String} group 事件分组参数
  */
-export default function add( elem, types, selector, listener, options ){
+export default function add( elem, types, selector, listener, options, group ){
 
   /** 存放当前元素下的所有事件 */
   const events = elem.$data( 'events', {}, true );
 
   /** 事件 GUID */
   const guid = listener.guid || ( listener.guid = ZenJS.guid );
-  
+
   /** 事件总数 */
   let length = types.length;
 
@@ -50,7 +52,7 @@ export default function add( elem, types, selector, listener, options ){
 
     /** 该事件所有相关参数 */
     handleOptions = {
-      elem, selector, type, namespace, listener, guid, options,
+      elem, selector, type, namespace, listener, guid, options, group,
       namespaceStr: namespace.join('.'),
       handler(){
         return ZenJS.EventListener.dispatch( this, arguments, handleOptions );
@@ -59,6 +61,11 @@ export default function add( elem, types, selector, listener, options ){
 
     // 存储相关数据
     ( events[ type ] || ( events[ type ] = [] ) ).push( handleOptions );
+
+    // 存储分组数据
+    if( group ){
+      ( groups[ group ] || ( groups[ group ] = [] ) ).push( handleOptions );
+    }
 
     // 绑定事件
     if( options.passive ){

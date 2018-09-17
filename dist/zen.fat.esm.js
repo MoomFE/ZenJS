@@ -2989,6 +2989,61 @@ add.once = add.one = function (elem, type, events, namespace) {
   };
 });
 
+function init(elem, types, whileFn, whileEndFn) {
+
+  /** 存放当前元素下的所有事件 */
+  var events = elem.$data('events', {}, true);
+
+  /** 事件总数 */
+  var length = types.length;
+
+  var tmp,
+      type,
+      namespace,
+      rNamespace,
+      handlers,
+      handlersLength;
+
+  while (length--) {
+
+    /** 分离事件名称和命名空间 */
+    tmp = rtypenamespace.exec(types[length]) || [];
+
+    /** 事件名称 */
+    type = tmp[1];
+
+    if (!type) continue;
+
+    /** 事件集 */
+    handlers = events[type] || [];
+    /** 事件集数量 */
+    handlersLength = handlers.length;
+
+    if (!handlersLength) continue;
+
+    /** 命名空间 */
+    namespace = (tmp[2] || '').split('.').sort().join('.');
+    /** 匹配命名空间 */
+    rNamespace = tmp[2] && new RegExp('^' + namespace + '$');
+
+    while (handlersLength--) {
+      whileFn(handlers[handlersLength], rNamespace, type, handlers, handlersLength);
+    }
+
+    whileEndFn && whileEndFn(handlers, events, type);
+  }
+}
+
+/**
+ * 所有事件分组的存储
+ */
+var groups = {
+  // group1: [
+  //   handleOptions1,
+  //   handleOptions2
+  // ]
+};
+
 /**
  * 事件处理 => 绑定事件
  * @private
@@ -2997,8 +3052,9 @@ add.once = add.one = function (elem, type, events, namespace) {
  * @param {String} selector 事件委托的选择器
  * @param {Function} listener 绑定的事件
  * @param {Object} options 事件绑定参数
+ * @param {String} group 事件分组参数
  */
-function add$1(elem, types, selector, listener, options) {
+function add$1(elem, types, selector, listener, options, group) {
 
   /** 存放当前元素下的所有事件 */
   var events = elem.$data('events', {}, true);
@@ -3035,7 +3091,7 @@ function add$1(elem, types, selector, listener, options) {
 
     /** 该事件所有相关参数 */
     handleOptions = {
-      elem: elem, selector: selector, type: type, namespace: namespace, listener: listener, guid: guid, options: options,
+      elem: elem, selector: selector, type: type, namespace: namespace, listener: listener, guid: guid, options: options, group: group,
       namespaceStr: namespace.join('.'),
       handler: function () {
         return ZenJS$1.EventListener.dispatch(this, arguments, handleOptions);
@@ -3044,6 +3100,11 @@ function add$1(elem, types, selector, listener, options) {
 
     // 存储相关数据
     (events[type] || (events[type] = [])).push(handleOptions);
+
+    // 存储分组数据
+    if (group) {
+      (groups[group] || (groups[group] = [])).push(handleOptions);
+    }
 
     // 绑定事件
     if (options.passive) {
@@ -3123,51 +3184,6 @@ function dispatch$1(self, oArgs, handleOptions) {
   return result;
 }
 
-function init(elem, types, whileFn, whileEndFn) {
-
-    /** 存放当前元素下的所有事件 */
-    var events = elem.$data('events', {}, true);
-
-    /** 事件总数 */
-    var length = types.length;
-
-    var tmp,
-        type,
-        namespace,
-        rNamespace,
-        handlers,
-        handlersLength;
-
-    while (length--) {
-
-        /** 分离事件名称和命名空间 */
-        tmp = rtypenamespace.exec(types[length]) || [];
-
-        /** 事件名称 */
-        type = tmp[1];
-
-        if (!type) continue;
-
-        /** 事件集 */
-        handlers = events[type] || [];
-        /** 事件集数量 */
-        handlersLength = handlers.length;
-
-        if (!handlersLength) continue;
-
-        /** 命名空间 */
-        namespace = (tmp[2] || '').split('.').sort().join('.');
-        /** 匹配命名空间 */
-        rNamespace = tmp[2] && new RegExp('^' + namespace + '$');
-
-        while (handlersLength--) {
-            whileFn(handlers[handlersLength], rNamespace, type, handlers, handlersLength);
-        }
-
-        whileEndFn && whileEndFn(handlers, events, type);
-    }
-}
-
 /**
  * 事件处理 => 移除事件
  * @param {Element} elem 
@@ -3195,6 +3211,11 @@ function remove(elem, types, listener, selector) {
           elem[removeEventListener](type, handleOptions.handler);
           // 移除事件缓存
           handlers.splice(handlersLength, 1);
+          // 移除分组缓存
+          var group = handleOptions.group;
+          if (group && !groups[group].$deleteValue(handleOptions).length) {
+            delete groups[group];
+          }
         }
       }
     }
@@ -3242,6 +3263,7 @@ var EventListener = ZenJS$1.EventListener = assign(false, [null, {
  */
 function on(elem, types, selector, listener, options, once) {
   var events;
+  var group;
 
   // 1. on( elem, { type: listener || Boolean } )
   // 2. on( elem, { type: listener || Boolean }, options )
@@ -3315,6 +3337,13 @@ function on(elem, types, selector, listener, options, once) {
 
   options = options || {};
 
+  // group
+  // 事件分组功能, 分到同一组的事件可进行同时移除
+  if (options.group) {
+    group = options.group;
+    delete options.group;
+  }
+
   keys(options).forEach(function (key) {
     options[key] ? options[key] = true : delete options[key];
   });
@@ -3337,7 +3366,7 @@ function on(elem, types, selector, listener, options, once) {
     delete options.passive;
   }
 
-  EventListener.add(elem, types, selector, listener, options);
+  EventListener.add(elem, types, selector, listener, options, group);
 
   return elem;
 }
@@ -3364,18 +3393,31 @@ function off(types, selector, listener) {
 
   // $off( ZenJS.Event )
   if (types instanceof ZenJS.Event) {
-    var handleOptions = types.handleOptions;
-    var namespace = handleOptions.namespaceStr;
-    var handleTypes = namespace ? handleOptions.type + "." + namespace : handleOptions.type;
-
-    return off.call(handleOptions.elem, handleTypes, handleOptions.selector, handleOptions.listener);
+    return offByHandleOptions(types.handleOptions);
   }
 
   // $off( object, selector )
+  // $off({
+  //   group: 'group1'
+  // })
   if (isObject(types)) {
-    for (var type in types) {
-      off.call(this, type, selector, types[type]);
+    var group;
+
+    // $off({
+    //   group: 'group1'
+    // })
+    if (group = types.group) {
+      groups[group].slice().forEach(function (handleOptions) {
+        offByHandleOptions(handleOptions);
+      });
     }
+    // $off( object, selector )
+    else {
+        for (var type in types) {
+          off.call(this, type, selector, types[type]);
+        }
+      }
+
     return this;
   }
 
@@ -3403,6 +3445,13 @@ function off(types, selector, listener) {
   EventListener.remove(this, types, listener, selector);
 
   return this;
+}
+
+function offByHandleOptions(handleOptions) {
+  var namespace = handleOptions.namespaceStr;
+  var handleTypes = namespace ? handleOptions.type + "." + namespace : handleOptions.type;
+
+  return off.call(handleOptions.elem, handleTypes, handleOptions.selector, handleOptions.listener);
 }
 
 if (inBrowser) {
