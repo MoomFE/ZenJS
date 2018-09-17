@@ -562,6 +562,7 @@ interface Number {
    * @param num2 数字2
    */
   $add( num: Number ): Number;
+
   /**
    * 将传入数字与当前数字相加, 不会发生浮点数精度不准的问题
    * @param num1 数字1
@@ -575,6 +576,7 @@ interface Number {
    * @param num2 数字2
    */
   $subtract( num: Number ): Number;
+
   /**
    * 将传入数字与当前数字相减, 不会发生浮点数精度不准的问题
    * @param num1 数字1
@@ -588,6 +590,7 @@ interface Number {
    * @param num2 数字2
    */
   $multiply( num: Number ): Number;
+
   /**
    * 将传入数字与当前数字相乘, 不会发生浮点数精度不准的问题
    * @param num1 数字1
@@ -601,6 +604,7 @@ interface Number {
    * @param num2 数字2
    */
   $divide( num: Number ): Number;
+
   /**
    * 将传入数字与当前数字相除, 不会发生浮点数精度不准的问题
    * @param num1 数字1
@@ -636,6 +640,7 @@ interface Math {
    * @param num2 数字2
    */
   $add( num1: Number, num2: Number ): Number;
+
   /**
    * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
    * @param num1 数字1
@@ -649,6 +654,7 @@ interface Math {
    * @param num2 数字2
    */
   $subtract( num1: Number, num2: Number ): Number;
+
   /**
    * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
    * @param num1 数字1
@@ -662,6 +668,7 @@ interface Math {
    * @param num2 数字2
    */
   $multiply( num1: Number, num2: Number ): Number;
+
   /**
    * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
    * @param num1 数字1
@@ -675,6 +682,7 @@ interface Math {
    * @param num2 数字2
    */
   $divide( num1: Number, num2: Number ): Number;
+
   /**
    * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
    * @param num1 数字1
@@ -971,6 +979,7 @@ interface $querystring {
    * @param eq 在字符串中分隔键和值的字符串 - default: '='
    */
   stringify( obj, sep: String = '&', eq: String = '=' ): String;
+
   /**
    * 将 URL 查询字符串反序列化为对象
    * @param str 需要反序列化的字符串
@@ -1178,13 +1187,13 @@ interface ZenJS {
 interface Document {
 
   /**
-   * document.getElementById 的引用
+   * ( Fat ) document.getElementById 的引用
    * @param elmentId ID
    */
   $id( elmentId: String ): Element;
 
   /**
-   * 当前页面加载完成后执行传入代码
+   * ( Fat ) 当前页面加载完成后执行传入代码
    *
    * @param func DOM 载入完成后执行的方法
    * @param data 需要传入方法的数据
@@ -1192,25 +1201,25 @@ interface Document {
   $ready( func: () => void, data?: any ): void;
 
   /**
-   * 调用原生 querySelectorAll 方法
+   * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $query( selectors ): NodeListOf<Element>;
 
   /**
-   * 调用原生 querySelectorAll 方法
+   * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $find( selectors ): NodeListOf<Element>;
 
   /**
-   * 调用原生  querySelector 方法
+   * ( Fat ) 调用原生  querySelector 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $queryFirst( selectors ): Element | null;
 
   /**
-   * 调用原生  querySelector 方法
+   * ( Fat ) 调用原生  querySelector 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $findFirst( selectors ): Element | null;
@@ -1220,7 +1229,7 @@ interface Document {
 interface Window {
 
   /**
-   * 当前页面及页面资源载入完成后传入代码
+   * ( Fat ) 当前页面及页面资源载入完成后传入代码
    *
    * @param func 页面及页面资源载入完成后执行的方法
    * @param data 需要传入方法的数据
@@ -1230,7 +1239,7 @@ interface Window {
 }
 
 /**
- * 当前页面及页面资源载入完成后传入代码
+ * ( Fat ) 当前页面及页面资源载入完成后传入代码
  *
  * @param func 页面及页面资源载入完成后执行的方法
  * @param data 需要传入方法的数据
@@ -1241,120 +1250,120 @@ declare function $ready( func: () => void, data?: any ): void;
 interface Element {
 
   /**
-   * 向元素添加一个或多个类
+   * ( Fat ) 向元素添加一个或多个类
    * @param className 类名
    */
   $addClass( className: Stirng ): Element;
 
   /**
-   * 向元素移除一个或多个类
+   * ( Fat ) 向元素移除一个或多个类
    * @param className 类名
    */
   $removeClass( className: Stirng ): Element;
 
   /**
-   * 判断元素是否有一个或多个类
+   * ( Fat ) 判断元素是否有一个或多个类
    * @param className 类名
    */
   $hasClass( className: Stirng ): Boolean;
 
   /**
-   * 设置或移除元素的一个或多个类进行切换
+   * ( Fat ) 设置或移除元素的一个或多个类进行切换
    * @param className 类名
    * @param toggle 若值为 true, 则规定只添加类, 反之只移除
    */
   $toggleClass( className: Stirng, toggle: Boolean ): Element;
 
   /**
-   * 判断当前节点是否符合传入的要求
+   * ( Fat ) 判断当前节点是否符合传入的要求
    * @param selector DOM 节点或 CSS 选择器
    */
   $is( selector: Element | String ): Boolean;
 
   /**
-   * 判断当前节点是否不符合传入的要求
+   * ( Fat ) 判断当前节点是否不符合传入的要求
    * @param selector DOM 节点或 CSS 选择器
    */
   $not( selector: Element | String ): Boolean;
 
   /**
-   * 获取当前节点下首个匹配过滤条件的子节点,
+   * ( Fat ) 获取当前节点下首个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回首个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $first( filter?: Element | String | Function ): Element | null;
 
   /**
-   * 获取当前节点下首个匹配过滤条件的子节点,
+   * ( Fat ) 获取当前节点下首个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回首个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $firstChild( filter?: Element | String | Function ): Element | null;
 
   /**
-   * 获取当前节点下最后一个匹配过滤条件的子节点,
+   * ( Fat ) 获取当前节点下最后一个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回最后一个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $last( filter?: Element | String | Function ): Element | null;
 
   /**
-   * 获取当前节点下最后一个匹配过滤条件的子节点,
+   * ( Fat ) 获取当前节点下最后一个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回最后一个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $lastChild( filter?: Element | String | Function ): Element | null;
 
   /**
-   * 获取当前节点的下一个匹配过滤条件的节点,
+   * ( Fat ) 获取当前节点的下一个匹配过滤条件的节点,
    * 若未传入过滤条件, 则直接返回当前节点的下一个节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $next( filter?: Element | String | Function ): Element | null;
 
   /**
-   * 获取当前节点的上一个匹配过滤条件的节点,
+   * ( Fat ) 获取当前节点的上一个匹配过滤条件的节点,
    * 若未传入过滤条件, 则直接返回当前节点的上一个节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $prev( filter?: Element | String | Function ): Element | null;
 
   /**
-   * 获取从当前节点后面的所有匹配过滤条件的兄弟节点,
+   * ( Fat ) 获取从当前节点后面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点后面的所有兄弟节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $nextAll( filter?: Element | String | Function ): Element[];
 
   /**
-   * 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
+   * ( Fat ) 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点前面的所有兄弟节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $prevAll( filter?: Element | String | Function ): Element[];
 
   /**
-   * 获取当前节点下的所有匹配过滤条件的子节点,
+   * ( Fat ) 获取当前节点下的所有匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回所有子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $child( filter?: Element | String | Function ): Element[];
 
   /**
-   * 获取当前节点下的所有匹配过滤条件的子节点,
+   * ( Fat ) 获取当前节点下的所有匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回所有子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $children( filter?: Element | String | Function ): Element[];
 
   /**
-   * 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
+   * ( Fat ) 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $parent( filter?: Element | String | Function ): Element | null;
 
   /**
-   * 获取当前节点的符合过滤条件的父节点, 未查找到会一直继续向上查找,
+   * ( Fat ) 获取当前节点的符合过滤条件的父节点, 未查找到会一直继续向上查找,
    * 若未传入过滤条件, 则直接返回当前节点的父节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    * @param checkSelf 是否从当前节点开始检测, 不从当前节点的父节点开始
@@ -1362,138 +1371,138 @@ interface Element {
   $parents( filter?: Element | String | Function, checkSelf?: Boolean ): Element | null;
 
   /**
-   * 获取当前节点的所有符合过滤条件的兄弟节点
+   * ( Fat ) 获取当前节点的所有符合过滤条件的兄弟节点
    * 若未传入过滤条件, 则直接返回当前节点的所有兄弟节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
   $siblings( filter?: String | Function ): Element | null;
 
   /**
-   * 添加元素到当前元素内的尾部
+   * ( Fat ) 添加元素到当前元素内的尾部
    * @param elem 需要添加的元素
    * @returns 返回当前元素
    */
   $append( elem: Element ): Element;
 
   /**
-   * 添加元素到当前元素内的头部
+   * ( Fat ) 添加元素到当前元素内的头部
    * @param elem 需要添加的元素
    * @returns 返回当前元素
    */
   $prepend( elem: Element ): Element;
 
   /**
-   * 添加当前元素到目标元素的尾部
+   * ( Fat ) 添加当前元素到目标元素的尾部
    * @param elem 目标元素
    * @returns 返回当前元素
    */
   $appendTo( elem: Element ): Element;
 
   /**
-   * 添加当前元素到目标元素的元素
+   * ( Fat ) 添加当前元素到目标元素的元素
    * @param elem 目标元素
    * @returns 返回当前元素
    */
   $prependTo( elem: Element ): Element;
 
   /**
-   * 将目标元素插入到当前元素前面
+   * ( Fat ) 将目标元素插入到当前元素前面
    * @param elem 目标元素
    * @returns 返回当前元素
    */
   $before( elem: Element ): Element;
 
   /**
-   * 将目标元素插入到当前元素后面
+   * ( Fat ) 将目标元素插入到当前元素后面
    * @param elem 目标元素
    * @returns 返回当前元素
    */
   $after( elem: Element ): Element;
 
   /**
-   * 移除当前节点
+   * ( Fat ) 移除当前节点
    */
   $delete();
 
   /**
-   * 移除当前节点
+   * ( Fat ) 移除当前节点
    */
   $remove();
 
   /**
-   * 调用原生 querySelectorAll 方法
+   * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $query( selectors ): NodeListOf<Element>;
 
   /**
-   * 调用原生 querySelectorAll 方法
+   * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $find( selectors ): NodeListOf<Element>;
 
   /**
-   * 调用原生  querySelector 方法
+   * ( Fat ) 调用原生  querySelector 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $queryFirst( selectors ): Element | null;
 
   /**
-   * 调用原生  querySelector 方法
+   * ( Fat ) 调用原生  querySelector 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
   $findFirst( selectors ): Element | null;
 
   /**
-   * 将当前元素替换为新的元素
+   * ( Fat ) 将当前元素替换为新的元素
    * @param elem
    */
   $replaceWith( elem: Element );
 
   /**
-   * 将当前元素替换为新的元素
+   * ( Fat ) 将当前元素替换为新的元素
    * @param elem
    */
   $replace( elem: Element );
 
   /**
-   * 读取时获取元素的小写 nodeName;
+   * ( Fat ) 读取时获取元素的小写 nodeName;
    * 不可写入
    */
   _nodeName: String;
 
   /**
-   * 读取时获取元素在父元素的下标;
+   * ( Fat ) 读取时获取元素在父元素的下标;
    * 写入时将元素的下标设置为写入值 ( 将会移动元素 )
    */
   _index: Number;
 
   /**
-   * 读取时返回元素的宽度;
+   * ( Fat ) 读取时返回元素的宽度;
    * 写入时设置元素的宽度
    */
   _width: Number;
 
   /**
-   * 读取时返回元素的高度;
+   * ( Fat ) 读取时返回元素的高度;
    * 写入时设置元素的高度
    */
   _height: Number;
 
   /**
-   * 读取时返回元素的 innerHTML 值
+   * ( Fat ) 读取时返回元素的 innerHTML 值
    * 写入时设置元素的 innerHTML 值
    */
   _html: String;
 
   /**
-   * 读取时返回元素的 value 值;
+   * ( Fat ) 读取时返回元素的 value 值;
    * 写入时设置元素的 value 值
    */
   _val: String;
 
   /**
-   * 读取时返回元素的 value 值;
+   * ( Fat ) 读取时返回元素的 value 值;
    * 写入时设置元素的 value 值
    */
   _value: String;
@@ -1503,18 +1512,18 @@ interface Element {
 interface EventTarget {
 
   /**
-   * 返回存储在对象上的全部数据
+   * ( Fat ) 返回存储在对象上的全部数据
    */
   $data(): any;
 
   /**
-   * 读取指定名称的数据
+   * ( Fat ) 读取指定名称的数据
    * @param name 需要读取的数据名称
    */
   $data( name: String ): any;
 
   /**
-   * 将数据读取或存储
+   * ( Fat ) 将数据读取或存储
    * @param name 需要存储的数据名称
    * @param value 存储的数据
    * @param weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
@@ -1522,29 +1531,29 @@ interface EventTarget {
   $data( name: String, value: any, weakRead?: Boolean ): any;
 
   /**
-   * 判断当前对象下是否存有数据
+   * ( Fat ) 判断当前对象下是否存有数据
    */
   $hasData(): Boolean;
 
   /**
-   * 传入数据名称, 判断当前对象下是否存储了这个数据
+   * ( Fat ) 传入数据名称, 判断当前对象下是否存储了这个数据
    * @param {String} name 需要判断的数据名称
    */
   $hasData( name: String ): Boolean;
 
   /**
-   * 删除存储在对象上的全部数据
+   * ( Fat ) 删除存储在对象上的全部数据
    */
   $deleteData(): any;
 
   /**
-   * 传入数据名称, 删除当前对象下存储的相应名称的数据
+   * ( Fat ) 传入数据名称, 删除当前对象下存储的相应名称的数据
    * @param {String} name 需要删除的数据名称, 多个可使用空格分隔
    */
   $deleteData( names: String ): any;
 
   /**
-   * 传入键值对事件进行绑定
+   * ( Fat ) 传入键值对事件进行绑定
    * @param obj \{ 事件: 方法 }
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
@@ -1552,7 +1561,7 @@ interface EventTarget {
   $on( obj: any, selector?: String, options?: any ): any;
 
   /**
-   * 传入事件名和方法对事件进行绑定
+   * ( Fat ) 传入事件名和方法对事件进行绑定
    * @param types 需要绑定的事件名
    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
    * @param selector 事件代理选择器
@@ -1561,7 +1570,7 @@ interface EventTarget {
   $on( types: String, listener: Function, selector?: String, options?: any ): any;
 
   /**
-   * 传入键值对事件进行绑定, 只会执行一次
+   * ( Fat ) 传入键值对事件进行绑定, 只会执行一次
    * @param obj \{ 事件: 方法 }
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
@@ -1569,7 +1578,7 @@ interface EventTarget {
   $one( obj: any, selector?: String, options?: any ): any;
 
   /**
-   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * ( Fat ) 传入事件名和方法对事件进行绑定, 只会执行一次
    * @param types 需要绑定的事件名
    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
    * @param selector 事件代理选择器
@@ -1578,7 +1587,7 @@ interface EventTarget {
   $one( types: String, listener: Function, selector?: String, options?: any ): any;
 
   /**
-   * 传入键值对事件进行绑定, 只会执行一次
+   * ( Fat ) 传入键值对事件进行绑定, 只会执行一次
    * @param obj \{ 事件: 方法 }
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
@@ -1586,7 +1595,7 @@ interface EventTarget {
   $once( obj: any, selector?: String, options?: any ): any;
 
   /**
-   * 传入事件名和方法对事件进行绑定, 只会执行一次
+   * ( Fat ) 传入事件名和方法对事件进行绑定, 只会执行一次
    * @param types 需要绑定的事件名
    * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
    * @param selector 事件代理选择器
@@ -1595,7 +1604,7 @@ interface EventTarget {
   $once( types: String, listener: Function, selector?: String, options?: any ): any;
 
   /**
-   * 传入事件名和方法进行事件移除
+   * ( Fat ) 传入事件名和方法进行事件移除
    * @param types 需要解绑的事件集
    * @param selector 事件委托选择器,
    *                 若不填, 则移除所有无事件委托选择器相关事件方法;
@@ -1607,7 +1616,7 @@ interface EventTarget {
   $off( types: String, selector?: String, listener?: Function ): any;
 
   /**
-   * 触发绑定在元素上的事件( 只触发事件 )
+   * ( Fat ) 触发绑定在元素上的事件( 只触发事件 )
    * @param types 触发的事件名
    * @param data 向方法传递的数据, 可为多个
    */
@@ -1619,18 +1628,18 @@ interface EventTarget {
 interface Document {
 
   /**
-   * 读取页面所有 cookie, 以键值对返回
+   * ( Plugins ) 读取页面所有 cookie, 以键值对返回
    */
   $cookie(): any;
 
   /**
-   * 读取传入名称的页面 cookie
+   * ( Plugins ) 读取传入名称的页面 cookie
    * @param value 需要读取的 cookie 的值
    */
   $cookie( key: String ): String | undefined;
 
   /**
-   * 设置页面 cookie
+   * ( Plugins ) 设置页面 cookie
    * @param key 需要设置的 cookie 的名称
    * @param value 需要设置的 cookie 的值
    * @param attributes cookie 的配置
@@ -1638,14 +1647,14 @@ interface Document {
   $cookie( key: String, value: String, attributes?: any ): String;
 
   /**
-   * 删除页面指定 cookie
+   * ( Plugins ) 删除页面指定 cookie
    * @param key 需要删除的 cookie 名称
    * @param attributes cookie 的配置
    */
   $deleteCookie( key: String, attributes?: any );
 
   /**
-   * 删除页面指定 cookie
+   * ( Plugins ) 删除页面指定 cookie
    * @param key 需要删除的 cookie 名称
    * @param attributes cookie 的配置
    */

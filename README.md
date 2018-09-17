@@ -177,14 +177,14 @@
     - stringify
     - parse
 
-- Document
+- Document ( For fat )
   - $id
   - $ready
 
-- Window
+- Window ( For fat )
   - $ready
 
-- Element.prototype
+- Element.prototype ( For fat )
   - $addClass
   - $removeClass / $deleteClass
   - $hasClass
@@ -218,7 +218,7 @@
   - _html
   - _val / _value
 
-- EventTarget.prototype
+- EventTarget.prototype ( For fat )
   - $data
   - $hasData
   - $deleteData / $removeData
@@ -227,7 +227,7 @@
   - $off
   - $emit
 
-- document
+- document ( For plugins )
   - $cookie
   - $deleteCookie / $removeCookie
 
