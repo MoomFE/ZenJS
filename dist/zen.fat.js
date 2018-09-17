@@ -764,7 +764,7 @@
     }
 
     /** 初始开始遍历的 index */
-    var index = isNumber(fromIndex) ? fromIndex : reverse ? length - 1 : 0;
+    var index = isNumber(fromIndex) ? fixArrayIndex(self, fromIndex) : reverse ? length - 1 : 0;
     /** 值, 缓存 */
     var value;
     /** 每次自增的值 */
@@ -842,7 +842,7 @@
 
   defineValue(ArrayProto, '$findLast', function (predicate, obj, fromIndex) {
     var result = findIndex(this, 1, true, arguments, predicate, obj, fromIndex);
-    return result.length ? result[0][0] : -1;
+    return (result[0] || [])[1];
   });
 
   defineValue(ArrayProto, '$findLastIndex', function (predicate, obj, fromIndex) {
@@ -851,7 +851,7 @@
   });
 
   defineValue(ArrayProto, '$findAll', function (predicate, obj, fromIndex) {
-    return findIndex(this, Infinity, true, arguments, predicate, obj, fromIndex).map(function (arr) {
+    return findIndex(this, Infinity, false, arguments, predicate, obj, fromIndex).map(function (arr) {
       return arr[1];
     });
   });

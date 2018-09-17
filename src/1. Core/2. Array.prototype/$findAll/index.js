@@ -8,6 +8,7 @@ import parametersRest from "../../../shared/util/parametersRest";
 import isArrayLike from "../../../shared/util/isArrayLike";
 import keys from "../../../shared/global/Object/keys";
 import chunk from "../../../shared/util/chunk";
+import fixArrayIndex from "../../../shared/util/fixArrayIndex";
 
 
 /**
@@ -84,7 +85,7 @@ function findIndex( self, count, reverse, args, predicate, obj, fromIndex ){
 
 
   /** 初始开始遍历的 index */
-  let index = isNumber( fromIndex ) ? fromIndex
+  let index = isNumber( fromIndex ) ? fixArrayIndex( self, fromIndex )
                                     : reverse ? length - 1
                                               : 0;
   /** 值, 缓存 */
@@ -165,8 +166,7 @@ defineValue( ArrayProto, '$findIndex', function( predicate, obj, fromIndex ){
 
 defineValue( ArrayProto, '$findLast', function( predicate, obj, fromIndex ){
   const result = findIndex( this, 1, true, arguments, predicate, obj, fromIndex );
-  return result.length ? result[ 0 ][ 0 ]
-                       : -1;
+  return ( result[ 0 ] || [] )[ 1 ]
 });
 
 defineValue( ArrayProto, '$findLastIndex', function( predicate, obj, fromIndex ){
@@ -176,5 +176,5 @@ defineValue( ArrayProto, '$findLastIndex', function( predicate, obj, fromIndex )
 });
 
 defineValue( ArrayProto, '$findAll', function( predicate, obj, fromIndex ){
-  return findIndex( this, Infinity, true, arguments, predicate, obj, fromIndex ).map( arr => arr[ 1 ] );
+  return findIndex( this, Infinity, false, arguments, predicate, obj, fromIndex ).map( arr => arr[ 1 ] );
 });
