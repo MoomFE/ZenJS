@@ -50,7 +50,7 @@ describes.push({
           }
         }, {
           name: 'Just capitalize the first letter',
-          function(){
+          it: function(){
             '123'.$toCapitalize( true ).should.equals( '123' );
             'zen'.$toCapitalize( true ).should.equals( 'Zen' );
             'zEN'.$toCapitalize( true ).should.equals( 'ZEN' );

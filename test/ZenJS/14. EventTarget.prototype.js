@@ -211,10 +211,10 @@ describes.push({
             /**
              * @type {Boolean} 当前环境是否支持 addEventListener 的 passive 属性
              */
-            let supportsPassiveEvent = false;
+            var supportsPassiveEvent = false;
 
             try{
-              const options = defineProperty( {}, 'passive', {
+              var options = defineProperty( {}, 'passive', {
                 get: function(){
                   supportsPassiveEvent = true;
                 }
