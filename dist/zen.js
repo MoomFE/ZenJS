@@ -719,7 +719,7 @@
       // 传入的方法是用作数组遍历时的手动进行检测
       if (predicateIsFunction && (args.length === 1 || isNumber(obj))) {
         traversal = predicate;
-        fromIndex = obj || reverse ? -1 : 0;
+        fromIndex = obj || (reverse ? -1 : 0);
       }
       // $findIndex( Function | Boolean, key, value, fromIndex )
       // $findIndex( Function | Boolean, Array, fromIndex )
