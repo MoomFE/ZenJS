@@ -292,7 +292,7 @@ describes.push({
             Object.$equals( EventData.options, {} ).should.true;
             Object.$equals( EventData.selector, '.div' ).should.true;
             Object.$equals( EventData.type, 'click' ).should.true;
-            
+
           }
         }, {
           name: 'Test if all parameters are received correctly',
@@ -424,6 +424,33 @@ describes.push({
             div.$on( 'click.one', EventListener );
             div.click();
             index.should.equals( 1 );
+          }
+        }, {
+          name: 'Event binding - options - group',
+          it: function(){
+            var div = $div;
+            var div2 = $div;
+            var div3 = $div;
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+
+            div.$on( 'click', EventListener, { group: '123' } );
+            div2.$on( 'click', EventListener, { group: '123' } );
+            div3.$on( 'click', EventListener, { group: '123' } );
+
+            div.click();
+            index.should.equals( 1 );
+            div2.click();
+            index.should.equals( 2 );
+            div3.click();
+            index.should.equals( 3 );
+
+            window.$off({ group: '123' });
+
+            div.click();
+            div2.click();
+            div3.click();
+            index.should.equals( 3 );
           }
         }
       ]
