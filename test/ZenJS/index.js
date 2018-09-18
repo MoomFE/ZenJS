@@ -86,5 +86,8 @@ function isElement( elem ){
 function isWindow( obj ){
   return obj != null && obj === obj.window;
 }
+function compare( num, min, max ){
+  return num >= min && num <= max;
+}
 
 var describes = [];

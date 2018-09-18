@@ -1,5 +1,5 @@
 import parametersDefault from "./parametersDefault";
-import $toArray from "../../Array/$toArray/index";
+import slice from "../global/Array/prototype/slice";
 
 /**
  * 获取方法从指定位开始的剩余参数
@@ -12,7 +12,8 @@ export default function parametersRest( args ){
   const length = args.length;
 
   if( length > index ){
-    return $toArray( args ).$get( index, length );
+    return slice.call( args, index, length );
   }
+
   return [];
 }

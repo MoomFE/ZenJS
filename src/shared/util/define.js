@@ -1,8 +1,6 @@
-import Array from '../global/Array/index';
-import isArray from '../global/Array/isArray';
 import defineProperty from '../global/Object/defineProperty';
-import isObject from './isObject';
-import $assign from '../../Object/$assign/util';
+import assign from '../global/Object/assign';
+import isArray from '../global/Array/isArray';
 
 
 /**
@@ -13,7 +11,6 @@ import $assign from '../../Object/$assign/util';
  * @param {any} options2 将被定义或修改的属性描述符, 会覆盖前一个 options
  */
 export default function define( obj, name, options, options2 ){
-  let key;
 
   if( obj == null ){
     return;
@@ -25,19 +22,12 @@ export default function define( obj, name, options, options2 ){
     return;
   }
 
-  // define( window, { key: value }, options )
-  if( isObject( name ) ){
-    for( key in name ){
-      define( obj, key, name[ key ], options );
-    }
-    return;
-  }
-
   name.split(' ').forEach( name => {
     defineProperty(
-      obj, name, $assign(
-        true, {}, options, options2
+      obj, name, assign(
+        {}, options, options2
       )
     );
   });
+
 }

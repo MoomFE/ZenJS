@@ -1,0 +1,11 @@
+import './$add/index';
+import './$delete/index';
+import './$deleteValue/index';
+import './$concat/index';
+import './$findAll/index';
+import './$get/index';
+import './$set/index';
+import './$inArray/index';
+import './$move/index'
+import './$moveRange/index';
+import './Nativity/index';

@@ -1,5 +1,5 @@
 /**
- * 返回传入值
+ * 返回传入的第一个参数
  * @param {any} arg 
  * @returns {any} arg
  */

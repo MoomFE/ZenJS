@@ -1,5 +1,3 @@
-import Object from './index';
-
-const { assign } = Object;
+import assign from '../../polyfill/Object.assign';
 
 export default assign;

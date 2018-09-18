@@ -1,6 +1,6 @@
 {
   "name": "@moomfe/zenjs",
-  "version": "2.3.1",
+  "version": "3.0.0",
   "description": "ZenJS 是一个高性能的 JavaScript 工具库。",
   "main": "dist/zen.common.js",
   "module": "dist/zen.esm.js",
@@ -18,7 +18,7 @@
     "babel-plugin-transform-es2015-spread": "^6.22.0",
     "babel-plugin-transform-es2015-template-literals": "^6.22.0",
     "chai": "^4.1.2",
-    "extend": "^3.0.1",
+    "extend": "^3.0.2",
     "jquery": "^3.3.1",
     "mocha": "^5.2.0",
     "rollup": "^0.58.2",
@@ -26,11 +26,11 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-watch": "^4.3.1",
-    "uglify-js": "^3.4.4"
+    "uglify-js": "^3.4.8"
   },
   "scripts": {
     "build": "node scripts/build.js",
-    "watch": "node_modules/.bin/rollup -w -c scripts/config.js"
+    "watch": "node_modules/.bin/rollup -w -c scripts/watch.js"
   },
   "repository": {
     "type": "git",
@@ -45,10 +45,13 @@
     "prototype"
   ],
   "title": "Zen.js",
-  "author": "Zhang_Wei",
+  "author": "Wei Zhang",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/MoomFE/ZenJS/issues"
   },
-  "homepage": "https://github.com/MoomFE/ZenJS#readme"
+  "homepage": "https://github.com/MoomFE/ZenJS#readme",
+  "dependencies": {
+    "dayjs": "^1.7.5"
+  }
 }

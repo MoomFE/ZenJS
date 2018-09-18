@@ -12,7 +12,7 @@
 
 | Chrome | Firefox | Safari | Android | Edge | Internet Explorer |
 | :-     | :-      | :-     | :-      | :-   | :-                |
-| 23+    | 21+     | 6+     | 4.4+    | 12+  | 9+                |
+| 23+    | 21+     | 6+     | 4.4+    | 12+  | 10+               |
 
 
 <br>
@@ -27,11 +27,11 @@
 ### CDN
 ```html
   <!-- jsdelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@2.3.1/dist/zen.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@3.0.0/dist/zen.min.js"></script>
 ```
 ```html
   <!-- unpkg -->
-  <script src="https://unpkg.com/@moomfe/zenjs@2.3.1/dist/zen.min.js"></script>
+  <script src="https://unpkg.com/@moomfe/zenjs@3.0.0/dist/zen.min.js"></script>
 ```
 
 
@@ -48,94 +48,177 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 61.47kb | 16.19kb | \|  | UMD       | Browser |
-| zen.min.js         | 22.29kb | 8.37kb | \|  | UMD       | Browser |
-| zen.common.js      | 57.15kb | 15.90kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 57.13kb | 15.88kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 53.79kb | 14.67kb | \|  | UMD       | Browser |
+| zen.min.js         | 19.26kb | 7.08kb | \|  | UMD       | Browser |
+| zen.common.js      | 50.02kb | 14.41kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 50.01kb | 14.39kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
-### Slim : No DOM API
-|                    | Default | Gzip    |  -  | Module    | Use in  |
-| :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.slim.js        | 29.71kb | 8.25kb | \|  | UMD       | Browser |
-| zen.slim.min.js    | 10.96kb | 4.27kb | \|  | UMD       | Browser |
-| zen.common.slim.js | 27.49kb | 8.06kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.slim.js    | 27.47kb | 8.05kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+### Fat : Default And DOM API
+|                        | Default | Gzip    |  -  | Module    | Use in  |
+| :-                     | :-      | :-      | :-: | :-        | :-      |
+| zen.fat.js             | 83.93kb | 22.12kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 29.66kb | 10.72kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 78.19kb | 21.75kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 78.17kb | 21.73kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
 ## 参考
-### 更详细的使用方法及介绍请参照 [index.d.ts](https://github.com/MoomFE/ZenJS/blob/master/index.d.ts)
+### 更详细的使用方法及介绍请参照 [index.d.ts](./index.d.ts)
 
 
 - Array
   - $chunk
-  - $create
-  - $toArray
   - $copy
-  - $isArrayLike
-
-- Array.prototype
-  - $add
-  - $concat
-  - $concatTo
-  - $delete / $remove
-  - $deleteValue / $removeValue
+  - $create
   - $each
   - $equals
-  - $get
-  - $inArray
+  - $isArrayLike
+  - $toArray
+
+- Array.prototype
+  - $chunk
+  - $each
+  - $equals
+  - $add
+  - $delete / $remove
+  - $deleteValue / $removeValue
+  - $concat
+  - $concatTo
   - $find
   - $findIndex
+  - $findLast
+  - $findLastIndex
+  - $findAll
+  - $get
   - $set / $edit
+  - $inArray
   - $move
   - $moveRange
   - $push
-  - $unshift
   - $pop
+  - $unshift
   - $shift
+  - $splice
 
-- document
-  - $cookie
-  - $deleteCookie / $removeCookie
+- Object
+  - $assign
+  - $equals
+  - $each
+  - $isEmptyObject
+  - $isPlainObject
+
+- Object.prototype
+  - $assign
+  - $equals
+  - $each
+  - $get
+  - $set / $edit
+  - $delete / $remove
+  - $deleteValue / $removeValue
+  - $self
+
+- Number
+  - $isNumber
+
+- Number.prototype
+  - $add / $jia
+  - $subtract / $jian
+  - $multiply / $cheng
+  - $divide / $chu
+
+- Math
+  - $random
+  - $add / $jia
+  - $subtract / $jian
+  - $multiply / $cheng
+  - $divide / $chu
+  - $mean
+
+- String
+  - $random
+  - $someRandom
+
+- String.prototype
+  - $replaceAll
+  - $toCapitalize
+
+- Date
+  - $parse
+
+- Date.prototype
+  - $dayjs
+  - $isValid
+  - $year
+  - $month
+  - $date
+  - $day
+  - $hour
+  - $minute
+  - $second
+  - $millisecond
+  - $set
+  - $add
+  - $subtract
+  - $startOf
+  - $endOf
+  - $format
+  - $diff
+  - $daysInMonth
+  - $toArray
+  - $toObject
+  - $isBefore
+  - $isSame
+  - $isAfter
+
+- Window / Global
+  - $typeof
+  - $querystring
+    - stringify
+    - parse
+
+- Document ( Fat )
   - $id
   - $ready
-  - $query
-  - $queryFirst
 
-- Element.prototype
-  - \_index
-  - \_nodeName
-  - \_width
-  - \_height
-  - \_val / \_value
-  - \_html
+- Window ( Fat )
+  - $ready
+
+- Element.prototype ( Fat )
   - $addClass
-  - $deleteClass / $removeClass
+  - $removeClass / $deleteClass
   - $hasClass
   - $toggleClass
-  - $append
-  - $prepend
-  - $before
-  - $after
-  - $child / $children
-  - $first / $firstChild
-  - $last / $lastChild
   - $is
   - $not
-  - $query
-  - $queryFirst
-  - $delete / $remove
-  - $replaceWith / $replace
-  - $parent
-  - $parents
+  - $first / $firstChild
+  - $last / $lastChild
   - $next
   - $prev
   - $nextAll
   - $prevAll
+  - $child / $children
+  - $parent
+  - $parents
   - $siblings
-  - $selectText
+  - $append
+  - $prepend
+  - $appendTo
+  - $prependTo
+  - $before
+  - $after
+  - $delete / $remove
+  - $query / $find
+  - $queryFirst / $findFirst
+  - $replaceWith / $replace
+  - _nodeName
+  - _index
+  - _width
+  - _height
+  - _html
+  - _val / _value
 
-- EventTarget.prototype
+- EventTarget.prototype ( Fat )
   - $data
   - $hasData
   - $deleteData / $removeData
@@ -144,47 +227,9 @@
   - $off
   - $emit
 
-- Math
-  - $plus / $jia
-  - $minus / $jian
-  - $multiply / $cheng
-  - $divide / $chu
-  - $mean
-  - $random
-  - $randomPlus
-
-- Number
-  - $isNumber
-
-- Object
-  - $assign
-  - $create
-  - $each
-  - $equals
-  - $isEmptyObject
-  - $isPlainObject
-
-- Object.prototype
-  - $delete / $remove
-  - $deleteValue / $removeValue
-  - $get
-  - $set / $edit
-  - $self
-  - \_\_self\_\_
-
-- String
-  - $random
-  - $someRandom
-
-- String.prototype
-  - $toCapitalize
-  - $replaceAll
-
-- window
-  - $ready
-  - $typeof
-  - $querystring.stringify
-  - $querystring.parse
+- document ( Plugins )
+  - $cookie
+  - $deleteCookie / $removeCookie
 
 <br>
 

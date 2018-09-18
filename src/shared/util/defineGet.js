@@ -1,6 +1,5 @@
 import define from './define';
 import { defineGetPropertyOptions } from '../const/definePropertyOptions';
-import isObject from './isObject';
 
 
 /**
@@ -11,18 +10,10 @@ import isObject from './isObject';
  * @param {any} options 将被定义或修改的属性描述符
  */
 export default function defineGet( obj, name, get, options ){
-  let key;
-
-  if( isObject( name ) ){
-    for( key in name ){
-      defineGet( obj, key, name[ key ], options );
-    }
-    return name;
-  }
-
-  return define(
+  define(
     obj, name, { get },
     options || defineGetPropertyOptions
-  ),
-         get;
+  );
+
+  return get;
 }

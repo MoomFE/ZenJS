@@ -1,23 +1,55 @@
 /*!
- * Zen.js v2.3.1
+ * Zen.js v3.0.0
  * https://github.com/MoomFE/ZenJS
  * 
- * (c) 2018 Zhang_Wei
+ * (c) 2018 Wei Zhang
  * Released under the MIT License.
  */
 
-var isArray = Array.isArray;
-
 var defineProperty = Object.defineProperty;
 
+var StringProto = String.prototype;
+
+var BooleanProto = Boolean.prototype;
+
+var ArrayProto = Array.prototype;
+
+var FunctionProto = Function.prototype;
+
+[['String', StringProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
+  defineProperty(obj[1], "__is" + obj[0] + "__", {
+    value: true,
+    configurable: false, // 删除/定义
+    enumerable: false, // 枚举
+    writable: false // 写入
+  });
+});
+
+var isString = '__isString__';
+var isBoolean = '__isBoolean__';
+var isArray = '__isArray__';
+var isFunction = '__isFunction__';
+
+var keys = Object.keys;
+
 /**
- * 判断传入对象是否是 Object 类型, 并且不为 null
- * @param {any} obj 需要判断的对象
- * @returns {Boolean}
+ * 方法返回一个给定对象自身可枚举属性的键值对数组.
+ * Object.entries polyfill
  */
-function isObject(obj) {
-  return obj !== null && typeof obj === 'object';
-}
+var entries = Object.entries || function (obj) {
+
+  var index,
+      key;
+
+  var ownKeys = keys(obj);
+  var result = Array(index = ownKeys.length);
+
+  while (index--) {
+    result[index] = [key = ownKeys[index], obj[key]];
+  }
+
+  return result;
+};
 
 var ObjectProto = Object.prototype;
 
@@ -32,7 +64,7 @@ var hasOwnProperty = Object.hasOwnProperty;
  * @param {any} obj 需要判断的对象
  * @returns {Boolean}
  */
-function isFunction(obj) {
+function isFunction$1(obj) {
   return typeof obj === 'function';
 }
 
@@ -45,7 +77,7 @@ function isFunction(obj) {
 var fnToString = hasOwnProperty.toString,
     ObjectFunctionString = fnToString.call(Object);
 
-function $isPlainObject(obj) {
+function isPlainObject(obj) {
 
   if (!obj || toString.call(obj) !== '[object Object]') {
     return false;
@@ -59,91 +91,104 @@ function $isPlainObject(obj) {
 
   var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
 
-  return isFunction(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
+  return isFunction$1(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
 }
 
 var create = Object.create;
 
 /**
- * 判断传入对象是否是 Boolean 类型
- * @param {any} obj 需要判断的对象
- * @returns {Boolean}
+ * 将多个源对象的可枚举属性合并到第一个对象中
+ * @param {Boolean} shallow 是否使用浅拷贝模式, 类似于使用 Object.assign
  */
-function isBoolean(obj) {
-  return typeof obj === 'boolean';
-}
+function assign(shallow, args, parent, noProto) {
 
-/**
- * Transplant from jQuery
- * Version: 3.3.1
- * Homepage: https://jquery.com
- */
+  var length = args.length;
 
-function $assign() {
-
-  var i = 1,
-      length = arguments.length,
-
+  /** 首个源对象下标 */
+  var index = 1;
   /** 目标对象 */
-  target = arguments[0] || {},
-      options,
-      name,
-      src,
-      copy,
-      copyIsArray,
-      clone,
+  var target = args[0] || (args[0] !== null ? {} : (noProto = true, create(null)));
 
+  /** 当前源对象 */
+  var options;
+  /** 当前源对象所有可枚举属性名及属性 */
+  var ownEntries;
+  var ownLength,
+      ownIndex,
+      ownEntrie,
+      ownEntrieName;
+  var ownValue,
+      targetValue,
+      cloneValue;
 
-  /** 浅拷贝 */
-  shallow = false;
+  // 遍历参数
+  for (; index < length; index++) {
 
-  if (isBoolean(target)) {
-    shallow = target;
-    target = arguments[i] || {};
-    i++;
-  }
+    // 无用参数
+    if ((options = args[index]) == null) continue;
 
-  // 遍历所有的传入参数
-  for (; i < length; i++) {
+    // 所有可枚举属性
+    // [ [ key, value ], [ key, value ], [ key, value ] ]
+    ownEntries = entries(options);
+    ownLength = ownEntries.length;
+    ownIndex = 0;
 
-    // 判断当前传入参数是有效的
-    if ((options = arguments[i]) != null) {
+    for (; ownIndex < ownLength; ownIndex++) {
+      // [ key, value ]
+      ownEntrie = ownEntries[ownIndex];
+      ownEntrieName = ownEntrie[0];
+      ownValue = ownEntrie[1];
 
-      // 遍历传入参数的属性
-      for (name in options) {
+      // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
+      if (!shallow && ownValue && (isPlainObject(ownValue) || ownValue[isArray])) {
 
-        // 判断传入参数的属性是否和目标对象相同
-        // 是相同则跳出, 防止无限拷贝
-        if ((copy = options[name]) === target) {
-          continue;
-        }
-
-        src = target[name];
-
-        // 如果被该属性是原生对象或数组, 则进循环拷贝
-        if (!shallow && copy && ($isPlainObject(copy) || (copyIsArray = isArray(copy)))) {
-
-          // 目标对象的当前属性是否和该属性类型相同
-          // 不是的话, 则进行覆盖
-          if (copyIsArray) {
-            copyIsArray = false;
-            clone = src && isArray(src) ? src : [];
-          } else {
-            clone = src && $isPlainObject(src) ? src : this === true ? create(null) : {};
+        // 防御下面这种无限引用
+        // var target = {};
+        // var source = { infiniteLoop: target };
+        // 
+        // Object.$assign( target, source );
+        if (ownValue === target) continue;
+        // 防御下面这种无限引用
+        // var target = {};
+        // var source = {};
+        // target.source = source;
+        // source.target = target;
+        // 
+        // Object.$assign( {}, target )
+        else if (parent && parent === ownValue) {
+            if (ownLength === 1) return undefined;
+            continue;
           }
 
-          target[name] = $assign(clone, copy);
-        } else if (copy !== undefined) {
+        targetValue = target[ownEntrieName];
 
-          // 该属性不是原生对象和数组, 直接进行赋值
-          target[name] = copy;
+        if (ownValue[isArray]) {
+          cloneValue = targetValue && targetValue[isArray] ? targetValue : [];
+        } else {
+          cloneValue = targetValue && isPlainObject(targetValue) ? targetValue : noProto ? create(null) : {};
         }
+
+        if (assign(false, [cloneValue, ownValue], options, noProto) !== undefined) {
+          target[ownEntrieName] = cloneValue;
+        }
+      } else if (ownValue !== undefined || hasOwnProperty.call(target, ownEntrieName) === false) {
+        target[ownEntrieName] = ownValue;
       }
     }
   }
 
   return target;
 }
+
+/**
+ * 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象. 它将返回目标对象.
+ * Object.assign polyfill
+ */
+var assign$1 = Object.assign || function () {
+  return assign(true, arguments);
+};
+
+var isArray$1 = Array.isArray;
 
 /**
  * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
@@ -153,30 +198,21 @@ function $assign() {
  * @param {any} options2 将被定义或修改的属性描述符, 会覆盖前一个 options
  */
 function define(obj, name, options, options2) {
-  var key;
 
   if (obj == null) {
     return;
   }
 
   // define( [ window, document ], name, options )
-  if (isArray(obj) && obj instanceof Array) {
+  if (isArray$1(obj) && obj instanceof Array) {
     obj.forEach(function (obj) {
       return define(obj, name, options, options2);
     });
     return;
   }
 
-  // define( window, { key: value }, options )
-  if (isObject(name)) {
-    for (key in name) {
-      define(obj, key, name[key], options);
-    }
-    return;
-  }
-
   name.split(' ').forEach(function (name) {
-    defineProperty(obj, name, $assign(true, {}, options, options2));
+    defineProperty(obj, name, assign$1({}, options, options2));
   });
 }
 
@@ -199,19 +235,157 @@ var defineGetPropertyOptions = {
  * @param {any} options 将被定义或修改的属性描述符
  */
 function defineValue(obj, name, value, options) {
-  var key;
+  define(obj, name, { value: value }, options || definePropertyOptions);
 
-  if (isObject(name)) {
-    for (key in name) {
-      defineValue(obj, key, name[key], options);
-    }
-    return name;
-  }
-
-  return define(obj, name, { value: value }, options || definePropertyOptions), value;
+  return value;
 }
 
-var ArrayProto = Array.prototype;
+/**
+ * 判断传入对象是否是 String 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
+function isString$1(obj) {
+  return typeof obj === 'string';
+}
+
+/**
+ * 判断传入对象是否是 Number 类型, 并且不为 NaN 和 Infinity
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
+function isNumber(obj) {
+  return typeof obj === 'number' && obj === obj && isFinite(obj);
+}
+
+/**
+ * 判断传入的对象是否是数字
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
+function $isNumber(obj) {
+  if (isNumber(obj)) return true;
+  return isString$1(obj) && !isNaN(obj - parseFloat(obj));
+}
+
+/**
+ * 快捷创建数组
+ * @param length 需要创建的数组的长度
+ * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index, 然后将方法的返回值填充到数组中
+ * @param isInsert 若值为真, 即使二个参数 insert 是方法, 都会直接进行插入
+ */
+function create$1(length, insert, isInsert) {
+
+  if (!isNumber(length) || length < 1) {
+    return [];
+  }
+
+  var i = 0;
+  var result = Array(length);
+
+  if (!isInsert && isFunction$1(insert)) {
+    for (; i < length; i++) {
+      result[i] = insert(i);
+    }
+  } else {
+    for (; i < length; i++) {
+      result[i] = insert;
+    }
+  }
+
+  return result;
+}
+
+var ceil = Math.ceil;
+
+/**
+ * 创建一个新的数组, 将传入数组按照指定的长度进行分割, 如果数组不能均分, 则最后的数组中是数组剩余的元素
+ * @param array 需要进行分割的数组
+ * @param size 分割的长度
+ */
+function chunk(array, size) {
+  var length;
+
+  if (!array || size < 1 || !(length = array.length)) {
+    return [];
+  }
+
+  return create$1(ceil(length / size), function (index) {
+    var start = index * size;
+    return array.slice(start, start + size);
+  });
+}
+
+defineValue(Array, '$chunk', chunk);
+
+defineValue(ArrayProto, '$chunk', function (size) {
+  return chunk(this, size);
+});
+
+var slice = ArrayProto.slice;
+
+defineValue(Array, '$copy', function (source, array) {
+
+  if (!source || !source.length) {
+    return [];
+  }
+
+  if (isArray$1(array)) {
+    return array.concat(source);
+  }
+
+  return slice.call(source);
+});
+
+defineValue(Array, '$create', create$1);
+
+function $each(array, callback) {
+
+  if (!array || !array.length || !isFunction$1(callback)) {
+    return array;
+  }
+
+  var length = array.length;
+  var index = 0,
+      value;
+
+  for (; index < length; index++) {
+    value = array[index];
+
+    if (callback.call(value, value, index, array) === false) {
+      break;
+    }
+  }
+
+  return array;
+}
+
+defineValue(Array, '$each', $each);
+
+defineValue(ArrayProto, '$each', function (callback) {
+  return $each(this, callback);
+});
+
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+function isArrayLike(obj) {
+
+  if (obj == null || obj[isFunction]) {
+    return false;
+  }
+
+  if (obj[isArray]) {
+    return true;
+  }
+
+  var length = obj.length;
+
+  if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
+    return true;
+  }
+
+  return false;
+}
 
 /**
  * 获取方法指定位参数, 若未传入参数, 则取默认值
@@ -226,36 +400,160 @@ function parametersDefault(args, index, defaultValue) {
   if (args.length > index && (arg = args[index]) !== undefined) {
     return arg;
   }
+
   return defaultValue;
 }
 
-var slice = ArrayProto.slice;
-
 /**
- * 判断传入对象是否是 String 类型
- * @param {any} obj 需要判断的对象
+ * 判断传入的两个参数是否相等 ( == )
+ * @param {any} one 需要判断的第一参数
+ * @param {any} two 需要判断的第二参数
  * @returns {Boolean}
  */
-function isString(obj) {
-  return typeof obj === 'string';
+function equals(one, two) {
+  return one == two;
 }
+
+/**
+ * 判断传入的两个参数是否全等 ( === )
+ * @param {any} one 需要判断的第一参数
+ * @param {any} two 需要判断的第二参数
+ * @returns {Boolean}
+ */
+function congruence(one, two) {
+  return one === two;
+}
+
+/**
+ * 返回一个可以判断两个值的方法.
+ * 如果传入值为 Function 类型, 说明是用户传的方法, 则直接返回;
+ * 如果传入值不为 Function 类型, 则值是真值, 则返回全等判断方法, 否则返回双等判断方法
+ * 
+ * @param {*} predicate 
+ */
+function getPredicate(predicate) {
+  if (isFunction$1(predicate)) {
+    return predicate;
+  }
+  return predicate ? congruence : equals;
+}
+
+function autoGetPredicate(args, value, predicateIndex, predicate) {
+
+  if (args.length > 1) {
+    predicate = getPredicate(parametersDefault(args, predicateIndex, true));
+  } else if (isFunction$1(value)) {
+    predicate = value;
+    value = undefined;
+  } else {
+    predicate = congruence;
+  }
+
+  return [value, predicate];
+}
+
+function equals$1(array, array2) {
+
+  // 可比较数组及类数组的内容
+  if (!(isArrayLike(array) && isArrayLike(array2))) {
+    return false;
+  }
+
+  var length = array.length;
+
+  if (length !== array2.length) {
+    return false;
+  }
+
+  var predicate = getPredicate(parametersDefault(arguments, 2, true));
+
+  for (var index = 0; index < length; index++) {
+    if (!predicate(array[index], array2[index])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+defineValue(Array, '$equals', equals$1);
+
+defineValue(ArrayProto, '$equals', function (obj, predicate) {
+  return equals$1(this, obj, predicate);
+});
+
+defineValue(Array, '$isArrayLike', isArrayLike);
 
 var reHasUnicode = /[\u200d\ud800-\udfff\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff\ufe0e\ufe0f]/;
 
 var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udfff][\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]?|[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe2f\u20d0-\u20ff]|\ud83c[\udffb-\udfff])?)*/g;
 
+/**
+ * 判断传入对象是否是 Map 对象
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
+function isMap(obj) {
+  return isFunction$1(Map) && obj instanceof Map;
+}
+
+/**
+ * 判断传入对象是否是 Set 对象
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
+function isSet(obj) {
+  return isFunction$1(Set) && obj instanceof Set;
+}
+
+/**
+ * 将 Map 或 Set 类型转换为数组类型,
+ * 执行到这之前必须确定传进来的是 Map 或 Set 类型
+ * @param { Map | Set } map 
+ */
+function mapSetToArray(map) {
+  var result = [];
+
+  if (map instanceof Map) {
+    map.forEach(function (key, value) {
+      return result.push([value, key]);
+    });
+  } else {
+    map.forEach(function (value) {
+      return result.push(value);
+    });
+  }
+
+  return result;
+}
+
 function $toArray(value) {
-  if (!value) {
+
+  // 不可转为数组的, 直接返回空数组
+  if (!value || value[isBoolean]) {
     return [];
   }
-  if (isString(value)) {
+
+  // 是字符串类型
+  if (value[isString]) {
     if (reHasUnicode.test(value)) {
       return value.match(reUnicode) || [];
     } else {
       return value.split('');
     }
   }
-  return slice.call(value);
+
+  // 是数组类型, 那就直接返回一个副本
+  if (isArrayLike(value)) {
+    return slice.call(value);
+  }
+
+  // 转换 Map, Set 类型
+  if (isMap(value) || isSet(value)) {
+    return mapSetToArray(value);
+  }
+
+  return [];
 }
 
 defineValue(Array, '$toArray', $toArray);
@@ -271,20 +569,25 @@ function parametersRest(args) {
   var length = args.length;
 
   if (length > index) {
-    return $toArray(args).$get(index, length);
+    return slice.call(args, index, length);
   }
+
   return [];
 }
 
 /**
- * 将一个传入的数组的下标修复到正确的位置上
+ * 将一个传入的数组的下标修复到正确的位置上,
+ * 下标不是数字则返回 0,
+ * 下标为负数, 则计算出在数组中应有的下标,
+ * 下标为负数且计算完后的下标依旧小于 0, 则返回 0
+ * 
  * @param {Array} array 原数组
  * @param {Number} index 传入的下标, 可为负数
  * @param {Number} add 额外值
  * @returns {Number}
  */
 function fixArrayIndex(array, index, add) {
-  if (index < 0 && (index = array.length + index + (add || 0)) < 0) {
+  if (!$isNumber(index) || index < 0 && (index = array.length + Number(index) + (add || 0)) < 0) {
     index = 0;
   }
   return index;
@@ -292,11 +595,15 @@ function fixArrayIndex(array, index, add) {
 
 function $add(self, index, args) {
 
-  var len = args.length;
+  var length = args.length;
+
+  if (!length) {
+    return self;
+  }
 
   index = fixArrayIndex(self, index, 1);
 
-  for (var i = 0; i < len; i++) {
+  for (var i = 0; i < length; i++) {
     self.splice(index++, 0, args[i]);
   }
 
@@ -307,47 +614,50 @@ defineValue(ArrayProto, '$add', function (index) {
   return $add(this, index, parametersRest(arguments, 1));
 });
 
-function $create(length, insert) {
-  var i = 0;
-  var result = Array(length >>= 0);
+defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted) {
 
-  if (isFunction(insert)) {
-    for (; i < length; i++) {
-      result[i] = insert(i);
-    }
-  } else {
-    for (; i < length; i++) {
-      result[i] = insert;
+  var length = this.length;
+
+  if ((index = fixArrayIndex(this, index)) >= length) {
+    index = length - 1;
+  }
+
+  var num = parametersDefault(arguments, 1, 1);
+  var deleted = this.splice(index, num);
+
+  return returnDeleted ? deleted : this;
+});
+
+defineValue(ArrayProto, '$deleteValue $removeValue', function (_value) {
+
+  var length = this.length,
+      index;
+
+  if (!length) {
+    return this;
+  }
+
+  var args = autoGetPredicate(arguments, _value, 1);
+  var value = args[0];
+  var predicate = args[1];
+
+  for (index = 0; index < length;) {
+    if (predicate(this[index], value)) {
+      this.$delete(index);
+      length--;
+    } else {
+      index++;
     }
   }
 
-  return result;
-}
-
-defineValue(Array, '$create', $create);
-
-var ceil = Math.ceil;
-
-function $chunk(array, size) {
-  var length;
-
-  if (!array || size < 1 || !(length = array.length)) {
-    return [];
-  }
-
-  return $create(ceil(length / size), function (index) {
-    var start = index * size;
-    return array.slice(start, start + size);
-  });
-}
-
-defineValue(Array, '$chunk', $chunk);
+  return this;
+});
 
 defineValue(ArrayProto, '$concat', function () {
   var _this = this;
 
-  $toArray(arguments).forEach(function (arg) {
-    $add(_this, -1, isArray(arg) ? arg : [arg]);
+  slice.call(arguments).forEach(function (arg) {
+    $add(_this, -1, isArray$1(arg) ? arg : [arg]);
   });
 
   return this;
@@ -368,7 +678,7 @@ defineValue(ArrayProto, '$concatTo', function (index) {
   index = fixArrayIndex(this, index, 1);
 
   args.forEach(function (arg) {
-    $add(_this2, increasedLength + index, isArray(arg) ? arg : [arg]);
+    $add(_this2, increasedLength + index, isArray$1(arg) ? arg : [arg]);
     // 用于修正 index, 后续的 arg 需要插入到前面的 arg 后面
     increasedLength = _this2.length - originLength;
   });
@@ -376,249 +686,119 @@ defineValue(ArrayProto, '$concatTo', function (index) {
   return this;
 });
 
-defineValue(Array, '$copy', function (source, array) {
-  return array ? array.concat(source) : source.slice();
-});
-
-defineValue(ArrayProto, '$delete $remove', function (index, noop, returnDeleted) {
-  var num = parametersDefault(arguments, 1, 1);
-  var deleted = this.splice(index, num);
-
-  return returnDeleted ? deleted : this;
-});
-
 /**
- * 判断传入的两个参数是否全等
- * @param {any} one 需要判断的第一参数
- * @param {any} two 需要判断的第二参数
- * @returns {Boolean}
+ * @param {Array} self 进行遍历的数组
+ * @param {Number} count 保存的查找结果数量
+ * @param {Boolean} reverse 是否反向查询
+ * @param {IArguments} args 来源方法的 arguments
  */
-function congruence(one, two) {
-  return one === two;
-}
+function findIndex(self, count, reverse, args, predicate, obj, fromIndex) {
 
-/**
- * 判断传入的两个参数是否相等
- * @param {any} one 需要判断的第一参数
- * @param {any} two 需要判断的第二参数
- * @returns {Boolean}
- */
-function equals(one, two) {
-  return one == two;
-}
-
-defineValue(ArrayProto, '$deleteValue $removeValue', function (value) {
-  var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
-  var index = 0,
-      length = this.length;
-
-  for (; index < length;) {
-    if (isEqual(this[index], value)) {
-      this.$delete(index);
-      length--;
-    } else {
-      index++;
-    }
-  }
-
-  return this;
-});
-
-defineValue(ArrayProto, '$each', function (callback) {
-  var index = 0,
-      length = this.length,
-      value;
-
-  for (; index < length; index++) {
-    value = this[index];
-
-    if (callback.call(value, value, index, this) === false) {
-      break;
-    }
-  }
-
-  return this;
-});
-
-defineValue(ArrayProto, '$equals', function (obj) {
-
-  if (!obj) {
-    return false;
-  }
-
-  var index = 0,
-      length = this.length;
-
-  if (length !== obj.length) {
-    return false;
-  }
-
-  var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
-
-  for (; index < length; index++) {
-    if (!isEqual(this[index], obj[index])) {
-      return false;
-    }
-  }
-
-  return true;
-});
-
-/**
- * 判断一个对象是否是引用类型
- * @param {*} obj 需要判断的对象
- */
-function isReferenceType(obj) {
-  var type = typeof obj;
-  return type === 'object' || type === 'function';
-}
-
-/**
- * 判断传入对象是否是 Number 类型
- * @param {any} obj 需要判断的对象
- * @returns {Boolean}
- */
-function isNumber(obj) {
-  return typeof obj === 'number';
-}
-
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-function $isArrayLike(obj) {
-  if (obj != null && !isFunction(obj)) {
-    var length = obj.length;
-    if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
-      return true;
-    }
-  }
-  return false;
-}
-
-defineValue(Array, '$isArrayLike', $isArrayLike);
-
-var keys = Object.keys;
-
-var stringify = JSON.stringify;
-
-function $equals(obj, obj2, parent) {
-  var index,
-      length,
-      key,
-      oIsArray,
-      oString;
-
-  if (obj === obj2) {
-    return true;
-  }
-
-  if (!obj || parent && parent === obj) {
-    return false;
-  } else if (toString.call(obj) !== toString.call(obj2)) {
-    return false;
-  } else if (!isReferenceType(obj)) {
-    return false;
-  } else if ($isPlainObject(obj) || (oIsArray = isArray(obj))) {
-    if (oIsArray) {
-      if (obj.length !== obj2.length) {
-        return false;
-      }
-      for (index = 0, length = obj.length; index < length; index++) {
-        if (!$equals(obj[index], obj2[index], obj)) {
-          return false;
-        }
-      }
-    } else {
-      if (keys(obj).length !== keys(obj2).length) {
-        return false;
-      }
-      for (key in obj) {
-        if (!$equals(obj[key], obj2[key], obj)) {
-          return false;
-        }
-      }
-    }
-  } else if (isFunction(obj.toString) && !(oString = obj.toString()).substr(0, 8) === '[object ') {
-    if (obj2.toString() !== oString) {
-      return false;
-    }
-  } else {
-    try {
-      if (stringify(obj) !== stringify(obj2)) {
-        return false;
-      }
-    } catch (error) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-defineValue(Object, '$equals', $equals);
-
-defineValue(ArrayProto, '$findIndex', function (key) {
-  return findIndex(this, key, arguments);
-});
-
-function findIndex(self, key, args) {
   var length;
 
-  if (key == null || !(length = self.length)) {
+  // 传入的内容不可检索或者数组为空
+  if (predicate == null || !(length = self.length)) {
     return -1;
   }
 
-  // 第一个参数不是数组或对象
-  // 将所有传入参数转为数组
-  if (!isReferenceType(key)) {
-    key = $toArray(args);
+  /** 遍历 */
+  var traversal;
+  /** 首个参数是否是方法类型 */
+  var predicateIsFunction = predicate[isFunction];
+
+  // 首个参数是方法或布尔值
+  if (predicateIsFunction || predicate[isBoolean]) {
+
+    // $findIndex( Function, fromIndex )
+    // 传入的方法是用作数组遍历时的手动进行检测
+    if (predicateIsFunction && (args.length === 1 || isNumber(obj))) {
+      traversal = predicate;
+      fromIndex = obj || (reverse ? -1 : 0);
+    }
+    // $findIndex( Function | Boolean, key, value, fromIndex )
+    // $findIndex( Function | Boolean, Array, fromIndex )
+    // $findIndex( Function | Boolean, Object, fromIndex )
+    // 传入的方法是用作值比对时进行检测
+    else {
+        // 正常参数校正 index 为从 1 的地方开始
+        args = parametersRest(args, 1);
+        // 指定值比对时的方法
+        if (!predicateIsFunction) {
+          predicate = predicate ? congruence : equals;
+        }
+      }
+  }
+  // $findIndex( key, value, fromIndex )
+  // $findIndex( Array, fromIndex )
+  // $findIndex( Object, fromIndex )
+  else {
+      // 首个参数不是对比的方法, 那么校正 obj 和 fromIndex 的位置
+      obj = args[0];
+      fromIndex = args[1];
+      // 默认使用全等的比较方法
+      predicate = congruence;
+    }
+
+  // 指定值遍历时的检测方法
+  if (!traversal) {
+
+    // 第一个参数不是数组或对象, 视为传入 key, value 进行匹配
+    if (typeof obj !== 'object') {
+      obj = fromIndex === undefined ? [obj] : [obj, fromIndex];
+      fromIndex = args[2];
+    }
+
+    // 将类数组类型的按照键值对进行分割
+    // $findIndex( [ 'key', 'value', 'key2', 'value2' ] ) -> [ [ 'key', 'value' ], [ 'key2', 'value2' ] ]
+    if (isArrayLike(obj)) {
+      obj = chunk(obj, 2);
+    }
+
+    traversal = getTraversal(obj, predicate);
   }
 
-  // 将类数组类型的按照键值对进行分割
-  if ($isArrayLike(key)) {
-    key = $chunk(key, 2);
-  }
-
-  // 获取检测方法
-  var predicate = getPredicate(key);
+  /** 初始开始遍历的 index */
+  var index = isNumber(fromIndex) ? fixArrayIndex(self, fromIndex) : reverse ? length - 1 : 0;
+  /** 值, 缓存 */
+  var value;
+  /** 每次自增的值 */
+  var add = reverse ? -1 : 1;
+  /** 返回值 */
+  var result = [];
 
   // 遍历数组内的对象, 交给检测方法进行检测
-  for (var index = 0; index < length; index++) {
-    if (predicate(self[index])) {
-      return index;
+  for (; index >= 0 && index <= length - 1; index += add) {
+    if (traversal(value = self[index]) && result.$push([index, value]).length >= count) {
+      return result;
     }
   }
-  return -1;
+
+  return result;
 }
 
-function getPredicate(key) {
-  // fn array object
-  // 用户传的检测方法
-  if (isFunction(key)) {
-    return key;
-  }
-
-  var keyIsArray = isArray(key);
+function getTraversal(obj, predicate) {
+  var objIsArray = obj[isArray];
 
   return function (object) {
     if (object == null || !keys(object).length) {
       return false;
     }
-    return (keyIsArray ? checkArray : checkObject)(key, object);
+    return (objIsArray ? checkArray : checkObject)(obj, object, predicate);
   };
 }
 
-function checkArray(source, object) {
-  var index = 0,
-      chunk,
-      key;
+function checkArray(source, object, predicate) {
   var length = source.length;
+  var index = 0,
+      chunk$$1,
+      key;
 
   // 遍历检测对象
   for (; index < length; index++) {
-    chunk = source[index];
-    key = chunk[0];
+    chunk$$1 = source[index];
+    key = chunk$$1[0];
 
-    if (!(key in object && (chunk.length === 1 || $equals(chunk[1], object[key])))) {
+    if (!(key in object && (chunk$$1.length === 1 || predicate(chunk$$1[1], object[key])))) {
       return false;
     }
   }
@@ -626,11 +806,17 @@ function checkArray(source, object) {
   return true;
 }
 
-function checkObject(source, object) {
-  var key;
+function checkObject(source, object, predicate) {
+  var sKeys = keys(source),
+      sLength = sKeys.length;
+  var index = 0,
+      key;
 
-  for (key in source) {
-    if (!(key in object && $equals(source[key], object[key]))) {
+  // 遍历检测对象
+  for (; index < sLength; index++) {
+    key = sKeys[index];
+
+    if (!(key in object && predicate(source[key], object[key]))) {
       return false;
     }
   }
@@ -638,74 +824,138 @@ function checkObject(source, object) {
   return true;
 }
 
-defineValue(ArrayProto, '$find', function (key) {
-  var index = findIndex(this, key, arguments);
+defineValue(ArrayProto, '$find', function (predicate, obj, fromIndex) {
+  var result = findIndex(this, 1, false, arguments, predicate, obj, fromIndex);
+  return (result[0] || [])[1];
+});
 
-  return index === -1 ? null : this[index];
+defineValue(ArrayProto, '$findIndex', function (predicate, obj, fromIndex) {
+  var result = findIndex(this, 1, false, arguments, predicate, obj, fromIndex);
+  return result.length ? result[0][0] : -1;
+});
+
+defineValue(ArrayProto, '$findLast', function (predicate, obj, fromIndex) {
+  var result = findIndex(this, 1, true, arguments, predicate, obj, fromIndex);
+  return (result[0] || [])[1];
+});
+
+defineValue(ArrayProto, '$findLastIndex', function (predicate, obj, fromIndex) {
+  var result = findIndex(this, 1, true, arguments, predicate, obj, fromIndex);
+  return result.length ? result[0][0] : -1;
+});
+
+defineValue(ArrayProto, '$findAll', function (predicate, obj, fromIndex) {
+  return findIndex(this, Infinity, false, arguments, predicate, obj, fromIndex).map(function (arr) {
+    return arr[1];
+  });
 });
 
 defineValue(ArrayProto, '$get', function () {
-  var index = fixArrayIndex(this, parametersDefault(arguments, 0, 0));
+  var args = arguments;
+  var index = fixArrayIndex(this, parametersDefault(args, 0, 0));
 
-  if (arguments.length <= 1) {
+  if (args.length <= 1) {
     return this[index];
   }
 
-  var num = parametersDefault(arguments, 1, 1);
+  var num = parametersDefault(args, 1, 1);
 
   return this.slice(index, num + index);
 });
 
-defineValue(ArrayProto, '$inArray', function (obj) {
-  var i = 0,
-      len = this.length;
-
-  for (; i < len; i++) {
-    if (this[i] == obj) return true;
-  }return false;
-});
-
-defineValue(ArrayProto, '$move', function (from, to) {
-  this.splice(to < 0 ? this.length + to : to, 0, this.splice(from, 1)[0]);
-  return this;
-});
-
-defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
-  return $add(this, toIndex, this.splice(start, moveCount));
-});
-
-// defineValue( ArrayProto, '$moveRange2', function( start, moveCount, toIndex ){
-
-// });
-
-'push_unshift_pop_shift'.split('_').forEach(function (key) {
-  defineValue(ArrayProto, "$" + key, function () {
-    return this[key].apply(this, arguments), this;
-  });
-});
+/**
+ * 判断传入对象是否是 Object 类型, 并且不为 null
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
+function isObject(obj) {
+  return obj !== null && typeof obj === 'object';
+}
 
 defineValue(ArrayProto, '$set $edit', function (index, value) {
+  var _this = this;
 
-  if (typeof index === 'object') {
-    var key;
-    for (key in index) {
-      $set(this, key, index[key]);
-    }
+  if (isObject(index)) {
+    entries(index).forEach(function (arr) {
+      return set(_this, arr[0], arr[1]);
+    });
   } else {
-    $set(this, index, value);
+    set(this, index, value);
   }
 
   return this;
 });
 
-function $set(array, index, value) {
+function set(array, index, value) {
+  var length = array.length;
 
-  index = fixArrayIndex(array, index);
+  if ((index = fixArrayIndex(array, index)) >= length) {
+    index = length - 1;
+  }
 
   array.splice(index, 1, value);
 }
 
-var parse = JSON.parse;
+defineValue(ArrayProto, '$inArray', function (_value) {
+
+  var index,
+      length = this.length;
+
+  if (!length) {
+    return false;
+  }
+
+  var args = autoGetPredicate(arguments, _value, 1);
+  var value = args[0];
+  var predicate = args[1];
+
+  for (index = 0; index < length; index++) {
+    if (predicate(this[index], value)) {
+      return true;
+    }
+  }
+
+  return false;
+});
+
+defineValue(ArrayProto, '$move', function (from, to) {
+  this.splice(fixArrayIndex(this, to), 0, this.splice(from, 1)[0]);
+  return this;
+});
+
+defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
+  return $add(this, fixArrayIndex(this, toIndex), this.splice(start, moveCount));
+});
+
+['push', 'pop', 'unshift', 'shift', 'splice'].forEach(function (key) {
+  defineValue(ArrayProto, '$' + key, function () {
+    this[key].apply(this, arguments);
+    return this;
+  });
+});
+
+/**
+ * 判断传入对象是否是 Boolean 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
+function isBoolean$1(obj) {
+  return typeof obj === 'boolean';
+}
+
+defineValue(Object, '$assign', function (shallow) {
+  if (isBoolean$1(shallow)) {
+    return assign(shallow, parametersRest(arguments, 1));
+  }
+  return assign(false, arguments);
+});
+
+defineValue(ObjectProto, '$assign', function (shallow) {
+  if (isBoolean$1(shallow)) {
+    return assign(shallow, [this].concat(parametersRest(arguments, 1)));
+  }
+  return assign(false, [this].concat(slice.call(arguments)));
+});
 
 /**
  * @type {Boolean} 当前是否是浏览器环境
@@ -713,1450 +963,357 @@ var parse = JSON.parse;
 var inBrowser = typeof window !== 'undefined';
 
 /**
- * Transplant from JavaScript Cookie
- * Version: 2.2.0
- * Homepage: https://github.com/js-cookie/js-cookie
+ * @type {Element}
  */
+var DomElement = inBrowser ? window.Element : undefined;
 
-var rDecode = /(%[0-9A-Z]{2})+/g;
-
-function decode(s) {
-  return s.replace(rDecode, decodeURIComponent);
-}
-
-var rObject = /^[\{\[]/;
-var rDecodeValue = /%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g;
-var rDecodeKey = /%(23|24|26|2B|5E|60|7C)/g;
-var rBrackets = /[\(\)]/g;
-
-function set(key, value, attributes) {
-
-  attributes = $assign(true, { path: '/' }, attributes);
-
-  if (isNumber(attributes.expires)) {
-    attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
-  }
-
-  // We're using "expires" because "max-age" is not supported by IE
-  attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
-
-  try {
-    var result = stringify(value);
-
-    if (rObject.test(result)) {
-      value = result;
-    }
-  } catch (error) {}
-
-  value = encodeURIComponent(String(value)).replace(rDecodeValue, decodeURIComponent);
-
-  key = encodeURIComponent(String(key)).replace(rDecodeKey, decodeURIComponent).replace(rBrackets, escape);
-
-  var stringifiedAttributes = '';
-  var attributeName;
-
-  for (attributeName in attributes) {
-
-    if (!attributes[attributeName]) {
-      continue;
-    }
-
-    stringifiedAttributes += '; ' + attributeName;
-
-    if (attributes[attributeName] === true) {
-      continue;
-    }
-
-    stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
-  }
-
-  return document.cookie = key + '=' + value + stringifiedAttributes;
-}
-
-function get(key, json) {
-
-  var jar = {};
-  var cookies = document.cookie ? document.cookie.split('; ') : [];
-  var length = cookies.length;
-  var i = 0,
-      parts,
-      cookie,
-      name;
-
-  for (; i < length; i++) {
-    parts = cookies[i].split('=');
-    cookie = parts.slice(1).join('=');
-
-    if (!json && cookie.charAt(0) === '"') {
-      cookie = cookie.slice(1, -1);
-    }
-
-    try {
-      name = decode(parts[0]);
-      cookie = decode(cookie);
-
-      if (json) {
-        try {
-          cookie = parse(cookie);
-        } catch (error) {}
-      }
-
-      jar[name] = cookie;
-
-      if (key === name) {
-        break;
-      }
-    } catch (error) {}
-  }
-
-  // key is String or undefined
-  return key !== undefined ? jar[key] : jar;
-}
-
-if (inBrowser) {
-  defineValue(document, {
-    $cookie: function (key, value, attributes) {
-      var length = arguments.length;
-
-      // getter JSON
-      if (!length) {
-        return get(key, true);
-      }
-      // getter one
-      if (length === 1) {
-        return get(key || key + '', false);
-      }
-      // setter
-      return set(key, value, attributes);
-    },
-
-
-    '$deleteCookie $removeCookie': function (key, attributes) {
-      set(key, '', $assign(true, attributes, { expires: -1 }));
-    }
-
-  });
-}
-
-inBrowser && defineValue(document, '$id', document.getElementById);
-
-var addEventListener = 'addEventListener';
-var addEventListenerPrivate = '__ZENJS_EVENT_ADD__';
-
-var removeEventListener = 'removeEventListener';
-var removeEventListenerPrivate = '__ZENJS_EVENT_REMOVE__';
-
-inBrowser && defineValue(document, '$ready', function (func, data) {
-  if (this.readyState === 'complete' || this.readyState !== 'loading' && !this.documentElement.doScroll) return func.apply(window, data);
-  this[addEventListener]('DOMContentLoaded', function callback(event) {
-    this.removeEventListener(event.type, callback);
-    func.apply(window, data);
-  });
-});
-
-var ElementProto = inBrowser ? Element.prototype : undefined;
-
-inBrowser && define(ElementProto, '_html', {
-  get: function () {
-    return this.innerHTML;
-  },
-  set: function (value) {
-    this.innerHTML = value;
-  }
-});
-
-var min = Math.min;
-
-inBrowser && define(ElementProto, '_index', {
-  get: function () {
-    return this.parentElement ? this.$prevAll().length : -1;
-  },
-  set: function (toIndex) {
-    var parent = this.parentElement;
-
-    if (parent == null) {
-      return;
-    }
-
-    var siblings = parent.children;
-    var selfIndex = this._index;
-    var currentIndex = min(siblings.length - 1, toIndex);
-
-    if (selfIndex === currentIndex) {
-      return;
-    }
-
-    var currentElem = siblings[currentIndex];
-
-    parent.insertBefore(this, selfIndex < currentIndex ? currentElem.nextElementSibling : currentElem);
-  }
-});
+var rType = /^\[object\s([^\]]+)]$/;
 
 /**
- * 在一个对象上定义/修改一个新属性的 get 描述符
- * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
- * @param {String} name 要定义或修改的属性的名称
- * @param {Function} get 将被定义或修改的 get 描述符
- * @param {any} options 将被定义或修改的属性描述符
+ * 判断一个对象是否是引用类型
+ * @param {any} obj 需要判断的对象
  */
-function defineGet(obj, name, get, options) {
-  var key;
-
-  if (isObject(name)) {
-    for (key in name) {
-      defineGet(obj, key, name[key], options);
-    }
-    return name;
-  }
-
-  return define(obj, name, { get: get }, options || defineGetPropertyOptions), get;
+function isReferenceType(obj) {
+  var type = typeof obj;
+  return type === 'object' || type === 'function';
 }
 
-inBrowser && defineGet(ElementProto, '_nodeName', function () {
-  return this.nodeName.toLowerCase();
-});
+function equals$2(obj, obj2, parent, parent2) {
 
-var rreturn = /\r/g;
-
-var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
-
-/**
- * Transplant from jQuery
- * Version: 3.3.1
- * Homepage: https://jquery.com
- */
-
-inBrowser && define(ElementProto, '_val _value', {
-  get: function () {
-    // 兼容性处理
-    var hooks = valHooks[this.type] || valHooks[this._nodeName];
-    var result;
-
-    if (hooks && 'get' in hooks && (result = hooks.get(this)) !== undefined) {
-      return result;
-    }
-
-    if (isString(result = this.value)) {
-      return result.replace(rreturn, '');
-    }
-
-    return result == null ? '' : result;
-  },
-  set: function (value) {
-
-    if (value == null) {
-      value = '';
-    } else if (isNumber(value)) {
-      value += '';
-    } else if (isArray(value)) {
-      value = value.map(function (val) {
-        return val == null ? '' : val + '';
-      });
-    }
-
-    var hooks = valHooks[this.type] || valHooks[this._nodeName];
-
-    if (!hooks || !('set' in hooks) || hooks.set(this, value) === undefined) {
-      this.value = value;
-    }
+  if (obj === obj2) {
+    return true;
   }
-});
 
-var valHooks = {
-  option: {
-    get: function (elem) {
-      var value = elem.getAttribute('value');
-      return value == null ? (elem.textContent.match(rnothtmlwhite) || []).join(' ') : value;
+  // 其中一个是假值 ( undefined, null, false, '', 0, NaN )
+  if (!obj || !obj2) {
+    // 对付 NaN 用的, 要不然直接就返回 false 了
+    return obj !== obj && obj2 !== obj2;
+  }
+
+  var oString = toString.call(obj);
+
+  // 实际类型不一样 ( RegExp, Element, ... )
+  // 比如上面两种类型都是 object, 但是实际上却是不一样的
+  // 过了这一步骤, 类型比对时就只需要比对一个值, 因为类型是完全相同的
+  if (oString !== toString.call(obj2)) {
+    return false;
+  }
+
+  // 非引用类型 ( String, Boolean, Number )
+  if (!isReferenceType(obj)) {
+    return false;
+  }
+
+  // 对于 object 更加细致点的比对 ( Map, Set, ... )
+  // 它们两都是 [object Object]
+  if (obj.constructor !== obj2.constructor) {
+    return false;
+  }
+
+  // 是数组类型或类数组类型 ( Array, LikeArray )
+  if (isArrayLike(obj)) {
+    return types.array(obj, obj2, parent, parent2);
+  }
+
+  // 原始对象类型 ( JSON )
+  if (isPlainObject(obj)) {
+    return types.object(obj, obj2, parent, parent2);
+  }
+
+  var oType = oString.match(rType)[1].toLowerCase();
+
+  // 有针对性的比对方法 ( Regexp, Date, Function )
+  if (oType in types) {
+    return types[oType](obj, obj2, parent, parent2);
+  }
+
+  // ( Elemnet )
+  if (DomElement && obj instanceof DomElement) {
+    return types.element(obj, obj2);
+  }
+
+  // ( Map, Set )
+  if (isMap(obj) || isSet(obj)) {
+    return equals$2(mapSetToArray(obj), mapSetToArray(obj2));
+  }
+
+  return types.object(obj, obj2, parent, parent2);
+}
+
+var types = {
+
+  /**
+   * @param {Array} obj 
+   * @param {Array} obj2 
+   */
+  array: function (obj, obj2, parent, parent2) {
+    var length = obj.length,
+        i;
+
+    if (length !== obj2.length) {
+      return false;
     }
+
+    for (i = 0; i < length; i++) {
+      switch (checkInfiniteLoop(obj[i], obj2[i], parent, parent2, obj, obj2)) {
+        case 0:
+          return false;
+        case 1:
+          continue;
+      }
+    }
+
+    return true;
   },
-  select: {
-    get: function (elem) {
-      var options = elem.options;
-      var index = elem.selectedIndex;
-      var one = elem.type === 'select-one';
-      var max = one ? index + 1 : options.length;
-      var values = one ? null : [];
-      var value,
-          option,
-          i;
 
-      if (index < 0) {
-        i = max;
-      } else {
-        i = one ? index : 0;
-      }
 
-      for (; i < max; i++) {
-        option = options[i];
+  /**
+   * @param {Object} obj 
+   * @param {Object} obj2 
+   */
+  object: function (obj, obj2, parent, parent2) {
+    var _keys = keys(obj);
+    var length = _keys.length;
+    var i,
+        key;
 
-        if ((option.selected || i === index) && !option.disabled && (!option.parentNode.disabled || option.parentNode._nodeName !== 'optgroup')) {
-          value = valHooks.option.get(option);
-
-          if (one) {
-            return value;
-          }
-
-          values.push(value);
-        }
-      }
-
-      return values;
-    },
-    set: function (elem, value) {
-      var options = elem.options;
-      var values = $toArray(value);
-      var i = options.length;
-      var optionSet,
-          option;
-
-      while (i--) {
-        option = options[i];
-
-        if (option.selected = values.$inArray(valHooks.option.get(option))) {
-          optionSet = true;
-        }
-      }
-
-      if (!optionSet) {
-        elem.selectedIndex = -1;
-      }
-
-      return values;
+    if (length !== keys(obj2).length) {
+      return false;
     }
+
+    for (i = 0; i < length; i++) {
+      key = _keys[i];
+
+      switch (checkInfiniteLoop(obj[key], obj2[key], parent, parent2, obj, obj2)) {
+        case 0:
+          return false;
+        case 1:
+          continue;
+      }
+    }
+
+    return true;
+  },
+
+
+  /**
+   * @param {Element} obj 
+   * @param {Element} obj2 
+   */
+  element: function (obj, obj2) {
+    return obj.outerHTML === obj2.outerHTML;
+  },
+
+
+  /**
+   * @param {RegExp} obj 
+   * @param {RegExp} obj2 
+   */
+  regexp: function (obj, obj2) {
+    return obj.toString() === obj2.toString();
+  },
+
+
+  /**
+   * @param {Date} obj 
+   * @param {Date} obj2 
+   */
+  date: function (obj, obj2) {
+    return +obj === +obj2;
+  },
+
+
+  /**
+   * @param {Function} obj 
+   * @param {Function} obj2 
+   */
+  function: function (obj, obj2) {
+    return obj.toString() === obj2.toString();
   }
 };
 
-if (inBrowser) {
-  var input = document.createElement('input');
-  input.type = 'checkbox';
+/**
+ * 检查是否无限引用, 然后继续进行下一步判断
+ * @returns {Number} 0: 执行 return;
+ *                   1: 执行 continue;
+ */
+function checkInfiniteLoop(value, value2, parent, parent2, obj, obj2) {
 
-  // checkbox 的默认值应该为 'on'
-  if (input.value !== '') {
-    ['radio', 'checkbox'].forEach(function (type) {
-      valHooks[type] = {
-        get: function (elem) {
-          return elem.getAttribute('value') === null ? 'on' : elem.value;
-        }
-      };
-    });
+  // 避免无限引用
+  if (parent && (parent === value || parent2 === value2)) {
+    return parent === value ? parent2 === value2 ? 1 : 0 : parent === value ? 1 : 0;
+  }
+
+  // 进行下一步判断
+  if (!equals$2(value, value2, obj, obj2)) {
+    return 0;
   }
 }
 
-function $isNumber(obj) {
-  if (isNumber(obj) || typeof obj === 'string') {
-    if (!isNaN(obj - parseFloat(obj))) {
-      return true;
-    }
-  }
-  return false;
-}
-
-defineValue(Number, '$isNumber', $isNumber);
-
-inBrowser && ['width', 'height'].forEach(function (prop) {
-  var name = '_' + prop;
-
-  define(ElementProto, name, {
-    get: function () {
-      try {
-        return this.getBoundingClientRect()[prop];
-      } catch (error) {
-        return 0;
-      }
-    },
-    set: function (value) {
-      this.style[prop] = $isNumber(value) ? value + 'px' : value;
-    }
-  });
+defineValue(Object, '$equals', function (obj, obj2) {
+  return equals$2(obj, obj2);
 });
 
-if (inBrowser) {
-  var access = function (elem, _className, handle, isToggle) {
-
-    var classList = elem.classList,
-        className = (_className || '').match(rnothtmlwhite) || [];
-
-    if (handle === 'has') {
-      var index = 0,
-          length = className.length;
-
-      for (; index < length; index++) {
-        if (classList.contains(className[index]) === false) return false;
-      }
-
-      return length !== 0;
-    }
-
-    // 强制引导渲染元素
-    elem.offsetHeight;
-
-    if (isToggle) {
-      className.forEach(function (_class) {
-        classList.contains(_class) ? classList.remove(_class) : classList.add(_class);
-      });
-    } else {
-      className.forEach(function (_class) {
-        classList[handle](_class);
-      });
-    }
-
-    return elem;
-  };
-
-  defineValue(ElementProto, {
-    $addClass: function (className) {
-      return access(this, className, 'add');
-    },
-    '$removeClass $deleteClass': function (className) {
-      return access(this, className, 'remove');
-    },
-    $hasClass: function (className) {
-      return access(this, className, 'has');
-    },
-    $toggleClass: function (className, tSwitch) {
-      var notSwitch = !(arguments.length > 1);
-
-      return access(this, className, notSwitch ? null : tSwitch ? 'add' : 'remove', notSwitch);
-    }
-  });
-}
-
-inBrowser && defineValue(ElementProto, {
-  $append: function (elem) {
-    return this.appendChild(elem), this;
-  },
-  $prepend: function (elem) {
-    return this.insertBefore(elem, this.firstElementChild), this;
-  }
+defineValue(ObjectProto, '$equals', function (obj2) {
+  return equals$2(this, obj2);
 });
 
-inBrowser && defineValue(ElementProto, {
-  $before: function (elem) {
-    if (this.parentNode) {
-      this.parentNode.insertBefore(elem, this);
-    }
-    return this;
-  },
-  $after: function (elem) {
-    if (this.parentNode) {
-      this.parentNode.insertBefore(elem, this.nextElementSibling);
-    }
-    return this;
+function each(obj, callback) {
+
+  if (obj == null) {
+    return obj;
   }
+
+  var oKeys = keys(obj),
+      length = oKeys.length;
+  var index = 0,
+      key,
+      value;
+
+  for (; index < length; index++) {
+    key = oKeys[index];
+    value = obj[key];
+
+    if (callback.call(value, key, value, obj) === false) {
+      break;
+    }
+  }
+
+  return obj;
+}
+
+defineValue(Object, '$each', each);
+
+defineValue(ObjectProto, '$each', function (callback) {
+  return each(this, callback);
 });
 
 /**
- * 
- * @param {Element} node 当前 DOM 元素, 也可是 DOM 元素数组
- * @param {String} filter 过滤元素的 CSS 选择器和方法
- * @param {String} handle 获取下一个 DOM 元素的属性名
- * @param {Boolean} checkSelf 只检测传入 DOM 元素
+ * 判断传入对象是否是空对象
+ * @param {*} obj 需要判断的对象
  */
-function Filter(node, filter, handle, checkSelf) {
-
-  // 没有可过滤的元素
-  if (node == null || node.length === 0) return node;
-
-  // 没有过滤条件
-  if (filter == null) {
-    return node.nodeType ? checkSelf ? node : node[handle]
-    // Node array
-    : node;
-  }
-
-  var filterIsString = isString(filter);
-
-  // Node
-  if (node.nodeType) {
-
-    if (checkSelf && (filterIsString ? node.$is(filter) : filter(node))) {
-      return node;
-    }
-
-    if (filterIsString) {
-      while ((node = node[handle]) && !node.$is(filter)) {}
-    } else {
-      while ((node = node[handle]) && !filter(node)) {}
-    }
-
-    return node;
-  }
-
-  // Node array
-  return node.filter(filterIsString ? function (elem) {
-    return elem.$is(filter);
-  } : filter);
-}
-
-function dir(elem, handle) {
-  var matched = [];
-
-  while (elem = elem[handle]) {
-    matched.push(elem);
-  }
-
-  return matched;
-}
-
-inBrowser && defineValue(ElementProto, '$child $children', function (filter) {
-  return Filter($toArray(this.children), filter);
-});
-
-inBrowser && defineValue(ElementProto, {
-  '$first $firstChild': function (filter) {
-    return Filter(this.firstElementChild, filter, 'nextElementSibling', true);
-  },
-  '$last $lastChild': function (filter) {
-    return Filter(this.lastElementChild, filter, 'previousElementSibling', true);
-  }
-});
-
-if (inBrowser) {
-  ElementProto.matches || ['webkit', 'o', 'ms', 'moz'].$each(function (core) {
-    var matches = core + 'MatchesSelector';
-    if (ElementProto[matches]) {
-      return !(ElementProto.matches = ElementProto[matches]);
-    }
-  });
-}
-
-inBrowser && defineValue(ElementProto, {
-  $is: function (selector) {
-    return selector.nodeType ? this === selector : isString(selector) ? this.matches(selector) : false;
-  },
-  $not: function (selector) {
-    return !this.$is(selector);
-  }
-});
-
-inBrowser && [['$next', 'nextElementSibling'], ['$prev', 'previousElementSibling']].forEach(function (arr) {
-
-  var name = arr[0],
-      fn = arr[1];
-  var options = {};
-
-  options[name] = function (filter) {
-    return Filter(this, filter, fn);
-  };
-  options[name + 'All'] = function (filter) {
-    return Filter(dir(this, fn), filter);
-  };
-
-  defineValue(ElementProto, options);
-});
-
-inBrowser && defineValue(ElementProto, {
-  $parent: function (filter) {
-    return Filter(this.parentElement, filter, null, true);
-  },
-  $parents: function (filter, checkSelf) {
-    return Filter(this, filter, 'parentElement', checkSelf);
-  }
-});
-
-inBrowser && [document, ElementProto].forEach(function (elem) {
-  defineValue(elem, '$query', elem.querySelectorAll);
-  defineValue(elem, '$queryFirst', elem.querySelector);
-});
-
-inBrowser && defineValue(ElementProto, '$delete $remove', function () {
-  if (this.parentNode) {
-    this.parentNode.removeChild(this);
-  }
-});
-
-inBrowser && defineValue(ElementProto, '$replaceWith $replace', function (elem) {
-  if (this.parentNode) {
-    this.parentNode.replaceChild(elem, this);
-  }
-});
-
-inBrowser && defineValue(ElementProto, '$selectText', function () {
-  var range;
-
-  // input
-  if (this.select) {
-    this.select();
-  }
-  // contenteditable
-  else if (this.hasAttribute('contenteditable')) {
-      if (document.selection) {
-        range = document.body.createTextRange();
-        range.moveToElementText(this);
-        range.select();
-      } else if (window.getSelection) {
-        range = document.createRange();
-        range.selectNodeContents(this);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-      }
-    }
-});
-
-inBrowser && defineValue(ElementProto, '$siblings', function (filter) {
-  var parent = this.parentElement;
-
-  return parent ? Filter($toArray(parent.children).$deleteValue(this), filter) : [];
-});
-
-function $isEmptyObject(obj) {
+function isEmptyObject(obj) {
   for (var a in obj) {
     return false;
   }
   return true;
 }
 
-defineValue(Object, '$isEmptyObject', $isEmptyObject);
+defineValue(Object, '$isEmptyObject', isEmptyObject);
 
-/**
- * @type {Boolean} 判断当前环境是否支持 EventTarget
- */
-var supportsEventTarget = inBrowser && 'EventTarget' in window;
+defineValue(Object, '$isPlainObject', isPlainObject);
 
-var EventTarget = supportsEventTarget ? window.EventTarget.prototype : inBrowser ? [window, document, ElementProto] : undefined;
+// import './$create/index';
+// import './$delete/index';
+// import './$deleteValue/index';
+// import './$each/index';
+// import './$get/index';
+// import './$isEmptyObject/index';
+// import './$isPlainObject/index';
+// import './$self/index';
+// import './$set/index';
 
-if (supportsEventTarget) {
-  defineValue(EventTarget, addEventListenerPrivate, EventTarget[addEventListener]);
-  defineValue(EventTarget, removeEventListenerPrivate, EventTarget[removeEventListener]);
-} else if (EventTarget) {
-  EventTarget.forEach(function (obj) {
-    defineValue(obj, addEventListenerPrivate, obj[addEventListener]);
-    defineValue(obj, removeEventListenerPrivate, obj[removeEventListener]);
+defineValue(ObjectProto, '$get', function (key) {
+  var _this = this;
+
+  if (arguments.length < 2) {
+    return this[key];
+  }
+
+  var result = {};
+
+  slice.call(arguments).forEach(function (key) {
+    result[key] = _this[key];
   });
-}
-
-var DATA = '__ZENJS_DATA__';
-
-/**
- * 获取存储在元素上的整个数据集, 如数据集不存在则创建
- * @param {Element} elem
- * @returns {Object}
- */
-function $_GetDatas(elem) {
-  return elem[DATA] || (defineValue(elem, DATA, {}), elem[DATA]);
-}
-
-if (inBrowser) {
-
-  defineValue(EventTarget, '$data', function $data(name, value, weakRead) {
-    var self = this || window;
-    var Data = $_GetDatas(self);
-
-    // $data( {} )
-    // $data( {}, weakRead )
-    if (isObject(name)) {
-      for (var _name in name) {
-        $data.call(self, _name, name[_name], value);
-      }
-      return self;
-    }
-
-    // 读取
-    // $data( name )
-    // $data( name, value, true )
-    if (arguments.length < 2 || weakRead) {
-      if (name == null) return Data;
-      if (weakRead && !(name in Data)) return Data[name] = value;
-      return Data[name];
-    }
-
-    // $data( name, value )
-    Data[name] = value;
-    return self;
-  });
-
-  defineValue(EventTarget, '$hasData', function (name) {
-    var Data = $_GetDatas(this || window);
-
-    if ($isEmptyObject(Data)) {
-      return false;
-    }
-
-    if (name == null) {
-      return true;
-    }
-
-    return name in Data;
-  });
-
-  defineValue(EventTarget, '$deleteData $removeData', function (names) {
-    var self = this || window;
-
-    if (names == null) {
-      self[DATA] = {};
-      return self;
-    }
-
-    var Data = $_GetDatas(self);
-
-    names.split(' ').forEach(function (name) {
-      delete Data[name];
-    });
-
-    return self;
-  });
-}
-
-var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
-
-function $create$1(isNoProto) {
-  var args = parametersRest(arguments, 1);
-
-  if (isBoolean(isNoProto) || !isNoProto) {
-    isNoProto = !!isNoProto;
-  } else {
-    args.unshift(isNoProto);
-    isNoProto = false;
-  }
-
-  args.unshift(isNoProto ? create(null) : {});
-
-  return $assign.apply(isNoProto, args);
-}
-defineValue(Object, '$create', $create$1);
-
-/**
- * ZenJS
- */
-var ZenJS = $create$1(true, {
-  version: '2.3.1'
-});
-
-if (inBrowser) {
-  window.Zen = window.ZenJS = ZenJS;
-}
-
-/**
- * 根据传入命名空间, 调用一些功能或做一些判断
- * @param {String} name 需要解析哪一块的功能命名空间
- * @param {Array} namespace 元素的命名空间列表
- * @param {Element} elem 绑定事件的元素
- * @param {String} type 绑定的事件
- * @param {Object} options 其他属性
- */
-function modifiers(
-// Self use
-name, namespace,
-// Handler use
-elem, type, options) {
-  // 没有命名空间
-  if (namespace.length === 0) return;
-
-  var _handlers = handlers[name];
-  var _namespace = namespace.filter(function (name) {
-    return name in _handlers;
-  });
-  var length = _namespace.length;
-
-  // 没有功能命名空间
-  if (length === 0) return;
-
-  var i = 0,
-      handlerName,
-      handler;
-
-  for (; i < length; i++) {
-    handlerName = _namespace[i];
-    handler = _handlers[handlerName];
-
-    // check
-    if (handler.type === undefined) {
-      if (handler.handler(elem, type, namespace, options) === false) {
-        return false;
-      }
-    }
-  }
-}
-
-var handlers = {
-  /**
-   * 添加事件时
-   */
-  add: {},
-  /**
-   * 触发事件时
-   */
-  dispatch: {
-    /**
-     * 当事件是从绑定的元素本身触发时才触发回调
-     */
-    self: {
-      handler: function (elem, type, namespace, event) {
-        if (event.target !== event.currentTarget) {
-          return false;
-        }
-      }
-    }
-  }
-};
-
-var add = handlers.add,
-    dispatch = handlers.dispatch;
-
-/**
- * .once || .one
- * 当命名空间有 .once 或 .one, 则会去已绑定的事件中进行查找,
- * 如果之前绑定过相同的命名空间 ( 也同样有 .once 或 .one ), 则本次绑定无效
- */
-add.once = add.one = {
-  handler: function (elem, type, namespace, events) {
-    // 没有绑定过事件
-    if (!(events = events[type])) return;
-
-    var i = 0,
-        len = events.length;
-
-    for (; i < len; i++) {
-      // 如果绑定了相同的命名空间的事件, 则当前事件不会再进行绑定
-      if (namespace.$equals(events[i].namespace)) {
-        return false;
-      }
-    }
-  }
-};
-
-/**
- * .ctrl || .shift || .alt || .meta
- * 当按下了对应键盘按键时才触发回调
- */
-['ctrl', 'shift', 'alt', 'meta'].forEach(function (key) {
-  dispatch[key] = {
-    handler: function (elem, type, namespace, event) {
-      if (!event[key + 'Key']) return false;
-    }
-  };
-});
-
-/**
- * .left || .middle || .right
- * 当按下了对应鼠标按键时才触发回调
- */
-['left', 'middle', 'right'].forEach(function (button, index) {
-  dispatch[button] = {
-    handler: function (elem, type, namespace, event) {
-      if ('button' in event && event.button !== index) return false;
-    }
-  };
-});
-
-/**
- * 事件处理 => 添加事件3: 绑定事件
- * @param {Element} elem 需要绑定事件的对象
- * @param {Array} types 需要绑定的事件集
- * @param {String} selector 事件委托的选择器
- * @param {Function} listener 绑定的事件
- * @param {Object} options 事件绑定参数
- * @param {Object} data 绑定事件时向方法传入的数据
- */
-function add$1(elem, types, selector, listener, options, data) {
-
-  var
-  /** 存放当前元素下的所有事件 */
-  events = elem.$data('events', {}, true),
-
-  /** 事件总数 */
-  length = types.length,
-      tmp,
-      type,
-      namespace,
-      handleOptions;
-
-  var guid = listener.guid || (listener.guid = ZenJS.guid);
-
-  while (length--) {
-
-    /** 分离事件名称和命名空间 */
-    tmp = rtypenamespace.exec(types[length]) || [];
-    /** 事件名称 */
-    type = tmp[1];
-
-    if (!type) {
-      continue;
-    }
-
-    /** 命名空间 */
-    namespace = (tmp[2] || '').split('.').sort();
-
-    if (ZenJS.config.event.modifiers && modifiers('add', namespace, elem, type, events) === false) {
-      continue;
-    }
-
-    /** 该事件的所有参数 */
-    handleOptions = {
-      elem: elem,
-      type: type,
-      guid: guid,
-      data: data,
-      listener: listener,
-      selector: selector,
-      options: options,
-      namespace: namespace,
-      namespaceStr: namespace.join('.'),
-      handle: function () {
-        return ZenJS.EventListener.dispatch.apply(handleOptions, arguments);
-      }
-    };
-
-    (events[type] || (events[type] = [])).push(handleOptions);
-
-    if (options.passive) {
-      elem[addEventListenerPrivate](type, handleOptions.handle, {
-        passive: true,
-        capture: options.capture || false
-      });
-    } else {
-      elem[addEventListenerPrivate](type, handleOptions.handle, options.capture || false);
-    }
-  }
-}
-
-defineValue(ObjectProto, '$set $edit', function (key, value) {
-  var _key;
-
-  if (isObject(key)) for (_key in key) {
-    this[_key] = key[_key];
-  } else this[key] = value;
-
-  return this;
-});
-
-/**
- * @returns {Boolean} false
- */
-function returnFalse() {
-  return false;
-}
-
-/**
- * @returns {Boolean} true
- */
-function returnTrue() {
-  return true;
-}
-
-/*
- * event.target : 触发事件的元素
- * event.originalTarget : 绑定事件的元素, 如果是委托代理, 则为代理的元素
- * event.delegateTarget : 绑定事件的元素
- * event.relatedTarget : 事件的相关节点, mouseover 时移出的节点, mouseout 时移入的节点
- *
- * event.preventDefault() : 阻止浏览器默认行为
- * event.stopPropagation() : 停止将事件冒泡到父节点
- * event.stopImmediatePropagation() : 停止将事件冒泡到父节点且停止当前元素后续事件执行
- */
-
-function Event(src, props) {
-
-  if (this instanceof ZenJS.Event === false) {
-    return new ZenJS.Event(src, props);
-  }
-
-  // Event object
-  if (src && src.type) {
-
-    this.originalEvent = src;
-
-    this.isDefaultPrevented = src.defaultPrevented || src.defaultPrevented === undefined && src.returnValue === false ? returnTrue : returnFalse;
-
-    this.target = src.target && src.target.nodeType === 3 ? src.target.parentNode : src.target;
-
-    for (var key in src) {
-      if (!(key in this)) {
-        this[key] = src[key];
-      }
-    }
-  }
-  // Event type
-  else {
-      this.type = src;
-    }
-
-  if (props) {
-    $assign(this, props);
-  }
-
-  this.timeStamp = src && src.timeStamp || Date.now();
-}
-
-var EventProto = Event.prototype = {
-  constructor: Event
-};
-
-['preventDefault', 'stopPropagation', 'stopImmediatePropagation'].forEach(function (fn) {
-  EventProto[fn] = function () {
-    if (this.originalEvent) {
-      this.originalEvent[fn]();
-    }
-  };
-});
-
-if (inBrowser) {
-  ZenJS.Event = Event;
-}
-
-var addProp = Event.addProp = function addProp(name, get) {
-  defineProperty(EventProto, name, {
-    enumerable: true,
-    configurable: true,
-
-    get: isFunction(get) ? function () {
-      if (this.originalEvent) {
-        return get(this.originalEvent);
-      }
-    } : function () {
-      return this[name];
-    },
-    set: function () {
-      this[name] = value;
-    }
-  });
-};
-
-var rkeyEvent = /^key/,
-    rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/;
-
-addProp('which', function (event) {
-  var button;
-
-  if (event.which == null && rkeyEvent.test(event.type)) {
-    return event.charCode != null ? event.charCode : event.keyCode;
-  }
-
-  if (!event.which && (button = event.button) !== undefined && rmouseEvent.test(event.type)) {
-    if (button & 1) return 1;
-    if (button & 2) return 3;
-    if (button & 4) return 2;
-    return 0;
-  }
-
-  return event.which;
-});
-
-/**
- * 事件处理 => 触发事件
- * @param {DocumentEventMap} nativeEvent 当前触发的事件对象
- */
-function dispatch$1(nativeEvent) {
-
-  var self = this.elem;
-
-  // 重写 event 对象
-  var event = nativeEvent instanceof Event ? nativeEvent : new Event(nativeEvent);
-
-  // 创建新的 argument
-  var args = $toArray(arguments).$set(0, event);
-
-  event.delegateTarget = self;
-  event.handleOptions = this;
-  event.data = this.data;
-
-  var type = event.type;
-  var selector = this.selector;
-
-  // 如果有事件委托
-
-  if (selector && !(type === 'click' && event.button >= 1)) {
-    var cur = event.target;
-
-    // 从被点击的元素开始, 一层一层往上找
-    for (; cur !== self; cur = cur.parentNode || self) {
-      // 是元素节点
-      // 如果当前是点击事件, 将不处理禁用的元素
-      if (cur.nodeType === 1 && !(type === 'click' && cur.disabled === true)) {
-        if (cur.matches(selector)) {
-          self = event.currentTarget = cur;
-          break;
-        }
-      }
-    }
-
-    if (event.delegateTarget === self) {
-      return;
-    }
-  } else {
-    if (!event.currentTarget) {
-      event.currentTarget = self;
-    }
-    if (!event.target) {
-      event.target = self;
-    }
-  }
-
-  if (ZenJS.config.event.modifiers && modifiers('dispatch', this.namespace, self, type, event) === false) {
-    return;
-  }
-
-  var result = this.listener.apply(self, args);
-
-  if (result === false && ZenJS.config.event.returnFalse) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
 
   return result;
-}
-
-/**
- * 事件处理 => 移除事件2: 移除事件
- * @param {Element} elem 需要移除事件的对象
- * @param {String} types 需要解绑的事件集
- * @param {Function} listener 解绑的事件
- * @param {String} selector 事件委托的选择器
- */
-function remove(elem, types, listener, selector) {
-
-  if (!elem.$hasData('events')) {
-    return;
-  }
-
-  types = (types || '').match(rnothtmlwhite) || [''];
-
-  var
-  /** 存放当前元素下的所有事件 */
-  events = elem.$data('events'),
-
-  /** 事件总数 */
-  length = types.length,
-      tmp,
-      type,
-      namespace,
-      handlers,
-      handlersLength,
-      handleOptions;
-
-  while (length--) {
-
-    /** 分离事件名称和命名空间 */
-    tmp = rtypenamespace.exec(types[length]) || [];
-    /** 事件名称 */
-    type = tmp[1];
-
-    // 解绑所有事件
-    if (!type) {
-      for (type in events) {
-        remove(elem, type + types[length], listener, selector, true);
-      }
-      continue;
-    }
-
-    /** 命名空间 */
-    namespace = (tmp[2] || '').split('.').sort().join('.');
-    /** 事件集 */
-    handlers = events[type] || [];
-    /** 事件集数量 */
-    handlersLength = handlers.length;
-
-    tmp = tmp[2] && new RegExp('^' + namespace + '$');
-
-    while (handlersLength--) {
-      handleOptions = handlers[handlersLength];
-
-      // 检查注入到方法上的 guid 是否相同 ( 如果有 )
-      if (!listener || listener.guid === handleOptions.guid) {
-        // 检查命名空间是否相同 ( 如果有 )
-        if (!tmp || tmp.test(handleOptions.namespaceStr)) {
-          // 检查事件委托
-          if (selector
-          // 允许所有绑定的事件通过, 不管有没有事件委托
-          ? selector === '**' ||
-          // 允许所有有事件委托的事件通过
-          selector === '*' && handleOptions.selector ||
-          // 事件委托必须相同才能通过
-          selector === handleOptions.selector
-          // 允许所有没事件委托的事件通过
-          : !handleOptions.selector) {
-            // 移除事件
-            elem[removeEventListenerPrivate](type, handleOptions.handle);
-            // 移除事件缓存
-            handlers.splice(handlersLength, 1);
-          }
-        }
-      }
-    }
-
-    if (handlers.length === 0) {
-      delete events[type];
-    }
-  }
-}
-
-/**
- * 触发绑定在元素上的事件( 只触发事件 )
- * @param {Element} elem
- * @param {String} types
- */
-function emit(elem, types, data) {
-
-  if (!elem.$hasData('events')) {
-    return;
-  }
-
-  types = (types || '').match(rnothtmlwhite) || [''];
-
-  var
-  /** 存放当前元素下的所有事件 */
-  events = elem.$data('events'),
-
-  /** 事件总数 */
-  length = types.length,
-      tmp,
-      type,
-      namespace,
-      handlers,
-      handlersLength,
-      handleOptions;
-
-  while (length--) {
-
-    /** 分离事件名称和命名空间 */
-    tmp = rtypenamespace.exec(types[length]) || [];
-    /** 事件名称 */
-    type = tmp[1];
-
-    if (!type) {
-      continue;
-    }
-
-    /** 命名空间 */
-    namespace = (tmp[2] || '').split('.').sort().join();
-    /** 事件集 */
-    handlers = events[type] || [];
-    /** 事件集数量 */
-    handlersLength = handlers.length;
-
-    tmp = tmp[2] && new RegExp('^' + namespace + '$');
-
-    while (handlersLength--) {
-      handleOptions = handlers[handlersLength];
-
-      // 检查命名空间是否相同 ( 如果有 )
-      if (!tmp || tmp.test(handleOptions.namespaceStr)) {
-        // 检查事件委托
-        if (!handleOptions.selector) {
-          handleOptions.handle.apply(null, [type].concat(data));
-        }
-      }
-    }
-  }
-}
-
-var EventListener = $create$1(true, {
-  add: add$1,
-  dispatch: dispatch$1,
-  remove: remove,
-  emit: emit,
-  modifiers: modifiers
 });
 
-if (inBrowser) {
-  ZenJS.EventListener = EventListener;
-}
+defineValue(ObjectProto, '$set $edit', function (key, value) {
+  var _this = this;
 
-/**
- * @type {Boolean} 当前环境是否支持 addEventListener 的 passive 属性
- */
-var supportsPassiveEvent = false;
-
-try {
-
-  var options = defineProperty({}, 'passive', {
-    get: function () {
-      supportsPassiveEvent = true;
-    }
-  });
-
-  window[addEventListener]('test', null, options);
-} catch (e) {}
-
-/**
- * 事件处理 => 添加事件2: 参数处理
- * @param {Element} elem 需要绑定事件的对象
- * @param {String} types 需要绑定的事件集
- * @param {String} selector 事件委托的选择器
- * @param {Function} listener 绑定的事件
- * @param {Object} options 事件绑定参数
- */
-function on(elem, types, selector, listener, options) {
-  var events,
-      data;
-
-  // on( elem, { type: listener || Boolean } )
-  // on( elem, { type: listener || Boolean }, options )
-  // on( elem, { type: listener || Boolean }, selector )
-  // on( elem, { type: listener || Boolean }, selector, options )
-  if (isObject(types)) {
-    events = types;
-
-    if (isString(selector)) {
-      options = listener;
-    } else {
-      options = selector;
-      selector = listener;
-    }
-  }
-  // on( elem, selector, { type: listener || Boolean } )
-  // on( elem, selector, { type: listener || Boolean }, options )
-  else if (isObject(selector)) {
-      events = selector;
-      selector = types;
-      options = listener;
-    }
-
-  if (events) {
-    for (var type in events) {
-      on(elem, type, events[type], selector, options);
-    }
-    return elem;
-  }
-
-  if (!types) return elem;else {
-    types = types.match(rnothtmlwhite);
-
-    if (types == null || types.length === 0) {
-      return elem;
-    }
-  }
-
-  // on( elem, types, listener || Boolean )
-  // on( elem, types, listener || Boolean, selector )
-  // on( elem, types, listener || Boolean, options || useCapture )
-  // on( elem, types, listener || Boolean, selector, options || useCapture )
-  if (!isString(selector)) {
-    var _ref = [selector, listener];
-    listener = _ref[0];
-    selector = _ref[1];
-
-
-    if (!isString(selector)) {
-      if (!options) options = selector;
-      selector = undefined;
-    }
-  }
-
-  if (listener == null) {
-    return elem;
-  }
-
-  if (isBoolean(listener)) {
-    listener = listener ? returnTrue : returnFalse;
-  }
-
-  if (!listener) {
-    return elem;
-  }
-
-  // useCapture
-  if (isBoolean(options)) {
-    options = { capture: options };
-  }
-
-  options = options || {};
-
-  if (options.data) {
-    data = options.data;
-    delete options.data;
-  }
-
-  Object.keys(options).forEach(function (key) {
-    options[key] ? options[key] = true : delete options[key];
-  });
-
-  if (this === true || 'one' in options || 'once' in options) {
-    var origListener = listener;
-
-    listener = function (event) {
-      elem.$off(event);
-      return origListener.apply(this, arguments);
-    };
-
-    listener.guid = origListener.guid || (origListener.guid = ZenJS.guid);
-
-    delete options.one;
-    delete options.once;
-  }
-
-  if ('passive' in options && !supportsPassiveEvent) {
-    delete options.passive;
-  }
-
-  return EventListener.add(elem, types, selector, listener, options, data), elem;
-}
-
-/**
- * 事件处理 => 移除事件1: 获取并处理参数
- * @param {String} types 需要解绑的事件集
- * @param {String} selector 事件委托的选择器
- * @param {Function} listener 解绑的事件
- */
-function off(types, selector, listener) {
-
-  var handleOptions;
-
-  // $off( ZenJS.Event )
-  if (types && types.delegateTarget && (handleOptions = types.handleOptions)) {
-    off.call(types.delegateTarget, handleOptions.namespace ? handleOptions.type + "." + handleOptions.namespace.join('.') : handleOptions.type, handleOptions.listener, handleOptions.selector);
+  if (isObject(key)) {
+    each(key, function (key, value) {
+      _this[key] = value;
+    });
     return this;
   }
 
-  // $off( object, select )
-  if (isObject(types)) {
-    for (var type in types) {
-      off.call(this, type, selector, types[type]);
-    }
-    return this;
-  }
+  this[key] = value;
 
-  // $off( '*' )
-  // $off( '**' )
-  if (types === '*' || types === '**') {
-    selector = types;
-    types = listener = undefined;
-  } else {
-    // $off( types, listener )
-    // $off( types, listener, selector )
-    if (!isString(selector)) {
-      var _ref = [selector, listener];
-      listener = _ref[0];
-      selector = _ref[1];
-    }
-    // $off( types, true || false )
-    if (isBoolean(listener)) {
-      listener = listener ? returnTrue : returnFalse;
-    }
-  }
+  return this;
+});
 
-  ZenJS.EventListener.remove(this, types, listener, selector);
+var concat = ArrayProto.concat;
 
+defineValue(ObjectProto, '$delete $remove', function () {
+  var _this = this;
+
+  concat.apply([], arguments).forEach(function (key) {
+    delete _this[key];
+  });
+
+  return this;
+});
+
+defineValue(ObjectProto, '$deleteValue $removeValue', function (_value) {
+  var _this = this;
+
+  var args = autoGetPredicate(arguments, _value, 1);
+  var value = args[0];
+  var predicate = args[1];
+
+  entries(this).forEach(function (obj) {
+    if (predicate(obj[1], value)) {
+      delete _this[obj[0]];
+    }
+  });
+
+  return this;
+});
+
+function self() {
   return this;
 }
 
-function $one(types, selector, listener, options) {
-  return on.call(true, this, types, selector, listener, options);
+defineValue(ObjectProto, '$self', self);
+
+defineValue(Number, '$isNumber', $isNumber);
+
+var floor = Math.floor;
+
+var random = Math.random;
+
+/**
+ * 在传入的两个正整数中随机一个数字
+ * @param {Number} from 
+ * @param {Number} to 
+ */
+function intRandom(from, to) {
+  return floor(random() * (to - from + 1) + from);
 }
 
-inBrowser && defineValue(EventTarget, {
-  /**
-   * 事件处理 => 添加事件1: 获取参数
-   */
-  $on: function (types, selector, listener, options) {
-    return on(this, types, selector, listener, options);
-  },
+var abs = Math.abs;
 
-  /**
-   * 事件处理 => 添加事件1: 获取参数
-   */
-  $one: $one,
-  $once: $one,
-  /**
-   * 事件处理 => 移除事件1: 获取并处理参数
-   */
-  $off: off,
+defineValue(Math, '$random', function () {
+  var args = arguments;
 
-  $emit: function (types) {
-    var data = parametersRest(arguments, 1);
+  var from = parametersDefault(args, 0, 0);
+  var to = args.length !== 1 ? parametersDefault(args, 1, 9) : 0;
 
-    return ZenJS.EventListener.emit(this, types, data), this;
+  if (from > to) {
+    var _ref = [to, from];
+    from = _ref[0];
+    to = _ref[1];
   }
+
+  if (from > 0) {
+    return intRandom(from, to);
+  }
+
+  var result = intRandom(0, to + abs(from));
+
+  return result > to ? to - result : result;
 });
 
 /**
@@ -2168,15 +1325,9 @@ function getDecimalLength(num) {
   return (('' + num).split('.')[1] || '').length;
 }
 
-var pow = Math.pow;
-
 var max = Math.max;
 
-/**
- * 返回传入值
- * @param {any} arg 
- * @returns {any} arg
- */
+var pow = Math.pow;
 
 /**
  * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
@@ -2186,25 +1337,30 @@ var max = Math.max;
  */
 function repeat(str, count) {
   var result = '';
-  var i = 0;
 
-  for (; i++ < count;) {
+  while (count--) {
     result += str;
   }
 
   return result;
 }
 
-function $plus(num1, num2) {
-  return handler(num1, num2, plus);
+var NumberProto = Number.prototype;
+
+function defineOperation(name, handlerFn) {
+  defineValue(Math, name, handlerFn);
+  defineValue(NumberProto, name, function (num) {
+    return handlerFn(this, num);
+  });
 }
 
-defineValue(Math, '$plus $jia', $plus);
-
-function plus(num1, num2) {
-  return num1 + num2;
-}
-
+/**
+ * 
+ * @param {Number} num1 
+ * @param {Number} num2 
+ * @param {Function} handlerFn 
+ * @param {Function} lastHandlerFn 
+ */
 function handler(num1, num2, handlerFn, lastHandlerFn) {
   var decimal1 = getDecimalLength(num1 = num1 || 0);
   var decimal2 = getDecimalLength(num2 = num2 || 0);
@@ -2216,13 +1372,13 @@ function handler(num1, num2, handlerFn, lastHandlerFn) {
     num2 = integer(num2, decimal2, maxDecimal);
   }
 
-  var count = handlerFn(num1, num2);
+  var result = handlerFn(num1, num2);
 
   if (lastHandlerFn) {
-    return lastHandlerFn(count, exponent);
+    return lastHandlerFn(result, exponent);
   }
 
-  return count / exponent;
+  return result / exponent;
 }
 
 /**
@@ -2241,161 +1397,83 @@ function integer(num, decimal, maxDecimal) {
   return Number(num);
 }
 
-function $divide(num1, num2) {
-  return handler(num1, num2, divide, lastHandler);
-}
-
-defineValue(Math, '$divide $chu', $divide);
-
-function divide(num1, num2) {
-  return num1 / num2;
-}
-
-function lastHandler(count) {
-  return count;
-}
-
-function $mean() {
-
-  return $toArray(arguments).reduce(function (count, next) {
-    return count + next;
-  }) / arguments.length;
-}
-
-defineValue(Math, '$mean', $mean);
-
-function $minus(num1, num2) {
-  return handler(num1, num2, minus);
-}
-
-defineValue(Math, '$minus $jian', $minus);
-
-function minus(num1, num2) {
-  return num1 - num2;
-}
-
-function $multiply(num1, num2) {
-  return handler(num1, num2, multiply, lastHandler$1);
-}
-
-defineValue(Math, '$multiply $cheng', $multiply);
-
-function multiply(num1, num2) {
-  return num1 * num2;
-}
-
-function lastHandler$1(count, exponent) {
-  return count / pow(exponent, 2);
-}
-
-var random = Math.random;
-
-var floor = Math.floor;
-
-var abs = Math.abs;
-
-function $random() {
-  var cache = _randomParameters(arguments);
-
-  return _random(cache[0], cache[1]);
-}
-
-function $randomPlus() {
-  var cache = _randomParameters(arguments);
-  var from = cache[0],
-      to = cache[1];
-
-  if (from > 0) {
-    return _random(from, to);
-  } else {
-    cache = _random(0, to + abs(from));
-
-    return cache > to ? to - cache : cache;
-  }
-}
-
-defineValue(Math, {
-  $random: $random,
-  $randomPlus: $randomPlus
-});
-
-function _randomParameters(args) {
-  var from = parametersDefault(args, 0, 9),
-      to = parametersDefault(args, 1, 0);
-
-  return from > to ? [to, from] : [from, to];
-}
-
-function _random(from, to) {
-  return floor(random() * (to - from + 1) + from);
-}
-
-defineValue(Object, '$assign', $assign);
-
-defineValue(ObjectProto, '$delete $remove', function $delete() {
-  var _this = this;
-
-  $toArray(arguments).$each(function (key) {
-    delete _this[key];
+// add
+defineOperation('$jia $add', $add$1);
+function $add$1(num1, num2) {
+  return handler(num1, num2, function (num1, num2) {
+    return num1 + num2;
   });
-  return this;
-});
-
-defineValue(ObjectProto, '$deleteValue $removeValue', function $deleteValue(value) {
-  var isEqual = parametersDefault(arguments, 1, true) ? congruence : equals;
-  var name;
-
-  for (name in this) {
-    if (isEqual(this[name], value)) {
-      delete this[name];
-    }
-  }
-
-  return this;
-});
-
-function $each(obj, callback) {
-
-  if (obj == null) return obj;
-
-  var key,
-      value;
-
-  for (key in obj) {
-    value = obj[key];
-
-    if (callback.call(value, key, value, obj) === false) {
-      break;
-    }
-  }
-
-  return obj;
 }
 
-defineValue(Object, '$each', $each);
-
-defineValue(ObjectProto, '$get', function (key) {
-  return this[key];
+// subtract
+defineOperation('$jian $subtract', function (num1, num2) {
+  return handler(num1, num2, function (num1, num2) {
+    return num1 - num2;
+  });
 });
 
-defineValue(Object, '$isPlainObject', $isPlainObject);
+// multiply
+defineOperation('$cheng $multiply', function (num1, num2) {
+  return handler(num1, num2, function (num1, num2) {
+    return num1 * num2;
+  }, function (result, exponent) {
+    return result / pow(exponent, 2);
+  });
+});
 
-function $self() {
-  return this;
+// divide
+defineOperation('$chu $divide', $divide);
+function $divide(num1, num2) {
+  return handler(num1, num2, function (num1, num2) {
+    return num1 / num2;
+  }, function (result) {
+    return result;
+  });
 }
 
-defineValue(ObjectProto, '$self', $self);
-defineGet(ObjectProto, '__self__', $self);
+defineValue(Math, '$mean', function () {
+  var count = slice.call(arguments).reduce(function (count, next) {
+    return $add$1(count, next);
+  });
+
+  return $divide(count, arguments.length);
+});
 
 var fromCharCode = String.fromCharCode;
 
-function string$random() {
+function stringRandom() /* uppercase */{
   var uppercase = parametersDefault(arguments, 0, false);
 
-  return fromCharCode(uppercase ? $random(65, 90) : $random(97, 122));
+  return fromCharCode(uppercase ? intRandom(65, 90) : intRandom(97, 122));
 }
 
-defineValue(String, '$random', string$random);
+defineValue(String, '$random', stringRandom);
+
+defineValue(String, '$someRandom', function () /* length, uppercase, number */{
+
+  var args = arguments;
+  var uppercase = parametersDefault(args, 1, false);
+  var number = parametersDefault(args, 2, false);
+
+  var result = '';
+  var length = parametersDefault(args, 0, 12);
+
+  while (length-- > 0) {
+    // 指定了也随机大写字母, 则几率是三分之一
+    // 否则只是随机小写字母及数字, 则几率是二分之一
+    if (number && intRandom(0, uppercase ? 2 : 1) === 0) {
+      result += intRandom(0, 9);
+    }
+    // 随机大小写字母
+    else {
+        result += stringRandom(uppercase && intRandom(0, 1) === 0);
+      }
+  }
+
+  return result;
+});
+
+var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$])/g;
 
 /**
  * 判断传入对象是否是 RegExp 类型
@@ -2406,56 +1484,658 @@ function isRegExp(obj) {
   return toString.call(obj) === '[object RegExp]';
 }
 
-var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$])/g;
-
-var StringProto = String.prototype;
-
 defineValue(StringProto, '$replaceAll', function (searchValue, replaceValue) {
   var flags = 'g';
 
-  if (isRegExp(searchValue)) {
-    if (searchValue.global) {
-      return this.replace(searchValue, replaceValue);
-    } else {
-      flags += searchValue.flags || '';
-      searchValue = searchValue.source;
-    }
-  } else {
-    searchValue = searchValue.replace(rkeyword, '\\$1');
+  if (searchValue == null) {
+    return this;
   }
 
-  return this.replace(new RegExp(searchValue, flags), replaceValue);
+  if (searchValue[isString]) {
+    searchValue = searchValue.replace(rkeyword, '\\$1');
+  } else if (isRegExp(searchValue)) {
+    if (searchValue.global) flags = searchValue.flags || '';else flags += searchValue.flags || '';
+
+    searchValue = searchValue.source;
+  }
+
+  return this.replace(new RegExp(searchValue, flags), replaceValue || '');
 });
 
-function string$someRandom() {
-  var result = '',
-      length = parametersDefault(arguments, 0, 12);
-  var hasUppercase = parametersDefault(arguments, 1, false),
-      hasNumber = parametersDefault(arguments, 2, false);
-
-  while (length-- > 0) {
-    result += string$random();
-  }
-
-  if (hasUppercase) {
-    result = result.split('').map(function (code) {
-      return $random(1) ? code.toUpperCase() : code;
-    }).join('');
-  }
-
-  if (hasNumber) {
-    result = (result[0] || '') + result.slice(1).split('').map(function (code) {
-      return $random(1) ? $random() : code;
-    }).join('');
-  }
-
-  return result;
-}
-
-defineValue(String, '$someRandom', string$someRandom);
-
-defineValue(StringProto, '$toCapitalize', function $toCapitalize(ignoreNext) {
+defineValue(StringProto, '$toCapitalize', function (ignoreNext) {
   return this.substr(0, 1).toUpperCase() + this.substr(1)[ignoreNext ? '$self' : 'toLowerCase']();
+});
+
+var SECONDS_A_MINUTE = 60;
+var SECONDS_A_HOUR = SECONDS_A_MINUTE * 60;
+var SECONDS_A_DAY = SECONDS_A_HOUR * 24;
+var SECONDS_A_WEEK = SECONDS_A_DAY * 7;
+var MILLISECONDS_A_SECOND = 1e3;
+var MILLISECONDS_A_MINUTE = SECONDS_A_MINUTE * MILLISECONDS_A_SECOND;
+var MILLISECONDS_A_HOUR = SECONDS_A_HOUR * MILLISECONDS_A_SECOND;
+var MILLISECONDS_A_DAY = SECONDS_A_DAY * MILLISECONDS_A_SECOND;
+var MILLISECONDS_A_WEEK = SECONDS_A_WEEK * MILLISECONDS_A_SECOND; // English locales
+
+var MS = 'millisecond';
+var S = 'second';
+var MIN = 'minute';
+var H = 'hour';
+var D = 'day';
+var W = 'week';
+var M = 'month';
+var Q = 'quarter';
+var Y = 'year';
+var DATE = 'date';
+var FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'; // regex
+
+var REGEX_PARSE = /^(\d{4})-?(\d{1,2})-?(\d{0,2})(.*?(\d{1,2}):(\d{1,2}):(\d{1,2}))?.?(\d{1,3})?$/;
+var REGEX_FORMAT = /\[.*?\]|Y{2,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g;
+var en = {
+  name: 'en',
+  weekdays: 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
+  months: 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_')
+};
+
+var padStart = function padStart(string, length, pad) {
+  var s = String(string);
+  if (!s || s.length >= length) return string;
+  return "" + Array(length + 1 - s.length).join(pad) + string;
+};
+
+var padZoneStr = function padZoneStr(negMinuts) {
+  var minutes = Math.abs(negMinuts);
+  var hourOffset = Math.floor(minutes / 60);
+  var minuteOffset = minutes % 60;
+  return "" + (negMinuts <= 0 ? '+' : '-') + padStart(hourOffset, 2, '0') + ":" + padStart(minuteOffset, 2, '0');
+};
+
+var monthDiff = function monthDiff(a, b) {
+  // function from moment.js in order to keep the same result
+  var wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month());
+  var anchor = a.clone().add(wholeMonthDiff, 'months');
+  var c = b - anchor < 0;
+  var anchor2 = a.clone().add(wholeMonthDiff + (c ? -1 : 1), 'months');
+  return Number(-(wholeMonthDiff + (b - anchor) / (c ? anchor - anchor2 : anchor2 - anchor)));
+};
+
+var absFloor = function absFloor(n) {
+  return n < 0 ? Math.ceil(n) || 0 : Math.floor(n);
+};
+
+var prettyUnit = function prettyUnit(u) {
+  var special = {
+    M: M,
+    y: Y,
+    w: W,
+    d: D,
+    h: H,
+    m: MIN,
+    s: S,
+    ms: MS
+  };
+  return special[u] || String(u || '').toLowerCase().replace(/s$/, '');
+};
+
+var isUndefined = function isUndefined(s) {
+  return s === undefined;
+};
+
+var U = {
+  padStart: padStart,
+  padZoneStr: padZoneStr,
+  monthDiff: monthDiff,
+  absFloor: absFloor,
+  prettyUnit: prettyUnit,
+  isUndefined: isUndefined
+};
+
+var L = 'en'; // global locale
+
+var Ls = {}; // global loaded locale
+
+Ls[L] = en;
+
+var isDayjs = function isDayjs(d) {
+  return d instanceof Dayjs;
+}; // eslint-disable-line no-use-before-define
+
+
+var parseLocale = function parseLocale(preset, object, isLocal) {
+  var l;
+  if (!preset) return null;
+
+  if (typeof preset === 'string') {
+    if (Ls[preset]) {
+      l = preset;
+    }
+
+    if (object) {
+      Ls[preset] = object;
+      l = preset;
+    }
+  } else {
+    var name = preset.name;
+    Ls[name] = preset;
+    l = name;
+  }
+
+  if (!isLocal) L = l;
+  return l;
+};
+
+var dayjs = function dayjs(date, c) {
+  if (isDayjs(date)) {
+    return date.clone();
+  }
+
+  var cfg = c || {};
+  cfg.date = date;
+  return new Dayjs(cfg); // eslint-disable-line no-use-before-define
+};
+
+var wrapper = function wrapper(date, instance) {
+  return dayjs(date, {
+    locale: instance.$L
+  });
+};
+
+var Utils = U; // for plugin use
+
+Utils.parseLocale = parseLocale;
+Utils.isDayjs = isDayjs;
+Utils.wrapper = wrapper;
+
+var parseDate = function parseDate(date) {
+  var reg;
+  if (date === null) return new Date(NaN); // Treat null as an invalid date
+
+  if (Utils.isUndefined(date)) return new Date();
+  if (date instanceof Date) return date; // eslint-disable-next-line no-cond-assign
+
+  if (typeof date === 'string' && /.*[^Z]$/i.test(date) // looking for a better way
+  && (reg = date.match(REGEX_PARSE))) {
+    // 2018-08-08 or 20180808
+    return new Date(reg[1], reg[2] - 1, reg[3] || 1, reg[5] || 0, reg[6] || 0, reg[7] || 0, reg[8] || 0);
+  }
+
+  return new Date(date); // timestamp
+};
+
+var Dayjs =
+/*#__PURE__*/
+function () {
+  function Dayjs(cfg) {
+    this.parse(cfg); // for plugin
+  }
+
+  var _proto = Dayjs.prototype;
+
+  _proto.parse = function parse(cfg) {
+    this.$d = parseDate(cfg.date);
+    this.init(cfg);
+  };
+
+  _proto.init = function init(cfg) {
+    this.$y = this.$d.getFullYear();
+    this.$M = this.$d.getMonth();
+    this.$D = this.$d.getDate();
+    this.$W = this.$d.getDay();
+    this.$H = this.$d.getHours();
+    this.$m = this.$d.getMinutes();
+    this.$s = this.$d.getSeconds();
+    this.$ms = this.$d.getMilliseconds();
+    this.$L = this.$L || parseLocale(cfg.locale, null, true) || L;
+  }; // eslint-disable-next-line class-methods-use-this
+
+
+  _proto.$utils = function $utils() {
+    return Utils;
+  };
+
+  _proto.isValid = function isValid() {
+    return !(this.$d.toString() === 'Invalid Date');
+  };
+
+  _proto.$compare = function $compare(that) {
+    return this.valueOf() - dayjs(that).valueOf();
+  };
+
+  _proto.isSame = function isSame(that) {
+    return this.$compare(that) === 0;
+  };
+
+  _proto.isBefore = function isBefore(that) {
+    return this.$compare(that) < 0;
+  };
+
+  _proto.isAfter = function isAfter(that) {
+    return this.$compare(that) > 0;
+  };
+
+  _proto.year = function year() {
+    return this.$y;
+  };
+
+  _proto.month = function month() {
+    return this.$M;
+  };
+
+  _proto.day = function day() {
+    return this.$W;
+  };
+
+  _proto.date = function date() {
+    return this.$D;
+  };
+
+  _proto.hour = function hour() {
+    return this.$H;
+  };
+
+  _proto.minute = function minute() {
+    return this.$m;
+  };
+
+  _proto.second = function second() {
+    return this.$s;
+  };
+
+  _proto.millisecond = function millisecond() {
+    return this.$ms;
+  };
+
+  _proto.unix = function unix() {
+    return Math.floor(this.valueOf() / 1000);
+  };
+
+  _proto.valueOf = function valueOf() {
+    // timezone(hour) * 60 * 60 * 1000 => ms
+    return this.$d.getTime();
+  };
+
+  _proto.startOf = function startOf(units, _startOf) {
+    var _this = this;
+
+    // startOf -> endOf
+    var isStartOf = !Utils.isUndefined(_startOf) ? _startOf : true;
+    var unit = Utils.prettyUnit(units);
+
+    var instanceFactory = function instanceFactory(d, m) {
+      var ins = wrapper(new Date(_this.$y, m, d), _this);
+      return isStartOf ? ins : ins.endOf(D);
+    };
+
+    var instanceFactorySet = function instanceFactorySet(method, slice) {
+      var argumentStart = [0, 0, 0, 0];
+      var argumentEnd = [23, 59, 59, 999];
+      return wrapper(_this.toDate()[method].apply( // eslint-disable-line prefer-spread
+      _this.toDate(), isStartOf ? argumentStart.slice(slice) : argumentEnd.slice(slice)), _this);
+    };
+
+    switch (unit) {
+      case Y:
+        return isStartOf ? instanceFactory(1, 0) : instanceFactory(31, 11);
+
+      case M:
+        return isStartOf ? instanceFactory(1, this.$M) : instanceFactory(0, this.$M + 1);
+
+      case W:
+        return isStartOf ? instanceFactory(this.$D - this.$W, this.$M) : instanceFactory(this.$D + (6 - this.$W), this.$M);
+
+      case D:
+      case DATE:
+        return instanceFactorySet('setHours', 0);
+
+      case H:
+        return instanceFactorySet('setMinutes', 1);
+
+      case MIN:
+        return instanceFactorySet('setSeconds', 2);
+
+      case S:
+        return instanceFactorySet('setMilliseconds', 3);
+
+      default:
+        return this.clone();
+    }
+  };
+
+  _proto.endOf = function endOf(arg) {
+    return this.startOf(arg, false);
+  };
+
+  _proto.$set = function $set(units, int) {
+    // private set
+    var unit = Utils.prettyUnit(units);
+
+    switch (unit) {
+      case D:
+        this.$d.setDate(this.$D + (int - this.$W));
+        break;
+
+      case DATE:
+        this.$d.setDate(int);
+        break;
+
+      case M:
+        this.$d.setMonth(int);
+        break;
+
+      case Y:
+        this.$d.setFullYear(int);
+        break;
+
+      case H:
+        this.$d.setHours(int);
+        break;
+
+      case MIN:
+        this.$d.setMinutes(int);
+        break;
+
+      case S:
+        this.$d.setSeconds(int);
+        break;
+
+      case MS:
+        this.$d.setMilliseconds(int);
+        break;
+
+      default:
+        break;
+    }
+
+    this.init();
+    return this;
+  };
+
+  _proto.set = function set(string, int) {
+    return this.clone().$set(string, int);
+  };
+
+  _proto.add = function add(number, units) {
+    var _this2 = this;
+
+    number = Number(number); // eslint-disable-line no-param-reassign
+
+    var unit = Utils.prettyUnit(units);
+
+    var instanceFactory = function instanceFactory(u, n) {
+      var date = _this2.set(DATE, 1).set(u, n + number);
+
+      return date.set(DATE, Math.min(_this2.$D, date.daysInMonth()));
+    };
+
+    if (unit === M) {
+      return instanceFactory(M, this.$M);
+    }
+
+    if (unit === Y) {
+      return instanceFactory(Y, this.$y);
+    }
+
+    var step;
+
+    switch (unit) {
+      case MIN:
+        step = MILLISECONDS_A_MINUTE;
+        break;
+
+      case H:
+        step = MILLISECONDS_A_HOUR;
+        break;
+
+      case D:
+        step = MILLISECONDS_A_DAY;
+        break;
+
+      case W:
+        step = MILLISECONDS_A_WEEK;
+        break;
+
+      case S:
+        step = MILLISECONDS_A_SECOND;
+        break;
+
+      default:
+        // ms
+        step = 1;
+    }
+
+    var nextTimeStamp = this.valueOf() + number * step;
+    return wrapper(nextTimeStamp, this);
+  };
+
+  _proto.subtract = function subtract(number, string) {
+    return this.add(number * -1, string);
+  };
+
+  _proto.format = function format(formatStr) {
+    var _this3 = this;
+
+    var str = formatStr || FORMAT_DEFAULT;
+    var zoneStr = Utils.padZoneStr(this.$d.getTimezoneOffset());
+    var locale = this.$locale();
+    var weekdays = locale.weekdays,
+        months = locale.months;
+
+    var getShort = function getShort(arr, index, full, length) {
+      return arr && arr[index] || full[index].substr(0, length);
+    };
+
+    return str.replace(REGEX_FORMAT, function (match) {
+      if (match.indexOf('[') > -1) return match.replace(/\[|\]/g, '');
+
+      switch (match) {
+        case 'YY':
+          return String(_this3.$y).slice(-2);
+
+        case 'YYYY':
+          return String(_this3.$y);
+
+        case 'M':
+          return String(_this3.$M + 1);
+
+        case 'MM':
+          return Utils.padStart(_this3.$M + 1, 2, '0');
+
+        case 'MMM':
+          return getShort(locale.monthsShort, _this3.$M, months, 3);
+
+        case 'MMMM':
+          return months[_this3.$M];
+
+        case 'D':
+          return String(_this3.$D);
+
+        case 'DD':
+          return Utils.padStart(_this3.$D, 2, '0');
+
+        case 'd':
+          return String(_this3.$W);
+
+        case 'dd':
+          return getShort(locale.weekdaysMin, _this3.$W, weekdays, 2);
+
+        case 'ddd':
+          return getShort(locale.weekdaysShort, _this3.$W, weekdays, 3);
+
+        case 'dddd':
+          return weekdays[_this3.$W];
+
+        case 'H':
+          return String(_this3.$H);
+
+        case 'HH':
+          return Utils.padStart(_this3.$H, 2, '0');
+
+        case 'h':
+        case 'hh':
+          if (_this3.$H === 0) return 12;
+          return Utils.padStart(_this3.$H < 13 ? _this3.$H : _this3.$H - 12, match === 'hh' ? 2 : 1, '0');
+
+        case 'a':
+          return _this3.$H < 12 ? 'am' : 'pm';
+
+        case 'A':
+          return _this3.$H < 12 ? 'AM' : 'PM';
+
+        case 'm':
+          return String(_this3.$m);
+
+        case 'mm':
+          return Utils.padStart(_this3.$m, 2, '0');
+
+        case 's':
+          return String(_this3.$s);
+
+        case 'ss':
+          return Utils.padStart(_this3.$s, 2, '0');
+
+        case 'SSS':
+          return Utils.padStart(_this3.$ms, 3, '0');
+
+        case 'Z':
+          return zoneStr;
+
+        default:
+          // 'ZZ'
+          return zoneStr.replace(':', '');
+      }
+    });
+  };
+
+  _proto.diff = function diff(input, units, float) {
+    var unit = Utils.prettyUnit(units);
+    var that = dayjs(input);
+    var diff = this - that;
+    var result = Utils.monthDiff(this, that);
+
+    switch (unit) {
+      case Y:
+        result /= 12;
+        break;
+
+      case M:
+        break;
+
+      case Q:
+        result /= 3;
+        break;
+
+      case W:
+        result = diff / MILLISECONDS_A_WEEK;
+        break;
+
+      case D:
+        result = diff / MILLISECONDS_A_DAY;
+        break;
+
+      case H:
+        result = diff / MILLISECONDS_A_HOUR;
+        break;
+
+      case MIN:
+        result = diff / MILLISECONDS_A_MINUTE;
+        break;
+
+      case S:
+        result = diff / MILLISECONDS_A_SECOND;
+        break;
+
+      default:
+        // milliseconds
+        result = diff;
+    }
+
+    return float ? result : Utils.absFloor(result);
+  };
+
+  _proto.daysInMonth = function daysInMonth() {
+    return this.endOf(M).$D;
+  };
+
+  _proto.$locale = function $locale() {
+    // get locale object
+    return Ls[this.$L];
+  };
+
+  _proto.locale = function locale(preset, object) {
+    var that = this.clone();
+    that.$L = parseLocale(preset, object, true);
+    return that;
+  };
+
+  _proto.clone = function clone() {
+    return wrapper(this.toDate(), this);
+  };
+
+  _proto.toDate = function toDate() {
+    return new Date(this.$d);
+  };
+
+  _proto.toArray = function toArray() {
+    return [this.$y, this.$M, this.$D, this.$H, this.$m, this.$s, this.$ms];
+  };
+
+  _proto.toJSON = function toJSON() {
+    return this.toISOString();
+  };
+
+  _proto.toISOString = function toISOString() {
+    // ie 8 return
+    // new Dayjs(this.valueOf() + this.$d.getTimezoneOffset() * 60000)
+    // .format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
+    return this.toDate().toISOString();
+  };
+
+  _proto.toObject = function toObject() {
+    return {
+      years: this.$y,
+      months: this.$M,
+      date: this.$D,
+      hours: this.$H,
+      minutes: this.$m,
+      seconds: this.$s,
+      milliseconds: this.$ms
+    };
+  };
+
+  _proto.toString = function toString() {
+    return this.$d.toUTCString();
+  };
+
+  return Dayjs;
+}();
+
+dayjs.extend = function (plugin, option) {
+  plugin(option, Dayjs, dayjs);
+  return dayjs;
+};
+
+dayjs.locale = parseLocale;
+dayjs.isDayjs = isDayjs;
+dayjs.en = Ls[L];
+
+var DateProto = Date.prototype;
+
+var DAYJS = '__ZENJS_DAYJS__';
+
+defineValue(DateProto, '$dayjs', function () {
+  var $dayjs = this[DAYJS];
+
+  if (!$dayjs || $dayjs.valueOf() !== +this) {
+    return this[DAYJS] = dayjs(this);
+  }
+
+  return $dayjs;
+});
+
+defineValue(Date, '$parse', function (date) {
+  var $dayjs = dayjs(date);
+  var $date = $dayjs.toDate().$set(DAYJS, $dayjs);
+
+  return $date;
 });
 
 /**
@@ -2463,7 +2143,37 @@ defineValue(StringProto, '$toCapitalize', function $toCapitalize(ignoreNext) {
  */
 var inNode = typeof global !== 'undefined';
 
-var root = inBrowser ? window : inNode ? global : undefined;
+var root = inBrowser ? window : inNode ? global : {};
+
+defineValue(root, 'dayjs', dayjs);
+
+var ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString_unix_valueOf'.split('_');
+var isDayjs$1 = dayjs.isDayjs;
+
+dayjs.extend(function (option, Dayjs) {
+  keys(Dayjs.prototype).forEach(function (key) {
+    key.indexOf('$') === 0 || ignore.indexOf(key) > -1 || install(key);
+  });
+});
+
+function install(name) {
+  defineValue(DateProto, '$' + name, function () {
+    var $dayjs = this.$dayjs();
+    var result = $dayjs[name].apply($dayjs, arguments);
+
+    if (isDayjs$1(result)) {
+      this.setTime(result.valueOf());
+      this[DAYJS] = result;
+      return this;
+    }
+    return result;
+  });
+}
+
+defineValue(root, '$typeof', function (obj) {
+  if (obj == null) return obj + '';
+  return obj[isArray] ? 'array' : typeof obj;
+});
 
 var rBackSlant = /\+/g;
 
@@ -2472,7 +2182,7 @@ function toString$1(obj) {
     case 'string':
       return obj;
     case 'boolean':
-      return obj ? 'true' : 'false'; // 使用 toString 性能慢三倍
+      return obj ? 'true' : 'false';
     case 'number':
       return isFinite(obj) ? obj : '';
     default:
@@ -2480,12 +2190,13 @@ function toString$1(obj) {
   }
 }
 
-function stringify$1(obj) {
-  var sep = parametersDefault(arguments, 1, '&'),
-      eq = parametersDefault(arguments, 2, '=');
+function stringify(obj) {
+  var args = arguments;
+  var sep = parametersDefault(args, 1, '&');
+  var eq = parametersDefault(args, 2, '=');
 
   if (isObject(obj)) {
-    return Object.keys(obj).map(function (key) {
+    return keys(obj).map(function (key) {
       return encodeURIComponent(toString$1(key)) + eq + encodeURIComponent(toString$1(obj[key]));
     }).join(sep);
   }
@@ -2493,27 +2204,21 @@ function stringify$1(obj) {
   return '';
 }
 
-function parse$1(str) {
-  var sep = parametersDefault(arguments, 1, '&'),
-      eq = parametersDefault(arguments, 2, '='),
-      result = {};
+function parse(str) {
+  var args = arguments;
+  var sep = parametersDefault(args, 1, '&');
+  var eq = parametersDefault(args, 2, '=');
+  var result = {};
 
-  if (!isString(str)) {
+  if (isString$1(str) === false) {
     return result;
   }
 
-  var i = 0,
-      key,
-      value,
-      cache,
-      index;
-
-  var queryList = str.split(sep),
-      queryLength = queryList.length;
-
-  for (; i < queryLength; i++) {
-    cache = queryList[i].replace(rBackSlant, '%20');
-    index = cache.indexOf(eq);
+  str.split(sep).forEach(function (_value) {
+    var cache = _value.replace(rBackSlant, '%20');
+    var index = cache.indexOf(eq);
+    var key,
+        value;
 
     if (index > -1) {
       key = cache.substr(0, index);
@@ -2522,112 +2227,99 @@ function parse$1(str) {
       key = cache;
     }
 
-    key = decodeURIComponent(key);
-    value = decodeURIComponent(value);
-
-    result[key] = value;
-  }
+    result[decodeURIComponent(key)] = decodeURIComponent(value);
+  });
 
   return result;
 }
 
-defineValue(root, '$querystring', {
-  stringify: stringify$1,
-  parse: parse$1
-});
-
-inBrowser && defineValue(window, '$ready', function (func, data) {
-  var self = this || window;
-
-  if (self.document.readyState === 'complete') return func.apply(self, data);
-  self[addEventListener]('load', function callback(event) {
-    self.removeEventListener(event.type, callback);
-    func.apply(self, data);
-  });
-});
-
-var FunctionProto = Function.prototype;
-
-function $typeof(obj) {
-  var type;
-
-  if (obj == null) return obj + '';
-  if ((type = typeof obj) === 'object') {
-    if (isArray(obj)) return 'array';
-  }
-  return type;
-}
-
-defineValue(root, '$typeof', $typeof);
-
-// defineGet( ArrayProto, '__isArray__', returnTrue );
-// defineGet( StringProto, '__isString__', returnTrue );
-// defineGet( NumberProto, '__isNumber__', returnTrue );
-// defineGet( BooleanProto, '__isBoolean__', returnTrue );
-// defineGet( FunctionProto, '__isFunction__', returnTrue );
-
-var inject = $create$1(true);
+defineValue(root, '$querystring', assign(false, [null, { stringify: stringify, parse: parse }]));
 
 /**
- * ZenJS 重写的 $on 和 $off 对浏览器自带的 addEventListener 和 removeEventListener 的注入
+ * 在一个对象上定义/修改一个新属性的 get 描述符
+ * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+ * @param {String} name 要定义或修改的属性的名称
+ * @param {Function} get 将被定义或修改的 get 描述符
+ * @param {any} options 将被定义或修改的属性描述符
  */
-var event;
+function defineGet(obj, name, get, options) {
+  define(obj, name, { get: get }, options || defineGetPropertyOptions);
 
-inBrowser && defineProperty(inject, 'event', {
-  get: function () {
-    return event;
-  },
-  set: function (val) {
-    if (!isBoolean(val) || event === val) return false;
-    if (event = val) {
-      if (supportsEventTarget) {
-        defineValue(EventTarget, addEventListener, EventTarget.$on);
-        defineValue(EventTarget, removeEventListener, EventTarget.$off);
-      } else {
-        EventTarget.forEach(function (obj) {
-          defineValue(obj, addEventListener, obj.$on);
-          defineValue(obj, removeEventListener, obj.$off);
-        });
+  return get;
+}
+
+/**
+ * 返回传入的第一个参数
+ * @param {any} arg 
+ * @returns {any} arg
+ */
+function returnArg(arg) {
+  return arg;
+}
+
+/**
+ * 始终返回 true
+ * @returns {Boolean} true
+ */
+function returnTrue() {
+  return true;
+}
+
+/**
+ * 始终返回 false
+ * @returns {Boolean} false
+ */
+function returnFalse() {
+  return false;
+}
+
+var ZenJS = root.ZenJS = assign(false, [null, {
+
+      polyfill: {
+            assign: assign$1,
+            entries: entries
+      },
+
+      util: {
+
+            congruence: congruence,
+            equals: equals,
+
+            define: define,
+            defineValue: defineValue,
+            defineGet: defineGet,
+
+            intRandom: intRandom,
+
+            returnArg: returnArg,
+            returnTrue: returnTrue,
+            returnFalse: returnFalse,
+
+            parametersDefault: parametersDefault,
+            parametersRest: parametersRest,
+
+            isString: isString$1,
+            isBoolean: isBoolean$1,
+            isArray: isArray$1,
+            isNumber: isNumber,
+            isRegExp: isRegExp,
+            isSet: isSet,
+            isMap: isMap,
+            isFunction: isFunction$1,
+            isObject: isObject,
+            isReferenceType: isReferenceType,
+
+            mapSetToArray: mapSetToArray
+      },
+
+      config: {
+            event: {
+                  modifiers: true,
+                  returnFalse: true
+            }
       }
-    } else {
-      if (supportsEventTarget) {
-        defineValue(EventTarget, addEventListener, EventTarget[addEventListenerPrivate]);
-        defineValue(EventTarget, removeEventListener, EventTarget[removeEventListenerPrivate]);
-      } else {
-        EventTarget.forEach(function (obj) {
-          defineValue(obj, addEventListener, obj[addEventListenerPrivate]);
-          defineValue(obj, removeEventListener, obj[removeEventListenerPrivate]);
-        });
-      }
-    }
-  },
-  enumerable: true
-});
 
-var event$1 = $create$1(true, {
-  /**
-   * 当事件绑定的方法返回 false 时,
-   * 是否阻止浏览器默认行为且停止事件冒泡
-   */
-  returnFalse: false,
-  /**
-   * 绑定事件时, 是否允许使用修饰符
-   */
-  modifiers: true
-});
-
-var config = ZenJS.config = $create$1(true);
-
-// 注入到浏览器中的功能, 将会改变浏览器默认行为
-config.inject = inject;
-
-// 默认开启所有注入项
-keys(inject).forEach(function (key) {
-  inject[key] = true;
-});
-
-// 事件相关自定义配置
-config.event = event$1;
+}]);
 
 var guid = 1;
 
@@ -2635,37 +2327,6 @@ defineProperty(ZenJS, 'guid', {
   get: function () {
     return guid++;
   }
-});
-
-ZenJS.util = $create$1(true, {
-
-  isEquals: equals,
-  isCongruence: congruence,
-
-  isArray: isArray,
-  isBoolean: isBoolean,
-  isFunction: isFunction,
-  isNumber: isNumber,
-  isObject: isObject,
-  isRegExp: isRegExp,
-  isString: isString,
-  isReferenceType: isReferenceType,
-
-  parametersDefault: parametersDefault,
-  parametersRest: parametersRest,
-
-  define: define,
-  defineGet: defineGet,
-  defineValue: defineValue,
-  returnTrue: returnTrue,
-  returnFalse: returnFalse,
-
-  getDecimalLength: getDecimalLength
-});
-
-ZenJS.util.supports = Object.$create(true, {
-  passiveEvent: supportsPassiveEvent,
-  EventTarget: supportsEventTarget
 });
 
 export default ZenJS;
