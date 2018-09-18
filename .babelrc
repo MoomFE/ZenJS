@@ -1,16 +1,15 @@
 {
   "plugins": [
-    "check-es2015-constants",
     [
-      "transform-es2015-block-scoping", {
+      "@babel/plugin-transform-block-scoping", {
         "throwIfClosureRequired": true
       }
     ],
-    "transform-es2015-block-scoped-functions",
-    "transform-es2015-arrow-functions",
-    "transform-es2015-shorthand-properties",
-    "transform-es2015-spread",
-    "transform-es2015-destructuring",
-    "transform-es2015-template-literals"
+    "@babel/plugin-transform-block-scoped-functions",
+    "@babel/plugin-transform-arrow-functions",
+    "@babel/plugin-transform-shorthand-properties",
+    "@babel/plugin-transform-spread",
+    "@babel/plugin-transform-destructuring",
+    "@babel/plugin-transform-template-literals"
   ]
 }
