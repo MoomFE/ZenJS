@@ -106,7 +106,6 @@ function get( key, json ){
   return key !== undefined ? jar[ key ] : jar;
 }
 
-
 defineValue( document, '$cookie', function( key, value, attributes ){
   const length = arguments.length;
 
