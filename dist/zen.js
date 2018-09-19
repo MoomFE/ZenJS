@@ -2090,6 +2090,10 @@
     return $date;
   });
 
+  defineValue(Date, '$format', function (date, formatStr) {
+    return dayjs(date).format(formatStr);
+  });
+
   /**
    * @type {Boolean} 当前是否是 Node 环境
    */
