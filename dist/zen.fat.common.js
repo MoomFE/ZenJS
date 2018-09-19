@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.0.0
+ * Zen.js v3.1.0
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2945,9 +2945,10 @@ var groups = {// group1: [
  * @param {Function} listener 绑定的事件
  * @param {Object} options 事件绑定参数
  * @param {String} group 事件分组参数
+ * @param {Object} data 传递给事件的数据
  */
 
-function add$1(elem, types, selector, listener, options, group) {
+function add$1(elem, types, selector, listener, options, group, data) {
   /** 存放当前元素下的所有事件 */
   var events = elem.$data('events', {}, true);
   /** 事件 GUID */
@@ -2984,6 +2985,7 @@ function add$1(elem, types, selector, listener, options, group) {
       guid: guid,
       options: options,
       group: group,
+      data: data,
       namespaceStr: namespace.join('.'),
       handler: function () {
         return ZenJS$1.EventListener.dispatch(this, arguments, handleOptions);
@@ -3148,7 +3150,7 @@ var EventListener = ZenJS$1.EventListener = assign(false, [null, {
 
 function on(elem, types, selector, listener, options, once) {
   var events;
-  var group; // 1. on( elem, { type: listener || Boolean } )
+  var group, data; // 1. on( elem, { type: listener || Boolean } )
   // 2. on( elem, { type: listener || Boolean }, options )
   // 3. on( elem, { type: listener || Boolean }, options, selector )
   // 4. on( elem, { type: listener || Boolean }, selector )
@@ -3223,9 +3225,14 @@ function on(elem, types, selector, listener, options, once) {
   options = options || {}; // group
   // 事件分组功能, 分到同一组的事件可进行同时移除
 
-  if (options.group) {
+  if ('group' in options) {
     group = options.group;
     delete options.group;
+  }
+
+  if ('data' in options) {
+    data = options.data;
+    delete options.data;
   }
 
   keys(options).forEach(function (key) {
@@ -3249,7 +3256,7 @@ function on(elem, types, selector, listener, options, once) {
     delete options.passive;
   }
 
-  EventListener.add(elem, types, selector, listener, options, group);
+  EventListener.add(elem, types, selector, listener, options, group, data);
   return elem;
 }
 

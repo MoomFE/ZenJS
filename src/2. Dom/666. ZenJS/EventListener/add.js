@@ -14,8 +14,9 @@ import { groups } from "./util";
  * @param {Function} listener 绑定的事件
  * @param {Object} options 事件绑定参数
  * @param {String} group 事件分组参数
+ * @param {Object} data 传递给事件的数据
  */
-export default function add( elem, types, selector, listener, options, group ){
+export default function add( elem, types, selector, listener, options, group, data ){
 
   /** 存放当前元素下的所有事件 */
   const events = elem.$data( 'events', {}, true );
@@ -52,7 +53,7 @@ export default function add( elem, types, selector, listener, options, group ){
 
     /** 该事件所有相关参数 */
     handleOptions = {
-      elem, selector, type, namespace, listener, guid, options, group,
+      elem, selector, type, namespace, listener, guid, options, group, data,
       namespaceStr: namespace.join('.'),
       handler(){
         return ZenJS.EventListener.dispatch( this, arguments, handleOptions );
