@@ -34,8 +34,8 @@ function off( elem, types, selector, listener ){
     // $off({
     //   group: 'group1'
     // })
-    if( group = types.group ){
-      groups[ group ].slice().forEach( handleOptions => {
+    if( 'group' in types ){
+      groups[ types.group ].slice().forEach( handleOptions => {
         offByHandleOptions( handleOptions );
       });
     }

@@ -3294,12 +3294,11 @@
 
 
     if (isObject(types)) {
-      var group; // $off({
       //   group: 'group1'
       // })
 
-      if (group = types.group) {
-        groups[group].slice().forEach(function (handleOptions) {
+      if ('group' in types) {
+        groups[types.group].slice().forEach(function (handleOptions) {
           offByHandleOptions(handleOptions);
         });
       } // $off( object, selector )
