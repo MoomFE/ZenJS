@@ -11,25 +11,28 @@ import rnothtmlwhite from "../../../shared/const/rnothtmlwhite";
  * @param {String} types 
  * @param {any} args 
  */
-function emit( types ){
+function emit( elem, types, args ){
 
-  if( !types ) return this;
+  if( !types ) return elem;
   else{
     types = types.match( rnothtmlwhite );
 
     if( types == null || types.length === 0 ){
-      return this;
+      return elem;
     }
   }
 
   EventListener.emit(
-    this, types,
-    parametersRest( arguments, 1 )
+    elem, types,
+    parametersRest( args, 1 )
   );
 
-  return this;
+  return elem;
 }
 
 if( inBrowser ){
-  defineValue( DomEventTarget, '$emit', emit );
+  defineValue( DomEventTarget, '$emit', function( types ){
+    const elem = this || window;
+    return emit( elem, types, arguments );
+  });
 }

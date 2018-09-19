@@ -452,6 +452,21 @@ describes.push({
             div3.click();
             index.should.equals( 3 );
           }
+        }, {
+          name: 'Exception without window',
+          it: function(){
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+
+            window.$on( 'click', EventListener );
+            $on( 'click', EventListener );
+
+            window.$emit( 'click' );
+            $emit( 'click' );
+
+            window.$off( 'click' );
+            $off( 'click' );
+          }
         }
       ]
     }, {

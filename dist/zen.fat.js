@@ -3266,10 +3266,12 @@
 
   if (inBrowser) {
     defineValue(DomEventTarget, '$on', function (types, selector, listener, options) {
-      return on(this, types, selector, listener, options);
+      var elem = this || window;
+      return on(elem, types, selector, listener, options);
     });
     defineValue(DomEventTarget, '$one $once', function (types, selector, listener, options) {
-      return on(this, types, selector, listener, options, true);
+      var elem = this || window;
+      return on(elem, types, selector, listener, options, true);
     });
   }
 
@@ -3281,7 +3283,7 @@
    * @param {*} options 
    */
 
-  function off(types, selector, listener) {
+  function off(elem, types, selector, listener) {
     // $off( ZenJS.Event )
     if (types instanceof ZenJS.Event) {
       return offByHandleOptions(types.handleOptions);
@@ -3303,18 +3305,18 @@
       } // $off( object, selector )
       else {
           for (var type in types) {
-            off.call(this, type, selector, types[type]);
+            off(elem, type, selector, types[type]);
           }
         }
 
-      return this;
+      return elem;
     }
 
-    if (!types) return this;else {
+    if (!types) return elem;else {
       types = types.match(rnothtmlwhite);
 
       if (types == null || types.length === 0) {
-        return this;
+        return elem;
       }
     } // $off( types, listener )
     // $off( types, listener, selector )
@@ -3330,18 +3332,21 @@
       listener = listener ? returnTrue : returnFalse;
     }
 
-    EventListener.remove(this, types, listener, selector);
-    return this;
+    EventListener.remove(elem, types, listener, selector);
+    return elem;
   }
 
   function offByHandleOptions(handleOptions) {
     var namespace = handleOptions.namespaceStr;
     var handleTypes = namespace ? "".concat(handleOptions.type, ".").concat(namespace) : handleOptions.type;
-    return off.call(handleOptions.elem, handleTypes, handleOptions.selector, handleOptions.listener);
+    return off(handleOptions.elem, handleTypes, handleOptions.selector, handleOptions.listener);
   }
 
   if (inBrowser) {
-    defineValue(DomEventTarget, '$off', off);
+    defineValue(DomEventTarget, '$off', function (types, selector, listener) {
+      var elem = this || window;
+      return off(elem, types, selector, listener);
+    });
   }
 
   /**
@@ -3350,20 +3355,23 @@
    * @param {any} args 
    */
 
-  function emit$1(types) {
-    if (!types) return this;else {
+  function emit$1(elem, types, args) {
+    if (!types) return elem;else {
       types = types.match(rnothtmlwhite);
 
       if (types == null || types.length === 0) {
-        return this;
+        return elem;
       }
     }
-    EventListener.emit(this, types, parametersRest(arguments, 1));
-    return this;
+    EventListener.emit(elem, types, parametersRest(args, 1));
+    return elem;
   }
 
   if (inBrowser) {
-    defineValue(DomEventTarget, '$emit', emit$1);
+    defineValue(DomEventTarget, '$emit', function (types) {
+      var elem = this || window;
+      return emit$1(elem, types, arguments);
+    });
   }
 
   /*

@@ -137,11 +137,13 @@ function on( elem, types, selector, listener, options, once ){
 if( inBrowser ){
 
   defineValue( DomEventTarget, '$on', function( types, selector, listener, options ){
-    return on( this, types, selector, listener, options );
+    const elem = this || window;
+    return on( elem, types, selector, listener, options );
   });
 
   defineValue( DomEventTarget, '$one $once', function( types, selector, listener, options ){
-    return on( this, types, selector, listener, options, true );
+    const elem = this || window;
+    return on( elem, types, selector, listener, options, true );
   });
 
 }
