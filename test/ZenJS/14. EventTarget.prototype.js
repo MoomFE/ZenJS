@@ -788,6 +788,18 @@ describes.push({
             });
             div.$emit( 'click', 'zenjs', 'js' );
           }
+        }, {
+          name: 'Test arguments',
+          it: function(){
+            var div = $div;
+            var EventListener = function( event ){
+              ( event instanceof ZenJS.Event ).should.true;
+            }
+
+            div.$on( 'click', EventListener );
+            div.click();
+            div.$emit( 'click' );
+          }
         }
       ]
     }

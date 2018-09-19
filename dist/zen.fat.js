@@ -3128,7 +3128,7 @@
       if (!rNamespace || rNamespace.test(handleOptions.namespaceStr)) {
         // 检查事件委托 ( 不触发有事件委托的方法 )
         if (!handleOptions.selector) {
-          handleOptions.listener.apply(handleOptions.elem, [type].concat(data));
+          handleOptions.handler.apply(handleOptions.elem, [type].concat(data));
         }
       }
     });
