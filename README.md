@@ -27,11 +27,11 @@
 ### CDN
 ```html
   <!-- jsdelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@3.0.0/dist/zen.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@3.1.0/dist/zen.min.js"></script>
 ```
 ```html
   <!-- unpkg -->
-  <script src="https://unpkg.com/@moomfe/zenjs@3.0.0/dist/zen.min.js"></script>
+  <script src="https://unpkg.com/@moomfe/zenjs@3.1.0/dist/zen.min.js"></script>
 ```
 
 
