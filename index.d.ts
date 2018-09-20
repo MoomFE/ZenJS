@@ -741,6 +741,35 @@ interface DateConstructor{
    */
   $parse( date: String | Date ): Date;
 
+  /**
+   * 解析传入时间及时间日期字符串并替换成相应的值
+   * @param date 标准的 ISO 8601 时间字符串
+   * @param formatStr ( YY: 两位数的年份 )
+   *                  ( YYYY: 四位数的年份 )
+   *                  ( M: 月份, 从 1 开始 )
+   *                  ( MM: 月份, 两位数 )
+   *                  ( MMM: 简写的月份名称 )
+   *                  ( MMMM: 完整的月份名称 )
+   *                  ( D: 月份里的一天 )
+   *                  ( DD: 月份里的一天，两位数 )
+   *                  ( d: 一周中的一天，星期天是 0 )
+   *                  ( dd: 最简写的一周中一天的名称 )
+   *                  ( ddd: 简写的一周中一天的名称 )
+   *                  ( dddd: 一周中一天的名称 )
+   *                  ( H: 小时 )
+   *                  ( HH: 小时, 两位数 )
+   *                  ( m: 分钟 )
+   *                  ( mm: 分钟, 两位数 )
+   *                  ( s: 秒 )
+   *                  ( ss: 秒, 两位数 )
+   *                  ( SSS: 秒, 三位数 )
+   *                  ( Z: UTC 的偏移量 )
+   *                  ( ZZ: UTC 的偏移量, 数字前面加上 0 )
+   *                  ( A: AM PM )
+   *                  ( a: am pm )
+   */
+  $format( date: String | Date, formatStr: String )
+
 }
 
 interface Date {

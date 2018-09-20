@@ -452,6 +452,21 @@ describes.push({
             div3.click();
             index.should.equals( 3 );
           }
+        }, {
+          name: 'Exception without window',
+          it: function(){
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+
+            window.$on( 'click', EventListener );
+            $on( 'click', EventListener );
+
+            window.$emit( 'click' );
+            $emit( 'click' );
+
+            window.$off( 'click' );
+            $off( 'click' );
+          }
         }
       ]
     }, {
@@ -787,6 +802,18 @@ describes.push({
               type.should.equals( 'js' );
             });
             div.$emit( 'click', 'zenjs', 'js' );
+          }
+        }, {
+          name: 'Test arguments',
+          it: function(){
+            var div = $div;
+            var EventListener = function( event ){
+              ( event instanceof ZenJS.Event ).should.true;
+            }
+
+            div.$on( 'click', EventListener );
+            div.click();
+            div.$emit( 'click' );
           }
         }
       ]

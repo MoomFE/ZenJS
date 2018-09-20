@@ -27,11 +27,11 @@
 ### CDN
 ```html
   <!-- jsdelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@3.0.0/dist/zen.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@3.1.0/dist/zen.min.js"></script>
 ```
 ```html
   <!-- unpkg -->
-  <script src="https://unpkg.com/@moomfe/zenjs@3.0.0/dist/zen.min.js"></script>
+  <script src="https://unpkg.com/@moomfe/zenjs@3.1.0/dist/zen.min.js"></script>
 ```
 
 
@@ -48,18 +48,18 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 53.32kb | 14.67kb | \|  | UMD       | Browser |
-| zen.min.js         | 19.26kb | 7.08kb | \|  | UMD       | Browser |
-| zen.common.js      | 49.61kb | 14.41kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 49.59kb | 14.39kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 53.43kb | 14.69kb | \|  | UMD       | Browser |
+| zen.min.js         | 19.32kb | 7.09kb | \|  | UMD       | Browser |
+| zen.common.js      | 49.71kb | 14.43kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 49.69kb | 14.41kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 83.19kb | 22.11kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 29.69kb | 10.73kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 77.59kb | 21.74kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 77.57kb | 21.72kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 83.72kb | 22.18kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 29.86kb | 10.80kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 78.09kb | 21.80kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 78.07kb | 21.79kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 

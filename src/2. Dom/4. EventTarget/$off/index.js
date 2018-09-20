@@ -17,7 +17,7 @@ import { groups } from "../../666. ZenJS/EventListener/util";
  * @param {*} listener 
  * @param {*} options 
  */
-function off( types, selector, listener ){
+function off( elem, types, selector, listener ){
 
   // $off( ZenJS.Event )
   if( types instanceof ZenJS.Event ){
@@ -34,27 +34,27 @@ function off( types, selector, listener ){
     // $off({
     //   group: 'group1'
     // })
-    if( group = types.group ){
-      groups[ group ].slice().forEach( handleOptions => {
+    if( 'group' in types ){
+      groups[ types.group ].slice().forEach( handleOptions => {
         offByHandleOptions( handleOptions );
       });
     }
     // $off( object, selector )
     else{
       for( let type in types ){
-        off.call( this, type, selector, types[ type ] );
+        off( elem, type, selector, types[ type ] );
       }
     }
 
-    return this;
+    return elem;
   }
 
-  if( !types ) return this;
+  if( !types ) return elem;
   else{
     types = types.match( rnothtmlwhite );
 
     if( types == null || types.length === 0 ){
-      return this;
+      return elem;
     }
   } 
 
@@ -69,16 +69,16 @@ function off( types, selector, listener ){
     listener = listener ? returnTrue : returnFalse;
   }
 
-  EventListener.remove( this, types, listener, selector );
+  EventListener.remove( elem, types, listener, selector );
 
-  return this;
+  return elem;
 }
 
 function offByHandleOptions( handleOptions ){
   const namespace = handleOptions.namespaceStr;
   const handleTypes = namespace ? `${ handleOptions.type }.${ namespace }` : handleOptions.type;
 
-  return off.call(
+  return off(
     handleOptions.elem,
     handleTypes,
     handleOptions.selector,
@@ -87,5 +87,8 @@ function offByHandleOptions( handleOptions ){
 }
 
 if( inBrowser ){
-  defineValue( DomEventTarget, '$off', off );
+  defineValue( DomEventTarget, '$off', function( types, selector, listener ){
+    const elem = this || window;
+    return off( elem, types, selector, listener );
+  });
 }

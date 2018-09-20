@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.0.0
+ * Zen.js v3.1.0
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2090,6 +2090,10 @@
     return $date;
   });
 
+  defineValue(Date, '$format', function (date, formatStr) {
+    return dayjs(date).format(formatStr);
+  });
+
   /**
    * @type {Boolean} 当前是否是 Node 环境
    */
@@ -2949,9 +2953,10 @@
    * @param {Function} listener 绑定的事件
    * @param {Object} options 事件绑定参数
    * @param {String} group 事件分组参数
+   * @param {Object} data 传递给事件的数据
    */
 
-  function add$1(elem, types, selector, listener, options, group) {
+  function add$1(elem, types, selector, listener, options, group, data) {
     /** 存放当前元素下的所有事件 */
     var events = elem.$data('events', {}, true);
     /** 事件 GUID */
@@ -2988,6 +2993,7 @@
         guid: guid,
         options: options,
         group: group,
+        data: data,
         namespaceStr: namespace.join('.'),
         handler: function () {
           return ZenJS$1.EventListener.dispatch(this, arguments, handleOptions);
@@ -3126,7 +3132,7 @@
       if (!rNamespace || rNamespace.test(handleOptions.namespaceStr)) {
         // 检查事件委托 ( 不触发有事件委托的方法 )
         if (!handleOptions.selector) {
-          handleOptions.listener.apply(handleOptions.elem, [type].concat(data));
+          handleOptions.handler.apply(handleOptions.elem, [type].concat(data));
         }
       }
     });
@@ -3152,7 +3158,7 @@
 
   function on(elem, types, selector, listener, options, once) {
     var events;
-    var group; // 1. on( elem, { type: listener || Boolean } )
+    var group, data; // 1. on( elem, { type: listener || Boolean } )
     // 2. on( elem, { type: listener || Boolean }, options )
     // 3. on( elem, { type: listener || Boolean }, options, selector )
     // 4. on( elem, { type: listener || Boolean }, selector )
@@ -3227,9 +3233,14 @@
     options = options || {}; // group
     // 事件分组功能, 分到同一组的事件可进行同时移除
 
-    if (options.group) {
+    if ('group' in options) {
       group = options.group;
       delete options.group;
+    }
+
+    if ('data' in options) {
+      data = options.data;
+      delete options.data;
     }
 
     keys(options).forEach(function (key) {
@@ -3253,16 +3264,18 @@
       delete options.passive;
     }
 
-    EventListener.add(elem, types, selector, listener, options, group);
+    EventListener.add(elem, types, selector, listener, options, group, data);
     return elem;
   }
 
   if (inBrowser) {
     defineValue(DomEventTarget, '$on', function (types, selector, listener, options) {
-      return on(this, types, selector, listener, options);
+      var elem = this || window;
+      return on(elem, types, selector, listener, options);
     });
     defineValue(DomEventTarget, '$one $once', function (types, selector, listener, options) {
-      return on(this, types, selector, listener, options, true);
+      var elem = this || window;
+      return on(elem, types, selector, listener, options, true);
     });
   }
 
@@ -3274,7 +3287,7 @@
    * @param {*} options 
    */
 
-  function off(types, selector, listener) {
+  function off(elem, types, selector, listener) {
     // $off( ZenJS.Event )
     if (types instanceof ZenJS.Event) {
       return offByHandleOptions(types.handleOptions);
@@ -3285,29 +3298,28 @@
 
 
     if (isObject(types)) {
-      var group; // $off({
       //   group: 'group1'
       // })
 
-      if (group = types.group) {
-        groups[group].slice().forEach(function (handleOptions) {
+      if ('group' in types) {
+        groups[types.group].slice().forEach(function (handleOptions) {
           offByHandleOptions(handleOptions);
         });
       } // $off( object, selector )
       else {
           for (var type in types) {
-            off.call(this, type, selector, types[type]);
+            off(elem, type, selector, types[type]);
           }
         }
 
-      return this;
+      return elem;
     }
 
-    if (!types) return this;else {
+    if (!types) return elem;else {
       types = types.match(rnothtmlwhite);
 
       if (types == null || types.length === 0) {
-        return this;
+        return elem;
       }
     } // $off( types, listener )
     // $off( types, listener, selector )
@@ -3323,18 +3335,21 @@
       listener = listener ? returnTrue : returnFalse;
     }
 
-    EventListener.remove(this, types, listener, selector);
-    return this;
+    EventListener.remove(elem, types, listener, selector);
+    return elem;
   }
 
   function offByHandleOptions(handleOptions) {
     var namespace = handleOptions.namespaceStr;
     var handleTypes = namespace ? "".concat(handleOptions.type, ".").concat(namespace) : handleOptions.type;
-    return off.call(handleOptions.elem, handleTypes, handleOptions.selector, handleOptions.listener);
+    return off(handleOptions.elem, handleTypes, handleOptions.selector, handleOptions.listener);
   }
 
   if (inBrowser) {
-    defineValue(DomEventTarget, '$off', off);
+    defineValue(DomEventTarget, '$off', function (types, selector, listener) {
+      var elem = this || window;
+      return off(elem, types, selector, listener);
+    });
   }
 
   /**
@@ -3343,20 +3358,23 @@
    * @param {any} args 
    */
 
-  function emit$1(types) {
-    if (!types) return this;else {
+  function emit$1(elem, types, args) {
+    if (!types) return elem;else {
       types = types.match(rnothtmlwhite);
 
       if (types == null || types.length === 0) {
-        return this;
+        return elem;
       }
     }
-    EventListener.emit(this, types, parametersRest(arguments, 1));
-    return this;
+    EventListener.emit(elem, types, parametersRest(args, 1));
+    return elem;
   }
 
   if (inBrowser) {
-    defineValue(DomEventTarget, '$emit', emit$1);
+    defineValue(DomEventTarget, '$emit', function (types) {
+      var elem = this || window;
+      return emit$1(elem, types, arguments);
+    });
   }
 
   /*

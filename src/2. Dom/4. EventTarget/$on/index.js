@@ -24,7 +24,7 @@ import EventListener from "../../666. ZenJS/EventListener/index";
  */
 function on( elem, types, selector, listener, options, once ){
   let events;
-  let group;
+  let group, data;
 
   // 1. on( elem, { type: listener || Boolean } )
   // 2. on( elem, { type: listener || Boolean }, options )
@@ -95,9 +95,14 @@ function on( elem, types, selector, listener, options, once ){
 
   // group
   // 事件分组功能, 分到同一组的事件可进行同时移除
-  if( options.group ){
+  if( 'group' in options ){
     group = options.group;
     delete options.group;
+  }
+
+  if( 'data' in options ){
+    data = options.data;
+    delete options.data;
   }
 
   keys( options ).forEach( key => {
@@ -123,7 +128,7 @@ function on( elem, types, selector, listener, options, once ){
     delete options.passive;
   }
 
-  EventListener.add( elem, types, selector, listener, options, group );
+  EventListener.add( elem, types, selector, listener, options, group, data );
 
   return elem;
 }
@@ -132,11 +137,13 @@ function on( elem, types, selector, listener, options, once ){
 if( inBrowser ){
 
   defineValue( DomEventTarget, '$on', function( types, selector, listener, options ){
-    return on( this, types, selector, listener, options );
+    const elem = this || window;
+    return on( elem, types, selector, listener, options );
   });
 
   defineValue( DomEventTarget, '$one $once', function( types, selector, listener, options ){
-    return on( this, types, selector, listener, options, true );
+    const elem = this || window;
+    return on( elem, types, selector, listener, options, true );
   });
 
 }

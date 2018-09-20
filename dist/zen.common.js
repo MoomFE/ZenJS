@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.0.0
+ * Zen.js v3.1.0
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2084,6 +2084,10 @@ defineValue(Date, '$parse', function (date) {
   var $dayjs = dayjs(date);
   var $date = $dayjs.toDate().$set(DAYJS, $dayjs);
   return $date;
+});
+
+defineValue(Date, '$format', function (date, formatStr) {
+  return dayjs(date).format(formatStr);
 });
 
 /**
