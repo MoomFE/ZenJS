@@ -308,17 +308,30 @@ interface Array<T> {
   $get( index?: 0, num: Number ): any[];
 
   /**
-   * 修改数组内指定下标的值
+   * 修改数组指定下标的值
    * @param index 下标, 可为负数
    * @param value 值
    */
   $set( index: Number, value: any ): any[];
 
   /**
-   * 修改数组内指定下标的值
-   * @param obj 批量修改数组内指定下标的值
+   * 修改数组指定下标的值
+   * @param obj 批量修改数组指定下标的值
    */
   $set( obj: { index: Number, value: any } ): any[];
+
+  /**
+   * 修改数组内指定下标的值, 修改时无论如何不会超出数组原有范围
+   * @param index 下标, 可为负数
+   * @param value 值
+   */
+  $edit( index: Number, value: any ): any[];
+
+  /**
+   * 修改数组内指定下标的值, 修改时无论如何不会超出数组原有范围
+   * @param obj 批量修改数组内指定下标的值
+   */
+  $edit( obj: { index: Number, value: any } ): any[];
 
   /**
    * 修改数组内指定下标的值

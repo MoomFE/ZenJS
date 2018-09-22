@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.1.0
+ * Zen.js v3.1.1
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -849,21 +849,17 @@
     return obj !== null && typeof obj === 'object';
   }
 
-  defineValue(ArrayProto, '$set $edit', function (index, value) {
-    var _this = this;
-
-    if (isObject(index)) {
-      entries(index).forEach(function (arr) {
-        return set(_this, arr[0], arr[1]);
-      });
-    } else {
-      set(this, index, value);
-    }
-
-    return this;
-  });
-
   function set(array, index, value) {
+    index = fixArrayIndex(array, index); // 占位, 如果位数超过数组长度, 使用 splice 不会创建多余空间
+    // [ 1, 2, 3 ].$splice( 99, 1, 4 );
+    // [ 1, 2, 3, 4 ]
+
+    array[index] = undefined; // 使 Vue 能够刷新数据
+
+    array.splice(index, 1, value);
+  }
+
+  function edit(array, index, value) {
     var length = array.length;
 
     if ((index = fixArrayIndex(array, index)) >= length) {
@@ -872,6 +868,23 @@
 
     array.splice(index, 1, value);
   }
+
+  ['$set', '$edit'].forEach(function (name, index) {
+    var fn = index ? edit : set;
+    defineValue(ArrayProto, name, function (index, value) {
+      var _this = this;
+
+      if (isObject(index)) {
+        entries(index).forEach(function (arr) {
+          fn(_this, arr[0], arr[1]);
+        });
+      } else {
+        fn(this, index, value);
+      }
+
+      return this;
+    });
+  });
 
   defineValue(ArrayProto, '$inArray', function (_value) {
     var index,

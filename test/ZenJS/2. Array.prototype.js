@@ -1349,7 +1349,7 @@ describes.push({
         }
       ]
     }, {
-      name: '$set / $edit',
+      name: '$set',
       describe: [
         {
           name: 'Normal use',
@@ -1362,8 +1362,8 @@ describes.push({
             Object.$equals( [ 1, 2, 3 ].$set( 0, 6 ), [ 6, 2, 3 ] ).should.true;
             Object.$equals( [ 1, 2, 3 ].$set( 1, 6 ), [ 1, 6, 3 ] ).should.true;
             Object.$equals( [ 1, 2, 3 ].$set( 2, 6 ), [ 1, 2, 6 ] ).should.true;
-            Object.$equals( [ 1, 2, 3 ].$set( 3, 6 ), [ 1, 2, 6 ] ).should.true;
-            Object.$equals( [ 1, 2, 3 ].$set( 4, 6 ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( 3, 6 ), [ 1, 2, 3, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( 4, 6 ), [ 1, 2, 3, undefined, 6 ] ).should.true;
           }
         }, {
           name: 'Batch setting',
@@ -1376,8 +1376,41 @@ describes.push({
             Object.$equals( [ 1, 2, 3 ].$set( { '0': 6 } ), [ 6, 2, 3 ] ).should.true;
             Object.$equals( [ 1, 2, 3 ].$set( { '1': 6 } ), [ 1, 6, 3 ] ).should.true;
             Object.$equals( [ 1, 2, 3 ].$set( { '2': 6 } ), [ 1, 2, 6 ] ).should.true;
-            Object.$equals( [ 1, 2, 3 ].$set( { '3': 6 } ), [ 1, 2, 6 ] ).should.true;
-            Object.$equals( [ 1, 2, 3 ].$set( { '4': 6 } ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '3': 6 } ), [ 1, 2, 3, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$set( { '4': 6 } ), [ 1, 2, 3, undefined, 6 ] ).should.true;
+          }
+        }
+      ]
+    }, {
+      name: '$edit',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            Object.$equals( [ 1, 2, 3 ].$edit( -5, 6 ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( -4, 6 ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( -3, 6 ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( -2, 6 ), [ 1, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( -1, 6 ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( 0, 6 ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( 1, 6 ), [ 1, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( 2, 6 ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( 3, 6 ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( 4, 6 ), [ 1, 2, 6 ] ).should.true;
+          }
+        }, {
+          name: 'Batch setting',
+          it: function(){
+            Object.$equals( [ 1, 2, 3 ].$edit( { '-5': 6 } ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( { '-4': 6 } ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( { '-3': 6 } ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( { '-2': 6 } ), [ 1, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( { '-1': 6 } ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( { '0': 6 } ), [ 6, 2, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( { '1': 6 } ), [ 1, 6, 3 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( { '2': 6 } ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( { '3': 6 } ), [ 1, 2, 6 ] ).should.true;
+            Object.$equals( [ 1, 2, 3 ].$edit( { '4': 6 } ), [ 1, 2, 6 ] ).should.true;
           }
         }
       ]

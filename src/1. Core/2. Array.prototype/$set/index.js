@@ -5,18 +5,17 @@ import fixArrayIndex from "../../../shared/util/fixArrayIndex";
 import entries from "../../../shared/global/Object/entries";
 
 
-defineValue( ArrayProto, '$set $edit', function( index, value ){
-
-  if( isObject( index ) ){
-    entries( index ).forEach( arr => set( this, arr[0], arr[1] ) )
-  }else{
-    set( this, index, value )
-  }
-
-  return this;
-});
-
 function set( array, index, value ){
+  index = fixArrayIndex( array, index );
+  // 占位, 如果位数超过数组长度, 使用 splice 不会创建多余空间
+  // [ 1, 2, 3 ].$splice( 99, 1, 4 );
+  // [ 1, 2, 3, 4 ]
+  array[ index ] = undefined;
+  // 使 Vue 能够刷新数据
+  array.splice( index, 1, value );
+}
+
+function edit( array, index, value ){
   const length = array.length;
 
   if( ( index = fixArrayIndex( array, index ) ) >= length ){
@@ -25,3 +24,20 @@ function set( array, index, value ){
 
   array.splice( index, 1, value );
 }
+
+[ '$set', '$edit' ].forEach(( name, index ) => {
+  const fn = index ? edit : set;
+
+  defineValue( ArrayProto, name, function( index, value ){
+
+    if( isObject( index ) ){
+      entries( index ).forEach( arr => {
+        fn( this, arr[0], arr[1] )
+      });
+    }else{
+      fn( this, index, value );
+    }
+
+    return this;
+  });
+});
