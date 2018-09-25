@@ -983,6 +983,16 @@ interface Date {
 
 }
 
+interface Function {
+
+  /**
+   * 可提前传入方法的指定下标的参数
+   * @param argsObj 类似于 { index: obj, index2: obj2 } 结构的对象, 定义了参数的下标和值
+   */
+  $args( argsObj: any );
+
+}
+
 interface Window {
 
   /**

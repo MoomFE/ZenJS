@@ -191,6 +191,7 @@ describes.push({
         }, {
           name: 'Fractional precision problem',
           it: function(){
+            Math.$divide( 33.77, 10 ).should.equals( 3.377 );
             Math.$divide( 0.222222, 0.5 ).should.equals( 0.444444 );
           }
         }

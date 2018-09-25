@@ -2132,6 +2132,23 @@
     });
   }
 
+  defineValue(FunctionProto, '$args', function (oArgs) {
+    var func = this;
+    return function () {
+      var args = [];
+      var currentArgs = arguments;
+      var length = keys(oArgs).length + currentArgs.length;
+      var currentIndex = 0;
+      var index = 0;
+
+      for (; index < length; index++) {
+        args[index] = index in oArgs ? oArgs[index] : currentArgs[currentIndex++];
+      }
+
+      return func.apply(this, args);
+    };
+  });
+
   defineValue(root, '$typeof', function (obj) {
     if (obj == null) return obj + '';
     return obj[isArray] ? 'array' : typeof obj;
