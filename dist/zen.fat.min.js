@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.1.2
+ * Zen.js v3.2.0
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
