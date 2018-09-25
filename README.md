@@ -25,14 +25,14 @@
 ```
 
 ### CDN
-```html
-  <!-- jsdelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/@moomfe/zenjs@3.1.2/dist/zen.min.js"></script>
-```
-```html
-  <!-- unpkg -->
-  <script src="https://unpkg.com/@moomfe/zenjs@3.1.2/dist/zen.min.js"></script>
-```
+
+> jsdelivr
+> <br>
+> https://cdn.jsdelivr.net/npm/@moomfe/zenjs@3.1.2/dist/
+
+> unpkg
+> <br>
+> https://unpkg.com/@moomfe/zenjs@3.1.2/dist/
 
 
 <br>
