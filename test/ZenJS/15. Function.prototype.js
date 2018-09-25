@@ -68,6 +68,11 @@ describes.push({
             math2( '$jian', null ).should.equals( 0.2 );
             math3( '$cheng', null ).should.equals( 0.02 );
             math4( '$chu', null ).should.equals( 3.377 );
+
+            math1( '$jia' ).should.equals( 0.3 );
+            math2( '$jian' ).should.equals( 0.2 );
+            math3( '$cheng' ).should.equals( 0.02 );
+            math4( '$chu' ).should.equals( 3.377 );
           }
         }
       ]

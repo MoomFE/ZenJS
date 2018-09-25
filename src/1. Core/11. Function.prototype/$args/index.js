@@ -9,7 +9,8 @@ defineValue( FunctionProto, '$args', function( oArgs ){
   return function(){
     const args = [];
     const currentArgs = arguments;
-    const length = keys( oArgs ).length + currentArgs.length;
+    const oArgsKeys = keys( oArgs );
+    const length = oArgsKeys.length + currentArgs.length;
 
     let currentIndex = 0;
     let index = 0;
@@ -18,6 +19,10 @@ defineValue( FunctionProto, '$args', function( oArgs ){
       args[ index ] = index in oArgs ? oArgs[ index ]
                                      : currentArgs[ currentIndex++ ];
     }
+
+    oArgsKeys.forEach( index => {
+      index in args || args.$set( index, oArgs[ index ] );
+    });
 
     return func.apply( this, args );
   };

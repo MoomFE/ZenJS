@@ -2133,7 +2133,8 @@ defineValue(FunctionProto, '$args', function (oArgs) {
   return function () {
     var args = [];
     var currentArgs = arguments;
-    var length = keys(oArgs).length + currentArgs.length;
+    var oArgsKeys = keys(oArgs);
+    var length = oArgsKeys.length + currentArgs.length;
     var currentIndex = 0;
     var index = 0;
 
@@ -2141,6 +2142,9 @@ defineValue(FunctionProto, '$args', function (oArgs) {
       args[index] = index in oArgs ? oArgs[index] : currentArgs[currentIndex++];
     }
 
+    oArgsKeys.forEach(function (index) {
+      index in args || args.$set(index, oArgs[index]);
+    });
     return func.apply(this, args);
   };
 });
