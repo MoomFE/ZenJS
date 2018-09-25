@@ -8,10 +8,10 @@ import { groups } from "./util";
 /**
  * 事件处理 => 绑定事件
  * @private
- * @param {Element} elem 需要绑定事件的对象
+ * @param {EventTarget} elem 需要绑定事件的对象
  * @param {Array} types 需要绑定的事件集
  * @param {String} selector 事件委托的选择器
- * @param {Function} listener 绑定的事件
+ * @param {Function} listener 绑定的事件回调
  * @param {Object} options 事件绑定参数
  * @param {String} group 事件分组参数
  * @param {Object} data 传递给事件的数据

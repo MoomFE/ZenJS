@@ -1,10 +1,11 @@
 import equals from "../../../1. Core/1. Array/$equals/index";
 
 /**
- * 根据传入命名空间, 调用一些功能或做一些判断
+ * 事件处理 => 功能性命名空间
+ * @private
  * @param {String} name 需要解析哪一块的功能命名空间
  * @param {Array} namespace 元素的命名空间列表
- * @param {Element} elem 绑定事件的元素
+ * @param {EventTarget} elem 绑定事件的元素
  * @param {String} type 绑定的事件
  * @param {Object} options 其他属性
  */

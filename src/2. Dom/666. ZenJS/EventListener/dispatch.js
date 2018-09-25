@@ -5,7 +5,10 @@ import modifiers from "./modifiers";
 
 /**
  * 事件处理 => 触发事件
- * @param {DocumentEventMap} nativeEvent 当前触发的事件对象
+ * @private
+ * @param {EventTarget} self 触发事件的对象
+ * @param {IArguments} oArgs 原生事件触发时方法的 arguments
+ * @param {Object} handleOptions 该事件的所有详细参数
  */
 export default function dispatch( self, oArgs, handleOptions ){
 
