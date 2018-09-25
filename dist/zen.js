@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.1.1
+ * Zen.js v3.1.2
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -557,15 +557,8 @@
    * @returns {any[]}
    */
 
-  function parametersRest(args) {
-    var index = parametersDefault(arguments, 1, 0);
-    var length = args.length;
-
-    if (length > index) {
-      return slice.call(args, index, length);
-    }
-
-    return [];
+  function parametersRest(args, index) {
+    return slice.call(args, index || 0);
   }
 
   /**

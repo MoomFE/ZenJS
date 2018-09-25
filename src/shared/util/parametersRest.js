@@ -1,4 +1,3 @@
-import parametersDefault from "./parametersDefault";
 import slice from "../global/Array/prototype/slice";
 
 /**
@@ -7,13 +6,6 @@ import slice from "../global/Array/prototype/slice";
  * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
  * @returns {any[]}
  */
-export default function parametersRest( args ){
-  const index = parametersDefault( arguments, 1, 0 );
-  const length = args.length;
-
-  if( length > index ){
-    return slice.call( args, index, length );
-  }
-
-  return [];
+export default function parametersRest( args, index ){
+  return slice.call( args, index || 0 );
 }
