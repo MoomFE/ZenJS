@@ -146,6 +146,7 @@
 
 - Date
   - $parse
+  - $format
 
 - Date.prototype
   - $dayjs
