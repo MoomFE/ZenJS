@@ -10,6 +10,10 @@
     "@babel/plugin-transform-shorthand-properties",
     "@babel/plugin-transform-spread",
     "@babel/plugin-transform-destructuring",
-    "@babel/plugin-transform-template-literals"
+    [
+      "@babel/plugin-transform-template-literals", {
+        "loose": true
+      }
+    ]
   ]
 }

@@ -19,7 +19,7 @@ var ArrayProto = Array.prototype;
 var FunctionProto = Function.prototype;
 
 [['String', StringProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
-  defineProperty(obj[1], "__is".concat(obj[0], "__"), {
+  defineProperty(obj[1], "__is" + obj[0] + "__", {
     value: true,
     configurable: false,
     // 删除/定义
@@ -2594,7 +2594,7 @@ if (inBrowser) {
 
 if (inBrowser) {
   ['width', 'height'].forEach(function (prop) {
-    define(ElementProto, "_".concat(prop), {
+    define(ElementProto, "_" + prop, {
       get: function () {
         try {
           return this.getBoundingClientRect()[prop];
@@ -3350,7 +3350,7 @@ function off(elem, types, selector, listener) {
 
 function offByHandleOptions(handleOptions) {
   var namespace = handleOptions.namespaceStr;
-  var handleTypes = namespace ? "".concat(handleOptions.type, ".").concat(namespace) : handleOptions.type;
+  var handleTypes = namespace ? handleOptions.type + "." + namespace : handleOptions.type;
   return off(handleOptions.elem, handleTypes, handleOptions.selector, handleOptions.listener);
 }
 
