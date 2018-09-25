@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.1.2
+ * Zen.js v3.2.0
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2131,6 +2131,27 @@
       return result;
     });
   }
+
+  defineValue(FunctionProto, '$args', function (oArgs) {
+    var func = this;
+    return function () {
+      var args = [];
+      var currentArgs = arguments;
+      var oArgsKeys = keys(oArgs);
+      var length = oArgsKeys.length + currentArgs.length;
+      var currentIndex = 0;
+      var index = 0;
+
+      for (; index < length; index++) {
+        args[index] = index in oArgs ? oArgs[index] : currentArgs[currentIndex++];
+      }
+
+      oArgsKeys.forEach(function (index) {
+        index in args || args.$set(index, oArgs[index]);
+      });
+      return func.apply(this, args);
+    };
+  });
 
   defineValue(root, '$typeof', function (obj) {
     if (obj == null) return obj + '';

@@ -983,6 +983,16 @@ interface Date {
 
 }
 
+interface Function {
+
+  /**
+   * 可提前传入方法的指定下标的参数
+   * @param argsObj 类似于 { index: obj, index2: obj2 } 结构的对象, 定义了参数的下标和值
+   */
+  $args( argsObj: any );
+
+}
+
 interface Window {
 
   /**
@@ -1218,6 +1228,65 @@ interface ZenJS {
    * @param event 原生事件对象
    */
   Event( src: DocumentEventMap ): any;
+
+  /**
+   * 内部使用的各种处理事件的方法
+   */
+  EventListener: {
+
+    /**
+     * 事件处理 => 绑定事件
+     * @private
+     * @param elem 需要绑定事件的对象
+     * @param types 需要绑定的事件集
+     * @param selector 事件委托的选择器
+     * @param listener 绑定的事件回调
+     * @param options 事件绑定参数
+     * @param group 事件分组参数
+     * @param data 传递给事件的数据
+     */
+    add( elem: EventTarget, types: Array, selector: String, listener: Function, options: Object, group: String, data: Object );
+
+    /**
+     * 事件处理 => 触发事件
+     * @private
+     * @param self 触发事件的对象
+     * @param oArgs 原生事件触发时方法的 arguments
+     * @param handleOptions 该事件的所有详细参数
+     */
+    dispatch( self: EventTarget, args: IArguments, handleOptions: Object );
+
+    /**
+     * 事件处理 => 功能性命名空间
+     * @private
+     * @param name 需要解析哪一块的功能命名空间
+     * @param namespace 元素的命名空间列表
+     * @param elem 绑定事件的元素
+     * @param type 绑定的事件
+     * @param options 其他属性
+     */
+    modifiers( name: String, namespace: Array, elem: EventTarget, type: String, options: Object );
+
+    /**
+     * 事件处理 => 移除事件
+     * @private
+     * @param elem 需要移除事件的独享
+     * @param types 需要移除的事件集
+     * @param listener 需要移除的事件回调
+     * @param selector 事件委托选择器
+     */
+    remove( elem: EventTarget, types: Array, listener: Function, selector: String );
+
+    /**
+     * 事件处理 => 触发事件
+     * @private
+     * @param elem 需要触发事件的对象
+     * @param types 需要触发的事件集
+     * @param data 需要传递到事件回调的参数
+     */
+    emit( elem: EventTarget, types: Array, data: Array );
+
+  }
 
 }
 

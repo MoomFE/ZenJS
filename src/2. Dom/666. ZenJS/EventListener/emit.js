@@ -3,9 +3,10 @@ import { init } from "./util";
 
 /**
  * 事件处理 => 触发事件
- * @param {Element} elem 
- * @param {Array} types 
- * @param {Array} data 
+ * @private
+ * @param {EventTarget} elem 需要触发事件的对象
+ * @param {Array} types 需要触发的事件集
+ * @param {Array} data 需要传递到事件回调的参数
  */
 export default function emit( elem, types, data ){
   init(

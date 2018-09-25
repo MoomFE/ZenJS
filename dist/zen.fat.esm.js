@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.1.2
+ * Zen.js v3.2.0
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2126,6 +2126,27 @@ function install(name) {
   });
 }
 
+defineValue(FunctionProto, '$args', function (oArgs) {
+  var func = this;
+  return function () {
+    var args = [];
+    var currentArgs = arguments;
+    var oArgsKeys = keys(oArgs);
+    var length = oArgsKeys.length + currentArgs.length;
+    var currentIndex = 0;
+    var index = 0;
+
+    for (; index < length; index++) {
+      args[index] = index in oArgs ? oArgs[index] : currentArgs[currentIndex++];
+    }
+
+    oArgsKeys.forEach(function (index) {
+      index in args || args.$set(index, oArgs[index]);
+    });
+    return func.apply(this, args);
+  };
+});
+
 defineValue(root, '$typeof', function (obj) {
   if (obj == null) return obj + '';
   return obj[isArray] ? 'array' : typeof obj;
@@ -2819,10 +2840,11 @@ try {
 var rtypenamespace = /^([^.]*)(?:\.(.+)|)/;
 
 /**
- * 根据传入命名空间, 调用一些功能或做一些判断
+ * 事件处理 => 功能性命名空间
+ * @private
  * @param {String} name 需要解析哪一块的功能命名空间
  * @param {Array} namespace 元素的命名空间列表
- * @param {Element} elem 绑定事件的元素
+ * @param {EventTarget} elem 绑定事件的元素
  * @param {String} type 绑定的事件
  * @param {Object} options 其他属性
  */
@@ -2947,10 +2969,10 @@ var groups = {// group1: [
 /**
  * 事件处理 => 绑定事件
  * @private
- * @param {Element} elem 需要绑定事件的对象
+ * @param {EventTarget} elem 需要绑定事件的对象
  * @param {Array} types 需要绑定的事件集
  * @param {String} selector 事件委托的选择器
- * @param {Function} listener 绑定的事件
+ * @param {Function} listener 绑定的事件回调
  * @param {Object} options 事件绑定参数
  * @param {String} group 事件分组参数
  * @param {Object} data 传递给事件的数据
@@ -3020,7 +3042,10 @@ function add$1(elem, types, selector, listener, options, group, data) {
 
 /**
  * 事件处理 => 触发事件
- * @param {DocumentEventMap} nativeEvent 当前触发的事件对象
+ * @private
+ * @param {EventTarget} self 触发事件的对象
+ * @param {IArguments} oArgs 原生事件触发时方法的 arguments
+ * @param {Object} handleOptions 该事件的所有详细参数
  */
 
 function dispatch$1(self, oArgs, handleOptions) {
@@ -3081,10 +3106,11 @@ function dispatch$1(self, oArgs, handleOptions) {
 
 /**
  * 事件处理 => 移除事件
- * @param {Element} elem 
- * @param {Array} types 
- * @param {Function} listener 
- * @param {String} selector 
+ * @private
+ * @param {EventTarget} elem 需要移除事件的独享
+ * @param {Array} types 需要移除的事件集
+ * @param {Function} listener 需要移除的事件回调
+ * @param {String} selector 事件委托选择器
  */
 
 function remove(elem, types, listener, selector) {
@@ -3121,9 +3147,10 @@ function remove(elem, types, listener, selector) {
 
 /**
  * 事件处理 => 触发事件
- * @param {Element} elem 
- * @param {Array} types 
- * @param {Array} data 
+ * @private
+ * @param {EventTarget} elem 需要触发事件的对象
+ * @param {Array} types 需要触发的事件集
+ * @param {Array} data 需要传递到事件回调的参数
  */
 
 function emit(elem, types, data) {

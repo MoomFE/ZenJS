@@ -4,10 +4,11 @@ import { init, groups } from "./util";
 
 /**
  * 事件处理 => 移除事件
- * @param {Element} elem 
- * @param {Array} types 
- * @param {Function} listener 
- * @param {String} selector 
+ * @private
+ * @param {EventTarget} elem 需要移除事件的独享
+ * @param {Array} types 需要移除的事件集
+ * @param {Function} listener 需要移除的事件回调
+ * @param {String} selector 事件委托选择器
  */
 export default function remove( elem, types, listener, selector ){
   init(
