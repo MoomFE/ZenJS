@@ -2,6 +2,39 @@ describes.push({
   name: 'Function.prototype',
   describe: [
     {
+      name: '$after',
+      describe: [
+        {
+          name: 'If not passed, the default is 1',
+          it: function(){
+            var index = 0;
+            var func = function(){ index++ }.$after();
+    
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 1 );
+            func();
+            index.should.equals( 2 );
+          }
+        }, {
+          name: 'Normal use',
+          it: function(){
+            var index = 0;
+            var func = function(){ index++ }.$after( 3 );
+
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 1 );
+          }
+        }
+      ]
+    }, {
       name: '$args',
       describe: [
         {
@@ -73,6 +106,35 @@ describes.push({
             math2( '$jian' ).should.equals( 0.2 );
             math3( '$cheng' ).should.equals( 0.02 );
             math4( '$chu' ).should.equals( 3.377 );
+          }
+        }
+      ]
+    }, {
+      name: '$one / $once',
+      describe: [
+        {
+          name: 'If not passed, the default is 1',
+          it: function(){
+            var index = 0;
+            var func = function(){ index++ }.$one();
+
+            func();
+            index.should.equals( 1 );
+            func();
+            index.should.equals( 1 );
+          }
+        }, {
+          name: 'Incoming parameters',
+          it: function(){
+            var index = 0;
+            var func = function(){ index++ }.$one( 2 );
+
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 1 );
+            func();
+            index.should.equals( 1 );
           }
         }
       ]

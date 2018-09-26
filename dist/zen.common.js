@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.2.2
+ * Zen.js v3.3.0
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2128,6 +2128,14 @@ function install(name) {
   });
 }
 
+defineValue(FunctionProto, '$after', function () {
+  var func = this;
+  var num = parametersDefault(arguments, 0, 1);
+  return function () {
+    num-- < 1 && func.apply(this, arguments);
+  };
+});
+
 defineValue(FunctionProto, '$args', function (oArgs) {
   var func = this;
   return function () {
@@ -2146,6 +2154,15 @@ defineValue(FunctionProto, '$args', function (oArgs) {
       index in args || args.$set(index, oArgs[index]);
     });
     return func.apply(this, args);
+  };
+});
+
+defineValue(FunctionProto, '$one $once', function () {
+  var func = this;
+  var num = parametersDefault(arguments, 0, 1);
+  var index = 1;
+  return function () {
+    index++ === num && func.apply(this, arguments);
   };
 });
 

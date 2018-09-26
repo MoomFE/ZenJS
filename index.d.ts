@@ -412,7 +412,7 @@ interface ObjectConstructor {
    * 将多个源对象的可枚举属性合并到第一个对象中
    * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign, 可不填 - Default: false
    */
-  $assign( shallow? = false, ...args?: any[] ): any;
+  $assign( shallow: Boolean = false, ...args?: any[] ): any;
 
   /**
    * 判断传入的两个对象是否相同
@@ -461,7 +461,7 @@ interface Object {
    * 将多个源对象的可枚举属性合并到当前对象中
    * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign, 可不填 - Default: false
    */
-  $assign( shallow? = false, ...args?: any[] ): any;
+  $assign( shallow: Boolean = false, ...args?: any[] ): any;
 
   /**
    * 判断当前对象和传入对象是否相同, 比对规则请参考 Object.$equals
@@ -986,10 +986,28 @@ interface Date {
 interface Function {
 
   /**
+   * 使当前方法调用次数大于传入数值时, 才会被真正调用
+   * @param num 调用次数 - Default: 1
+   */
+  $after( num: Number = 1 ): Function
+
+  /**
    * 可提前传入方法的指定下标的参数
    * @param argsObj 类似于 { index: obj, index2: obj2 } 结构的对象, 定义了参数的下标和值
    */
-  $args( argsObj: any );
+  $args( argsObj: any ): Function;
+
+  /**
+   * 使当前方法调用过一次便失效
+   * @param num 可指定在被第几次调用时是有用的, 默认第一次 - Default: 1
+   */
+  $one( num?: Number = 1 ): Function;
+
+  /**
+   * 使当前方法调用过一次便失效
+   * @param num 可指定在被第几次调用时是有用的, 默认第一次 - Default: 1
+   */
+  $once( num?: Number = 1 ): Function;
 
 }
 
