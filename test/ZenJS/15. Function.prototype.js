@@ -2,6 +2,39 @@ describes.push({
   name: 'Function.prototype',
   describe: [
     {
+      name: '$after',
+      describe: [
+        {
+          name: 'If not passed, the default is 1',
+          it: function(){
+            var index = 0;
+            var func = function(){ index++ }.$after();
+    
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 1 );
+            func();
+            index.should.equals( 2 );
+          }
+        }, {
+          name: 'Normal use',
+          it: function(){
+            var index = 0;
+            var func = function(){ index++ }.$after( 3 );
+
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 1 );
+          }
+        }
+      ]
+    }, {
       name: '$args',
       describe: [
         {
