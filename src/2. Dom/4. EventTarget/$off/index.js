@@ -29,13 +29,14 @@ function off( elem, types, selector, listener ){
   //   group: 'group1'
   // })
   if( isObject( types ) ){
-    let group;
 
     // $off({
     //   group: 'group1'
     // })
     if( 'group' in types ){
-      groups[ types.group ].slice().forEach( handleOptions => {
+      let _groups = groups[ types.group ];
+
+      _groups && _groups.slice().forEach( handleOptions => {
         offByHandleOptions( handleOptions );
       });
     }

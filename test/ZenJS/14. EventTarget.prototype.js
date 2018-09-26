@@ -789,6 +789,26 @@ describes.push({
             div.$off( { click: EventListener } );
             Object.$equals( div.$data('events'), {} ).should.true;
           }
+        }, {
+          name: 'Delete events using the groups',
+          it: function(){
+            var div = $div;
+            var span = div.appendChild( window.span );
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+            var options1 = { group: 'groups-test-1' };
+            var options2 = { group: 'groups-test-2' };
+
+            div.$on( 'click', EventListener, options1 );
+            span.$on( 'click', EventListener, options1 );
+            span.click();
+            index.should.equals( 2 );
+            $off( options1 );
+            span.click();
+            index.should.equals( 2 );
+
+            $off( options2 );
+          }
         }
       ]
     }, {

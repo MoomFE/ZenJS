@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.2.1
+ * Zen.js v3.2.2
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -3326,11 +3326,12 @@ function off(elem, types, selector, listener) {
 
 
   if (isObject(types)) {
+    // $off({
     //   group: 'group1'
     // })
-
     if ('group' in types) {
-      groups[types.group].slice().forEach(function (handleOptions) {
+      var _groups = groups[types.group];
+      _groups && _groups.slice().forEach(function (handleOptions) {
         offByHandleOptions(handleOptions);
       });
     } // $off( object, selector )
