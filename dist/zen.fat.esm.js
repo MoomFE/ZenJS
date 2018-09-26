@@ -2155,6 +2155,15 @@ defineValue(FunctionProto, '$args', function (oArgs) {
   };
 });
 
+defineValue(FunctionProto, '$one $once', function () {
+  var func = this;
+  var num = parametersDefault(arguments, 0, 1);
+  var index = 1;
+  return function () {
+    index++ === num && func.apply(this, arguments);
+  };
+});
+
 defineValue(root, '$typeof', function (obj) {
   if (obj == null) return obj + '';
   return obj[isArray] ? 'array' : typeof obj;

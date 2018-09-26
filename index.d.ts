@@ -997,6 +997,18 @@ interface Function {
    */
   $args( argsObj: any ): Function;
 
+  /**
+   * 使当前方法调用过一次便失效
+   * @param num 可指定在被第几次调用时是有用的, 默认第一次 - Default: 1
+   */
+  $one( num?: Number = 1 ): Function;
+
+  /**
+   * 使当前方法调用过一次便失效
+   * @param num 可指定在被第几次调用时是有用的, 默认第一次 - Default: 1
+   */
+  $once( num?: Number = 1 ): Function;
+
 }
 
 interface Window {

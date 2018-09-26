@@ -109,6 +109,35 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$one / $once',
+      describe: [
+        {
+          name: 'If not passed, the default is 1',
+          it: function(){
+            var index = 0;
+            var func = function(){ index++ }.$one();
+
+            func();
+            index.should.equals( 1 );
+            func();
+            index.should.equals( 1 );
+          }
+        }, {
+          name: 'Incoming parameters',
+          it: function(){
+            var index = 0;
+            var func = function(){ index++ }.$one( 2 );
+
+            func();
+            index.should.equals( 0 );
+            func();
+            index.should.equals( 1 );
+            func();
+            index.should.equals( 1 );
+          }
+        }
+      ]
     }
   ]
 });
