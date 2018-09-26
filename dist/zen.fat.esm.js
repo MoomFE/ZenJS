@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.2.0
+ * Zen.js v3.2.1
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -3255,10 +3255,11 @@ function on(elem, types, selector, listener, options, once) {
     options = {
       capture: options
     };
-  }
-
-  options = options || {}; // group
+  } else {
+    options = options ? assign$1({}, options) : {};
+  } // group
   // 事件分组功能, 分到同一组的事件可进行同时移除
+
 
   if ('group' in options) {
     group = options.group;

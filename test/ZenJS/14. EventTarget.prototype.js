@@ -467,6 +467,27 @@ describes.push({
             window.$off( 'click' );
             $off( 'click' );
           }
+        }, {
+          name: 'The passed options will not be modified',
+          it: function(){
+            var div = $div;
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+            var options = {
+              group: 'test-options'
+            };
+
+            div.$on( 'click', EventListener, options );
+            Object.$equals( options.group, 'test-options' ).should.true;
+
+            div.click();
+            index.should.equals( 1 );
+
+            $off( options );
+
+            div.click();
+            index.should.equals( 1 );
+          }
         }
       ]
     }, {

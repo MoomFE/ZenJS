@@ -11,6 +11,7 @@ import inBrowser from "../../../shared/const/inBrowser";
 import defineValue from "../../../shared/util/defineValue";
 import DomEventTarget from "../../../shared/global/DomEventTarget/index";
 import EventListener from "../../666. ZenJS/EventListener/index";
+import assign from "../../../shared/global/Object/assign";
 
 
 /**
@@ -89,9 +90,10 @@ function on( elem, types, selector, listener, options, once ){
   // useCapture
   if( isBoolean( options ) ){
     options = { capture: options };
+  }else{
+    options = options ? assign( {}, options )
+                      : {};
   }
-
-  options = options || {};
 
   // group
   // 事件分组功能, 分到同一组的事件可进行同时移除
