@@ -55,9 +55,21 @@ export function init( elem, types, whileFn, whileEndFn ){
 /**
  * 所有事件分组的存储
  */
-export const groups = {
+export const GROUPS = {
   // group1: [
   //   handleOptions1,
   //   handleOptions2
+  // ]
+};
+
+/**
+ * 事件分组主分组
+ */
+export const MAINGROUPS = {
+  // group: [
+  //   handleOptions1,
+  //   handleOptions2,
+  //   handleOptions3,
+  //   handleOptions4
   // ]
 };

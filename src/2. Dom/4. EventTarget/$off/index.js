@@ -8,7 +8,8 @@ import inBrowser from "../../../shared/const/inBrowser";
 import defineValue from "../../../shared/util/defineValue";
 import DomEventTarget from "../../../shared/global/DomEventTarget/index";
 import rnothtmlwhite from "../../../shared/const/rnothtmlwhite";
-import { groups } from "../../666. ZenJS/EventListener/util";
+import { GROUPS, MAINGROUPS } from "../../666. ZenJS/EventListener/util";
+import { isArray } from "../../../shared/const/type";
 
 /**
  * 移除事件 => 参数处理
@@ -25,20 +26,32 @@ function off( elem, types, selector, listener ){
   }
 
   // $off( object, selector )
-  // $off({
-  //   group: 'group1'
-  // })
+  // $off({ group: 'group' })
+  // $off({ group: [ 'group', 'group-1' ] })
   if( isObject( types ) ){
 
-    // $off({
-    //   group: 'group1'
-    // })
     if( 'group' in types ){
-      let _groups = groups[ types.group ];
+      let group = types.group;
+      let groups;
 
-      _groups && _groups.slice().forEach( handleOptions => {
-        offByHandleOptions( handleOptions );
-      });
+      // 移除时传入主分组或主分组与副分组时, 始终认为移除所有主分组下的内容
+      if( group[ isArray ] ){
+        let mainGroup = group[ 0 ];
+
+        if( mainGroup && ( mainGroup = MAINGROUPS[ mainGroup ] ) ){
+          groups = mainGroup.slice();
+        }
+      }
+      // 只移除副分组
+      else if( group && ( group = GROUPS[ group ] ) ){
+        groups = group.slice();
+      }
+
+      if( groups ){
+        groups.forEach( handleOptions => {
+          offByHandleOptions( handleOptions );
+        });
+      }
     }
     // $off( object, selector )
     else{

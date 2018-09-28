@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.3.0
+ * Zen.js v3.3.1
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2983,9 +2983,20 @@
    * 所有事件分组的存储
    */
 
-  var groups = {// group1: [
+  var GROUPS = {// group1: [
     //   handleOptions1,
     //   handleOptions2
+    // ]
+  };
+  /**
+   * 事件分组主分组
+   */
+
+  var MAINGROUPS = {// group: [
+    //   handleOptions1,
+    //   handleOptions2,
+    //   handleOptions3,
+    //   handleOptions4
     // ]
   };
 
@@ -2997,11 +3008,12 @@
    * @param {String} selector 事件委托的选择器
    * @param {Function} listener 绑定的事件回调
    * @param {Object} options 事件绑定参数
-   * @param {String} group 事件分组参数
+   * @param {String} mainGroup 事件分组参数 - 主分组, 移除主分组也会同时移除所有次分组
+   * @param {String} group 事件分组参数 - 次分组
    * @param {Object} data 传递给事件的数据
    */
 
-  function add$1(elem, types, selector, listener, options, group, data) {
+  function add$1(elem, types, selector, listener, options, mainGroup, group, data) {
     /** 存放当前元素下的所有事件 */
     var events = elem.$data('events', {}, true);
     /** 事件 GUID */
@@ -3037,6 +3049,7 @@
         listener: listener,
         guid: guid,
         options: options,
+        mainGroup: mainGroup,
         group: group,
         data: data,
         namespaceStr: namespace.join('.'),
@@ -3048,7 +3061,13 @@
       (events[type] || (events[type] = [])).push(handleOptions); // 存储分组数据
 
       if (group) {
-        (groups[group] || (groups[group] = [])).push(handleOptions);
+        var myGroup = GROUPS[group] || (GROUPS[group] = []);
+        myGroup.push(handleOptions);
+
+        if (mainGroup) {
+          var myMainGroup = MAINGROUPS[mainGroup] || (MAINGROUPS[mainGroup] = []);
+          myMainGroup.push(handleOptions);
+        }
       } // 绑定事件
 
 
@@ -3154,9 +3173,15 @@
             handlers.splice(handlersLength, 1); // 移除分组缓存
 
             var group = handleOptions.group;
+            var mainGroup = handleOptions.mainGroup; // 移除副分组
 
-            if (group && !groups[group].$deleteValue(handleOptions).length) {
-              delete groups[group];
+            if (group && (group = GROUPS[group]) && !group.$deleteValue(handleOptions).length) {
+              delete GROUPS[handleOptions.group];
+            } // 移除主分组
+
+
+            if (mainGroup && (mainGroup = MAINGROUPS[mainGroup]) && !mainGroup.$deleteValue(handleOptions).length) {
+              delete MAINGROUPS[handleOptions.mainGroup];
             }
           }
         }
@@ -3208,7 +3233,7 @@
 
   function on(elem, types, selector, listener, options, once) {
     var events;
-    var group, data; // 1. on( elem, { type: listener || Boolean } )
+    var mainGroup, group, data; // 1. on( elem, { type: listener || Boolean } )
     // 2. on( elem, { type: listener || Boolean }, options )
     // 3. on( elem, { type: listener || Boolean }, options, selector )
     // 4. on( elem, { type: listener || Boolean }, selector )
@@ -3280,12 +3305,19 @@
       };
     } else {
       options = options ? assign$1({}, options) : {};
-    } // group
+    } // mainGroup
+    // group
     // 事件分组功能, 分到同一组的事件可进行同时移除
 
 
     if ('group' in options) {
       group = options.group;
+
+      if (group[isArray]) {
+        mainGroup = group[0];
+        group = group[1];
+      }
+
       delete options.group;
     }
 
@@ -3315,7 +3347,7 @@
       delete options.passive;
     }
 
-    EventListener.add(elem, types, selector, listener, options, group, data);
+    EventListener.add(elem, types, selector, listener, options, mainGroup, group, data);
     return elem;
   }
 
@@ -3343,20 +3375,31 @@
     if (types instanceof ZenJS.Event) {
       return offByHandleOptions(types.handleOptions);
     } // $off( object, selector )
-    // $off({
-    //   group: 'group1'
-    // })
+    // $off({ group: 'group' })
+    // $off({ group: [ 'group', 'group-1' ] })
 
 
     if (isObject(types)) {
-      // $off({
-      //   group: 'group1'
-      // })
       if ('group' in types) {
-        var _groups = groups[types.group];
-        _groups && _groups.slice().forEach(function (handleOptions) {
-          offByHandleOptions(handleOptions);
-        });
+        var group = types.group;
+        var groups; // 移除时传入主分组或主分组与副分组时, 始终认为移除所有主分组下的内容
+
+        if (group[isArray]) {
+          var mainGroup = group[0];
+
+          if (mainGroup && (mainGroup = MAINGROUPS[mainGroup])) {
+            groups = mainGroup.slice();
+          }
+        } // 只移除副分组
+        else if (group && (group = GROUPS[group])) {
+            groups = group.slice();
+          }
+
+        if (groups) {
+          groups.forEach(function (handleOptions) {
+            offByHandleOptions(handleOptions);
+          });
+        }
       } // $off( object, selector )
       else {
           for (var type in types) {
