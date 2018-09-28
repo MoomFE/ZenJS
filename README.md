@@ -166,6 +166,8 @@
   - $endOf
   - $format
   - $diff
+  - $valueOf
+  - $unix
   - $daysInMonth
   - $toArray
   - $toObject
