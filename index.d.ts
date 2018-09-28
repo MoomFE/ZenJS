@@ -955,6 +955,16 @@ interface Date {
   $diff( input: String | Date, units: String, float: Boolean ): String;
 
   /**
+   * 返回 Unix 时间戳 ( 毫秒 )
+   */
+  $valueOf(): Number;
+
+  /**
+   * 返回 Unix 时间戳 ( 秒 )
+   */
+  $unix(): Number
+
+  /**
    * 返回月份的天数
    */
   $daysInMonth(): Number;
@@ -1535,12 +1545,12 @@ class Dayjs{
   diff( input: String | Date, units: String, float: Boolean ): String;
 
   /**
-   * Unix 时间戳 ( 毫秒 )
+   * 返回 Unix 时间戳 ( 毫秒 )
    */
   valueOf(): Number;
 
   /**
-   * Unix 时间戳 ( 秒 )
+   * 返回 Unix 时间戳 ( 秒 )
    */
   unix(): Number
 

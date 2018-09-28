@@ -2114,7 +2114,7 @@ var root = inBrowser ? window : inNode ? global : {};
 
 defineValue(root, 'dayjs', dayjs);
 
-var ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString_unix_valueOf'.split('_');
+var ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString'.split('_');
 var isDayjs$1 = dayjs.isDayjs;
 dayjs.extend(function (option, Dayjs) {
   keys(Dayjs.prototype).forEach(function (key) {
