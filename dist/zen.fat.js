@@ -1826,12 +1826,26 @@
         return date.set(DATE, Math.min(_this2.$D, date.daysInMonth()));
       };
 
+      var instanceFactorySet = function instanceFactorySet(n) {
+        var date = new Date(_this2.$d);
+        date.setDate(date.getDate() + n * number);
+        return wrapper(date, _this2);
+      };
+
       if (unit === M) {
         return instanceFactory(M, this.$M);
       }
 
       if (unit === Y) {
         return instanceFactory(Y, this.$y);
+      }
+
+      if (unit === D) {
+        return instanceFactorySet(1);
+      }
+
+      if (unit === W) {
+        return instanceFactorySet(7);
       }
 
       var step;
@@ -1843,14 +1857,6 @@
 
         case H:
           step = MILLISECONDS_A_HOUR;
-          break;
-
-        case D:
-          step = MILLISECONDS_A_DAY;
-          break;
-
-        case W:
-          step = MILLISECONDS_A_WEEK;
           break;
 
         case S:
@@ -2046,7 +2052,7 @@
       // ie 8 return
       // new Dayjs(this.valueOf() + this.$d.getTimezoneOffset() * 60000)
       // .format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
-      return this.toDate().toISOString();
+      return this.$d.toISOString();
     };
 
     _proto.toObject = function toObject() {
@@ -2075,6 +2081,11 @@
 
   dayjs.locale = parseLocale;
   dayjs.isDayjs = isDayjs;
+
+  dayjs.unix = function (timestamp) {
+    return dayjs(timestamp * 1e3);
+  };
+
   dayjs.en = Ls[L];
 
   var DateProto = Date.prototype;
