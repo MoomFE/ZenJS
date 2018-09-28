@@ -453,6 +453,75 @@ describes.push({
             index.should.equals( 3 );
           }
         }, {
+          name: 'Event binding - options - group ( 2 )',
+          it: function(){
+            var div = $div;
+            var div2 = $div;
+            var div3 = $div;
+            var index = 0;
+            var EventListener = function( event ){ index++ };
+            
+            div.$on( 'click', EventListener, { group: [ 'group', 'group-1' ] } );
+            div2.$on( 'click', EventListener, { group: [ 'group', 'group-2' ] } );
+            div3.$on( 'click', EventListener, { group: [ 'group', 'group-3' ] } );
+
+            div.click();
+            index.should.equals( 1 );
+            div2.click();
+            index.should.equals( 2 );
+            div3.click();
+            index.should.equals( 3 );
+
+            window.$off({ group: 'group' });
+            
+            div.click();
+            index.should.equals( 4 );
+            div2.click();
+            index.should.equals( 5 );
+            div3.click();
+            index.should.equals( 6 );
+
+            window.$off({ group: [ 'group' ] });
+
+            div.click();
+            index.should.equals( 6 );
+            div2.click();
+            index.should.equals( 6 );
+            div3.click();
+            index.should.equals( 6 );
+
+            // ------ ------ ------ ------ ------ ------
+
+            div.$on( 'click', EventListener, { group: [ 'group', 'group-1' ] } );
+            div2.$on( 'click', EventListener, { group: [ 'group', 'group-2' ] } );
+            div3.$on( 'click', EventListener, { group: [ 'group', 'group-3' ] } );
+
+            div.click();
+            index.should.equals( 7 );
+            div2.click();
+            index.should.equals( 8 );
+            div3.click();
+            index.should.equals( 9 );
+
+            window.$off({ group: 'group-1' });
+            
+            div.click();
+            index.should.equals( 9 );
+            div2.click();
+            index.should.equals( 10 );
+            div3.click();
+            index.should.equals( 11 );
+
+            window.$off({ group: [ 'group' ] });
+
+            div.click();
+            index.should.equals( 11 );
+            div2.click();
+            index.should.equals( 11 );
+            div3.click();
+            index.should.equals( 11 );
+          }
+        }, {
           name: 'Exception without window',
           it: function(){
             var index = 0;
