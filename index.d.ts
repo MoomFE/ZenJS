@@ -749,14 +749,20 @@ interface String {
 interface DateConstructor{
 
   /**
-   * 解析传入时间字符串, 返回原生的 Date 对象
-   * @param date 标准的 ISO 8601 时间字符串
+   * 解析传入的 ( 时间字符串 | Unix 时间戳 | Date 对象 | Dayjs 对象 ), 返回原生的 Date 对象
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
    */
-  $parse( date: String | Date ): Date;
+  $parse( date: String| Number | Date | Dayjs ): Date;
 
   /**
    * 解析传入时间及时间日期字符串并替换成相应的值
-   * @param date 标准的 ISO 8601 时间字符串
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
    * @param formatStr ( YY: 两位数的年份 )
    *                  ( YYYY: 四位数的年份 )
    *                  ( M: 月份, 从 1 开始 )
@@ -949,6 +955,16 @@ interface Date {
   $diff( input: String | Date, units: String, float: Boolean ): String;
 
   /**
+   * 返回 Unix 时间戳 ( 毫秒 )
+   */
+  $valueOf(): Number;
+
+  /**
+   * 返回 Unix 时间戳 ( 秒 )
+   */
+  $unix(): Number
+
+  /**
    * 返回月份的天数
    */
   $daysInMonth(): Number;
@@ -965,21 +981,30 @@ interface Date {
 
   /**
    * 检查当前时间是否在传入时间之前
-   * @param input 需要和当前时间比较的时间
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
    */
-  $isBefore( input: String | Date ): Boolean;
+  $isBefore( date: String| Number | Date | Dayjs ): Boolean;
 
   /**
    * 检查当前时间是否和传入时间相同
-   * @param input 需要和当前时间比较的时间
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
    */
-  $isSame( input: String | Date ): Boolean;
+  $isSame( date: String| Number | Date | Dayjs ): Boolean;
 
   /**
    * 检查当前时间是否在传入时间之后
-   * @param input 需要和当前时间比较的时间
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
    */
-  $isAfter( input: String | Date ): Boolean;
+  $isAfter( date: String| Number | Date | Dayjs ): Boolean;
 
 }
 
@@ -1017,14 +1042,16 @@ interface Window {
    * 判断传入参数的类型
    * @param obj 需要判断类型的参数
    */
-  $typeof: $typeof
+  $typeof: $typeof;
 
   /**
    * $querystring 模块提供了一些实用函数, 用于解析与格式化 URL 查询字符串
    */
-  $querystring: $querystring
+  $querystring: $querystring;
 
-  ZenJS: ZenJS
+  ZenJS: ZenJS;
+
+  dayjs: dayjs;
 
 }
 
@@ -1060,6 +1087,9 @@ interface $querystring {
 }
 
 
+/**
+ * ZenJS
+ */
 declare const ZenJS: ZenJS;
 
 interface ZenJS {
@@ -1308,6 +1338,294 @@ interface ZenJS {
 
 }
 
+
+/**
+ * 解析传入的 ( 时间字符串 | Unix 时间戳 | Date 对象 | Dayjs 对象 )
+ * @param config ( 标准的 ISO 8601 时间字符串 )
+ *               ( Unix 毫秒时间戳: 13位数字 )
+ *               ( Unix 秒时间戳: 10位数字 )
+ *               ( Javascript Date 对象 )
+ * @param options \{ locale: string }
+ */
+declare function dayjs( config?: string | number | Date | Dayjs, options?: any ): Dayjs;
+
+declare namespace dayjs{
+
+  /**
+   * 给 dayjs 扩展插件
+   * @param plugin 传入方法编写一个 dayjs 插件
+   * @param options 传递给前面方法的 options 参数
+   */
+  function extend( plugin: ( options: string | number | Date | Dayjs, dayjsClass: Dayjs, dayjsFactory: dayjs ) => void, options: string | number | Date | Dayjs ): Dayjs;
+
+  /**
+   * 改变全局语言, 返回使用语言的字符串
+   * @param preset 需要设置或切换的语言名称
+   * @param object 语言包配置
+   */
+  function locale( preset: String, object?: any ): String;
+
+  /**
+   * 验证传入值是否是一个 Dayjs 对象
+   * @param data 
+   */
+  function isDayjs( data: Dayjs ): Boolean;
+
+  /**
+   * 可以解析传入的一个 Unix 秒时间戳 ( 10位数字 )
+   * @param date 
+   */
+  function unix( date: Number ): Dayjs;
+
+}
+
+class Dayjs{
+
+  constructor( config?: string | number | Date | Dayjs );
+
+  /**
+   * 获得一个 Dayjs 对象的拷贝
+   */
+  clone(): Dayjs;
+
+  /**
+   * 检测当前 Dayjs 对象是否是一个有效的时间
+   */
+  isValid(): Boolean;
+
+  /**
+   * 获取年份
+   */
+  year(): Number;
+
+  /**
+   * 获取月份
+   */
+  month(): Number;
+
+  /**
+   * 获取日期
+   */
+  date(): Number;
+
+  /**
+   * 获取星期
+   */
+  day(): Number;
+
+  /**
+   * 获取小时
+   */
+  hour(): Number;
+
+  /**
+   * 获取分钟
+   */
+  minute(): Number;
+
+  /**
+   * 获取秒
+   */
+  second(): Number;
+
+  /**
+   * 获取毫秒
+   */
+  millisecond(): Number;
+
+  /**
+   * 设置时间
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   * @param value 给传入单位设置的值
+   */
+  set( unit : String, value : Number ): Dayjs;
+
+  /**
+   * 增加时间
+   * @param value 给当前时间对象增加的时间值
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  add( value : Number, unit : String ): Dayjs;
+
+  /**
+   * 减少时间
+   * @param value 给当前时间的指定单位增加的时间值
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  subtract( value : Number, unit : String ): Dayjs;
+
+  /**
+   * 返回当前时间的开头时间的 Dayjs 对象
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  startOf( unit : String ): Dayjs;
+
+  /**
+   * 返回当前时间的末尾时间的 Dayjs 对象
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  endOf( unit: String ): Dayjs;
+
+  /**
+   * 接收一系列的时间日期字符串并替换成相应的值
+   * @param formatStr ( YY: 两位数的年份 )
+   *                  ( YYYY: 四位数的年份 )
+   *                  ( M: 月份, 从 1 开始 )
+   *                  ( MM: 月份, 两位数 )
+   *                  ( MMM: 简写的月份名称 )
+   *                  ( MMMM: 完整的月份名称 )
+   *                  ( D: 月份里的一天 )
+   *                  ( DD: 月份里的一天，两位数 )
+   *                  ( d: 一周中的一天，星期天是 0 )
+   *                  ( dd: 最简写的一周中一天的名称 )
+   *                  ( ddd: 简写的一周中一天的名称 )
+   *                  ( dddd: 一周中一天的名称 )
+   *                  ( H: 小时 )
+   *                  ( HH: 小时, 两位数 )
+   *                  ( m: 分钟 )
+   *                  ( mm: 分钟, 两位数 )
+   *                  ( s: 秒 )
+   *                  ( ss: 秒, 两位数 )
+   *                  ( SSS: 秒, 三位数 )
+   *                  ( Z: UTC 的偏移量 )
+   *                  ( ZZ: UTC 的偏移量, 数字前面加上 0 )
+   *                  ( A: AM PM )
+   *                  ( a: am pm )
+   */
+  format( formatStr: String ): String;
+
+  /**
+   * 获取当前时间和传入时间的时间差，默认毫秒
+   * @param input 需要和当前时间比较的时间
+   * @param units 单位,
+   *              [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *              [ month, M ] 月
+   *              [ year, y ] 年
+   *              [ hour, h ] 时
+   *              [ minute, m ] 分
+   *              [ second, s ] 秒
+   *              [ millisecond, ms ] 毫秒
+   * @param float
+   */
+  diff( input: String | Date, units: String, float: Boolean ): String;
+
+  /**
+   * 返回 Unix 时间戳 ( 毫秒 )
+   */
+  valueOf(): Number;
+
+  /**
+   * 返回 Unix 时间戳 ( 秒 )
+   */
+  unix(): Number
+
+  /**
+   * 返回月份的天数
+   */
+  daysInMonth(): Number;
+
+  /**
+   * 返回原生的 Date 对象
+   */
+  toDate(): Date;
+
+  /**
+   * 返回包含时间数值的数组
+   * [ 2018, 8, 18, 00, 00, 00, 000 ]
+   */
+  toArray(): Number[];
+
+  /**
+   * 序列化 Dayjs 对象, 返回 ISO8601 格式的字符串
+   */
+  toJSON(): String;
+
+  /**
+   * 返回 ISO8601 格式的字符串
+   */
+  toISOString(): String;
+
+  /**
+   * 返回包含时间数值的对象
+   */
+  toObject(): {
+    years: Number
+    months: Number
+    date: Number
+    hours: Number
+    minutes: Number
+    seconds: Number
+    milliseconds: Number
+  }
+
+  /**
+   * 以文本方式表示当前 Dayjs 对象
+   */
+  toString(): String;
+
+  /**
+   * 检查当前时间是否在传入时间之前
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   */
+  isBefore( date: String| Number | Date | Dayjs ): Boolean;
+
+  /**
+   * 检查当前时间是否和传入时间相同
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   */
+  isSame( date: String| Number | Date | Dayjs ): Boolean;
+
+  /**
+   * 检查当前时间是否在传入时间之后
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   */
+  isAfter( date: String| Number | Date | Dayjs ): Boolean;
+
+}
 
 /*
  * DOM API

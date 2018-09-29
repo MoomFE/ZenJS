@@ -1,5 +1,5 @@
 import { removeEventListener } from "../../../shared/const/event";
-import { init, groups } from "./util";
+import { init, GROUPS, MAINGROUPS } from "./util";
 
 
 /**
@@ -36,9 +36,17 @@ export default function remove( elem, types, listener, selector ){
             handlers.splice( handlersLength, 1 );
             // 移除分组缓存
             let group = handleOptions.group;
-            if( group && !groups[ group ].$deleteValue( handleOptions ).length ){
-              delete groups[ group ];
+            let mainGroup = handleOptions.mainGroup;
+
+            // 移除副分组
+            if( group && ( group = GROUPS[ group ] ) && !group.$deleteValue( handleOptions ).length ){
+              delete GROUPS[ handleOptions.group ];
             }
+            // 移除主分组
+            if( mainGroup && ( mainGroup = MAINGROUPS[ mainGroup ] ) && !mainGroup.$deleteValue( handleOptions ).length ){
+              delete MAINGROUPS[ handleOptions.mainGroup ];
+            }
+
           }
         }
       }

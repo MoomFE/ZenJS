@@ -106,11 +106,6 @@ function addPlugin( input, name ){
   ));
 }
 
-function format(){
-  configuration.forEach(( config, index ) => {
-    configuration[ index ] = extend( true, {}, defaultConfig, config );
-  });
-}
 
 // Default 版本, 只包含核心代码, 没有 DOM API, 没有安装插件
 add( undefined, undefined, 'dist/zen.min.js', 'dist/zen.common.js', 'dist/zen.esm.js' );
@@ -119,7 +114,18 @@ add( 'src/build/fat.js', 'dist/zen.fat.js', 'dist/zen.fat.min.js', 'dist/zen.fat
 // 插件, 需要使用时自主引用
 addPlugin( 'src/3. Plugins/cookie/index.js', 'cookie' );
 
-format();
+configuration.forEach(( config, index ) => {
+  configuration[ index ] = extend( true, {}, defaultConfig, config );
+});
+
+
+// 用于自动修正 README 内 CDN 的版本
+fs.writeFileSync(
+  readmePath,
+  fs.readFileSync( readmePath, 'utf-8' )
+    .replace( /(@moomfe\/zenjs@)([0-9\.]+?)\//g, `$1${ version }/` ),
+  'utf-8'
+);
 
 
 module.exports = {

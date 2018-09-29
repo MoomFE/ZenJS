@@ -12,6 +12,7 @@ import defineValue from "../../../shared/util/defineValue";
 import DomEventTarget from "../../../shared/global/DomEventTarget/index";
 import EventListener from "../../666. ZenJS/EventListener/index";
 import assign from "../../../shared/global/Object/assign";
+import { isArray } from "../../../shared/const/type";
 
 
 /**
@@ -25,7 +26,7 @@ import assign from "../../../shared/global/Object/assign";
  */
 function on( elem, types, selector, listener, options, once ){
   let events;
-  let group, data;
+  let mainGroup, group, data;
 
   // 1. on( elem, { type: listener || Boolean } )
   // 2. on( elem, { type: listener || Boolean }, options )
@@ -95,10 +96,17 @@ function on( elem, types, selector, listener, options, once ){
                       : {};
   }
 
+  // mainGroup
   // group
   // 事件分组功能, 分到同一组的事件可进行同时移除
   if( 'group' in options ){
     group = options.group;
+
+    if( group[ isArray ] ){
+      mainGroup = group[0];
+      group = group[1];
+    }
+
     delete options.group;
   }
 
@@ -130,7 +138,7 @@ function on( elem, types, selector, listener, options, once ){
     delete options.passive;
   }
 
-  EventListener.add( elem, types, selector, listener, options, group, data );
+  EventListener.add( elem, types, selector, listener, options, mainGroup, group, data );
 
   return elem;
 }
