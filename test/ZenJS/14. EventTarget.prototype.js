@@ -557,6 +557,21 @@ describes.push({
             div.click();
             index.should.equals( 1 );
           }
+        }, {
+          name: 'HandleOptions error when binding multiple events at the same time',
+          it: function(){
+            const obj = { 123: false, 456: false };
+
+            document.$on('mouseup.123 mouseup.456', ( event, eventName ) => {
+              obj[ eventName ] = event.handleOptions.namespaceStr === eventName;
+            });
+
+            document.$emit( 'mouseup.123', '123' );
+            document.$emit( 'mouseup.456', '456' );
+            document.$off( 'mouseup' );
+
+            Object.$equals( obj, { 123: true, 456: true } ).should.true;
+          }
         }
       ]
     }, {

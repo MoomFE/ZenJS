@@ -81,7 +81,7 @@ add.once = add.one = function( elem, type, events, namespace ){
  * 当按下了对应鼠标按键时才触发回调
  */
 [ 'left', 'middle', 'right' ].forEach(( button, index ) => {
-  dispatch[ button] = function( elem, type, event ){
-    return !( 'button' in event && event.button !== index );
+  dispatch[ button ] = function( elem, type, event ){
+    return 'button' in event && event.button === index;
   }
 });

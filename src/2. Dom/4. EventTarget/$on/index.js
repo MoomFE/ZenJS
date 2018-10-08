@@ -138,7 +138,9 @@ function on( elem, types, selector, listener, options, once ){
     delete options.passive;
   }
 
-  EventListener.add( elem, types, selector, listener, options, mainGroup, group, data );
+  types.forEach( type => {
+    EventListener.add( elem, type, selector, listener, options, mainGroup, group, data );
+  });
 
   return elem;
 }
