@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.3.2
+ * Zen.js v3.3.3
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2882,18 +2882,28 @@ function modifiers(name, namespace, elem, type, options) {
   if (namespace.length === 0) {
     return;
   }
-  /** 当前功能的修饰符列表 */
 
+  return CheckForHandlers(ModifiersList[name], name, namespace, elem, type, options);
+}
+/**
+ * @param {any} handlers 当前功能的修饰符列表
+ */
 
-  var handlers = ModifiersList[name];
+function CheckForHandlers(handlers, name, namespace, elem, type, options) {
   var result;
   namespace.filter(function (name) {
     return name in handlers;
   }).$each(function (handler) {
     return result = handlers[handler](elem, type, options, namespace);
   });
+
+  if (result !== false && handlers._next) {
+    return CheckForHandlers(handlers._next, name, namespace, elem, type, options);
+  }
+
   return result;
 }
+
 var ModifiersList = {
   /**
    * 添加事件时
@@ -2910,10 +2920,30 @@ var ModifiersList = {
     self: function (elem, type, event) {
       return event.target === event.currentTarget;
     }
+  },
+
+  /**
+   * 触发事件的修饰符通过之后的下一步检测
+   */
+  dispatched: {
+    /**
+     * 阻止事件冒泡
+     */
+    stop: function (elem, type, event) {
+      event.stopPropagation();
+    },
+
+    /**
+     * 阻止浏览器默认事件
+     */
+    prevent: function (elem, type, event) {
+      event.preventDefault();
+    }
   }
 };
 var add = ModifiersList.add;
 var dispatch = ModifiersList.dispatch;
+dispatch._next = ModifiersList.dispatched;
 /**
  * .once || .one
  * 当命名空间有 .once 或 .one, 则会去已绑定的事件中进行查找,

@@ -16,17 +16,24 @@ export default function modifiers( name, namespace, elem, type, options ){
     return;
   }
 
-  /** 当前功能的修饰符列表 */
-  const handlers = ModifiersList[ name ];
+  return CheckForHandlers( ModifiersList[ name ], name, namespace, elem, type, options );
+}
 
+/**
+ * @param {any} handlers 当前功能的修饰符列表
+ */
+function CheckForHandlers( handlers, name, namespace, elem, type, options ){
   let result;
 
-  namespace
-    .filter( name => name in handlers )
-    .$each( handler => {
-      return result = handlers[ handler ]( elem, type, options, namespace );
-    });
-  
+  namespace.filter( name => name in handlers )
+           .$each( handler => {
+             return result = handlers[ handler ]( elem, type, options, namespace );
+           });
+
+  if( result !== false && handlers._next ){
+    return CheckForHandlers( handlers._next, name, namespace, elem, type, options );
+  }
+
   return result;
 }
 
@@ -48,12 +55,33 @@ const ModifiersList = {
       return event.target === event.currentTarget;
     }
 
+  },
+  /**
+   * 触发事件的修饰符通过之后的下一步检测
+   */
+  dispatched: {
+
+    /**
+     * 阻止事件冒泡
+     */
+    stop( elem, type, event ){
+      event.stopPropagation();
+    },
+
+    /**
+     * 阻止浏览器默认事件
+     */
+    prevent( elem, type, event ){
+      event.preventDefault();
+    }
+
   }
 };
 
 
 const add = ModifiersList.add;
 const dispatch = ModifiersList.dispatch;
+      dispatch._next = ModifiersList.dispatched;
 
 
 /**

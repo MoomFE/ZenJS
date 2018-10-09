@@ -426,6 +426,29 @@ describes.push({
             index.should.equals( 1 );
           }
         }, {
+          name: 'Event binding - modifiers - stop',
+          it: function(){
+            var div = $div;
+            var div2 = div.appendChild( $div );
+            var index = 0;
+            var EventListener = function( event ){
+              $off( event );
+              index++;
+            };
+
+            div.$on( 'click', EventListener );
+            div2.$on( 'click', EventListener );
+            div2.click();
+            index.should.equals( 2 );
+
+            index = 0;
+
+            div.$on( 'click', EventListener );
+            div2.$on( 'click.stop', EventListener );
+            div2.click();
+            index.should.equals( 1 );
+          }
+        }, {
           name: 'Event binding - options - group',
           it: function(){
             var div = $div;
