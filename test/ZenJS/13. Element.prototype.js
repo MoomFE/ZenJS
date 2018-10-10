@@ -84,6 +84,8 @@ describes.push({
         div.$is('#test').should.false;
         div.$is('.test').should.false;
         div.$is('#test.test').should.false;
+        div.$is(function( elem ){ return elem.id === 'test' }).should.false;
+        div.$is(function( elem ){ return elem.className === 'test' }).should.false;
 
         div.id = 'test';
         div.className = 'test';
@@ -91,6 +93,9 @@ describes.push({
         div.$is('#test').should.true;
         div.$is('.test').should.true;
         div.$is('#test.test').should.true;
+        div.$is(function( elem ){ return elem.id === 'test' }).should.true;
+        div.$is(function( elem ){ return elem.className === 'test' }).should.true;
+        div.$is(function(){  }).should.false;
       }
     }, {
       name: '$not',
@@ -103,6 +108,8 @@ describes.push({
         div.$not('#test').should.true;
         div.$not('.test').should.true;
         div.$not('#test.test').should.true;
+        div.$not(function( elem ){ return elem.id === 'test' }).should.true;
+        div.$not(function( elem ){ return elem.className === 'test' }).should.true;
 
         div.id = 'test';
         div.className = 'test';
@@ -110,6 +117,9 @@ describes.push({
         div.$not('#test').should.false;
         div.$not('.test').should.false;
         div.$not('#test.test').should.false;
+        div.$not(function( elem ){ return elem.id === 'test' }).should.false;
+        div.$not(function( elem ){ return elem.className === 'test' }).should.false;
+        div.$not(function(){  }).should.true;
       }
     }, {
       name: '$first / $firstChild',

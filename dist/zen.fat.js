@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.3.3
+ * Zen.js v3.3.5
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2437,7 +2437,8 @@
 
   if (inBrowser) {
     defineValue(ElementProto, '$is', function (selector) {
-      return selector.nodeType ? this === selector : isString$1(selector) ? this.matches(selector) : false;
+      if (selector.nodeType) return this === selector;else if (isString$1(selector)) return this.matches(selector);else if (isFunction$1(selector)) return !!selector(this);
+      return false;
     });
     defineValue(ElementProto, '$not', function (selector) {
       return !this.$is(selector);

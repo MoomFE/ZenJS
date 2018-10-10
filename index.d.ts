@@ -1723,15 +1723,15 @@ interface Element {
 
   /**
    * ( Fat ) 判断当前节点是否符合传入的要求
-   * @param selector DOM 节点或 CSS 选择器
+   * @param selector DOM 节点或 CSS 选择器或用来检测的方法
    */
-  $is( selector: Element | String ): Boolean;
+  $is( selector: Element | String | Function ): Boolean;
 
   /**
    * ( Fat ) 判断当前节点是否不符合传入的要求
-   * @param selector DOM 节点或 CSS 选择器
+   * @param selector DOM 节点或 CSS 选择器或用来检测的方法
    */
-  $not( selector: Element | String ): Boolean;
+  $not( selector: Element | String | Function ): Boolean;
 
   /**
    * ( Fat ) 获取当前节点下首个匹配过滤条件的子节点,
