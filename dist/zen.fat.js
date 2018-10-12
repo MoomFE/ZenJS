@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.3.7
+ * Zen.js v3.3.8
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2982,6 +2982,25 @@
   ['left', 'middle', 'right'].forEach(function (button, index) {
     dispatch[button] = function (elem, type, event) {
       return 'button' in event && event.button === index;
+    };
+  });
+  each({
+    esc: 27,
+    tab: 9,
+    enter: 13,
+    space: 32,
+    up: 38,
+    left: 37,
+    right: 39,
+    down: 40,
+    delete: [8, 46]
+  }, function (key, keyCode) {
+    dispatch[key] = function (elem, type, event) {
+      if (keyCode[isArray]) {
+        return keyCode.indexOf(event.keyCode) > -1;
+      }
+
+      return event.keyCode === keyCode;
     };
   });
 

@@ -1,4 +1,6 @@
 import equals from "../../../1. Core/1. Array/$equals/index";
+import each from "../../../1. Core/3. Object/$each/index";
+import { isArray } from "../../../shared/const/type";
 
 /**
  * 事件处理 => 功能性命名空间
@@ -111,5 +113,27 @@ add.once = add.one = function( elem, type, events, namespace ){
 [ 'left', 'middle', 'right' ].forEach(( button, index ) => {
   dispatch[ button ] = function( elem, type, event ){
     return 'button' in event && event.button === index;
+  }
+});
+
+/**
+ * 按下了相应的键盘按键则触发
+ */
+each({
+  esc: 27,
+  tab: 9,
+  enter: 13,
+  space: 32,
+  up: 38,
+  left: 37,
+  right: 39,
+  down: 40,
+  delete: [ 8, 46 ]
+}, ( key, keyCode ) => {
+  dispatch[ key ] = function( elem, type, event ){
+    if( keyCode[ isArray ] ){
+      return keyCode.indexOf( event.keyCode ) === -1;
+    }
+    return event.keyCode === keyCode;
   }
 });
