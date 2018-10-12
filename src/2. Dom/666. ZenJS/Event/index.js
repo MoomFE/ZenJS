@@ -112,3 +112,11 @@ addProp( 'which', function( event ){
 
   return event.which;
 });
+
+
+function wheelDelta( event ){
+  return event.wheelDelta || event.detail;
+}
+
+addProp( 'wheelDelta', wheelDelta );
+addProp( 'detail', wheelDelta );
