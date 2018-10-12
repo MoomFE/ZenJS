@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.3.6
+ * Zen.js v3.3.7
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -3597,13 +3597,20 @@
 
     return event.which;
   });
-
-  function wheelDelta(event) {
-    return event.wheelDelta || event.detail;
-  }
-
-  addProp('wheelDelta', wheelDelta);
-  addProp('detail', wheelDelta);
+  addProp('wheelDelta', function (event, wheelDelta) {
+    if (wheelDelta = event.wheelDelta) {
+      return wheelDelta;
+    } else if (wheelDelta = event.detail) {
+      return wheelDelta > 0 ? -120 : 120;
+    }
+  });
+  addProp('detail', function (event, detail) {
+    if (detail = event.detail) {
+      return detail;
+    } else if (detail = event.wheelDelta) {
+      return detail > 0 ? -3 : 3;
+    }
+  });
 
   return ZenJS$1;
 

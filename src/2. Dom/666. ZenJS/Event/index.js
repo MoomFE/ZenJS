@@ -93,6 +93,8 @@ const addProp = Event.addProp = function( name, get ){
   });
 };
 
+
+
 const rkeyEvent = /^key/,
       rmouseEvent = /^(?:mouse|pointer|contextmenu|drag|drop)|click/;
 
@@ -114,9 +116,21 @@ addProp( 'which', function( event ){
 });
 
 
-function wheelDelta( event ){
-  return event.wheelDelta || event.detail;
-}
 
-addProp( 'wheelDelta', wheelDelta );
-addProp( 'detail', wheelDelta );
+addProp( 'wheelDelta', ( event, wheelDelta ) => {
+  if( wheelDelta = event.wheelDelta ){
+    return wheelDelta;
+  }else if( wheelDelta = event.detail ){
+    return wheelDelta > 0 ? -120
+                          : 120;
+  }
+});
+
+addProp( 'detail', ( event, detail ) => {
+  if( detail = event.detail ){
+    return detail;
+  }else if( detail = event.wheelDelta ){
+    return detail > 0 ? -3
+                      : 3;
+  }
+});
