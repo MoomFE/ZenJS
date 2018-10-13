@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.3.8
+ * Zen.js v3.3.9
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2963,9 +2963,9 @@ add.once = add.one = function (elem, type, events, namespace) {
  */
 
 
-['ctrl', 'shift', 'alt', 'meta'].forEach(function (key) {
+['ctrlKey', 'shiftKey', 'altKey', 'metaKey'].forEach(function (key) {
   dispatch[key] = function (elem, type, event) {
-    return !!event[key + 'Key'];
+    return !!event[key];
   };
 });
 /**
@@ -2978,20 +2978,24 @@ add.once = add.one = function (elem, type, events, namespace) {
     return 'button' in event && event.button === index;
   };
 });
+/**
+ * 按下了相应的键盘按键则触发
+ */
+
 each({
-  esc: 27,
-  tab: 9,
-  enter: 13,
-  space: 32,
-  up: 38,
-  left: 37,
-  right: 39,
-  down: 40,
-  delete: [8, 46]
+  keyEsc: 27,
+  keyTab: 9,
+  keyEnter: 13,
+  keySpace: 32,
+  keyUp: 38,
+  keyLeft: 37,
+  keyRight: 39,
+  keyDown: 40,
+  keyDelete: [8, 46]
 }, function (key, keyCode) {
   dispatch[key] = function (elem, type, event) {
     if (keyCode[isArray]) {
-      return keyCode.indexOf(event.keyCode) > -1;
+      return keyCode.indexOf(event.keyCode) === -1;
     }
 
     return event.keyCode === keyCode;

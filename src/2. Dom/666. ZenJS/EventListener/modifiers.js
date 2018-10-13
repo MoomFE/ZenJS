@@ -100,9 +100,9 @@ add.once = add.one = function( elem, type, events, namespace ){
  * .ctrl || .shift || .alt || .meta
  * 当按下了对应键盘按键时才触发回调
  */
-[ 'ctrl', 'shift', 'alt', 'meta' ].forEach( key => {
+[ 'ctrlKey', 'shiftKey', 'altKey', 'metaKey' ].forEach( key => {
   dispatch[ key ] = function( elem, type, event ){
-    return !!event[ key + 'Key' ];
+    return !!event[ key ];
   }
 });
 
@@ -120,15 +120,15 @@ add.once = add.one = function( elem, type, events, namespace ){
  * 按下了相应的键盘按键则触发
  */
 each({
-  esc: 27,
-  tab: 9,
-  enter: 13,
-  space: 32,
-  up: 38,
-  left: 37,
-  right: 39,
-  down: 40,
-  delete: [ 8, 46 ]
+  keyEsc: 27,
+  keyTab: 9,
+  keyEnter: 13,
+  keySpace: 32,
+  keyUp: 38,
+  keyLeft: 37,
+  keyRight: 39,
+  keyDown: 40,
+  keyDelete: [ 8, 46 ]
 }, ( key, keyCode ) => {
   dispatch[ key ] = function( elem, type, event ){
     if( keyCode[ isArray ] ){
