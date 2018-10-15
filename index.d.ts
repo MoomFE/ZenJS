@@ -1899,13 +1899,13 @@ interface Element {
    * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $query( selectors ): NodeListOf<Element>;
+  $query( selectors ): any[];
 
   /**
    * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $find( selectors ): NodeListOf<Element>;
+  $find( selectors ): any[];
 
   /**
    * ( Fat ) 调用原生  querySelector 方法

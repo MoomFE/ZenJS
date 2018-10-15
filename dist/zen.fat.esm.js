@@ -2586,7 +2586,10 @@ if (inBrowser) {
 
 if (inBrowser) {
   [document, ElementProto].forEach(function (elem) {
-    defineValue(elem, '$query $find', elem.querySelectorAll);
+    var querySelectorAll = elem.querySelectorAll;
+    defineValue(elem, '$query $find', function () {
+      return slice.call(querySelectorAll.apply(this, arguments));
+    });
     defineValue(elem, '$queryFirst $findFirst', elem.querySelector);
   });
 }

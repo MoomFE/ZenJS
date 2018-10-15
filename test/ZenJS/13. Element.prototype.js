@@ -349,7 +349,8 @@ describes.push({
     }, {
       name: '$query / $find',
       default: function(){
-        Object.$equals( div.$query, div.querySelectorAll ).should.true;
+        Object.$equals( div.$query, div.querySelectorAll ).should.false;
+        Object.$equals( Array.isArray( div.$query('div') ), true ).should.true;
       }
     }, {
       name: '$queryFirst / $findFirst',
