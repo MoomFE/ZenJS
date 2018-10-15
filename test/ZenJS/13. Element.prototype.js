@@ -369,6 +369,11 @@ describes.push({
         div.$first().should.equals( div3 );
       }
     }, {
+      name: '$clone',
+      default: function(){
+        Object.$equals( div.$clone, div.cloneNode ).should.true;
+      }
+    }, {
       name: '_nodeName',
       default: function(){
         div._nodeName.should.equals('div');

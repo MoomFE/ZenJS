@@ -1825,19 +1825,19 @@ interface Element {
   $siblings( filter?: String | Function ): Element | null;
 
   /**
-   * 获取元素的属性值
+   * ( Fat ) 获取元素的属性值
    * @param name 属性名
    */
   $prop( name: String ): any;
 
   /**
-   * 批量设置元素的属性值
+   * ( Fat ) 批量设置元素的属性值
    * @param props 属性值得键值对
    */
   $prop( props: any ): Element;
 
   /**
-   * 设置元素的属性值
+   * ( Fat ) 设置元素的属性值
    * @param name 属性名
    * @param value 属性值
    */
@@ -1930,6 +1930,12 @@ interface Element {
    * @param elem
    */
   $replace( elem: Element );
+
+  /**
+   * ( Fat ) 返回调用该方法的节点的一个副本
+   * @param deep 是否采用深度克隆, 如果为 true, 则该节点的所有后代节点也都会被克隆, 如果为 false, 则只克隆该节点本身
+   */
+  $clone( deep?: boolean ): Node;
 
   /**
    * ( Fat ) 读取时获取元素的小写 nodeName;

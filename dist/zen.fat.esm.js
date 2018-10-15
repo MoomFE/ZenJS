@@ -2876,6 +2876,10 @@ if (inBrowser) {
   }
 }
 
+if (inBrowser) {
+  defineValue(ElementProto, '$clone', ElementProto.cloneNode);
+}
+
 /**
  * @type {EventTarget}
  */
