@@ -1825,6 +1825,25 @@ interface Element {
   $siblings( filter?: String | Function ): Element | null;
 
   /**
+   * 获取元素的属性值
+   * @param name 属性名
+   */
+  $prop( name: String ): any;
+
+  /**
+   * 批量设置元素的属性值
+   * @param props 属性值得键值对
+   */
+  $prop( props: any ): Element;
+
+  /**
+   * 设置元素的属性值
+   * @param name 属性名
+   * @param value 属性值
+   */
+  $prop( name: String, value: any ): Element;
+
+  /**
    * ( Fat ) 添加元素到当前元素内的尾部
    * @param elem 需要添加的元素
    * @returns 返回当前元素

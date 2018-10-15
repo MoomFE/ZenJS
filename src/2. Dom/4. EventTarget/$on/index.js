@@ -6,7 +6,7 @@ import returnTrue from "../../../shared/util/returnTrue";
 import returnFalse from "../../../shared/util/returnFalse";
 import keys from "../../../shared/global/Object/keys";
 import ZenJS from "../../../shared/global/ZenJS/index";
-import { supportsPassiveEvent } from "../../../shared/supports/passive-event";
+import { supportsPassiveEvent } from "../../../shared/supports/passiveEvent";
 import inBrowser from "../../../shared/const/inBrowser";
 import defineValue from "../../../shared/util/defineValue";
 import DomEventTarget from "../../../shared/global/DomEventTarget/index";

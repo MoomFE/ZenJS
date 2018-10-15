@@ -1,5 +1,5 @@
 /*!
- * Zen.js v3.3.9
+ * Zen.js v3.4.0
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -2598,6 +2598,101 @@ if (inBrowser) {
     if (parent = this.parentNode) {
       parent.replaceChild(elem, this);
     }
+  });
+}
+
+var propFix = {
+  "for": "htmlFor",
+  "class": "className"
+};
+["tabIndex", "readOnly", "maxLength", "cellSpacing", "cellPadding", "rowSpan", "colSpan", "useMap", "frameBorder", "contentEditable"].forEach(function (prop) {
+  propFix[prop.toLowerCase()] = prop;
+});
+
+var rfocusable = /^(?:input|select|textarea|button)$/i;
+
+var rclickable = /^(?:a|area)$/i;
+
+var supportsSelectedIndex = true;
+
+if (inBrowser) {
+  var select = document.createElement('select');
+  var option = document.createElement('option').$appendTo(select); // Support: IE <=11 only
+  // Must access selectedIndex to make default options select
+
+  supportsSelectedIndex = option.selected;
+}
+
+var supportsSelectedIndex$1 = supportsSelectedIndex;
+
+var propHooks = {
+  tabIndex: {
+    get: function (elem, name) {
+      var tabIndex = elem.getAttribute(name);
+
+      if (tabIndex) {
+        return parseInt(tabIndex, 10);
+      }
+
+      if (rfocusable.test(elem.nodeName) || rclickable.test(elem.nodeName) && elem.href) {
+        return 0;
+      }
+
+      return -1;
+    }
+  }
+};
+
+if (!supportsSelectedIndex$1) {
+  propHooks.selected = {
+    get: function (elem) {
+      var parent = elem.parentNode;
+
+      if (parent && parent.parentNode) {
+        parent.parentNode.selectedIndex;
+      }
+
+      return null;
+    },
+    set: function (elem) {
+      var parent = elem.parentNode;
+
+      if (parent) {
+        parent.selectedIndex;
+
+        if (parent.parentNode) {
+          parent.parentNode.selectedIndex;
+        }
+      }
+    }
+  };
+}
+
+if (inBrowser) {
+  defineValue(ElementProto, '$prop', function (props, value) {
+    if (isObject(props)) {
+      for (var _name in props) {
+        this.$prop(name, props[name]);
+      }
+
+      return this;
+    }
+
+    var name = propFix[props] || props;
+    var hooks = propHooks[name];
+    var result;
+
+    if (arguments.length > 1) {
+      if (hooks && 'set' in hooks) hooks.set(elem);
+      this[name] = value;
+      return this;
+    }
+
+    if (hooks && 'get' in hooks && (result = hooks.get(elem, name)) !== null) {
+      return result;
+    }
+
+    return elem[name];
   });
 }
 

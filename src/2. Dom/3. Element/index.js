@@ -10,6 +10,7 @@ import './$before/index';
 import './$remove/index';
 import './$query/index';
 import './$replaceWith/index';
+import './$prop/index';
 import './_nodeName/index';
 import './_index/index';
 import './_width/index';
