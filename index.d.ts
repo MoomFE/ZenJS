@@ -1945,7 +1945,7 @@ interface Element {
   /**
    * ( Fat ) 设置元素的 innerHTML 值
    */
-  $html( value: String ): String;
+  $html( value: String ): Element;
 
   /**
    * ( Fat ) 读取时获取元素的小写 nodeName;
