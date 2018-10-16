@@ -28,11 +28,11 @@
 
 > jsdelivr
 > <br>
-> https://cdn.jsdelivr.net/npm/@moomfe/zenjs@3.4.0/dist/
+> https://cdn.jsdelivr.net/npm/@moomfe/zenjs@5.0.0/dist/
 
 > unpkg
 > <br>
-> https://unpkg.com/@moomfe/zenjs@3.4.0/dist/
+> https://unpkg.com/@moomfe/zenjs@5.0.0/dist/
 
 
 <br>
