@@ -1,15 +1,16 @@
 import inBrowser from "../../../shared/const/inBrowser";
-import define from "../../../shared/util/define";
 import ElementProto from "../../../shared/global/DomElement/prototype/index";
+import defineValue from "../../../shared/util/defineValue";
 
 
 if( inBrowser ){
-  define( ElementProto, '_html', {
-    get(){
-      return this.innerHTML;
-    },
-    set( value ){
+
+  defineValue( ElementProto, '$html', function( value ){
+    if( arguments.length ){
       this.innerHTML = value;
+      return this;
     }
+    return this.innerHTML;
   });
+
 }

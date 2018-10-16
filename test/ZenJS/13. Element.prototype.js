@@ -374,6 +374,12 @@ describes.push({
         Object.$equals( div.$clone, div.cloneNode ).should.true;
       }
     }, {
+      name: '$html',
+      default: function(){
+        var div = window.div.$html( 123 );
+        div.$html().should.equals('123');
+      }
+    }, {
       name: '_nodeName',
       default: function(){
         div._nodeName.should.equals('div');
@@ -452,13 +458,6 @@ describes.push({
         div._height = 123;
         div._height.should.equals( 0 );
         div.style.height.should.equals('123px');
-      }
-    }, {
-      name: '_html',
-      default: function(){
-        var div = window.div;
-        div._html = 123;
-        div._html.should.equals('123');
       }
     }, {
       name: '_val / _value',

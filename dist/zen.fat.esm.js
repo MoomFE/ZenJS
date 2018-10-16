@@ -2696,6 +2696,17 @@ if (inBrowser) {
 }
 
 if (inBrowser) {
+  defineValue(ElementProto, '$html', function (value) {
+    if (arguments.length) {
+      this.innerHTML = value;
+      return this;
+    }
+
+    return this.innerHTML;
+  });
+}
+
+if (inBrowser) {
   defineGet(ElementProto, '_nodeName', function () {
     return this.nodeName.toLowerCase();
   });
@@ -2743,17 +2754,6 @@ if (inBrowser) {
         this.style[prop] = $isNumber(value) ? value + 'px' : value;
       }
     });
-  });
-}
-
-if (inBrowser) {
-  define(ElementProto, '_html', {
-    get: function () {
-      return this.innerHTML;
-    },
-    set: function (value) {
-      this.innerHTML = value;
-    }
   });
 }
 

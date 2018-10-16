@@ -363,6 +363,12 @@ describes.push({
             Object.$equals( arr.$find( 'name', 'zenjs', 2 ), { name: 'zenjs', type: 'js' } ).should.true;
             Object.$equals( arr.$find( 'name', 'zenui', 3 ), { name: 'zenui', type: 'ui' } ).should.true;
           }
+        }, {
+          name: 'Find non-pure objects in an array',
+          it: function(){
+            var div = window.div;
+            var span = window.span.$appendTo( div );
+          }
         }
       ]
     }, {

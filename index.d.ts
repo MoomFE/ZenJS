@@ -1938,6 +1938,16 @@ interface Element {
   $clone( deep?: boolean ): Node;
 
   /**
+   * ( Fat ) 读取元素的 innerHTML 值
+   */
+  $html(): String;
+
+  /**
+   * ( Fat ) 设置元素的 innerHTML 值
+   */
+  $html( value: String ): String;
+
+  /**
    * ( Fat ) 读取时获取元素的小写 nodeName;
    * 不可写入
    */
@@ -1960,12 +1970,6 @@ interface Element {
    * 写入时设置元素的高度
    */
   _height: Number;
-
-  /**
-   * ( Fat ) 读取时返回元素的 innerHTML 值
-   * 写入时设置元素的 innerHTML 值
-   */
-  _html: String;
 
   /**
    * ( Fat ) 读取时返回元素的 value 值;
