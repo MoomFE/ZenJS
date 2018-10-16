@@ -9,6 +9,7 @@ import isArrayLike from "../../../shared/util/isArrayLike";
 import keys from "../../../shared/global/Object/keys";
 import chunk from "../../../shared/util/chunk";
 import fixArrayIndex from "../../../shared/util/fixArrayIndex";
+import isEmptyObject from "../../../shared/util/isEmptyObject";
 
 
 /**
@@ -109,7 +110,7 @@ function getTraversal( obj, predicate ){
   const objIsArray = obj[ isArray ];
 
   return object => {
-    if( object == null || !keys( object ).length ){
+    if( object == null || isEmptyObject( object ) ){
       return false;
     }
     return ( objIsArray ? checkArray : checkObject )( obj, object, predicate );

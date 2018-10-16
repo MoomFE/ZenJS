@@ -659,6 +659,18 @@ defineValue(ArrayProto, '$concatTo', function (index) {
 });
 
 /**
+ * 判断传入对象是否是空对象
+ * @param {*} obj 需要判断的对象
+ */
+function isEmptyObject(obj) {
+  for (var a in obj) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * @param {Array} self 进行遍历的数组
  * @param {Number} count 保存的查找结果数量
  * @param {Boolean} reverse 是否反向查询
@@ -750,7 +762,7 @@ function findIndex(self, count, reverse, args, predicate, obj, fromIndex) {
 function getTraversal(obj, predicate) {
   var objIsArray = obj[isArray];
   return function (object) {
-    if (object == null || !keys(object).length) {
+    if (object == null || isEmptyObject(object)) {
       return false;
     }
 
@@ -1152,18 +1164,6 @@ defineValue(Object, '$each', each);
 defineValue(ObjectProto, '$each', function (callback) {
   return each(this, callback);
 });
-
-/**
- * 判断传入对象是否是空对象
- * @param {*} obj 需要判断的对象
- */
-function isEmptyObject(obj) {
-  for (var a in obj) {
-    return false;
-  }
-
-  return true;
-}
 
 defineValue(Object, '$isEmptyObject', isEmptyObject);
 

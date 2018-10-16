@@ -367,7 +367,16 @@ describes.push({
           name: 'Find non-pure objects in an array',
           it: function(){
             var div = window.div;
-            var span = window.span.$appendTo( div );
+            var span1 = window.span.$appendTo( div ).$html( '1' );
+            var span2 = window.span.$appendTo( div ).$html( '2' );
+            var span3 = window.span.$appendTo( div ).$html( '3' );
+            var span4 = window.span.$appendTo( div ).$html( '3' );
+            var span5 = window.span.$appendTo( div ).$html( '2' );
+            var span6 = window.span.$appendTo( div ).$html( '1' );
+
+            div.$find('span').$find( 'innerHTML', '1' ).should.equals( span1 );
+            div.$find('span').$find( 'innerHTML', '2' ).should.equals( span2 );
+            div.$find('span').$find( 'innerHTML', '3' ).should.equals( span3 );
           }
         }
       ]
@@ -521,6 +530,21 @@ describes.push({
             Object.$equals( arr.$findIndex( 'name', 'zenjs', 2 ), 3 ).should.true;
             Object.$equals( arr.$findIndex( 'name', 'zenui', 3 ), 4 ).should.true;
           }
+        }, {
+          name: 'Find non-pure objects in an array',
+          it: function(){
+            var div = window.div;
+            var span1 = window.span.$appendTo( div ).$html( '1' );
+            var span2 = window.span.$appendTo( div ).$html( '2' );
+            var span3 = window.span.$appendTo( div ).$html( '3' );
+            var span4 = window.span.$appendTo( div ).$html( '3' );
+            var span5 = window.span.$appendTo( div ).$html( '2' );
+            var span6 = window.span.$appendTo( div ).$html( '1' );
+
+            div.$find('span').$findIndex( 'innerHTML', '1' ).should.equals( 0 );
+            div.$find('span').$findIndex( 'innerHTML', '2' ).should.equals( 1 );
+            div.$find('span').$findIndex( 'innerHTML', '3' ).should.equals( 2 );
+          }
         }
       ]
     }, {
@@ -673,6 +697,21 @@ describes.push({
             Object.$equals( arr.$findLast( 'name', 'zenjs', 2 ), { name: 'zenjs' } ).should.true;
             Object.$equals( arr.$findLast( 'name', 'zenui', 3 ), { name: 'zenui' } ).should.true;
           }
+        }, {
+          name: 'Find non-pure objects in an array',
+          it: function(){
+            var div = window.div;
+            var span1 = window.span.$appendTo( div ).$html( '1' );
+            var span2 = window.span.$appendTo( div ).$html( '2' );
+            var span3 = window.span.$appendTo( div ).$html( '3' );
+            var span4 = window.span.$appendTo( div ).$html( '3' );
+            var span5 = window.span.$appendTo( div ).$html( '2' );
+            var span6 = window.span.$appendTo( div ).$html( '1' );
+
+            div.$find('span').$findLast( 'innerHTML', '1' ).should.equals( span6 );
+            div.$find('span').$findLast( 'innerHTML', '2' ).should.equals( span5 );
+            div.$find('span').$findLast( 'innerHTML', '3' ).should.equals( span4 );
+          }
         }
       ]
     }, {
@@ -824,6 +863,21 @@ describes.push({
             Object.$equals( arr.$findLastIndex( 'name', 'zen', 1 ), 0 ).should.true;
             Object.$equals( arr.$findLastIndex( 'name', 'zenjs', 2 ), 1 ).should.true;
             Object.$equals( arr.$findLastIndex( 'name', 'zenui', 3 ), 2 ).should.true;
+          }
+        }, {
+          name: 'Find non-pure objects in an array',
+          it: function(){
+            var div = window.div;
+            var span1 = window.span.$appendTo( div ).$html( '1' );
+            var span2 = window.span.$appendTo( div ).$html( '2' );
+            var span3 = window.span.$appendTo( div ).$html( '3' );
+            var span4 = window.span.$appendTo( div ).$html( '3' );
+            var span5 = window.span.$appendTo( div ).$html( '2' );
+            var span6 = window.span.$appendTo( div ).$html( '1' );
+
+            div.$find('span').$findLastIndex( 'innerHTML', '1' ).should.equals( 5 );
+            div.$find('span').$findLastIndex( 'innerHTML', '2' ).should.equals( 4 );
+            div.$find('span').$findLastIndex( 'innerHTML', '3' ).should.equals( 3 );
           }
         }
       ]
@@ -1213,6 +1267,21 @@ describes.push({
                 { name: 'zenui', type: 'ui' }
               ]
             ).should.true;
+          }
+        }, {
+          name: 'Find non-pure objects in an array',
+          it: function(){
+            var div = window.div;
+            var span1 = window.span.$appendTo( div ).$html( '1' );
+            var span2 = window.span.$appendTo( div ).$html( '2' );
+            var span3 = window.span.$appendTo( div ).$html( '3' );
+            var span4 = window.span.$appendTo( div ).$html( '3' );
+            var span5 = window.span.$appendTo( div ).$html( '2' );
+            var span6 = window.span.$appendTo( div ).$html( '1' );
+
+            Object.$equals( div.$find('span').$findAll( 'innerHTML', '1' ), [ span1, span6 ] ).should.true;
+            Object.$equals( div.$find('span').$findAll( 'innerHTML', '2' ), [ span2, span5 ] ).should.true;
+            Object.$equals( div.$find('span').$findAll( 'innerHTML', '3' ), [ span3, span4 ] ).should.true;
           }
         }
       ]
