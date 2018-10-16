@@ -1938,6 +1938,17 @@ interface Element {
   $clone( deep?: boolean ): Node;
 
   /**
+   * ( Fat ) 获取元素在父元素的下标
+   */
+  $index(): Number;
+
+  /**
+   * ( Fat ) 将元素的下标设置为传入值 ( 将会移动元素 )
+   * @param index 需要设置的元素下标
+   */
+  $index( index: Number ): Element;
+
+  /**
    * ( Fat ) 读取元素的 innerHTML 值
    */
   $html(): String;
@@ -1952,12 +1963,6 @@ interface Element {
    * 不可写入
    */
   _nodeName: String;
-
-  /**
-   * ( Fat ) 读取时获取元素在父元素的下标;
-   * 写入时将元素的下标设置为写入值 ( 将会移动元素 )
-   */
-  _index: Number;
 
   /**
    * ( Fat ) 读取时返回元素的宽度;

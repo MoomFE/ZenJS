@@ -56,8 +56,8 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 90.47kb | 23.91kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 32.26kb | 11.66kb | \|  | UMD       | Browser |
+| zen.fat.js             | 90.46kb | 23.92kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 32.27kb | 11.66kb | \|  | UMD       | Browser |
 | zen.fat.common.js      | 84.40kb | 23.52kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
 | zen.fat.esm.js         | 84.38kb | 23.50kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
@@ -220,11 +220,11 @@
   - $query / $find
   - $queryFirst / $findFirst
   - $replaceWith / $replace
-  - _nodeName
-  - _index
+  - $index
   - _width
   - _height
-  - _html
+  - $html
+  - _nodeName
   - _val / _value
 
 - EventTarget.prototype ( Fat )

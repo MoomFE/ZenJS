@@ -2695,6 +2695,31 @@ if (inBrowser) {
   });
 }
 
+var min = Math.min;
+
+if (inBrowser) {
+  defineValue(ElementProto, '$index', function (toIndex) {
+    if (arguments.length) {
+      var parent = this.parentElement;
+
+      if (parent) {
+        var siblings = parent.children;
+        var selfIndex = this.$prevAll().length;
+        var currentIndex = min(siblings.length - 1, toIndex);
+
+        if (selfIndex !== currentIndex) {
+          var currentElem = siblings[currentIndex];
+          parent.insertBefore(this, selfIndex < currentIndex ? currentElem.nextElementSibling : currentElem);
+        }
+      }
+
+      return this;
+    }
+
+    return this.parentElement ? this.$prevAll().length : -1;
+  });
+}
+
 if (inBrowser) {
   defineValue(ElementProto, '$html', function (value) {
     if (arguments.length) {
@@ -2709,34 +2734,6 @@ if (inBrowser) {
 if (inBrowser) {
   defineGet(ElementProto, '_nodeName', function () {
     return this.nodeName.toLowerCase();
-  });
-}
-
-var min = Math.min;
-
-if (inBrowser) {
-  define(ElementProto, '_index', {
-    get: function () {
-      return this.parentElement ? this.$prevAll().length : -1;
-    },
-    set: function (toIndex) {
-      var parent = this.parentElement;
-
-      if (parent == null) {
-        return;
-      }
-
-      var siblings = parent.children;
-      var selfIndex = this._index;
-      var currentIndex = min(siblings.length - 1, toIndex);
-
-      if (selfIndex === currentIndex) {
-        return;
-      }
-
-      var currentElem = siblings[currentIndex];
-      parent.insertBefore(this, selfIndex < currentIndex ? currentElem.nextElementSibling : currentElem);
-    }
   });
 }
 
