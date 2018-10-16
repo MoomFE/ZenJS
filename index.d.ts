@@ -1955,8 +1955,31 @@ interface Element {
 
   /**
    * ( Fat ) 设置元素的 innerHTML 值
+   * @param value 需要设置的值
    */
   $html( value: String ): Element;
+
+  /**
+   * ( Fat ) 返回元素的 value 值
+   */
+  $val(): String;
+
+  /**
+   * ( Fat ) 设置元素的 value 值
+   * @param value 需要设置的值
+   */
+  $val( value: String ): Element;
+
+  /**
+   * ( Fat ) 返回元素的 value 值
+   */
+  $value(): String;
+
+  /**
+   * ( Fat ) 设置元素的 value 值
+   * @param value 需要设置的值
+   */
+  $value( value: String ): Element;
 
   /**
    * ( Fat ) 返回元素的宽度
@@ -1985,18 +2008,6 @@ interface Element {
    * 不可写入
    */
   _nodeName: String;
-
-  /**
-   * ( Fat ) 读取时返回元素的 value 值;
-   * 写入时设置元素的 value 值
-   */
-  _val: String;
-
-  /**
-   * ( Fat ) 读取时返回元素的 value 值;
-   * 写入时设置元素的 value 值
-   */
-  _value: String;
 
 }
 

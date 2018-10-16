@@ -13,7 +13,7 @@ import './$replaceWith/index';
 import './$prop/index';
 import './$index/index';
 import './$html/index';
+import './$val/index';
 import './$width/index';
 import './_nodeName/index';
-import './_val/index';
 import './Nativity/index';
