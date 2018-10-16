@@ -428,6 +428,28 @@ describes.push({
         div.$html().should.equals('123');
       }
     }, {
+      name: '$width',
+      default: function(){
+        var div = window.div;
+
+        div.$width().should.equals( 0 );
+
+        div.$width( 123 );
+        div.$width().should.equals( 0 );
+        div.style.width.should.equals('123px');
+      }
+    }, {
+      name: '$height',
+      default: function(){
+        var div = window.div;
+
+        div.$height().should.equals( 0 );
+
+        div.$height( 123 );
+        div.$height().should.equals( 0 );
+        div.style.height.should.equals('123px');
+      }
+    }, {
       name: '_nodeName',
       default: function(){
         div._nodeName.should.equals('div');
@@ -436,28 +458,6 @@ describes.push({
         input._nodeName.should.equals('input');
         select._nodeName.should.equals('select');
         option._nodeName.should.equals('option');
-      }
-    }, {
-      name: '_width',
-      default: function(){
-        var div = window.div;
-
-        div._width.should.equals( 0 );
-
-        div._width = 123;
-        div._width.should.equals( 0 );
-        div.style.width.should.equals('123px');
-      }
-    }, {
-      name: '_height',
-      default: function(){
-        var div = window.div;
-
-        div._height.should.equals( 0 );
-
-        div._height = 123;
-        div._height.should.equals( 0 );
-        div.style.height.should.equals('123px');
       }
     }, {
       name: '_val / _value',

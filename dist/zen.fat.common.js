@@ -2734,25 +2734,25 @@ if (inBrowser) {
 }
 
 if (inBrowser) {
-  defineGet(ElementProto, '_nodeName', function () {
-    return this.nodeName.toLowerCase();
+  ['width', 'height'].forEach(function (prop) {
+    defineValue(ElementProto, "$" + prop, function (value) {
+      if (arguments.length) {
+        this.style.setProperty(prop, $isNumber(value) ? value + "px" : value);
+        return this;
+      }
+
+      try {
+        return this.getBoundingClientRect()[prop];
+      } catch (error) {
+        return 0;
+      }
+    });
   });
 }
 
 if (inBrowser) {
-  ['width', 'height'].forEach(function (prop) {
-    define(ElementProto, "_" + prop, {
-      get: function () {
-        try {
-          return this.getBoundingClientRect()[prop];
-        } catch (error) {
-          return 0;
-        }
-      },
-      set: function (value) {
-        this.style[prop] = $isNumber(value) ? value + 'px' : value;
-      }
-    });
+  defineGet(ElementProto, '_nodeName', function () {
+    return this.nodeName.toLowerCase();
   });
 }
 

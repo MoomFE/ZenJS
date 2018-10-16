@@ -1959,22 +1959,32 @@ interface Element {
   $html( value: String ): Element;
 
   /**
+   * ( Fat ) 返回元素的宽度
+   */
+  $width(): Number;
+
+  /**
+   * ( Fat ) 设置元素的宽度
+   * @param value 需要设置的宽度
+   */
+  $width( value: Number ): Element;
+
+  /**
+   * ( Fat ) 返回元素的高度
+   */
+  $height(): Number;
+
+  /**
+   * ( Fat ) 设置元素的高度
+   * @param value 需要设置的高度
+   */
+  $height( value: Number ): Element;
+
+  /**
    * ( Fat ) 读取时获取元素的小写 nodeName;
    * 不可写入
    */
   _nodeName: String;
-
-  /**
-   * ( Fat ) 读取时返回元素的宽度;
-   * 写入时设置元素的宽度
-   */
-  _width: Number;
-
-  /**
-   * ( Fat ) 读取时返回元素的高度;
-   * 写入时设置元素的高度
-   */
-  _height: Number;
 
   /**
    * ( Fat ) 读取时返回元素的 value 值;
