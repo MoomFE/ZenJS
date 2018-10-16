@@ -1,4 +1,4 @@
-import "../../../shared/global/DomElement/prototype/matches";
+import "../../../shared/polyfill/Element.prototype.matches";
 import inBrowser from "../../../shared/const/inBrowser";
 import defineValue from "../../../shared/util/defineValue";
 import ElementProto from "../../../shared/global/DomElement/prototype/index";

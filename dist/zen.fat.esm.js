@@ -2427,8 +2427,6 @@ if (inBrowser && !ElementProto.matches) {
   });
 }
 
-var matches = ElementProto.matches;
-
 if (inBrowser) {
   defineValue(ElementProto, '$is', function (selector) {
     if (selector.nodeType) return this === selector;else if (isString$1(selector)) return this.matches(selector);else if (isFunction$1(selector)) return !!selector(this);
