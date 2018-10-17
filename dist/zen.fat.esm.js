@@ -2776,7 +2776,6 @@ var valHooks = {
 
       while (i--) {
         option = options[i];
-        console.log(values);
 
         if (option.selected = values.$inArray(valHooks.option.get(option))) {
           optionSet = true;
