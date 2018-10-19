@@ -8,9 +8,12 @@ import isArrayLike from "../../../shared/util/isArrayLike";
 import isMap from "../../../shared/util/isMap";
 import isSet from "../../../shared/util/isSet";
 import mapSetToArray from "../../../shared/util/mapSetToArray";
+import isPlainObject from "../../../shared/util/isPlainObject";
+import keys from "../../../shared/global/Object/keys";
+import values from "../../../shared/global/Object/values";
 
 
-export default function $toArray( value ){
+export default function $toArray( value, transKey ){
 
   // 不可转为数组的, 直接返回空数组
   if( !value || value[ isBoolean ] ){
@@ -34,6 +37,12 @@ export default function $toArray( value ){
   // 转换 Map, Set 类型
   if( isMap( value ) || isSet( value ) ){
     return mapSetToArray( value );
+  }
+
+  // 转换 JSON
+  if( isPlainObject( value ) ){
+    return transKey ? keys( value )
+                    : values( value );
   }
 
   return [];

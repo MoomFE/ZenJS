@@ -1,6 +1,7 @@
 import _assign from "../../util/assign";
 import assign from "../Object/assign";
 import entries from "../Object/entries";
+import values from "../Object/values";
 import congruence from "../../util/congruence";
 import equals from "../../util/equals";
 import define from "../../util/define";
@@ -30,7 +31,8 @@ const ZenJS =  root.ZenJS = _assign( false, [ null, {
 
     polyfill: {
       assign: assign,
-      entries: entries
+      entries: entries,
+      values: values
     },
   
     util: {

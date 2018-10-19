@@ -515,7 +515,18 @@ function mapSetToArray(map) {
   return result;
 }
 
-function $toArray(value) {
+/**
+ * 方法返回一个给定对象自身的所有可枚举属性值的数组.
+ * Object.values polyfill
+ */
+
+var values = Object.values || function (obj) {
+  return keys(obj).map(function (key) {
+    return obj[key];
+  });
+};
+
+function $toArray(value, transKey) {
   // 不可转为数组的, 直接返回空数组
   if (!value || value[isBoolean]) {
     return [];
@@ -538,6 +549,11 @@ function $toArray(value) {
 
   if (isMap(value) || isSet(value)) {
     return mapSetToArray(value);
+  } // 转换 JSON
+
+
+  if (isPlainObject(value)) {
+    return transKey ? keys(value) : values(value);
   }
 
   return [];
@@ -2288,7 +2304,8 @@ function returnFalse() {
 var ZenJS = root.ZenJS = assign(false, [null, {
   polyfill: {
     assign: assign$1,
-    entries: entries
+    entries: entries,
+    values: values
   },
   util: {
     congruence: congruence,
