@@ -46,8 +46,9 @@ interface ArrayConstructor {
   /**
    * 将传入参数转为数组
    * @param value 需要转为数组的对象
+   * @param transKey json 对象转数组时使用, 是否将传入对象的 key 转为数组 ( 默认是 value ) - default: false
    */
-  $toArray( value: any ): Array;
+  $toArray( value: any, transKey?: false ): Array;
 
 }
 

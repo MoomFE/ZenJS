@@ -334,6 +334,16 @@ describes.push({
             Object.$equals( Array.$toArray( div.classList ), [ 'Zen', 'JS', 'UI' ] ).should.true;
             Object.$equals( Array.$toArray( div.querySelectorAll('div') ), [ div1, div2, div3 ] ).should.true;
           }
+        }, {
+          name: 'Convert a pure Object object',
+          it: function(){
+            var json = {
+              a: 1, b: 2, c: 3
+            };
+
+            Object.$equals( Array.$toArray( json ), [ 1, 2, 3 ] ).should.true;
+            Object.$equals( Array.$toArray( json, true ), [ 'a', 'b', 'c' ] ).should.true;
+          }
         }
       ]
     }
