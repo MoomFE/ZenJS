@@ -495,6 +495,62 @@ describes.push({
         select._nodeName.should.equals('select');
         option._nodeName.should.equals('option');
       }
+    }, {
+      name: '$prop',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var div = window.div;
+                div.className = 'test';
+    
+            div.$prop('class').should.equals('test');
+            div.$prop('class','test1').$prop('class').should.equals('test1');
+          }
+        }, {
+          name: 'checked',
+          it: function(){
+            var input = window.input;
+                input.$prop( 'type', 'checkbox' );
+
+            input.$prop('type').should.equals('checkbox');
+            input.$prop('checked').should.false;
+            input.$prop('checked',true).$prop('checked').should.true;
+          }
+        }, {
+          name: 'selected',
+          it: function(){
+            var select = window.select;
+            var option1 = window.option.$appendTo( select );
+            var option2 = window.option.$appendTo( select );
+            var option3 = window.option.$appendTo( select );
+
+            option1.$prop('selected').should.true;
+            option2.$prop('selected').should.false;
+            option3.$prop('selected').should.false;
+
+            option2.selected = true;
+
+            option1.$prop('selected').should.false;
+            option2.$prop('selected').should.true;
+            option3.$prop('selected').should.false;
+
+            option3.$prop('selected', true);
+
+            option1.$prop('selected').should.false;
+            option2.$prop('selected').should.false;
+            option3.$prop('selected').should.true;
+          }
+        }, {
+          name: 'tabIndex',
+          it: function(){
+            var input = window.input;
+
+            input.$prop('tabIndex').should.equals( 0 );
+            input.$prop('tabIndex',1).$prop('tabIndex').should.equals( 1 );
+          }
+        }
+      ]
     }
   ]
 });

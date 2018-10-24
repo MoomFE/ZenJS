@@ -23,16 +23,16 @@ if( inBrowser ){
     let result;
 
     if( arguments.length > 1 ){
-      if( hooks && 'set' in hooks ) hooks.set( elem );
+      if( hooks && 'set' in hooks ) hooks.set( this );
       this[ name ] = value;
       return this;
     }
 
-    if( hooks && 'get' in hooks && ( result = hooks.get( elem, name ) ) !== null ){
+    if( hooks && 'get' in hooks && ( result = hooks.get( this, name ) ) !== null ){
       return result;
     }
 
-    return elem[ name ];
+    return this[ name ];
   });
 
 }
