@@ -18,7 +18,6 @@
     "@babel/plugin-transform-template-literals": "^7.0.0",
     "chai": "^4.1.2",
     "extend": "^3.0.2",
-    "jquery": "^3.3.1",
     "mocha": "^5.2.0",
     "rollup": "^0.58.2",
     "rollup-plugin-babel": "^4.0.3",
@@ -48,8 +47,5 @@
   "bugs": {
     "url": "https://github.com/MoomFE/ZenJS/issues"
   },
-  "homepage": "https://github.com/MoomFE/ZenJS#readme",
-  "dependencies": {
-    "dayjs": "^1.7.5"
-  }
+  "homepage": "https://github.com/MoomFE/ZenJS#readme"
 }
