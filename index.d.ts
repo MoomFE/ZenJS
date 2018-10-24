@@ -1037,6 +1037,18 @@ interface Function {
 
 }
 
+interface RegExpConstructor{
+
+  /**
+   * 将字符串转为正则表达式, 自动转义关键字
+   * @param keyword 需要转换的字符串
+   * @param flogs 交给 RegExp 解析的修饰符
+   */
+  $parse( keyword: String, flogs: String ): RegExp;
+
+}
+
+
 interface Window {
 
   /**

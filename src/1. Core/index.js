@@ -9,5 +9,6 @@ import './8. String.prototype/index';
 import './9. Date/index';
 import './10. Date.prototype/index';
 import './11. Function.prototype/index';
+import './12. RegExp/index';
 import './66. Root/index';
 import './666. ZenJS/index';

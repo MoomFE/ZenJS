@@ -1444,7 +1444,7 @@ defineValue(String, '$someRandom', function ()
   return result;
 });
 
-var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$])/g;
+var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$\\])/g;
 
 /**
  * 判断传入对象是否是 RegExp 类型
@@ -2189,6 +2189,10 @@ defineValue(FunctionProto, '$one $once', function () {
   return function () {
     index++ === num && func.apply(this, arguments);
   };
+});
+
+defineValue(RegExp, '$parse', function (keyword, flags) {
+  return new RegExp(keyword.replace(rkeyword, '\\$1'), flags);
 });
 
 defineValue(root, '$typeof', function (obj) {
