@@ -2722,6 +2722,10 @@
     });
   }
 
+  if (inBrowser) {
+    defineValue(ElementProto, '$attr', function () {});
+  }
+
   var min = Math.min;
 
   if (inBrowser) {

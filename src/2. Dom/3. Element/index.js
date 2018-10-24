@@ -11,6 +11,7 @@ import './$remove/index';
 import './$query/index';
 import './$replaceWith/index';
 import './$prop/index';
+import './$attr/index';
 import './$index/index';
 import './$html/index';
 import './$val/index';
