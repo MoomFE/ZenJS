@@ -36,6 +36,11 @@ describes.push({
             'ZenJS zenjs'.$replaceAll( /JS/ig, function(){ return 'UI' } ).should.equals( 'ZenUI zenUI' );
             'ZenJS zenjs'.$replaceAll( /JS/i, function( str, indexOf ){ return str + ':' + indexOf } ).should.equals( 'ZenJS:3 zenjs:9' )
           }
+        }, {
+          name: 'When a string is passed in, the keywords within the string are escaped',
+          it: function(){
+            '.*+?|()[]{}^$\\ .*+?|()[]{}^$\\'.$replaceAll('.*+?|()[]{}^$\\','').should.equals(' ');
+          }
         }
       ]
     }, {

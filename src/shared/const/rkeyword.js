@@ -1,3 +1,3 @@
-const rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$])/g;
+const rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$\\])/g;
 
 export default rkeyword;
