@@ -2722,8 +2722,73 @@
     });
   }
 
+  var supportsRadioValue = true;
+
   if (inBrowser) {
-    defineValue(ElementProto, '$attr', function () {});
+    var input = document.createElement('input');
+    input.value = 't';
+    input.type = 'radio'; // Support: IE <=11 only
+    // An input loses its value after becoming a radio
+
+    supportsRadioValue = input.value === 't';
+  }
+
+  var supportsRadioValue$1 = supportsRadioValue;
+
+  var attrHooks = {
+    type: function (elem, value) {
+      if (!supportsRadioValue$1 && value === 'radio' && elem._nodeName === 'input') {
+        var val = elem.value;
+        elem.setAttribute('type', value);
+
+        if (val) {
+          elem.value = val;
+        }
+
+        return value;
+      }
+    }
+  };
+  function boolHook(elem, value, name) {
+    if (value === false) elem.$removeAttr(name);else elem.setAttribute(name, name);
+    return name;
+  }
+
+  var rBool = /^(?:checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped)$/i;
+
+  if (inBrowser) {
+    defineValue(ElementProto, '$attr', function (name, value) {
+      var result;
+
+      if (value === undefined) {
+        return (result = elem.getAttribute(name)) == null ? undefined : result;
+      }
+
+      if (value === null) {
+        return this.$removeAttr(name);
+      }
+
+      var hooks = attrHooks[name.toLowerCase()] || (rBool.test(name) ? boolHook : undefined);
+
+      if (hooks && (result = hooks(elem, value, name)) !== undefined) {
+        return result;
+      }
+
+      this.setAttribute(name, value + '');
+      return this;
+    });
+    defineValue(ElementProto, '$removeAttr $deleteAttr', function (names) {
+      if (names = names && names.match(rnothtmlwhite)) {
+        var name;
+        var index = 0;
+
+        while (name = names[index++]) {
+          this.removeAttribute(name);
+        }
+      }
+
+      return this;
+    });
   }
 
   var min = Math.min;

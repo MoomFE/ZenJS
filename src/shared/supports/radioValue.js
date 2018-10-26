@@ -1,7 +1,7 @@
 import inBrowser from "../const/inBrowser";
 
 
-const supportsRadioValue = true;
+let supportsRadioValue = true;
 
 if( inBrowser ){
 
