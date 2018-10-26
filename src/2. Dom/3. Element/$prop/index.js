@@ -3,36 +3,30 @@ import defineValue from "../../../shared/util/defineValue";
 import ElementProto from "../../../shared/global/DomElement/prototype/index";
 import propFix from "./const/propFix";
 import propHooks from "./const/propHooks";
-import isObject from "../../../shared/util/isObject";
+import access from "../$attr/util/access";
 
 
 
 if( inBrowser ){
 
-  defineValue( ElementProto, '$prop', function( props, value ){
+  defineValue( ElementProto, '$prop', function( prop, value ){
+    return access( this, prop, arguments, ( prop, value ) => {
+      const name = propFix[ prop ] || prop;
+      const hooks = propHooks[ name ];
+      let result;
 
-    if( isObject( props ) ){
-      for( let _name in props ){
-        this.$prop( name, props[ name ] );
+      if( arguments.length > 1 ){
+        if( hooks && 'set' in hooks ) hooks.set( this );
+        this[ name ] = value;
+        return this;
       }
-      return this;
-    }
 
-    const name = propFix[ props ] || props;
-    const hooks = propHooks[ name ];
-    let result;
-
-    if( arguments.length > 1 ){
-      if( hooks && 'set' in hooks ) hooks.set( this );
-      this[ name ] = value;
-      return this;
-    }
-
-    if( hooks && 'get' in hooks && ( result = hooks.get( this, name ) ) !== null ){
-      return result;
-    }
-
-    return this[ name ];
+      if( hooks && 'get' in hooks && ( result = hooks.get( this, name ) ) !== null ){
+        return result;
+      }
+  
+      return this[ name ];
+    });
   });
 
 }

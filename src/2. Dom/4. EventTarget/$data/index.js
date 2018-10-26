@@ -1,9 +1,9 @@
 import defineValue from "../../../shared/util/defineValue";
 import inBrowser from "../../../shared/const/inBrowser";
 import DomEventTarget from "../../../shared/global/DomEventTarget/index";
-import isObject from "../../../shared/util/isObject";
 import isEmptyObject from "../../../shared/util/isEmptyObject";
 import rnothtmlwhite from "../../../shared/const/rnothtmlwhite";
+import access from "../../3. Element/$attr/util/access";
 
 
 const DATA = '__ZENJS_DATA__';
@@ -26,27 +26,20 @@ if( inBrowser ){
     const self = this || window;
     const Data = getDatas( self );
 
-    // $data( {} )
-    // $data( {}, weakRead )
-    if( isObject( name ) ){
-      for( let key in name ){
-        $data.call( self, key, name[ key ], value );
+    return access( self, name, arguments, ( name, value, weakRead ) => {
+      // 读取
+      // $data( name )
+      // $data( name, value, true )
+      if( weakRead || arguments.length < 2 ){
+        if( name == null ) return Data;
+        if( weakRead && !( name in Data ) ) return Data[ name ] = value;
+        return Data[ name ];
       }
+
+      // $data( name, value )
+      Data[ name ] = value;
       return self;
-    }
-
-    // 读取
-    // $data( name )
-    // $data( name, value, true )
-    if( weakRead || arguments.length < 2 ){
-      if( name == null ) return Data;
-      if( weakRead && !( name in Data ) ) return Data[ name ] = value;
-      return Data[ name ];
-    }
-
-    // $data( name, value )
-    Data[ name ] = value;
-    return self;
+    });
   });
 
   defineValue( DomEventTarget, '$hasData', function( name ){

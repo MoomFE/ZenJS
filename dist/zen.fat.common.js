@@ -2690,31 +2690,44 @@ if (!supportsSelectedIndex$1) {
   };
 }
 
+function access$1(elem, arg, args, func) {
+  var name;
+
+  if (isObject(arg)) {
+    args = slice.call(args).splice(0, 1);
+
+    for (name in arg) {
+      func.apply(elem, [name, arg[name]].concat(args));
+    }
+  } else {
+    return func.apply(elem, args);
+  }
+
+  return elem;
+}
+
 if (inBrowser) {
-  defineValue(ElementProto, '$prop', function (props, value) {
-    if (isObject(props)) {
-      for (var _name in props) {
-        this.$prop(name, props[name]);
+  defineValue(ElementProto, '$prop', function (prop, value) {
+    var _this = this,
+        _arguments = arguments;
+
+    return access$1(this, prop, arguments, function (prop, value) {
+      var name = propFix[prop] || prop;
+      var hooks = propHooks[name];
+      var result;
+
+      if (_arguments.length > 1) {
+        if (hooks && 'set' in hooks) hooks.set(_this);
+        _this[name] = value;
+        return _this;
       }
 
-      return this;
-    }
+      if (hooks && 'get' in hooks && (result = hooks.get(_this, name)) !== null) {
+        return result;
+      }
 
-    var name = propFix[props] || props;
-    var hooks = propHooks[name];
-    var result;
-
-    if (arguments.length > 1) {
-      if (hooks && 'set' in hooks) hooks.set(this);
-      this[name] = value;
-      return this;
-    }
-
-    if (hooks && 'get' in hooks && (result = hooks.get(this, name)) !== null) {
-      return result;
-    }
-
-    return this[name];
+      return _this[name];
+    });
   });
 }
 
@@ -2754,24 +2767,29 @@ var rBool = /^(?:checked|selected|async|autofocus|autoplay|controls|defer|disabl
 
 if (inBrowser) {
   defineValue(ElementProto, '$attr', function (name, value) {
-    var result;
+    var _this = this;
 
-    if (value === undefined) {
-      return (result = elem.getAttribute(name)) == null ? undefined : result;
-    }
+    return access$1(this, name, arguments, function (name, value) {
+      var result;
 
-    if (value === null) {
-      return this.$removeAttr(name);
-    }
+      if (value === undefined) {
+        return (result = _this.getAttribute(name)) == null ? undefined : result;
+      }
 
-    var hooks = attrHooks[name.toLowerCase()] || (rBool.test(name) ? boolHook : undefined);
+      if (value === null) {
+        return _this.$removeAttr(name);
+      }
 
-    if (hooks && (result = hooks(elem, value, name)) !== undefined) {
-      return result;
-    }
+      var hooks = attrHooks[name.toLowerCase()] || (rBool.test(name) ? boolHook : undefined);
 
-    this.setAttribute(name, value + '');
-    return this;
+      if (hooks && (result = hooks(_this, value, name)) !== undefined) {
+        return result;
+      }
+
+      _this.setAttribute(name, value + '');
+
+      return _this;
+    });
   });
   defineValue(ElementProto, '$removeAttr $deleteAttr', function (names) {
     if (names = names && names.match(rnothtmlwhite)) {
@@ -2969,30 +2987,23 @@ function getDatas(elem) {
 
 if (inBrowser) {
   defineValue(DomEventTarget, '$data', function $data(name, value, weakRead) {
+    var _arguments = arguments;
     var self = this || window;
-    var Data = getDatas(self); // $data( {} )
-    // $data( {}, weakRead )
+    var Data = getDatas(self);
+    return access$1(self, name, arguments, function (name, value, weakRead) {
+      // 读取
+      // $data( name )
+      // $data( name, value, true )
+      if (weakRead || _arguments.length < 2) {
+        if (name == null) return Data;
+        if (weakRead && !(name in Data)) return Data[name] = value;
+        return Data[name];
+      } // $data( name, value )
 
-    if (isObject(name)) {
-      for (var key in name) {
-        $data.call(self, key, name[key], value);
-      }
 
+      Data[name] = value;
       return self;
-    } // 读取
-    // $data( name )
-    // $data( name, value, true )
-
-
-    if (weakRead || arguments.length < 2) {
-      if (name == null) return Data;
-      if (weakRead && !(name in Data)) return Data[name] = value;
-      return Data[name];
-    } // $data( name, value )
-
-
-    Data[name] = value;
-    return self;
+    });
   });
   defineValue(DomEventTarget, '$hasData', function (name) {
     var Data = getDatas(this || window);
