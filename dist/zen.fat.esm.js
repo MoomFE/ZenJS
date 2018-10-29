@@ -2724,6 +2724,20 @@ if (inBrowser) {
       return this[name];
     });
   });
+  defineValue(ElementProto, '$removeProp $deleteProp', function (props) {
+    if (props = props && props.match(rnothtmlwhite)) {
+      var prop;
+      var index = 0;
+
+      while (prop = props[index++]) {
+        prop = propFix[prop] || prop;
+        this[prop] = '';
+        delete this[prop];
+      }
+    }
+
+    return this;
+  });
 }
 
 var supportsRadioValue = true;

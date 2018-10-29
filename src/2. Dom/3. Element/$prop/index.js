@@ -4,6 +4,7 @@ import ElementProto from "../../../shared/global/DomElement/prototype/index";
 import propFix from "./const/propFix";
 import propHooks from "./const/propHooks";
 import access from "../$attr/util/access";
+import rnothtmlwhite from "../../../shared/const/rnothtmlwhite";
 
 
 
@@ -24,9 +25,25 @@ if( inBrowser ){
       if( hooks && 'get' in hooks && ( result = hooks.get( this, name ) ) !== null ){
         return result;
       }
-  
+
       return this[ name ];
     });
+  });
+
+  defineValue( ElementProto, '$removeProp $deleteProp', function( props ){
+    if( props = props && props.match( rnothtmlwhite ) ){
+      let prop;
+      let index = 0;
+
+      while( prop = props[ index++ ] ){
+        prop = propFix[ prop ] || prop;
+
+        this[ prop ] = '';
+        delete this[ prop ];
+      }
+    }
+
+    return this;
   });
 
 }

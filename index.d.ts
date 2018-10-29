@@ -1857,6 +1857,18 @@ interface Element {
   $prop( name: String, value: any ): Element;
 
   /**
+   * ( Fat ) 移除元素的属性值 ( property )
+   * @param name 属性名
+   */
+  $removeProp( name: String ): Element;
+
+  /**
+   * ( Fat ) 移除元素的属性值 ( property )
+   * @param name 属性名
+   */
+  $deleteProp( name: String ): Element;
+
+  /**
    * ( Fat ) 获取元素的属性值 ( attribute )
    * @param name 属性名
    */

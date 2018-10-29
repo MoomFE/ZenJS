@@ -558,6 +558,30 @@ describes.push({
         }
       ]
     }, {
+      name: '$removeProp / $deleteProp',
+      default: function(){
+        var div = window.div.$prop({ id: 'test-id', class: 'test' });
+
+        Object.$equals( div.$prop('id'), 'test-id' ).should.true;
+        Object.$equals( div.$prop('class'), 'test' ).should.true;
+
+        div.$removeProp('id');
+        Object.$equals( div.$prop('id'), '' ).should.true;
+        Object.$equals( div.$prop('class'), 'test' ).should.true;
+
+        div.$removeProp('class');
+        Object.$equals( div.$prop('id'), '' ).should.true;
+        Object.$equals( div.$prop('class'), '' ).should.true;
+
+        div.$prop({ id: 'test-id', class: 'test' });
+        Object.$equals( div.$prop('id'), 'test-id' ).should.true;
+        Object.$equals( div.$prop('class'), 'test' ).should.true;
+
+        div.$removeProp('id class');
+        Object.$equals( div.$prop('id'), '' ).should.true;
+        Object.$equals( div.$prop('class'), '' ).should.true;
+      }
+    }, {
       name: '$attr',
       describe: [
         {
@@ -585,6 +609,30 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$removeAttr / $deleteAttr',
+      default: function(){
+        var div = window.div.$attr({ id: 'test-id', class: 'test' });
+
+        Object.$equals( div.$attr('id'), 'test-id' ).should.true;
+        Object.$equals( div.$attr('class'), 'test' ).should.true;
+
+        div.$removeAttr('id');
+        Object.$equals( div.$attr('id'), undefined ).should.true;
+        Object.$equals( div.$attr('class'), 'test' ).should.true;
+
+        div.$removeAttr('class');
+        Object.$equals( div.$attr('id'), undefined ).should.true;
+        Object.$equals( div.$attr('class'), undefined ).should.true;
+
+        div.$attr({ id: 'test-id', class: 'test' });
+        Object.$equals( div.$attr('id'), 'test-id' ).should.true;
+        Object.$equals( div.$attr('class'), 'test' ).should.true;
+
+        div.$removeAttr('id class');
+        Object.$equals( div.$attr('id'), undefined ).should.true;
+        Object.$equals( div.$attr('class'), undefined ).should.true;
+      }
     }
   ]
 });
