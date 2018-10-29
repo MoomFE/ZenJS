@@ -2754,13 +2754,13 @@ var attrHooks = {
         elem.value = val;
       }
 
-      return value;
+      return true;
     }
   }
 };
 function boolHook(elem, value, name) {
   if (value === false) elem.$removeAttr(name);else elem.setAttribute(name, name);
-  return name;
+  return true;
 }
 
 var rBool = /^(?:checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped)$/i;
@@ -2782,11 +2782,9 @@ if (inBrowser) {
 
       var hooks = attrHooks[name.toLowerCase()] || (rBool.test(name) ? boolHook : undefined);
 
-      if (hooks && (result = hooks(_this, value, name)) !== undefined) {
-        return result;
+      if (!(hooks && hooks(_this, value, name))) {
+        _this.setAttribute(name, value + '');
       }
-
-      _this.setAttribute(name, value + '');
 
       return _this;
     });

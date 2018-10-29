@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 92.50kb | 24.33kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 33.24kb | 12.00kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 86.32kb | 23.92kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 86.30kb | 23.91kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 92.46kb | 24.33kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 33.23kb | 12.00kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 86.28kb | 23.92kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 86.26kb | 23.90kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -213,6 +213,9 @@
   - $parent
   - $parents
   - $siblings
+  - $prop
+  - $attr
+  - $removeAttr / $deleteAttr
   - $append
   - $prepend
   - $appendTo

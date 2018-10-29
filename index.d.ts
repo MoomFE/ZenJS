@@ -1838,23 +1838,54 @@ interface Element {
   $siblings( filter?: String | Function ): Element | null;
 
   /**
-   * ( Fat ) 获取元素的属性值
+   * ( Fat ) 获取元素的属性值 ( property )
    * @param name 属性名
    */
   $prop( name: String ): any;
 
   /**
-   * ( Fat ) 批量设置元素的属性值
+   * ( Fat ) 批量设置元素的属性值 ( property )
    * @param props 属性值得键值对
    */
   $prop( props: any ): Element;
 
   /**
-   * ( Fat ) 设置元素的属性值
+   * ( Fat ) 设置元素的属性值 ( property )
    * @param name 属性名
    * @param value 属性值
    */
   $prop( name: String, value: any ): Element;
+
+  /**
+   * ( Fat ) 获取元素的属性值 ( attribute )
+   * @param name 属性名
+   */
+  $attr( name: String ): String | undefined;
+
+  /**
+   * ( Fat ) 批量设置元素的属性值 ( attribute )
+   * @param attrs 属性值得键值对
+   */
+  $attr( attrs: any ): Element;
+
+  /**
+   * ( Fat ) 设置元素的属性值 ( attribute )
+   * @param name 属性名
+   * @param value 属性值
+   */
+  $attr( name: String, value: String ): Element;
+
+  /**
+   * ( Fat ) 移除元素的属性值 ( attribute )
+   * @param name 属性名
+   */
+  $removeAttr( name: String ): Element;
+
+  /**
+   * ( Fat ) 移除元素的属性值 ( attribute )
+   * @param name 属性名
+   */
+  $deleteAttr( name: String ): Element;
 
   /**
    * ( Fat ) 添加元素到当前元素内的尾部

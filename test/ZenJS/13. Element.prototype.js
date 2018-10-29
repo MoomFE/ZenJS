@@ -551,6 +551,29 @@ describes.push({
           }
         }
       ]
+    }, {
+      name: '$attr',
+      describe: [
+        {
+          name: 'Normal use',
+          it: function(){
+            var div = window.div.$prop('class','test');
+
+            div.$attr('class').should.equals('test');
+            div.$attr('id','test-id').$attr('id').should.equals('test-id');
+
+            Object.$equals( div.$attr('class',null).$attr('class') ).should.true;
+          }
+        }, {
+          name: 'boolean',
+          it: function(){
+            var input = window.input.$prop('type','radio');
+
+            input.$attr('checked',true).$attr('checked').should.equals('checked');
+            Object.$equals( input.$attr('checked',false).$attr('checked') ).should.true;
+          }
+        }
+      ]
     }
   ]
 });

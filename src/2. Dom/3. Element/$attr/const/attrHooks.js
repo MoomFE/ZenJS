@@ -11,8 +11,8 @@ export const attrHooks = {
       if( val ){
         elem.value = val;
       }
-  
-      return value;
+
+      return true;
     }
   }
 };
@@ -21,5 +21,5 @@ export const attrHooks = {
 export function boolHook( elem, value, name ){
   if( value === false ) elem.$removeAttr( name );
   else elem.setAttribute( name, name );
-  return name;
+  return true;
 }

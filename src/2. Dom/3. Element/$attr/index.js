@@ -24,11 +24,9 @@ if( inBrowser ){
 
       const hooks = attrHooks[ name.toLowerCase() ] || ( rBool.test( name ) ? boolHook : undefined );
 
-      if( hooks && ( result = hooks( this, value, name ) ) !== undefined ){
-        return result;
+      if( !( hooks && hooks( this, value, name ) ) ){
+        this.setAttribute( name, value + '' );
       }
-
-      this.setAttribute( name, value + '' );
 
       return this;
     });
