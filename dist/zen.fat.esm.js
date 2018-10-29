@@ -2810,17 +2810,15 @@ if (inBrowser) {
   });
 }
 
-var reg = /(A-Z)/g;
+var reg = /[A-Z]/g;
 
-function toLowerCase(all, upper) {
-  return upper.toLowerCase();
+function toLowerCase(char) {
+  return '-' + char.toLowerCase();
 }
 
 function unCamelCase(name) {
   return name.replace(reg, toLowerCase);
 }
-
-var cssHooks = {};
 
 /**
  * @param {Element} elem 
@@ -2838,39 +2836,87 @@ function getStyles(elem) {
   return view.getComputedStyle(elem);
 }
 
+var supportsCompoundStyle = true;
+
+if (inBrowser) {
+  var div = document.createElement('div').$appendTo(document.documentElement);
+  div.style.margin = '10px';
+  var margin = getStyles(div).getPropertyValue('margin');
+  supportsCompoundStyle = margin !== '';
+  div.$remove();
+}
+
+var supportsCompoundStyle$1 = supportsCompoundStyle;
+
+var cssExpand = ['-top', '-right', '-bottom', '-left'];
+
+var cssHooks = {};
+
+if (!supportsCompoundStyle$1) {
+  each({
+    margin: '',
+    padding: '',
+    border: '-width'
+  }, function (name, suffix) {
+    cssHooks[name + suffix] = {
+      get: function (elem) {
+        var computed = getStyles(elem);
+        var result = [];
+
+        for (var index = 0; index < 4; index++) {
+          result[index] = computed.getPropertyValue(name + cssExpand[index] + suffix) || '0px';
+        }
+
+        var one = result[0];
+        var two = result[1];
+        var three = result[2];
+        var four = result[3];
+
+        if (two === four) {
+          // 左右边相等
+          if (one === three) {
+            // 上下边相等
+            return one === two ? one // 单值语法
+            : one + " " + two; // 二值语法
+          } else {
+            return one + " " + two + " " + three; // 三值语法
+          }
+        }
+
+        return result.join(' '); // 四值语法
+      }
+    };
+  });
+}
+
 function getCss(elem, name) {
   var computed = getStyles(elem);
-  var result;
-
-  if (computed) {
-    result = computed.getPropertyValue(name);
-  }
-
+  var result = computed.getPropertyValue(name);
   return result !== undefined ? result + '' : result;
 }
 
-function css(elem, name) {
-  var origName = unCamelCase(name);
-  var hooks = cssHooks(origName);
-  var value;
-
-  if (hooks && 'get' in hooks) {
-    value = hooks.get(elem);
-  }
-
-  if (value === undefined) {
-    value = getCss(elem, name);
-  }
-
-  return value;
-}
-
-function style(elem, name, value) {}
-
 if (inBrowser) {
+  var css = function (elem, name) {
+    var origName = unCamelCase(name);
+    var hooks = cssHooks[origName];
+    var value;
+
+    if (hooks && 'get' in hooks) {
+      value = hooks.get(elem);
+    }
+
+    if (value === undefined) {
+      value = getCss(elem, origName);
+    }
+
+    return value;
+  };
+
+  var style = function (elem, name, value) {};
+
   defineValue(ElementProto, '$css', function (name) {
     return access$1(this, name, arguments, function (name, value) {
-      return value === undefined ? css(elem, name) : style(elem, name, vlaue);
+      return value === undefined ? css(this, name) : style(this, name, vlaue);
     });
   });
 }

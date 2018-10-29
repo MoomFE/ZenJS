@@ -2826,8 +2826,6 @@
     return name.replace(reg, toLowerCase);
   }
 
-  var cssHooks = {};
-
   /**
    * @param {Element} elem 
    */
@@ -2856,8 +2854,11 @@
 
   var supportsCompoundStyle$1 = supportsCompoundStyle;
 
+  var cssExpand = ['-top', '-right', '-bottom', '-left'];
+
+  var cssHooks = {};
+
   if (!supportsCompoundStyle$1) {
-    var cssExpand = ['-top', '-right', '-bottom', '-left'];
     each({
       margin: '',
       padding: '',
@@ -2869,10 +2870,26 @@
           var result = [];
 
           for (var index = 0; index < 4; index++) {
-            result[index] = computed.getPropertyValue(name + cssExpand[index] + suffix);
+            result[index] = computed.getPropertyValue(name + cssExpand[index] + suffix) || '0px';
           }
 
-          return result.join(' ');
+          var one = result[0];
+          var two = result[1];
+          var three = result[2];
+          var four = result[3];
+
+          if (two === four) {
+            // 左右边相等
+            if (one === three) {
+              // 上下边相等
+              return one === two ? one // 单值语法
+              : one + " " + two; // 二值语法
+            } else {
+              return one + " " + two + " " + three; // 三值语法
+            }
+          }
+
+          return result.join(' '); // 四值语法
         }
       };
     });
@@ -2884,25 +2901,25 @@
     return result !== undefined ? result + '' : result;
   }
 
-  function css(elem, name) {
-    var origName = unCamelCase(name);
-    var hooks = cssHooks[origName];
-    var value;
-
-    if (hooks && 'get' in hooks) {
-      value = hooks.get(elem);
-    }
-
-    if (value === undefined) {
-      value = getCss(elem, origName);
-    }
-
-    return value;
-  }
-
-  function style(elem, name, value) {}
-
   if (inBrowser) {
+    var css = function (elem, name) {
+      var origName = unCamelCase(name);
+      var hooks = cssHooks[origName];
+      var value;
+
+      if (hooks && 'get' in hooks) {
+        value = hooks.get(elem);
+      }
+
+      if (value === undefined) {
+        value = getCss(elem, origName);
+      }
+
+      return value;
+    };
+
+    var style = function (elem, name, value) {};
+
     defineValue(ElementProto, '$css', function (name) {
       return access$1(this, name, arguments, function (name, value) {
         return value === undefined ? css(this, name) : style(this, name, vlaue);

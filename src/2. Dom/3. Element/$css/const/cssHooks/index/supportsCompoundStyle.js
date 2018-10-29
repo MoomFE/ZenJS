@@ -5,7 +5,7 @@ import getStyles from '../../../util/getStyles';
 
 
 if( !supportsCompoundStyle ){
-  const cssExpand = [ '-top', '-right', '-bottom', '-left' ];
+  
 
   each({
     margin: '',

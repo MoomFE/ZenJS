@@ -2,8 +2,9 @@ import inBrowser from "../../../shared/const/inBrowser";
 import defineValue from "../../../shared/util/defineValue";
 import ElementProto from "../../../shared/global/DomElement/prototype/index";
 import access from "../$attr/util/access";
-import css from "./main/css";
-import style from "./main/style";
+import unCamelCase from "./util/unCamelCase";
+import cssHooks from "./const/cssHooks";
+import getCss from "./util/getCss";
 
 
 if( inBrowser ){
@@ -14,5 +15,26 @@ if( inBrowser ){
                                  : style( this, name, vlaue );
     });
   });
+
+  function css( elem, name ){
+    const origName = unCamelCase( name );
+    const hooks = cssHooks[ origName ];
+
+    let value;
+
+    if( hooks && 'get' in hooks ){
+      value = hooks.get( elem );
+    }
+
+    if( value === undefined ){
+      value = getCss( elem, origName );
+    }
+
+    return value;
+  }
+
+  function style( elem, name, value ){
+
+  }
 
 }
