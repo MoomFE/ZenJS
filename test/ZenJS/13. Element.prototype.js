@@ -633,6 +633,72 @@ describes.push({
         Object.$equals( div.$attr('id'), undefined ).should.true;
         Object.$equals( div.$attr('class'), undefined ).should.true;
       }
+    }, {
+      name: '$css',
+      describe: [
+        {
+          name: 'Get margin / padding / border-width',
+          it: function(){
+            var div = window.div.$appendTo( document.documentElement );
+            var style = div.style;
+
+            /* Margin */
+            div.$css('margin').should.equals('0px');
+
+            style.marginLeft = style.marginRight = '1px';
+            div.$css('margin').should.equals('0px 1px');
+
+            style.marginTop = '1px';
+            div.$css('margin').should.equals('1px 1px 0px');
+            
+            style.marginBottom = '1px';
+            div.$css('margin').should.equals('1px');
+
+            style.marginLeft = '1px';
+            style.marginRight = '2px';
+            style.marginTop = '3px';
+            style.marginBottom = '4px';
+            div.$css('margin').should.equals('3px 2px 4px 1px');
+
+            /* Padding */
+            div.$css('padding').should.equals('0px');
+
+            style.paddingLeft = style.paddingRight = '1px';
+            div.$css('padding').should.equals('0px 1px');
+
+            style.paddingTop = '1px';
+            div.$css('padding').should.equals('1px 1px 0px');
+            
+            style.paddingBottom = '1px';
+            div.$css('padding').should.equals('1px');
+
+            style.paddingLeft = '1px';
+            style.paddingRight = '2px';
+            style.paddingTop = '3px';
+            style.paddingBottom = '4px';
+            div.$css('padding').should.equals('3px 2px 4px 1px');
+
+            /* Border-Width */
+            div.$css('borderWidth').should.equals('0px');
+
+            style.border = '0px solid #FFF';
+            style.borderLeftWidth = style.borderRightWidth = '1px';
+            div.$css('borderWidth').should.equals('0px 1px');
+
+            style.borderTopWidth = '1px';
+            div.$css('borderWidth').should.equals('1px 1px 0px');
+
+            style.borderBottomWidth = '1px';
+            div.$css('borderWidth').should.equals('1px');
+
+            style.borderLeftWidth = '1px';
+            style.borderRightWidth = '2px';
+            style.borderTopWidth = '3px';
+            style.borderBottomWidth = '4px';
+            div.$css('borderWidth').should.equals('3px 2px 4px 1px');
+          }
+        }
+      ]
     }
   ]
 });

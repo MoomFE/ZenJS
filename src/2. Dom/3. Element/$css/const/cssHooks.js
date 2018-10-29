@@ -2,6 +2,7 @@ import supportsCompoundStyle from "../../../../shared/supports/compoundStyle";
 import each from "../../../../1. Core/3. Object/$each/index";
 import getStyles from "../util/getStyles";
 import cssExpand from "./cssExpand";
+import getCss from "../util/getCss";
 
 
 const cssHooks = {};
@@ -12,14 +13,14 @@ export default cssHooks;
 // 当前浏览器不支持获取复合样式
 if( !supportsCompoundStyle ){
 
-  each({ margin: '', padding: '', border: '-width' }, ( name, suffix ) => {
+  each({ margin: '', padding: '', border: 'Width' }, ( name, suffix ) => {
     cssHooks[ name + suffix ] = {
       get: function( elem ){
         const computed = getStyles( elem );
         const result = [];
 
         for( let index = 0; index < 4; index++ ){
-          result[ index ] = computed.getPropertyValue( name + cssExpand[ index ] + suffix ) || '0px';
+          result[ index ] = computed[ name + cssExpand[ index ] + suffix ] || '0px';
         }
 
         const one = result[ 0 ];

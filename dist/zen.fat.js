@@ -2854,12 +2854,50 @@
 
   var supportsCompoundStyle$1 = supportsCompoundStyle;
 
+  var cssExpand = ['Top', 'Right', 'Bottom', 'Left'];
+
+  function getCss(elem, name) {
+    var computed = getStyles(elem);
+    var result = computed.getPropertyValue(name) || computed[name];
+    return result !== undefined ? result + '' : result;
+  }
+
+  var cssHooks = {};
+
   if (!supportsCompoundStyle$1) {
     each({
       margin: '',
       padding: '',
-      border: '-width'
+      border: 'Width'
     }, function (name, suffix) {
+      cssHooks[name + suffix] = {
+        get: function (elem) {
+          var computed = getStyles(elem);
+          var result = [];
+
+          for (var index = 0; index < 4; index++) {
+            result[index] = computed[name + cssExpand[index] + suffix] || '0px';
+          }
+
+          var one = result[0];
+          var two = result[1];
+          var three = result[2];
+          var four = result[3];
+
+          if (two === four) {
+            // 左右边相等
+            if (one === three) {
+              // 上下边相等
+              return one === two ? one // 单值语法
+              : one + " " + two; // 二值语法
+            } else {
+              return one + " " + two + " " + three; // 三值语法
+            }
+          }
+
+          return result.join(' '); // 四值语法
+        }
+      };
     });
   }
 
@@ -2894,18 +2932,26 @@
       // 转为驼峰写法
       var origName = camelCase(name); // 是否是 css 变量
 
-      var isCustomProp = rcustomProp.test(name); // 转为浏览器兼容写法
+      var isCustomProp = rcustomProp.test(name);
 
       if (!isCustomProp) {
+        // 转为浏览器兼容写法
         name = finalPropName(origName);
       } // 获取可能的兼容方法
-      // if( hooks && 'get' in hooks ){
-      //   value = hooks.get( elem );
-      // }
-      // if( value === undefined ){
-      //   value = getCss( elem, origName );
-      // }
-      // return value;
+
+
+      var hooks = cssHooks[name] || cssHooks[origName];
+      var value;
+
+      if (hooks && 'get' in hooks) {
+        value = hooks.get(elem);
+      }
+
+      if (value === undefined) {
+        value = getCss(elem, name);
+      }
+
+      return value;
     };
 
     var style = function (elem, name, value) {};

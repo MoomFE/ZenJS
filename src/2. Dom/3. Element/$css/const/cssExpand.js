@@ -1,3 +1,3 @@
-const cssExpand = [ '-top', '-right', '-bottom', '-left' ];
+const cssExpand = [ 'Top', 'Right', 'Bottom', 'Left' ];
 
 export default cssExpand;

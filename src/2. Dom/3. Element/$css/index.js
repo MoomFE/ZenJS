@@ -24,25 +24,25 @@ if( inBrowser ){
     // 是否是 css 变量
     const isCustomProp = rcustomProp.test( name );
 
-    // 转为浏览器兼容写法
-    if( !isCustomProp ){
+    
+    if( !isCustomProp ){// 转为浏览器兼容写法
       name = finalPropName( origName );
     }
 
     // 获取可能的兼容方法
     const hooks = cssHooks[ name ] || cssHooks[ origName ];
 
-    // let value;
+    let value;
 
-    // if( hooks && 'get' in hooks ){
-    //   value = hooks.get( elem );
-    // }
+    if( hooks && 'get' in hooks ){
+      value = hooks.get( elem );
+    }
 
-    // if( value === undefined ){
-    //   value = getCss( elem, origName );
-    // }
+    if( value === undefined ){
+      value = getCss( elem, name );
+    }
 
-    // return value;
+    return value;
   }
 
   function style( elem, name, value ){
