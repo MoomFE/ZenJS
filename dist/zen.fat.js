@@ -2782,26 +2782,24 @@
 
   if (inBrowser) {
     defineValue(ElementProto, '$attr', function (name, value) {
-      var _this = this;
-
       return access$1(this, name, arguments, function (name, value) {
         var result;
 
         if (value === undefined) {
-          return (result = _this.getAttribute(name)) == null ? undefined : result;
+          return (result = this.getAttribute(name)) == null ? undefined : result;
         }
 
         if (value === null) {
-          return _this.$removeAttr(name);
+          return this.$removeAttr(name);
         }
 
         var hooks = attrHooks[name.toLowerCase()] || (rBool.test(name) ? boolHook : undefined);
 
-        if (!(hooks && hooks(_this, value, name))) {
-          _this.setAttribute(name, value + '');
+        if (!(hooks && hooks(this, value, name))) {
+          this.setAttribute(name, value + '');
         }
 
-        return _this;
+        return this;
       });
     });
     defineValue(ElementProto, '$removeAttr $deleteAttr', function (names) {
@@ -2815,6 +2813,100 @@
       }
 
       return this;
+    });
+  }
+
+  var reg = /[A-Z]/g;
+
+  function toLowerCase(char) {
+    return '-' + char.toLowerCase();
+  }
+
+  function unCamelCase(name) {
+    return name.replace(reg, toLowerCase);
+  }
+
+  var cssHooks = {};
+
+  /**
+   * @param {Element} elem 
+   */
+  function getStyles(elem) {
+    // Support: IE <=11 only, Firefox <=30 (#15098, #14150)
+    // IE throws on elements created in popups
+    // FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
+    var view = elem.ownerDocument.defaultView;
+
+    if (!view || !view.opener) {
+      view = window;
+    }
+
+    return view.getComputedStyle(elem);
+  }
+
+  var supportsCompoundStyle = true;
+
+  if (inBrowser) {
+    var div = document.createElement('div').$appendTo(document.documentElement);
+    div.style.margin = '10px';
+    var margin = getStyles(div).getPropertyValue('margin');
+    supportsCompoundStyle = margin !== '';
+    div.$remove();
+  }
+
+  var supportsCompoundStyle$1 = supportsCompoundStyle;
+
+  if (!supportsCompoundStyle$1) {
+    var cssExpand = ['-top', '-right', '-bottom', '-left'];
+    each({
+      margin: '',
+      padding: '',
+      border: '-width'
+    }, function (name, suffix) {
+      cssHooks[name + suffix] = {
+        get: function (elem) {
+          var computed = getStyles(elem);
+          var result = [];
+
+          for (var index = 0; index < 4; index++) {
+            result[index] = computed.getPropertyValue(name + cssExpand[index] + suffix);
+          }
+
+          return result.join(' ');
+        }
+      };
+    });
+  }
+
+  function getCss(elem, name) {
+    var computed = getStyles(elem);
+    var result = computed.getPropertyValue(name);
+    return result !== undefined ? result + '' : result;
+  }
+
+  function css(elem, name) {
+    var origName = unCamelCase(name);
+    var hooks = cssHooks[origName];
+    var value;
+
+    if (hooks && 'get' in hooks) {
+      value = hooks.get(elem);
+    }
+
+    if (value === undefined) {
+      value = getCss(elem, origName);
+    }
+
+    return value;
+  }
+
+  function style(elem, name, value) {}
+
+  if (inBrowser) {
+    defineValue(ElementProto, '$css', function (name) {
+      return access$1(this, name, arguments, function (name, value) {
+        return value === undefined ? css(this, name) : style(this, name, vlaue);
+      });
     });
   }
 

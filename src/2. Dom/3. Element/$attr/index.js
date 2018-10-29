@@ -10,7 +10,7 @@ import access from "./util/access";
 if( inBrowser ){
 
   defineValue( ElementProto, '$attr', function( name, value ){
-    return access( this, name, arguments, ( name, value ) => {
+    return access( this, name, arguments, function( name, value ){
       let result;
 
       if( value === undefined ){

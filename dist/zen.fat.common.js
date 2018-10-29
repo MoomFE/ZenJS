@@ -2778,26 +2778,24 @@ var rBool = /^(?:checked|selected|async|autofocus|autoplay|controls|defer|disabl
 
 if (inBrowser) {
   defineValue(ElementProto, '$attr', function (name, value) {
-    var _this = this;
-
     return access$1(this, name, arguments, function (name, value) {
       var result;
 
       if (value === undefined) {
-        return (result = _this.getAttribute(name)) == null ? undefined : result;
+        return (result = this.getAttribute(name)) == null ? undefined : result;
       }
 
       if (value === null) {
-        return _this.$removeAttr(name);
+        return this.$removeAttr(name);
       }
 
       var hooks = attrHooks[name.toLowerCase()] || (rBool.test(name) ? boolHook : undefined);
 
-      if (!(hooks && hooks(_this, value, name))) {
-        _this.setAttribute(name, value + '');
+      if (!(hooks && hooks(this, value, name))) {
+        this.setAttribute(name, value + '');
       }
 
-      return _this;
+      return this;
     });
   });
   defineValue(ElementProto, '$removeAttr $deleteAttr', function (names) {
@@ -2811,6 +2809,71 @@ if (inBrowser) {
     }
 
     return this;
+  });
+}
+
+var reg = /(A-Z)/g;
+
+function toLowerCase(all, upper) {
+  return upper.toLowerCase();
+}
+
+function unCamelCase(name) {
+  return name.replace(reg, toLowerCase);
+}
+
+var cssHooks = {};
+
+/**
+ * @param {Element} elem 
+ */
+function getStyles(elem) {
+  // Support: IE <=11 only, Firefox <=30 (#15098, #14150)
+  // IE throws on elements created in popups
+  // FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
+  var view = elem.ownerDocument.defaultView;
+
+  if (!view || !view.opener) {
+    view = window;
+  }
+
+  return view.getComputedStyle(elem);
+}
+
+function getCss(elem, name) {
+  var computed = getStyles(elem);
+  var result;
+
+  if (computed) {
+    result = computed.getPropertyValue(name);
+  }
+
+  return result !== undefined ? result + '' : result;
+}
+
+function css(elem, name) {
+  var origName = unCamelCase(name);
+  var hooks = cssHooks(origName);
+  var value;
+
+  if (hooks && 'get' in hooks) {
+    value = hooks.get(elem);
+  }
+
+  if (value === undefined) {
+    value = getCss(elem, name);
+  }
+
+  return value;
+}
+
+function style(elem, name, value) {}
+
+if (inBrowser) {
+  defineValue(ElementProto, '$css', function (name) {
+    return access$1(this, name, arguments, function (name, value) {
+      return value === undefined ? css(elem, name) : style(elem, name, vlaue);
+    });
   });
 }
 
