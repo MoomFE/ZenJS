@@ -2875,19 +2875,19 @@ if (!supportsCompoundStyle$1) {
           result[index] = computed[name + cssExpand[index] + suffix] || '0px';
         }
 
-        var one = result[0];
-        var two = result[1];
-        var three = result[2];
-        var four = result[3];
+        var top = result[0];
+        var right = result[1];
+        var bottom = result[2];
+        var left = result[3];
 
-        if (two === four) {
+        if (right === left) {
           // 左右边相等
-          if (one === three) {
+          if (top === bottom) {
             // 上下边相等
-            return one === two ? one // 单值语法
-            : one + " " + two; // 二值语法
+            return top === right ? top // 单值语法
+            : top + " " + right; // 二值语法
           } else {
-            return one + " " + two + " " + three; // 三值语法
+            return top + " " + right + " " + bottom; // 三值语法
           }
         }
 
