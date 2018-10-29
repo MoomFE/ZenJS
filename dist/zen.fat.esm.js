@@ -2706,25 +2706,22 @@ function access$1(elem, arg, args, func) {
 
 if (inBrowser) {
   defineValue(ElementProto, '$prop', function (prop, value) {
-    var _this = this,
-        _arguments = arguments;
-
     return access$1(this, prop, arguments, function (prop, value) {
       var name = propFix[prop] || prop;
       var hooks = propHooks[name];
       var result;
 
-      if (_arguments.length > 1) {
-        if (hooks && 'set' in hooks) hooks.set(_this);
-        _this[name] = value;
-        return _this;
+      if (arguments.length > 1) {
+        if (hooks && 'set' in hooks) hooks.set(this);
+        this[name] = value;
+        return this;
       }
 
-      if (hooks && 'get' in hooks && (result = hooks.get(_this, name)) !== null) {
+      if (hooks && 'get' in hooks && (result = hooks.get(this, name)) !== null) {
         return result;
       }
 
-      return _this[name];
+      return this[name];
     });
   });
 }

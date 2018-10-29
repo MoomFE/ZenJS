@@ -506,6 +506,12 @@ describes.push({
     
             div.$prop('class').should.equals('test');
             div.$prop('class','test1').$prop('class').should.equals('test1');
+
+
+            var div2 = window.div.$prop({ id: 'test-id', class: 'test' });
+
+            div2.$prop('id').should.equals('test-id');
+            div2.$prop('class').should.equals('test');
           }
         }, {
           name: 'checked',
@@ -563,6 +569,11 @@ describes.push({
             div.$attr('id','test-id').$attr('id').should.equals('test-id');
 
             Object.$equals( div.$attr('class',null).$attr('class') ).should.true;
+
+            var div2 = window.div.$attr({ id: 'test-id', class: 'test' });
+
+            div2.$attr('id').should.equals('test-id');
+            div2.$attr('class').should.equals('test');
           }
         }, {
           name: 'boolean',

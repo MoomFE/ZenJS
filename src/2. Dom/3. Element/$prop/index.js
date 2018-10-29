@@ -10,7 +10,7 @@ import access from "../$attr/util/access";
 if( inBrowser ){
 
   defineValue( ElementProto, '$prop', function( prop, value ){
-    return access( this, prop, arguments, ( prop, value ) => {
+    return access( this, prop, arguments, function( prop, value ){
       const name = propFix[ prop ] || prop;
       const hooks = propHooks[ name ];
       let result;
