@@ -1125,7 +1125,7 @@ var types = {
    * @param {Function} obj 
    * @param {Function} obj2 
    */
-  function: function (obj, obj2) {
+  'function': function (obj, obj2) {
     return obj.toString() === obj2.toString();
   }
 };
@@ -3138,14 +3138,13 @@ function getDatas(elem) {
 
 if (inBrowser) {
   defineValue(DomEventTarget, '$data', function $data(name, value, weakRead) {
-    var _arguments = arguments;
     var self = this || window;
     var Data = getDatas(self);
     return access$1(self, name, arguments, function (name, value, weakRead) {
       // 读取
       // $data( name )
       // $data( name, value, true )
-      if (weakRead || _arguments.length < 2) {
+      if (weakRead || arguments.length < 2) {
         if (name == null) return Data;
         if (weakRead && !(name in Data)) return Data[name] = value;
         return Data[name];

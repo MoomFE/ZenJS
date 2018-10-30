@@ -22,11 +22,11 @@ function getDatas( elem ){
 
 if( inBrowser ){
 
-  defineValue( DomEventTarget, '$data', function $data( name, value, weakRead ){
+  defineValue( DomEventTarget, '$data', function( name ){
     const self = this || window;
     const Data = getDatas( self );
 
-    return access( self, name, arguments, ( name, value, weakRead ) => {
+    return access( self, name, arguments, function( name, value, weakRead ){
       // 读取
       // $data( name )
       // $data( name, value, true )

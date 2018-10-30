@@ -1125,7 +1125,7 @@ var types = {
    * @param {Function} obj 
    * @param {Function} obj2 
    */
-  function: function (obj, obj2) {
+  'function': function (obj, obj2) {
     return obj.toString() === obj2.toString();
   }
 };
