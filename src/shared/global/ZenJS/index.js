@@ -29,43 +29,38 @@ import root from "../../const/root";
 
 const ZenJS =  root.ZenJS = _assign( false, [ null, {
 
-    polyfill: {
-      assign: assign,
-      entries: entries,
-      values: values
-    },
-  
-    util: {
+    assign: assign,
+    entries: entries,
+    values: values,
 
-      congruence: congruence,
-      equals: equals,
+    congruence: congruence,
+    equals: equals,
 
-      define: define,
-      defineValue: defineValue,
-      defineGet: defineGet,
+    define: define,
+    defineValue: defineValue,
+    defineGet: defineGet,
 
-      intRandom: intRandom,
+    intRandom: intRandom,
 
-      returnArg: returnArg,
-      returnTrue: returnTrue,
-      returnFalse: returnFalse,
+    returnArg: returnArg,
+    returnTrue: returnTrue,
+    returnFalse: returnFalse,
 
-      parametersDefault: parametersDefault,
-      parametersRest: parametersRest,
+    parametersDefault: parametersDefault,
+    parametersRest: parametersRest,
 
-      isString: isString,
-      isBoolean: isBoolean,
-      isArray: isArray,
-      isNumber: isNumber,
-      isRegExp: isRegExp,
-      isSet: isSet,
-      isMap: isMap,
-      isFunction: isFunction,
-      isObject: isObject,
-      isReferenceType: isReferenceType,
+    isString: isString,
+    isBoolean: isBoolean,
+    isArray: isArray,
+    isNumber: isNumber,
+    isRegExp: isRegExp,
+    isSet: isSet,
+    isMap: isMap,
+    isFunction: isFunction,
+    isObject: isObject,
+    isReferenceType: isReferenceType,
 
-      mapSetToArray: mapSetToArray
-    },
+    mapSetToArray: mapSetToArray,
 
     config: {
       event: {
