@@ -11,7 +11,7 @@ export function isNumber( obj ){
 }
 
 /**
- * 判断传入的对象是否是数字
+ * 判断传入对象是否是数字类型或可转为数字
  * @param {any} obj 需要判断的对象
  * @returns {Boolean}
  */
