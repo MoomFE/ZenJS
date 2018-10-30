@@ -3,7 +3,7 @@ import Math from "../../../shared/global/Math/index";
 import getDecimalLength from "../../../shared/util/getDecimalLength";
 import max from "../../../shared/global/Math/max";
 import pow from "../../../shared/global/Math/pow";
-import repeat from "../../../shared/polyfill/String.repeat";
+import repeat from "../../../shared/util/repeat";
 import NumberProto from "../../../shared/global/Number/prototype/index";
 
 
