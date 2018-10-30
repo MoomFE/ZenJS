@@ -1113,179 +1113,184 @@ interface ZenJS {
   guid: Number;
 
   /**
-   * 提供了一部分在低级浏览器上不支持的方法,
-   * 如果浏览器支持该方法, 使用时将直接返回浏览器自带方法.
+   * 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象. 它将返回目标对象.
+   * Object.assign polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
    */
-  polyfill: {
-
-    /**
-     * 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象. 它将返回目标对象.
-     * Object.assign polyfill
-     */
-    assign( ...args: any[] ): any;
-
-    /**
-     * 方法返回一个给定对象自身可枚举属性的键值对数组.
-     * Object.entries polyfill
-     */
-    entries( obj: any ): Array[];
-
-  },
+  assign( ...args: any[] ): any;
 
   /**
-   * 提供了一些内部使用的工具包
+   * 方法返回一个给定对象自身可枚举属性的键值对数组.
+   * Object.entries polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
    */
-  util: {
+  entries( obj: any ): Array[];
 
-    /**
-     * 判断传入的两个参数是否全等 ( === )
-     * @param one 需要判断的第一参数
-     * @param two 需要判断的第二参数
-     */
-    congruence( one: any, two: any ): Boolean;
+  /**
+   * 方法返回一个给定对象自身的所有可枚举属性值的数组.
+   * Object.values polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
+   */
+  values( obj: any ): Array[];
 
-    /**
-     * 判断传入的两个参数是否相等 ( == )
-     * @param one 需要判断的第一参数
-     * @param two 需要判断的第二参数
-     */
-    equals( one: any, two: any ): Boolean;
+  /**
+   * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
+   * 是 String.prototype.repeat 的降级方案
+   * @param str 需要重复的字符串
+   * @param count 需要重复的次数
+   */
+  repeat( str: String, count: Number ): String;
 
-    /**
-     * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
-     * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-     * @param name 要定义或修改的属性的名称
-     * @param options 将被定义或修改的属性描述符
-     * @param options2 将被定义或修改的属性描述符, 会覆盖前一个 options
-     */
-    define( obj: any, name: String, options: any, options2: any );
+  /**
+   * 判断传入的两个参数是否全等 ( === )
+   * @param one 需要判断的第一参数
+   * @param two 需要判断的第二参数
+   */
+  congruence( one: any, two: any ): Boolean;
 
-    /**
-     * 在一个对象上定义/修改一个新属性的 value 描述符
-     * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-     * @param {String} name 要定义或修改的属性的名称
-     * @param {Function} value 将被定义或修改的 value 描述符
-     * @param {any} options 将被定义或修改的属性描述符
-     */
-    defineValue( obj: any, name: String, value: Function, options: any );
+  /**
+   * 判断传入的两个参数是否相等 ( == )
+   * @param one 需要判断的第一参数
+   * @param two 需要判断的第二参数
+   */
+  equals( one: any, two: any ): Boolean;
 
-    /**
-     * 在一个对象上定义/修改一个新属性的 get 描述符
-     * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-     * @param {String} name 要定义或修改的属性的名称
-     * @param {Function} get 将被定义或修改的 get 描述符
-     * @param {any} options 将被定义或修改的属性描述符
-     */
-    defineGet( obj: any, name: String, get: Function, options: any );
+  /**
+   * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
+   * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+   * @param name 要定义或修改的属性的名称
+   * @param options 将被定义或修改的属性描述符
+   * @param options2 将被定义或修改的属性描述符, 会覆盖前一个 options
+   */
+  define( obj: any, name: String, options: any, options2: any );
 
-    /**
-     * 在传入的两个正整数中随机一个数字
-     * @param {Number} from
-     * @param {Number} to
-     */
-    intRandom( from:Number, to:Number ): Number;
+  /**
+   * 在一个对象上定义/修改一个新属性的 value 描述符
+   * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+   * @param {String} name 要定义或修改的属性的名称
+   * @param {Function} value 将被定义或修改的 value 描述符
+   * @param {any} options 将被定义或修改的属性描述符
+   */
+  defineValue( obj: any, name: String, value: Function, options: any );
 
-    /**
-     * 返回传入的第一个参数
-     * @param {any} arg
-     */
-    returnArg( arg: any ): any;
+  /**
+   * 在一个对象上定义/修改一个新属性的 get 描述符
+   * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+   * @param {String} name 要定义或修改的属性的名称
+   * @param {Function} get 将被定义或修改的 get 描述符
+   * @param {any} options 将被定义或修改的属性描述符
+   */
+  defineGet( obj: any, name: String, get: Function, options: any );
 
-    /**
-     * 始终返回 true
-     */
-    returnTrue(): true;
+  /**
+   * 在传入的两个正整数中随机一个数字
+   * @param {Number} from
+   * @param {Number} to
+   */
+  intRandom( from:Number, to:Number ): Number;
 
-    /**
-     * 始终返回 false
-     */
-    returnFalse(): false;
+  /**
+   * 返回传入的第一个参数
+   * @param {any} arg
+   */
+  returnArg( arg: any ): any;
 
-    /**
-     * 获取方法指定位参数, 若未传入参数, 则取默认值
-     * @param args arguments
-     * @param index 需要在 argument 中取得默认值的下标
-     * @param defaultValue 若未传入值时取得默认值
-     */
-    parametersDefault( args: IArguments, index: Number, defaultValue: any ): any;
+  /**
+   * 始终返回 true
+   */
+  returnTrue(): true;
 
-    /**
-     * 获取方法从指定位开始的剩余参数
-     * @param { IArguments } args arguments
-     * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
-     */
-    parametersRest( args: IArguments, index: Number ): Array[];
+  /**
+   * 始终返回 false
+   */
+  returnFalse(): false;
 
-    /**
-     * 判断传入对象是否是 String 类型
-     * @param obj 需要判断的对象
-     */
-    isString( obj: any ): Boolean;
+  /**
+   * 一个空方法
+   */
+  noop(): false;
 
-    /**
-     * 判断传入对象是否是 Boolean 类型
-     * @param obj 需要判断的对象
-     */
-    isBoolean( obj: any ): Boolean;
+  /**
+   * 获取方法指定位参数, 若未传入参数, 则取默认值
+   * @param args arguments
+   * @param index 需要在 argument 中取得默认值的下标
+   * @param defaultValue 若未传入值时取得默认值
+   */
+  parametersDefault( args: IArguments, index: Number, defaultValue: any ): any;
 
-    /**
-     * 判断传入对象是否是 Array 类型
-     * @param obj 需要判断的对象
-     */
-    isArray( obj: any ): Boolean;
+  /**
+   * 获取方法从指定位开始的剩余参数
+   * @param { IArguments } args arguments
+   * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
+   */
+  parametersRest( args: IArguments, index: Number ): Array[];
 
-    /**
-     * 判断传入对象是否是 Number 类型, 并且不为 NaN 和 Infinity
-     * @param obj 需要判断的对象
-     */
-    isNumber( obj: any ): Boolean;
+  /**
+   * 判断传入对象是否是 String 类型
+   * @param obj 需要判断的对象
+   */
+  isString( obj: any ): Boolean;
 
-    /**
-     * 判断传入对象是否是 RegExp 类型
-     * @param obj 需要判断的对象
-     */
-    isRegExp( obj: any ): Boolean;
+  /**
+   * 判断传入对象是否是 Boolean 类型
+   * @param obj 需要判断的对象
+   */
+  isBoolean( obj: any ): Boolean;
 
-    /**
-     * 判断传入对象是否是 Set 对象
-     * @param obj 需要判断的对象
-     */
-    isSet( obj: any ): Boolean;
+  /**
+   * 判断传入对象是否是 Array 类型
+   * @param obj 需要判断的对象
+   */
+  isArray( obj: any ): Boolean;
 
-    /**
-     * 判断传入对象是否是 Map 对象
-     * @param obj 需要判断的对象
-     */
-    isMap( obj: any ): Boolean;
+  /**
+   * 判断传入对象是否是 Number 类型, 并且不为 NaN 和 Infinity
+   * @param obj 需要判断的对象
+   */
+  isNumber( obj: any ): Boolean;
 
-    /**
-     * 判断传入对象是否是 Function 类型
-     * @param obj 需要判断的对象
-     */
-    isFunction( obj: any ): Boolean;
+  /**
+   * 判断传入对象是否是 RegExp 类型
+   * @param obj 需要判断的对象
+   */
+  isRegExp( obj: any ): Boolean;
 
-    /**
-     * 判断传入对象是否是 Object 类型, 并且不为 null
-     * @param obj 需要判断的对象
-     */
-    isObject( obj: any ): Boolean;
+  /**
+   * 判断传入对象是否是 Set 对象
+   * @param obj 需要判断的对象
+   */
+  isSet( obj: any ): Boolean;
 
-    /**
-     * 判断一个对象是否是引用类型
-     * @param obj 需要判断的对象
-     */
-    isReferenceType( obj: any ): Boolean;
+  /**
+   * 判断传入对象是否是 Map 对象
+   * @param obj 需要判断的对象
+   */
+  isMap( obj: any ): Boolean;
 
-    /**
-     * 将 Map 或 Set 类型转换为数组类型,
-     * 执行到这之前必须确定传进来的是 Map 或 Set 类型
-     */
-    mapSetToArray( mapOrSet: Map | Set )
+  /**
+   * 判断传入对象是否是 Function 类型
+   * @param obj 需要判断的对象
+   */
+  isFunction( obj: any ): Boolean;
 
-  },
+  /**
+   * 判断传入对象是否是 Object 类型, 并且不为 null
+   * @param obj 需要判断的对象
+   */
+  isObject( obj: any ): Boolean;
+
+  /**
+   * 判断一个对象是否是引用类型
+   * @param obj 需要判断的对象
+   */
+  isReferenceType( obj: any ): Boolean;
+
+  /**
+   * 将 Map 或 Set 类型转换为数组类型,
+   * 执行到这之前必须确定传进来的是 Map 或 Set 类型
+   */
+  mapSetToArray( mapOrSet: Map | Set )
 
   /**
    * 创建一个可写的事件对象
+   * @private
    * @param event 原生事件对象
    */
   Event( src: DocumentEventMap ): any;

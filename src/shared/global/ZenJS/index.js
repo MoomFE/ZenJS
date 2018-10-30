@@ -12,6 +12,7 @@ import intRandom from "../../util/intRandom";
 import returnArg from "../../util/returnArg";
 import returnTrue from "../../util/returnTrue";
 import returnFalse from "../../util/returnFalse";
+import noop from "../../util/noop";
 import parametersDefault from "../../util/parametersDefault";
 import parametersRest from "../../util/parametersRest";
 import isString from "../../util/isString";
@@ -47,6 +48,7 @@ const ZenJS =  root.ZenJS = _assign( false, [ null, {
     returnArg: returnArg,
     returnTrue: returnTrue,
     returnFalse: returnFalse,
+    noop: noop,
 
     parametersDefault: parametersDefault,
     parametersRest: parametersRest,

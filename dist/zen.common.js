@@ -2331,6 +2331,11 @@ function returnFalse() {
   return false;
 }
 
+/**
+ * 一个空方法
+ */
+function noop() {}
+
 var ZenJS = root.ZenJS = assign(false, [null, {
   assign: assign$1,
   entries: entries,
@@ -2345,6 +2350,7 @@ var ZenJS = root.ZenJS = assign(false, [null, {
   returnArg: returnArg,
   returnTrue: returnTrue,
   returnFalse: returnFalse,
+  noop: noop,
   parametersDefault: parametersDefault,
   parametersRest: parametersRest,
   isString: isString$1,
