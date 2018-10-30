@@ -1462,6 +1462,31 @@
     return toString.call(obj) === '[object RegExp]';
   }
 
+  var RegExpProto = RegExp.prototype;
+
+  /**
+   * 在一个对象上定义/修改一个新属性的 get 描述符
+   * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+   * @param {String} name 要定义或修改的属性的名称
+   * @param {Function} get 将被定义或修改的 get 描述符
+   * @param {any} options 将被定义或修改的属性描述符
+   */
+
+  function defineGet(obj, name, get, options) {
+    define(obj, name, {
+      get: get
+    }, options || defineGetPropertyOptions);
+    return get;
+  }
+
+  var rflags = /[gimsuy]*$/;
+
+  if (RegExpProto.flags === undefined) {
+    defineGet(RegExpProto, 'flags', function () {
+      return this.toString().match(rflags)[0];
+    });
+  }
+
   defineValue(StringProto, '$replaceAll', function (searchValue, replaceValue) {
     var flags = 'g';
 
@@ -1472,7 +1497,11 @@
     if (searchValue[isString]) {
       searchValue = searchValue.replace(rkeyword, '\\$1');
     } else if (isRegExp(searchValue)) {
-      if (searchValue.global) flags = searchValue.flags || '';else flags += searchValue.flags || '';
+      if (searchValue.global) {
+        flags = searchValue.flags;
+      } else {
+        flags += searchValue.flags;
+      }
       searchValue = searchValue.source;
     }
 
@@ -2270,21 +2299,6 @@
     stringify: stringify,
     parse: parse
   }]));
-
-  /**
-   * 在一个对象上定义/修改一个新属性的 get 描述符
-   * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-   * @param {String} name 要定义或修改的属性的名称
-   * @param {Function} get 将被定义或修改的 get 描述符
-   * @param {any} options 将被定义或修改的属性描述符
-   */
-
-  function defineGet(obj, name, get, options) {
-    define(obj, name, {
-      get: get
-    }, options || defineGetPropertyOptions);
-    return get;
-  }
 
   /**
    * 返回传入的第一个参数
