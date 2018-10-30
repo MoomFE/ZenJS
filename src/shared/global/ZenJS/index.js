@@ -2,6 +2,7 @@ import _assign from "../../util/assign";
 import assign from "../Object/assign";
 import entries from "../Object/entries";
 import values from "../Object/values";
+import repeat from "../../util/repeat";
 import congruence from "../../util/congruence";
 import equals from "../../util/equals";
 import define from "../../util/define";
@@ -32,6 +33,7 @@ const ZenJS =  root.ZenJS = _assign( false, [ null, {
     assign: assign,
     entries: entries,
     values: values,
+    repeat: repeat,
 
     congruence: congruence,
     equals: equals,
