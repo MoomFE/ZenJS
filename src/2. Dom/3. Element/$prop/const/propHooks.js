@@ -22,28 +22,18 @@ const propHooks = {
 };
 
 if( !supportsSelectedIndex ){
-  propHooks.selected = {
-    get( elem ){
-      let parent = elem.parentNode;
+  const selected = function( elem ){
+    let parent = elem.parentNode;
 
-      if ( parent && parent.parentNode ) {
-				parent.parentNode.selectedIndex;
-      }
-
-      return null;
-    },
-    set( elem ){
-      var parent = elem.parentNode;
-
-      if( parent ){
-        parent.selectedIndex;
-
-        if( parent.parentNode ){
-          parent.parentNode.selectedIndex;
-        }
-      }
+    if ( parent ) {
+      parent.selectedIndex
     }
-  }
+  };
+
+  propHooks.selected = {
+    get: selected,
+    set: selected
+  };
 }
 
 

@@ -2670,27 +2670,17 @@
   };
 
   if (!supportsSelectedIndex$1) {
-    propHooks.selected = {
-      get: function (elem) {
-        var parent = elem.parentNode;
+    var selected = function (elem) {
+      var parent = elem.parentNode;
 
-        if (parent && parent.parentNode) {
-          parent.parentNode.selectedIndex;
-        }
-
-        return null;
-      },
-      set: function (elem) {
-        var parent = elem.parentNode;
-
-        if (parent) {
-          parent.selectedIndex;
-
-          if (parent.parentNode) {
-            parent.parentNode.selectedIndex;
-          }
-        }
+      if (parent) {
+        parent.selectedIndex;
       }
+    };
+
+    propHooks.selected = {
+      get: selected,
+      set: selected
     };
   }
 
@@ -2723,7 +2713,7 @@
           return this;
         }
 
-        if (hooks && 'get' in hooks && (result = hooks.get(this, name)) !== null) {
+        if (hooks && 'get' in hooks && (result = hooks.get(this, name)) !== undefined) {
           return result;
         }
 
