@@ -1,7 +1,7 @@
 import supportsCompoundStyle from "../../../../shared/supports/compoundStyle";
 import each from "../../../../1. Core/3. Object/$each/index";
 import getStyles from "../util/getStyles";
-import { cssSide, cssRadius } from "./cssExpand";
+import { cssSide, cssRadius } from "./cssSide";
 
 
 const cssHooks = {};
@@ -15,45 +15,40 @@ if( !supportsCompoundStyle ){
   // margin
   // padding
   // border-width
-  each({ margin: '', padding: '', border: 'Width' }, ( name, suffix ) => {
-    cssHooks[ name + suffix ] = {
-      get: GetSide( cssSide, name, suffix )
-    };
-  });
+  CreateSideHook({ margin: '', padding: '', border: 'Width' }, cssSide);
 
   // border-radius
-  each({ border: 'Radius' }, ( name, suffix ) => {
-    cssHooks[ name + suffix ] = {
-      get: GetSide( cssRadius, name, suffix )
-    };
-  });
+  CreateSideHook({ border: 'Radius' }, cssRadius);
 
+  function CreateSideHook( styles ){
+    each( styles, ( name, suffix ) => {
+      cssHooks[ name + suffix ] = {
+        get: function( elem ){
+          const computed = getStyles( elem );
+          const result = [];
 
-  function GetSide( cssExpand, name, suffix ){
-    return function( elem ){
-      const computed = getStyles( elem );
-      const result = [];
+          for( let index = 0; index < 4; index++ ){
+            result[ index ] = computed[ name + cssSide[ index ] + suffix ] || '0px';
+          }
 
-      for( let index = 0; index < 4; index++ ){
-        result[ index ] = computed[ name + cssExpand[ index ] + suffix ] || '0px';
-      }
+          const top = result[ 0 ];
+          const right = result[ 1 ];
+          const bottom = result[ 2 ];
+          const left = result[ 3 ];
 
-      const top = result[ 0 ];
-      const right = result[ 1 ];
-      const bottom = result[ 2 ];
-      const left = result[ 3 ];
+          if( right === left ){ // 左右边相等
+            if( top === bottom ){ // 上下边相等
+              return top === right ? top // 单值语法
+                                  : `${ top } ${ right }`; // 二值语法
+            }else{
+              return `${ top } ${ right } ${ bottom }`; // 三值语法
+            }
+          }
 
-      if( right === left ){ // 左右边相等
-        if( top === bottom ){ // 上下边相等
-          return top === right ? top // 单值语法
-                              : `${ top } ${ right }`; // 二值语法
-        }else{
-          return `${ top } ${ right } ${ bottom }`; // 三值语法
+          return result.join(' ');// 四值语法
         }
-      }
-
-      return result.join(' ');// 四值语法
-    }
+      };
+    });
   }
 
 }

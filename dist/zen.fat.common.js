@@ -2853,64 +2853,60 @@ var supportsCompoundStyle$1 = supportsCompoundStyle;
 var cssSide = ['Top', 'Right', 'Bottom', 'Left'];
 var cssRadius = ['TopLeft', 'TopRight', 'BottomRight', 'BottomLeft'];
 
-function getCss(elem, name) {
-  var computed = getStyles(elem);
-  var result = computed.getPropertyValue(name) || computed[name];
-  return result !== undefined ? result + '' : result;
-}
-
 var cssHooks = {};
 
 if (!supportsCompoundStyle$1) {
-  var getSide = function (cssExpand, name, suffix) {
-    return function (elem) {
-      var computed = getStyles(elem);
-      var result = [];
+  var CreateSideHook = function (styles) {
+    each(styles, function (name, suffix) {
+      cssHooks[name + suffix] = {
+        get: function (elem) {
+          var computed = getStyles(elem);
+          var result = [];
 
-      for (var index = 0; index < 4; index++) {
-        result[index] = computed[name + cssExpand[index] + suffix] || '0px';
-      }
+          for (var index = 0; index < 4; index++) {
+            result[index] = computed[name + cssSide[index] + suffix] || '0px';
+          }
 
-      var top = result[0];
-      var right = result[1];
-      var bottom = result[2];
-      var left = result[3];
+          var top = result[0];
+          var right = result[1];
+          var bottom = result[2];
+          var left = result[3];
 
-      if (right === left) {
-        // 左右边相等
-        if (top === bottom) {
-          // 上下边相等
-          return top === right ? top // 单值语法
-          : top + " " + right; // 二值语法
-        } else {
-          return top + " " + right + " " + bottom; // 三值语法
+          if (right === left) {
+            // 左右边相等
+            if (top === bottom) {
+              // 上下边相等
+              return top === right ? top // 单值语法
+              : top + " " + right; // 二值语法
+            } else {
+              return top + " " + right + " " + bottom; // 三值语法
+            }
+          }
+
+          return result.join(' '); // 四值语法
         }
-      }
-
-      return result.join(' '); // 四值语法
-    };
+      };
+    });
   };
 
   // margin
   // padding
   // border-width
-  each({
+  CreateSideHook({
     margin: '',
     padding: '',
     border: 'Width'
-  }, function (name, suffix) {
-    cssHooks[name + suffix] = {
-      get: getSide(cssSide, name, suffix)
-    };
-  }); // border-radius
+  }, cssSide); // border-radius
 
-  each({
+  CreateSideHook({
     border: 'Radius'
-  }, function (name, suffix) {
-    cssHooks[name + suffix] = {
-      get: getSide(cssRadius, name, suffix)
-    };
-  });
+  }, cssRadius);
+}
+
+function getCss(elem, name) {
+  var computed = getStyles(elem);
+  var result = computed.getPropertyValue(name) || computed[name];
+  return result !== undefined ? result + '' : result;
 }
 
 var cssPrefixes = ["Webkit", "Moz", "ms"];
