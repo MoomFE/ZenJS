@@ -3,7 +3,7 @@ describes.push({
   describe: [
     {
       name: '$addClass',
-      default: function(){
+      'default': function(){
         /** @type {Element} */
         var div = window.div;
 
@@ -18,7 +18,7 @@ describes.push({
       }
     }, {
       name: '$removeClass',
-      default: function(){
+      'default': function(){
         /** @type {Element} */
         var div = window.div.$addClass('a b c');
 
@@ -30,7 +30,7 @@ describes.push({
       }
     }, {
       name: '$hasClass',
-      default: function(){
+      'default': function(){
         /** @type {Element} */
         var div = window.div.$addClass('a b c');
 
@@ -54,7 +54,7 @@ describes.push({
       }
     }, {
       name: '$toggleClass',
-      default: function(){
+      'default': function(){
         /** @type {Element} */
         var div = window.div.$addClass('a b c');
 
@@ -75,7 +75,7 @@ describes.push({
       }
     }, {
       name: '$is',
-      default: function(){
+      'default': function(){
         var div = window.div;
 
         div.$is( 'div' ).should.true;
@@ -99,7 +99,7 @@ describes.push({
       }
     }, {
       name: '$not',
-      default: function(){
+      'default': function(){
         var div = window.div;
 
         div.$not( 'div' ).should.false;
@@ -123,7 +123,7 @@ describes.push({
       }
     }, {
       name: '$first / $firstChild',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = div.appendChild( window.span );
         var a = div.appendChild( window.a );
@@ -140,7 +140,7 @@ describes.push({
       }
     }, {
       name: '$last / $lastChild',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = div.appendChild( window.span );
         var a = div.appendChild( window.a );
@@ -157,7 +157,7 @@ describes.push({
       }
     }, {
       name: '$next',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = div.appendChild( window.span );
         var input = div.appendChild( window.input );
@@ -172,7 +172,7 @@ describes.push({
       }
     }, {
       name: '$prev',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = div.appendChild( window.span );
         var input = div.appendChild( window.input );
@@ -187,7 +187,7 @@ describes.push({
       }
     }, {
       name: '$nextAll',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = div.appendChild( window.span );
         var input = div.appendChild( window.input );
@@ -202,7 +202,7 @@ describes.push({
       }
     }, {
       name: '$prevAll',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = div.appendChild( window.span );
         var input = div.appendChild( window.input );
@@ -217,7 +217,7 @@ describes.push({
       }
     }, {
       name: '$child / $children',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = div.appendChild( window.span );
         var input = div.appendChild( window.input );
@@ -233,7 +233,7 @@ describes.push({
       }
     }, {
       name: '$parent',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var div2 = div.appendChild( window.div );
 
@@ -245,7 +245,7 @@ describes.push({
       }
     }, {
       name: '$parents',
-      default: function(){
+      'default': function(){
         var div = window.div.$set('id','test');
         var div2 = div.appendChild( window.div );
         var div3 = div2.appendChild( window.div );
@@ -259,7 +259,7 @@ describes.push({
       }
     }, {
       name: '$siblings',
-      default: function(){
+      'default': function(){
         var div = window.div.$set('id','test');
         var div2 = div.appendChild( window.div );
         var div3 = div.appendChild( window.div );
@@ -275,7 +275,7 @@ describes.push({
       }
     }, {
       name: '$append',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = window.span;
         var input = window.input;
@@ -287,7 +287,7 @@ describes.push({
       }
     }, {
       name: '$prepend',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = window.span;
         var input = window.input;
@@ -299,7 +299,7 @@ describes.push({
       }
     }, {
       name: '$appendTo',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = window.span.$appendTo( div );
         var input = window.input.$appendTo( div );
@@ -309,7 +309,7 @@ describes.push({
       }
     }, {
       name: '$prependTo',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var span = window.span.$prependTo( div );
         var input = window.input.$prependTo( div );
@@ -319,7 +319,7 @@ describes.push({
       }
     }, {
       name: '$before',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var input = window.input;
         var span = window.span.$appendTo( div ).$before( input );
@@ -328,7 +328,7 @@ describes.push({
       }
     }, {
       name: '$after',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var input = window.input;
         var span = window.span.$appendTo( div ).$after( input );
@@ -337,7 +337,7 @@ describes.push({
       }
     }, {
       name: '$delete / $remove',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var div2 = window.div.$prependTo( div );
         var div3 = window.div.$prependTo( div );
@@ -348,18 +348,18 @@ describes.push({
       }
     }, {
       name: '$query / $find',
-      default: function(){
+      'default': function(){
         Object.$equals( div.$query, div.querySelectorAll ).should.false;
         Object.$equals( Array.isArray( div.$query('div') ), true ).should.true;
       }
     }, {
       name: '$queryFirst / $findFirst',
-      default: function(){
+      'default': function(){
         Object.$equals( div.$queryFirst, div.querySelector ).should.true;
       }
     }, {
       name: '$replaceWith / $replace',
-      default: function(){
+      'default': function(){
         var div = window.div;
         var div2 = window.div.$prependTo( div );
         var div3 = window.div;
@@ -370,12 +370,12 @@ describes.push({
       }
     }, {
       name: '$clone',
-      default: function(){
+      'default': function(){
         Object.$equals( div.$clone, div.cloneNode ).should.true;
       }
     }, {
       name: '$index',
-      default: function(){
+      'default': function(){
 
         var div = window.div;
         var div0 = div.appendChild( window.div );
@@ -423,13 +423,13 @@ describes.push({
       }
     }, {
       name: '$html',
-      default: function(){
+      'default': function(){
         var div = window.div.$html( 123 );
         div.$html().should.equals('123');
       }
     }, {
       name: '$val / $value',
-      default: function(){
+      'default': function(){
         var input = window.input;
             input.type = 'text';
         
@@ -465,7 +465,7 @@ describes.push({
       }
     }, {
       name: '$width',
-      default: function(){
+      'default': function(){
         var div = window.div;
 
         div.$width().should.equals( 0 );
@@ -476,7 +476,7 @@ describes.push({
       }
     }, {
       name: '$height',
-      default: function(){
+      'default': function(){
         var div = window.div;
 
         div.$height().should.equals( 0 );
@@ -487,7 +487,7 @@ describes.push({
       }
     }, {
       name: '_nodeName',
-      default: function(){
+      'default': function(){
         div._nodeName.should.equals('div');
         a._nodeName.should.equals('a');
         span._nodeName.should.equals('span');
@@ -559,7 +559,7 @@ describes.push({
       ]
     }, {
       name: '$removeProp / $deleteProp',
-      default: function(){
+      'default': function(){
         var div = window.div.$prop({ id: 'test-id', class: 'test' });
 
         Object.$equals( div.$prop('id'), 'test-id' ).should.true;
@@ -611,7 +611,7 @@ describes.push({
       ]
     }, {
       name: '$removeAttr / $deleteAttr',
-      default: function(){
+      'default': function(){
         var div = window.div.$attr({ id: 'test-id', class: 'test' });
 
         Object.$equals( div.$attr('id'), 'test-id' ).should.true;

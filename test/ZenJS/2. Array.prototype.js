@@ -1667,7 +1667,7 @@ describes.push({
       ]
     }, {
       name: '$splice',
-      default: function(){
+      'default': function(){
         var arr = [ 1, 2, 3, 4, 5 ];
 
         arr.$splice( 1, 1 ).should.equals( arr );

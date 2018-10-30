@@ -44,8 +44,8 @@ describes.push({
               return Math.$add( num, num2 );
             }
 
-            const add1 = _add.$args({ 0: 1 });
-            const add2 = _add.$args({ 0: 1, 1: 2 });
+            var add1 = _add.$args({ 0: 1 });
+            var add2 = _add.$args({ 0: 1, 1: 2 });
 
             add1( 5 ).should.equals( 6 );
             add2( 5 ).should.equals( 3 );
@@ -58,10 +58,10 @@ describes.push({
               return Math[ func ]( num1, num2 );
             }
 
-            const jia = math.$args({ 0: '$jia' });
-            const jian = math.$args({ 0: '$jian' });
-            const cheng = math.$args({ 0: '$cheng' });
-            const chu = math.$args({ 0: '$chu' });
+            var jia = math.$args({ 0: '$jia' });
+            var jian = math.$args({ 0: '$jian' });
+            var cheng = math.$args({ 0: '$cheng' });
+            var chu = math.$args({ 0: '$chu' });
 
             jia( 0.2, 0.1 ).should.equals( 0.3 );
             jian( 0.3, 0.1 ).should.equals( 0.2 );
@@ -75,10 +75,10 @@ describes.push({
               return Math[ func ]( num1, num2 );
             }
 
-            const math1 = math.$args({ 1: 0.2, 2: 0.1 });
-            const math2 = math.$args({ 1: 0.3, 2: 0.1 });
-            const math3 = math.$args({ 1: 0.2, 2: 0.1 });
-            const math4 = math.$args({ 1: 33.77, 2: 10 });
+            var math1 = math.$args({ 1: 0.2, 2: 0.1 });
+            var math2 = math.$args({ 1: 0.3, 2: 0.1 });
+            var math3 = math.$args({ 1: 0.2, 2: 0.1 });
+            var math4 = math.$args({ 1: 33.77, 2: 10 });
 
             math1( '$jia' ).should.equals( 0.3 );
             math2( '$jian' ).should.equals( 0.2 );
@@ -92,10 +92,10 @@ describes.push({
               return Math[ func ]( num1, num2 );
             }
 
-            const math1 = math.$args({ 1: 0.2, 3: 0.1 });
-            const math2 = math.$args({ 1: 0.3, 3: 0.1 });
-            const math3 = math.$args({ 1: 0.2, 3: 0.1 });
-            const math4 = math.$args({ 1: 33.77, 3: 10 });
+            var math1 = math.$args({ 1: 0.2, 3: 0.1 });
+            var math2 = math.$args({ 1: 0.3, 3: 0.1 });
+            var math3 = math.$args({ 1: 0.2, 3: 0.1 });
+            var math4 = math.$args({ 1: 33.77, 3: 10 });
 
             math1( '$jia', null ).should.equals( 0.3 );
             math2( '$jian', null ).should.equals( 0.2 );

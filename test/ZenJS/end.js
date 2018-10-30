@@ -9,9 +9,9 @@ describe( 'ZenJS', function(){
           else _describe.describe();
         });
       }
-      else if( _describe.default ){
+      else if( _describe['default'] ){
         describe( _describe.name, function(){
-          it( 'Normal use', _describe.default );
+          it( 'Normal use', _describe['default'] );
         });
       };
     });

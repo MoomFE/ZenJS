@@ -3,7 +3,7 @@ describes.push({
   describe: [
     {
       name: '$parse',
-      default: function(){
+      'default': function(){
         Object.$equals( RegExp.$parse('()'), /\(\)/ ).should.true;
         Object.$equals( RegExp.$parse('\\'), /\\/ ).should.true;
         Object.$equals( RegExp.$parse('^[\\]$'), /\^\[\\\]\$/ ).should.true;

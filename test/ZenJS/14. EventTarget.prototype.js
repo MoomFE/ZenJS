@@ -9,8 +9,8 @@ describes.push({
 
         it( 'adding data', function(){
           div.$data( 'Data', 'div' ).should.equals( div );
-          window.$data( 'Data', 'window' ).should.equals( window );
           document.$data( 'Data', 'document' ).should.equals( document );
+          Object.$equals( window.$data( 'Data', 'window' ), window ).should.true;
         });
 
         it( 'Read data', function(){
@@ -27,8 +27,8 @@ describes.push({
 
         it( 'Add data in bulk', function(){
           div.$data({ a: 1, b: 2 }).should.equals( div );
-          window.$data({ a: 1, b: 2 }).should.equals( window );
           document.$data({ a: 1, b: 2 }).should.equals( document );
+          Object.$equals( window.$data({ a: 1, b: 2 }), window ).should.true;
           Object.$equals( div.$data(), { Data: 'div', a: 1, b: 2 } );
           Object.$equals( window.$data(), { Data: 'window', a: 1, b: 2 } );
           Object.$equals( document.$data(), { Data: 'document', a: 1, b: 2 } );
@@ -101,8 +101,8 @@ describes.push({
           document.$data({ Data: 'document', a: 1, b: 2 });
 
           div.$deleteData('Data').should.equals( div );
-          window.$deleteData('Data').should.equals( window );
           document.$deleteData('Data').should.equals( document );
+          Object.$equals( window.$deleteData('Data'), window ).should.true;
 
           div.$hasData('Data').should.false;
           window.$hasData('Data').should.false;
@@ -114,8 +114,8 @@ describes.push({
 
         it( 'Delete all data', function(){
           div.$deleteData().should.equals( div );
-          window.$deleteData().should.equals( window );
           document.$deleteData().should.equals( document );
+          Object.$equals( window.$deleteData(), window ).should.true;
           div.$hasData().should.false;
           window.$hasData().should.false;
           document.$hasData().should.false;
@@ -583,9 +583,9 @@ describes.push({
         }, {
           name: 'HandleOptions error when binding multiple events at the same time',
           it: function(){
-            const obj = { 123: false, 456: false };
+            var obj = { 123: false, 456: false };
 
-            document.$on('mouseup.123 mouseup.456', ( event, eventName ) => {
+            document.$on('mouseup.123 mouseup.456', function( event, eventName ){
               obj[ eventName ] = event.handleOptions.namespaceStr === eventName;
             });
 
