@@ -20,7 +20,7 @@ if( !supportsCompoundStyle ){
   // border-radius
   CreateSideHook({ border: 'Radius' }, cssRadius);
 
-  function CreateSideHook( styles ){
+  function CreateSideHook( styles, cssSide ){
     each( styles, ( name, suffix ) => {
       cssHooks[ name + suffix ] = {
         get: function( elem ){

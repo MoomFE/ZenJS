@@ -2850,7 +2850,7 @@
   var cssHooks = {};
 
   if (!supportsCompoundStyle$1) {
-    var CreateSideHook = function (styles) {
+    var CreateSideHook = function (styles, cssSide$$1) {
       each(styles, function (name, suffix) {
         cssHooks[name + suffix] = {
           get: function (elem) {
@@ -2858,7 +2858,7 @@
             var result = [];
 
             for (var index = 0; index < 4; index++) {
-              result[index] = computed[name + cssSide[index] + suffix] || '0px';
+              result[index] = computed[name + cssSide$$1[index] + suffix] || '0px';
             }
 
             var top = result[0];

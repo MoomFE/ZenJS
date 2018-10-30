@@ -2666,27 +2666,17 @@ var propHooks = {
 };
 
 if (!supportsSelectedIndex$1) {
-  propHooks.selected = {
-    get: function (elem) {
-      var parent = elem.parentNode;
+  var selected = function (elem) {
+    var parent = elem.parentNode;
 
-      if (parent && parent.parentNode) {
-        parent.parentNode.selectedIndex;
-      }
-
-      return null;
-    },
-    set: function (elem) {
-      var parent = elem.parentNode;
-
-      if (parent) {
-        parent.selectedIndex;
-
-        if (parent.parentNode) {
-          parent.parentNode.selectedIndex;
-        }
-      }
+    if (parent) {
+      parent.selectedIndex;
     }
+  };
+
+  propHooks.selected = {
+    get: selected,
+    set: selected
   };
 }
 
@@ -2719,7 +2709,7 @@ if (inBrowser) {
         return this;
       }
 
-      if (hooks && 'get' in hooks && (result = hooks.get(this, name)) !== null) {
+      if (hooks && 'get' in hooks && (result = hooks.get(this, name)) !== undefined) {
         return result;
       }
 
@@ -2856,7 +2846,7 @@ var cssRadius = ['TopLeft', 'TopRight', 'BottomRight', 'BottomLeft'];
 var cssHooks = {};
 
 if (!supportsCompoundStyle$1) {
-  var CreateSideHook = function (styles) {
+  var CreateSideHook = function (styles, cssSide$$1) {
     each(styles, function (name, suffix) {
       cssHooks[name + suffix] = {
         get: function (elem) {
@@ -2864,7 +2854,7 @@ if (!supportsCompoundStyle$1) {
           var result = [];
 
           for (var index = 0; index < 4; index++) {
-            result[index] = computed[name + cssSide[index] + suffix] || '0px';
+            result[index] = computed[name + cssSide$$1[index] + suffix] || '0px';
           }
 
           var top = result[0];
