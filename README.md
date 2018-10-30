@@ -48,18 +48,18 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 55.64kb | 15.14kb | \|  | UMD       | Browser |
+| zen.js             | 55.71kb | 15.19kb | \|  | UMD       | Browser |
 | zen.min.js         | 20.18kb | 7.37kb | \|  | UMD       | Browser |
-| zen.common.js      | 51.77kb | 14.87kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 51.76kb | 14.85kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.common.js      | 51.84kb | 14.91kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 51.82kb | 14.90kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 96.48kb | 25.44kb | \|  | UMD       | Browser |
+| zen.fat.js             | 96.76kb | 25.62kb | \|  | UMD       | Browser |
 | zen.fat.min.js         | 34.60kb | 12.53kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 90.03kb | 25.02kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 90.02kb | 25.00kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.common.js      | 90.28kb | 25.18kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 90.26kb | 25.16kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 

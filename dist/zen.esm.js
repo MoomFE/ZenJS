@@ -76,6 +76,11 @@ function isFunction$1(obj) {
 
 var fnToString = hasOwnProperty.toString,
     ObjectFunctionString = fnToString.call(Object);
+/**
+ * 判断传入对象是否是纯粹的对象
+ * @param {any} obj 需要判断的对象
+ */
+
 function isPlainObject(obj) {
   if (!obj || toString.call(obj) !== '[object Object]') {
     return false;
@@ -253,7 +258,7 @@ function isNumber(obj) {
   return typeof obj === 'number' && obj === obj && isFinite(obj);
 }
 /**
- * 判断传入的对象是否是数字
+ * 判断传入对象是否是数字类型或可转为数字
  * @param {any} obj 需要判断的对象
  * @returns {Boolean}
  */
@@ -358,16 +363,21 @@ defineValue(ArrayProto, '$each', function (callback) {
 });
 
 var MAX_SAFE_INTEGER = 9007199254740991;
-function isArrayLike(obj) {
-  if (obj == null || obj[isFunction]) {
+/**
+ * 判断传入对象是否是一个类数组对象
+ * @param value 需要判断的对象
+ */
+
+function isArrayLike(value) {
+  if (value == null || value[isFunction]) {
     return false;
   }
 
-  if (obj[isArray]) {
+  if (value[isArray]) {
     return true;
   }
 
-  var length = obj.length;
+  var length = value.length;
 
   if (isNumber(length) && length > -1 && length % 1 === 0 && length <= MAX_SAFE_INTEGER) {
     return true;
@@ -1305,7 +1315,7 @@ var pow = Math.pow;
 
 /**
  * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
- * String.prototype.repeat polyfill
+ * 是 String.prototype.repeat 的降级方案
  * @param {String} str 需要重复的字符串
  * @param {Number} count 需要重复的次数
  */
@@ -2320,35 +2330,32 @@ function returnFalse() {
 }
 
 var ZenJS = root.ZenJS = assign(false, [null, {
-  polyfill: {
-    assign: assign$1,
-    entries: entries,
-    values: values
-  },
-  util: {
-    congruence: congruence,
-    equals: equals,
-    define: define,
-    defineValue: defineValue,
-    defineGet: defineGet,
-    intRandom: intRandom,
-    returnArg: returnArg,
-    returnTrue: returnTrue,
-    returnFalse: returnFalse,
-    parametersDefault: parametersDefault,
-    parametersRest: parametersRest,
-    isString: isString$1,
-    isBoolean: isBoolean$1,
-    isArray: isArray$1,
-    isNumber: isNumber,
-    isRegExp: isRegExp,
-    isSet: isSet,
-    isMap: isMap,
-    isFunction: isFunction$1,
-    isObject: isObject,
-    isReferenceType: isReferenceType,
-    mapSetToArray: mapSetToArray
-  },
+  assign: assign$1,
+  entries: entries,
+  values: values,
+  repeat: repeat,
+  congruence: congruence,
+  equals: equals,
+  define: define,
+  defineValue: defineValue,
+  defineGet: defineGet,
+  intRandom: intRandom,
+  returnArg: returnArg,
+  returnTrue: returnTrue,
+  returnFalse: returnFalse,
+  parametersDefault: parametersDefault,
+  parametersRest: parametersRest,
+  isString: isString$1,
+  isBoolean: isBoolean$1,
+  isArray: isArray$1,
+  isNumber: isNumber,
+  isRegExp: isRegExp,
+  isSet: isSet,
+  isMap: isMap,
+  isFunction: isFunction$1,
+  isObject: isObject,
+  isReferenceType: isReferenceType,
+  mapSetToArray: mapSetToArray,
   config: {
     event: {
       modifiers: true,
