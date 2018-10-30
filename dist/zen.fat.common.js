@@ -2937,6 +2937,10 @@ function finalPropName(name) {
 
 var rcustomProp = /^--/;
 
+var cssDefault = {
+  opacity: '1'
+};
+
 if (inBrowser) {
   var css = function (elem, name) {
     // 转为驼峰写法
@@ -2958,6 +2962,11 @@ if (inBrowser) {
 
     if (value === undefined) {
       value = getCss(elem, name);
+    } // 结果为空, 但是有默认值时, 返回默认值
+
+
+    if (value === '' && name in cssDefault) {
+      value = cssDefault[name];
     }
 
     return value;

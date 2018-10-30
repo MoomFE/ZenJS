@@ -7,6 +7,7 @@ import cssHooks from "./const/cssHooks";
 import getCss from "./util/getCss";
 import finalPropName from "./util/finalPropName";
 import rcustomProp from "../../../shared/const/rcustomProp";
+import cssDefault from "./const/cssDefault";
 
 
 if( inBrowser ){
@@ -40,6 +41,11 @@ if( inBrowser ){
 
     if( value === undefined ){
       value = getCss( elem, name );
+    }
+
+    // 结果为空, 但是有默认值时, 返回默认值
+    if( value === '' && name in cssDefault ){
+      value = cssDefault[ name ];
     }
 
     return value;
