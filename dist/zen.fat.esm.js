@@ -2848,7 +2848,8 @@ if (inBrowser) {
 
 var supportsCompoundStyle$1 = supportsCompoundStyle;
 
-var cssExpand = ['Top', 'Right', 'Bottom', 'Left'];
+var cssSide = ['Top', 'Right', 'Bottom', 'Left'];
+var cssRadius = ['TopLeft', 'TopRight', 'BottomRight', 'BottomLeft'];
 
 function getCss(elem, name) {
   var computed = getStyles(elem);
@@ -2859,38 +2860,53 @@ function getCss(elem, name) {
 var cssHooks = {};
 
 if (!supportsCompoundStyle$1) {
+  var getSide = function (cssExpand, name, suffix) {
+    return function (elem) {
+      var computed = getStyles(elem);
+      var result = [];
+
+      for (var index = 0; index < 4; index++) {
+        result[index] = computed[name + cssExpand[index] + suffix] || '0px';
+      }
+
+      var top = result[0];
+      var right = result[1];
+      var bottom = result[2];
+      var left = result[3];
+
+      if (right === left) {
+        // 左右边相等
+        if (top === bottom) {
+          // 上下边相等
+          return top === right ? top // 单值语法
+          : top + " " + right; // 二值语法
+        } else {
+          return top + " " + right + " " + bottom; // 三值语法
+        }
+      }
+
+      return result.join(' '); // 四值语法
+    };
+  };
+
+  // margin
+  // padding
+  // border-width
   each({
     margin: '',
     padding: '',
     border: 'Width'
   }, function (name, suffix) {
     cssHooks[name + suffix] = {
-      get: function (elem) {
-        var computed = getStyles(elem);
-        var result = [];
+      get: getSide(cssSide, name, suffix)
+    };
+  }); // border-radius
 
-        for (var index = 0; index < 4; index++) {
-          result[index] = computed[name + cssExpand[index] + suffix] || '0px';
-        }
-
-        var top = result[0];
-        var right = result[1];
-        var bottom = result[2];
-        var left = result[3];
-
-        if (right === left) {
-          // 左右边相等
-          if (top === bottom) {
-            // 上下边相等
-            return top === right ? top // 单值语法
-            : top + " " + right; // 二值语法
-          } else {
-            return top + " " + right + " " + bottom; // 三值语法
-          }
-        }
-
-        return result.join(' '); // 四值语法
-      }
+  each({
+    border: 'Radius'
+  }, function (name, suffix) {
+    cssHooks[name + suffix] = {
+      get: getSide(cssRadius, name, suffix)
     };
   });
 }
@@ -2926,10 +2942,9 @@ if (inBrowser) {
     // 转为驼峰写法
     var origName = camelCase(name); // 是否是 css 变量
 
-    var isCustomProp = rcustomProp.test(name);
+    var isCustomProp = rcustomProp.test(name); // 转为浏览器兼容写法
 
     if (!isCustomProp) {
-      // 转为浏览器兼容写法
       name = finalPropName(origName);
     } // 获取可能的兼容方法
 

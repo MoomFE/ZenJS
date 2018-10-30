@@ -680,22 +680,55 @@ describes.push({
 
             /* Border-Width */
             div.$css('borderWidth').should.equals('0px');
+            div.$css('border-width').should.equals('0px');
 
             style.border = '0px solid #FFF';
             style.borderLeftWidth = style.borderRightWidth = '1px';
             div.$css('borderWidth').should.equals('0px 1px');
+            div.$css('border-width').should.equals('0px 1px');
 
             style.borderTopWidth = '1px';
             div.$css('borderWidth').should.equals('1px 1px 0px');
+            div.$css('border-width').should.equals('1px 1px 0px');
 
             style.borderBottomWidth = '1px';
             div.$css('borderWidth').should.equals('1px');
+            div.$css('border-width').should.equals('1px');
 
             style.borderLeftWidth = '1px';
             style.borderRightWidth = '2px';
             style.borderTopWidth = '3px';
             style.borderBottomWidth = '4px';
             div.$css('borderWidth').should.equals('3px 2px 4px 1px');
+            div.$css('border-width').should.equals('3px 2px 4px 1px');
+
+            div.$remove();
+          }
+        }, {
+          name: 'Get border-radius',
+          it: function(){
+            var div = window.div.$appendTo( document.documentElement );
+            var style = div.style;
+
+            div.$css('borderRadius').should.equals('0px');
+            div.$css('border-radius').should.equals('0px');
+
+            style.borderBottomLeftRadius = style.borderTopRightRadius = '1px';
+            div.$css('borderRadius').should.equals('0px 1px');
+            div.$css('border-radius').should.equals('0px 1px');
+
+            style.borderTopLeftRadius = '1px';
+            div.$css('borderRadius').should.equals('1px 1px 0px');
+            div.$css('border-radius').should.equals('1px 1px 0px');
+
+            style.borderTopLeftRadius = '1px';
+            style.borderTopRightRadius = '2px';
+            style.borderBottomLeftRadius = '3px';
+            style.borderBottomRightRadius = '4px';
+            div.$css('borderRadius').should.equals('1px 2px 4px 3px');
+            div.$css('border-radius').should.equals('1px 2px 4px 3px');
+
+            div.$remove();
           }
         }
       ]

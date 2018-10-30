@@ -1,3 +1,8 @@
-const cssExpand = [ 'Top', 'Right', 'Bottom', 'Left' ];
+export const cssSide = [ 'Top', 'Right', 'Bottom', 'Left' ];
 
-export default cssExpand;
+export const cssRadius = [
+  'TopLeft',
+  'TopRight',
+  'BottomRight',
+  'BottomLeft',
+];

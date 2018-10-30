@@ -24,8 +24,8 @@ if( inBrowser ){
     // 是否是 css 变量
     const isCustomProp = rcustomProp.test( name );
 
-    
-    if( !isCustomProp ){// 转为浏览器兼容写法
+    // 转为浏览器兼容写法
+    if( !isCustomProp ){
       name = finalPropName( origName );
     }
 
