@@ -34,8 +34,8 @@ if( inBrowser ){
 
     let value;
 
-    if( hooks && 'get' in hooks ){
-      value = hooks.get( elem );
+    if( hooks ){
+      value = hooks( elem );
     }
 
     if( value === undefined ){

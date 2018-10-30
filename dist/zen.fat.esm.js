@@ -2846,33 +2846,31 @@ var cssHooks = {};
 if (!supportsCompoundStyle$1) {
   var CreateSideHook = function (styles, cssSide$$1) {
     each(styles, function (name, suffix) {
-      cssHooks[name + suffix] = {
-        get: function (elem) {
-          var computed = getStyles(elem);
-          var result = [];
+      cssHooks[name + suffix] = function (elem) {
+        var computed = getStyles(elem);
+        var result = [];
 
-          for (var index = 0; index < 4; index++) {
-            result[index] = computed[name + cssSide$$1[index] + suffix] || '0px';
-          }
-
-          var top = result[0];
-          var right = result[1];
-          var bottom = result[2];
-          var left = result[3];
-
-          if (right === left) {
-            // 左右边相等
-            if (top === bottom) {
-              // 上下边相等
-              return top === right ? top // 单值语法
-              : top + " " + right; // 二值语法
-            } else {
-              return top + " " + right + " " + bottom; // 三值语法
-            }
-          }
-
-          return result.join(' '); // 四值语法
+        for (var index = 0; index < 4; index++) {
+          result[index] = computed[name + cssSide$$1[index] + suffix] || '0px';
         }
+
+        var top = result[0];
+        var right = result[1];
+        var bottom = result[2];
+        var left = result[3];
+
+        if (right === left) {
+          // 左右边相等
+          if (top === bottom) {
+            // 上下边相等
+            return top === right ? top // 单值语法
+            : top + " " + right; // 二值语法
+          } else {
+            return top + " " + right + " " + bottom; // 三值语法
+          }
+        }
+
+        return result.join(' '); // 四值语法
       };
     });
   };
@@ -2938,8 +2936,8 @@ if (inBrowser) {
     var hooks = cssHooks[name] || cssHooks[origName];
     var value;
 
-    if (hooks && 'get' in hooks) {
-      value = hooks.get(elem);
+    if (hooks) {
+      value = hooks(elem);
     }
 
     if (value === undefined) {
