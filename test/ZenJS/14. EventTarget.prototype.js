@@ -311,7 +311,7 @@ describes.push({
 
             EventData = div.$on( 'click.btn.ripple', '.div', false, { capture: false } ).$data('events').click[0];
             Object.$equals( EventData.elem, div ).should.true;
-            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.listener, ZenJS.returnFalse ).should.true;
             Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
             Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
             Object.$equals( EventData.options, {} ).should.true;
@@ -320,7 +320,7 @@ describes.push({
 
             EventData = div.$on( 'click.btn.ripple', '.div', false, false ).$data('events').click[0];
             Object.$equals( EventData.elem, div ).should.true;
-            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.listener, ZenJS.returnFalse ).should.true;
             Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
             Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
             Object.$equals( EventData.options, {} ).should.true;
@@ -329,7 +329,7 @@ describes.push({
 
             EventData = div.$on( 'click.btn.ripple', false, false, '.div' ).$data('events').click[0];
             Object.$equals( EventData.elem, div ).should.true;
-            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.listener, ZenJS.returnFalse ).should.true;
             Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
             Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
             Object.$equals( EventData.options, {} ).should.true;
@@ -338,7 +338,7 @@ describes.push({
 
             EventData = div.$on( 'click.btn.ripple', false, '.div', false ).$data('events').click[0];
             Object.$equals( EventData.elem, div ).should.true;
-            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.listener, ZenJS.returnFalse ).should.true;
             Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
             Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
             Object.$equals( EventData.options, {} ).should.true;
@@ -347,7 +347,7 @@ describes.push({
 
             EventData = div.$on( 'click.btn.ripple', false, false ).$data('events').click[0];
             Object.$equals( EventData.elem, div ).should.true;
-            Object.$equals( EventData.listener, ZenJS.util.returnFalse ).should.true;
+            Object.$equals( EventData.listener, ZenJS.returnFalse ).should.true;
             Object.$equals( EventData.namespace, [ 'btn', 'ripple' ] ).should.true;
             Object.$equals( EventData.namespaceStr, 'btn.ripple' ).should.true;
             Object.$equals( EventData.options, {} ).should.true;
