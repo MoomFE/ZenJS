@@ -1,7 +1,9 @@
 
-
-const cssDefault = {
+export const cssDefault = {
   opacity: '1'
 };
 
-export default cssDefault;
+export const cssNormalDefault = {
+  letterSpacing: '0',
+  fontWeight: '400'
+};

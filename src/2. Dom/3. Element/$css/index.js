@@ -7,7 +7,8 @@ import cssHooks from "./const/cssHooks";
 import getCss from "./util/getCss";
 import finalPropName from "./util/finalPropName";
 import rcustomProp from "../../../shared/const/rcustomProp";
-import cssDefault from "./const/cssDefault";
+import { cssDefault } from "./const/cssDefault";
+import style from "./util/style";
 
 
 if( inBrowser ){
@@ -47,12 +48,11 @@ if( inBrowser ){
     if( value === '' && name in cssDefault ){
       value = cssDefault[ name ];
     }
+    if( value === 'normal' && name in cssNormalDefault ){
+      val = cssNormalDefault[ name ];
+    }
 
     return value;
-  }
-
-  function style( elem, name, value ){
-
   }
 
 }
