@@ -2934,18 +2934,14 @@
     }, cssRadius);
   }
 
-  function _readOnlyError(name) {
-    throw new Error("\"" + name + "\" is read-only");
-  }
-
   function style(elem, name, value) {}
 
   function getCss(elem, name) {
     var computed = getStyles(elem);
     var result = computed.getPropertyValue(name) || computed[name]; // 元素不在 DOM 树中
 
-    if (result && elem.$parents(document.documentElement)) {
-      result = (_readOnlyError("result"), style(elem, name));
+    if (result === '' && elem.$parents(document.documentElement)) {
+      result = style(elem, name);
     }
 
     return result !== undefined ? result + '' : result;
