@@ -2929,18 +2929,7 @@
     }, cssRadius);
   }
 
-  function style(elem, name, value) {}
-
-  function getCss(elem, name) {
-    var computed = getStyles(elem);
-    var result = computed.getPropertyValue(name) || computed[name]; // 元素不在 DOM 树中
-
-    if (result === '' && elem.$parents(document.documentElement)) {
-      result = style(elem, name);
-    }
-
-    return result !== undefined ? result + '' : result;
-  }
+  var rcustomProp = /^--/;
 
   var cssPrefixes = ["Webkit", "Moz", "ms"];
   var emptyStyle = document.createElement('div').style;
@@ -2966,7 +2955,27 @@
     return vendorPropName(name) || name;
   }
 
-  var rcustomProp = /^--/;
+  function style(elem, name, value) {
+    // 转为驼峰写法
+    var origName = camelCase(name); // 是否是 css 变量
+
+    var isCustomProp = rcustomProp.test(name); // 转为浏览器兼容写法
+
+    if (!isCustomProp) {
+      name = finalPropName(origName);
+    } // setter
+  }
+
+  function getCss(elem, name) {
+    var computed = getStyles(elem);
+    var result = computed.getPropertyValue(name) || computed[name]; // 元素不在 DOM 树中
+
+    if (result === '' && elem.$parents(document.documentElement)) {
+      result = style(elem, name);
+    }
+
+    return result !== undefined ? result + '' : result;
+  }
 
   var cssDefault = {
     opacity: '1'
