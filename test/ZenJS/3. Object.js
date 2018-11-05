@@ -55,10 +55,37 @@ describes.push({
 
           }
         }, {
+          name: 'infinite Loop - Array',
+          it: function(){
+
+            var target = [],
+                source = [ target ];
+
+            Object.$equals( Object.$assign( target, source ), [] ).should.true;
+
+
+            target = [];
+            source = [];
+            target.source = source;
+            source.target = target;
+
+            Object.$equals( Object.$assign( [], target ), [] ).should.true;
+
+          }
+        }, {
           name: 'Intelligent undefined',
           it: function(){
             Object.$equals( Object.$assign( { asd: 123 }, { asd: undefined } ), { asd: 123 } ).should.true;
             Object.$equals( Object.$assign( {}, { asd: undefined } ), { asd: undefined } ).should.true;
+          }
+        }, {
+          name: 'For Array type, a copy will be copied',
+          it: function(){
+            var obj = { arr: [ 1, 2, 3 ] };
+            var obj2 = Object.$assign( {}, obj );
+
+            ( obj.arr === obj2.arr ).should.false;
+            Object.$equals( obj.arr, obj2.arr ).should.true;
           }
         }
       ]
