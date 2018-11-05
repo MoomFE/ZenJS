@@ -2418,6 +2418,10 @@
     });
   }
 
+  /**
+   * @type {Element}
+   */
+
   var ElementProto = inBrowser ? DomElement.prototype : undefined;
 
   var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
@@ -2751,6 +2755,9 @@
         return this[name];
       });
     });
+    defineValue(ElementProto, '$hasProp', function (prop) {
+      return hasOwnProperty.call(this, propFix[prop] || prop);
+    });
     defineValue(ElementProto, '$removeProp $deleteProp', function (props) {
       if (props = props && props.match(rnothtmlwhite)) {
         var prop;
@@ -2827,6 +2834,7 @@
         return this;
       });
     });
+    defineValue(ElementProto, '$hasAttr', ElementProto.hasAttribute);
     defineValue(ElementProto, '$removeAttr $deleteAttr', function (names) {
       if (names = names && names.match(rnothtmlwhite)) {
         var name;

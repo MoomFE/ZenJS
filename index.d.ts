@@ -1862,6 +1862,12 @@ interface Element {
   $prop( name: String, value: any ): Element;
 
   /**
+   * ( Fat ) 判断当前元素是否有传入属性值 ( property )
+   * @param name 属性名
+   */
+  $hasProp( name: String ): Boolean;
+
+  /**
    * ( Fat ) 移除元素的属性值 ( property )
    * @param name 属性名
    */
@@ -1891,6 +1897,12 @@ interface Element {
    * @param value 属性值
    */
   $attr( name: String, value: String ): Element;
+
+  /**
+   * ( Fat ) 判断当前元素是否有传入属性值 ( attribute )
+   * @param name 属性名
+   */
+  $hasAttr( name: String ): Boolean;
 
   /**
    * ( Fat ) 移除元素的属性值 ( attribute )

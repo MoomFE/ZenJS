@@ -32,6 +32,8 @@ if( inBrowser ){
     });
   });
 
+  defineValue( ElementProto, '$hasAttr', ElementProto.hasAttribute );
+
   defineValue( ElementProto, '$removeAttr $deleteAttr', function( names ){
     if( names = names && names.match( rnothtmlwhite ) ){
       let name;

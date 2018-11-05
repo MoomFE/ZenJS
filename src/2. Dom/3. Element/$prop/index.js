@@ -5,6 +5,7 @@ import propFix from "./const/propFix";
 import propHooks from "./const/propHooks";
 import access from "../$attr/util/access";
 import rnothtmlwhite from "../../../shared/const/rnothtmlwhite";
+import hasOwnProperty from "../../../shared/global/Object/hasOwnProperty";
 
 
 
@@ -28,6 +29,10 @@ if( inBrowser ){
 
       return this[ name ];
     });
+  });
+
+  defineValue( ElementProto, '$hasProp', function( prop ){
+    return hasOwnProperty.call( this, propFix[ prop ] || prop );
   });
 
   defineValue( ElementProto, '$removeProp $deleteProp', function( props ){
