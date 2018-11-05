@@ -1,4 +1,3 @@
-import { isArray } from "../const/type";
 import entries from "../global/Object/entries";
 import isPlainObject from "./isPlainObject";
 import hasOwnProperty from "../global/Object/hasOwnProperty";
@@ -47,8 +46,8 @@ export default function assign( shallow, args, parent, noProto ){
       ownEntrieName = ownEntrie[ 0 ];
       ownValue = ownEntrie[ 1 ]
 
-      // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
-      if( !shallow && ownValue && ( isPlainObject( ownValue ) || ownValue[ isArray ] ) ){
+      // 非浅拷贝模式下, 当前值是原生对象, 则进行深拷贝
+      if( !shallow && ownValue && isPlainObject( ownValue ) ){
 
         // 防御下面这种无限引用
         // var target = {};
@@ -70,14 +69,10 @@ export default function assign( shallow, args, parent, noProto ){
 
         targetValue = target[ ownEntrieName ];
 
-        if( ownValue[ isArray ] ){
-          cloneValue = targetValue && targetValue[ isArray ] ? targetValue : [];
-        }else{
-          cloneValue = targetValue && isPlainObject( targetValue ) ? targetValue : (
-            noProto ? create( null )
-                    : {}
-          );
-        }
+        cloneValue = targetValue && isPlainObject( targetValue ) ? targetValue : (
+          noProto ? create( null )
+                  : {}
+        );
 
         if( assign( false, [ cloneValue, ownValue ], options, noProto ) !== undefined ){
           target[ ownEntrieName ] = cloneValue;

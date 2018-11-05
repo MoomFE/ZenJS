@@ -10,30 +10,6 @@
 
 var defineProperty = Object.defineProperty;
 
-var StringProto = String.prototype;
-
-var BooleanProto = Boolean.prototype;
-
-var ArrayProto = Array.prototype;
-
-var FunctionProto = Function.prototype;
-
-[['String', StringProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
-  defineProperty(obj[1], "__is" + obj[0] + "__", {
-    value: true,
-    configurable: false,
-    // 删除/定义
-    enumerable: false,
-    // 枚举
-    writable: false // 写入
-
-  });
-});
-var isString = '__isString__';
-var isBoolean = '__isBoolean__';
-var isArray = '__isArray__';
-var isFunction = '__isFunction__';
-
 var keys = Object.keys;
 
 /**
@@ -66,7 +42,7 @@ var hasOwnProperty = Object.hasOwnProperty;
  * @param {any} obj 需要判断的对象
  * @returns {Boolean}
  */
-function isFunction$1(obj) {
+function isFunction(obj) {
   return typeof obj === 'function';
 }
 
@@ -95,7 +71,7 @@ function isPlainObject(obj) {
   }
 
   var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
-  return isFunction$1(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
+  return isFunction(Ctor) && fnToString.call(Ctor) === ObjectFunctionString;
 }
 
 var create = Object.create;
@@ -135,9 +111,9 @@ function assign(shallow, args, parent, noProto) {
       // [ key, value ]
       ownEntrie = ownEntries[ownIndex];
       ownEntrieName = ownEntrie[0];
-      ownValue = ownEntrie[1]; // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
+      ownValue = ownEntrie[1]; // 非浅拷贝模式下, 当前值是原生对象, 则进行深拷贝
 
-      if (!shallow && ownValue && (isPlainObject(ownValue) || ownValue[isArray])) {
+      if (!shallow && ownValue && isPlainObject(ownValue)) {
         // 防御下面这种无限引用
         // var target = {};
         // var source = { infiniteLoop: target };
@@ -155,12 +131,7 @@ function assign(shallow, args, parent, noProto) {
             continue;
           }
         targetValue = target[ownEntrieName];
-
-        if (ownValue[isArray]) {
-          cloneValue = targetValue && targetValue[isArray] ? targetValue : [];
-        } else {
-          cloneValue = targetValue && isPlainObject(targetValue) ? targetValue : noProto ? create(null) : {};
-        }
+        cloneValue = targetValue && isPlainObject(targetValue) ? targetValue : noProto ? create(null) : {};
 
         if (assign(false, [cloneValue, ownValue], options, noProto) !== undefined) {
           target[ownEntrieName] = cloneValue;
@@ -183,7 +154,7 @@ var assign$1 = Object.assign || function () {
   return assign(true, arguments);
 };
 
-var isArray$1 = Array.isArray;
+var isArray = Array.isArray;
 
 /**
  * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
@@ -199,7 +170,7 @@ function define(obj, name, options, options2) {
   } // define( [ window, document ], name, options )
 
 
-  if (isArray$1(obj) && obj instanceof Array) {
+  if (isArray(obj) && obj instanceof Array) {
     obj.forEach(function (obj) {
       return define(obj, name, options, options2);
     });
@@ -241,12 +212,14 @@ function defineValue(obj, name, value, options) {
   return value;
 }
 
+var ArrayProto = Array.prototype;
+
 /**
  * 判断传入对象是否是 String 类型
  * @param {any} obj 需要判断的对象
  * @returns {Boolean}
  */
-function isString$1(obj) {
+function isString(obj) {
   return typeof obj === 'string';
 }
 
@@ -267,7 +240,7 @@ function isNumber(obj) {
 
 function $isNumber(obj) {
   if (isNumber(obj)) return true;
-  return isString$1(obj) && !isNaN(obj - parseFloat(obj));
+  return isString(obj) && !isNaN(obj - parseFloat(obj));
 }
 
 /**
@@ -285,7 +258,7 @@ function create$1(length, insert, isInsert) {
   var i = 0;
   var result = Array(length);
 
-  if (!isInsert && isFunction$1(insert)) {
+  if (!isInsert && isFunction(insert)) {
     for (; i < length; i++) {
       result[i] = insert(i);
     }
@@ -331,7 +304,7 @@ defineValue(Array, '$copy', function (source, array) {
     return [];
   }
 
-  if (isArray$1(array)) {
+  if (isArray(array)) {
     return array.concat(source);
   }
 
@@ -341,7 +314,7 @@ defineValue(Array, '$copy', function (source, array) {
 defineValue(Array, '$create', create$1);
 
 function $each(array, callback) {
-  if (!array || !array.length || !isFunction$1(callback)) {
+  if (!array || !array.length || !isFunction(callback)) {
     return array;
   }
 
@@ -364,6 +337,28 @@ defineValue(ArrayProto, '$each', function (callback) {
   return $each(this, callback);
 });
 
+var StringProto = String.prototype;
+
+var BooleanProto = Boolean.prototype;
+
+var FunctionProto = Function.prototype;
+
+[['String', StringProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
+  defineProperty(obj[1], "__is" + obj[0] + "__", {
+    value: true,
+    configurable: false,
+    // 删除/定义
+    enumerable: false,
+    // 枚举
+    writable: false // 写入
+
+  });
+});
+var isString$1 = '__isString__';
+var isBoolean = '__isBoolean__';
+var isArray$1 = '__isArray__';
+var isFunction$1 = '__isFunction__';
+
 var MAX_SAFE_INTEGER = 9007199254740991;
 /**
  * 判断传入对象是否是一个类数组对象
@@ -371,11 +366,11 @@ var MAX_SAFE_INTEGER = 9007199254740991;
  */
 
 function isArrayLike(value) {
-  if (value == null || value[isFunction]) {
+  if (value == null || value[isFunction$1]) {
     return false;
   }
 
-  if (value[isArray]) {
+  if (value[isArray$1]) {
     return true;
   }
 
@@ -434,7 +429,7 @@ function congruence(one, two) {
  */
 
 function getPredicate(predicate) {
-  if (isFunction$1(predicate)) {
+  if (isFunction(predicate)) {
     return predicate;
   }
 
@@ -443,7 +438,7 @@ function getPredicate(predicate) {
 function autoGetPredicate(args, value, predicateIndex, predicate) {
   if (args.length > 1) {
     predicate = getPredicate(parametersDefault(args, predicateIndex, true));
-  } else if (isFunction$1(value)) {
+  } else if (isFunction(value)) {
     predicate = value;
     value = undefined;
   } else {
@@ -493,7 +488,7 @@ var reUnicode = /\ud83c[\udffb-\udfff](?=\ud83c[\udffb-\udfff])|(?:[^\ud800-\udf
  */
 
 function isMap(obj) {
-  return isFunction$1(Map) && obj instanceof Map;
+  return isFunction(Map) && obj instanceof Map;
 }
 
 /**
@@ -503,7 +498,7 @@ function isMap(obj) {
  */
 
 function isSet(obj) {
-  return isFunction$1(Set) && obj instanceof Set;
+  return isFunction(Set) && obj instanceof Set;
 }
 
 /**
@@ -545,7 +540,7 @@ function $toArray(value, transKey) {
   } // 是字符串类型
 
 
-  if (value[isString]) {
+  if (value[isString$1]) {
     if (reHasUnicode.test(value)) {
       return value.match(reUnicode) || [];
     } else {
@@ -662,7 +657,7 @@ defineValue(ArrayProto, '$concat', function () {
   var _this = this;
 
   slice.call(arguments).forEach(function (arg) {
-    $add(_this, -1, isArray$1(arg) ? arg : [arg]);
+    $add(_this, -1, isArray(arg) ? arg : [arg]);
   });
   return this;
 });
@@ -679,7 +674,7 @@ defineValue(ArrayProto, '$concatTo', function (index) {
   var increasedLength = 0;
   index = fixArrayIndex(this, index, 1);
   args.forEach(function (arg) {
-    $add(_this2, increasedLength + index, isArray$1(arg) ? arg : [arg]); // 用于修正 index, 后续的 arg 需要插入到前面的 arg 后面
+    $add(_this2, increasedLength + index, isArray(arg) ? arg : [arg]); // 用于修正 index, 后续的 arg 需要插入到前面的 arg 后面
 
     increasedLength = _this2.length - originLength;
   });
@@ -717,7 +712,7 @@ function findIndex(self, count, reverse, args, predicate, obj, fromIndex) {
   var traversal;
   /** 首个参数是否是方法类型 */
 
-  var predicateIsFunction = predicate[isFunction]; // 首个参数是方法或布尔值
+  var predicateIsFunction = predicate[isFunction$1]; // 首个参数是方法或布尔值
 
   if (predicateIsFunction || predicate[isBoolean]) {
     // $findIndex( Function, fromIndex )
@@ -788,7 +783,7 @@ function findIndex(self, count, reverse, args, predicate, obj, fromIndex) {
 }
 
 function getTraversal(obj, predicate) {
-  var objIsArray = obj[isArray];
+  var objIsArray = obj[isArray$1];
   return function (object) {
     if (object == null || isEmptyObject(object)) {
       return false;
@@ -1500,7 +1495,7 @@ defineValue(StringProto, '$replaceAll', function (searchValue, replaceValue) {
     return this;
   }
 
-  if (searchValue[isString]) {
+  if (searchValue[isString$1]) {
     searchValue = searchValue.replace(rkeyword, '\\$1');
   } else if (isRegExp(searchValue)) {
     if (searchValue.global) {
@@ -2238,7 +2233,7 @@ defineValue(RegExp, '$parse', function (keyword, flags) {
 
 defineValue(root, '$typeof', function (obj) {
   if (obj == null) return obj + '';
-  return obj[isArray] ? 'array' : typeof obj;
+  return obj[isArray$1] ? 'array' : typeof obj;
 });
 
 var rBackSlant = /\+/g;
@@ -2279,7 +2274,7 @@ function parse(str) {
   var eq = parametersDefault(args, 2, '=');
   var result = {};
 
-  if (isString$1(str) === false) {
+  if (isString(str) === false) {
     return result;
   }
 
@@ -2353,14 +2348,14 @@ var ZenJS = root.ZenJS = assign(false, [null, {
   noop: noop,
   parametersDefault: parametersDefault,
   parametersRest: parametersRest,
-  isString: isString$1,
+  isString: isString,
   isBoolean: isBoolean$1,
-  isArray: isArray$1,
+  isArray: isArray,
   isNumber: isNumber,
   isRegExp: isRegExp,
   isSet: isSet,
   isMap: isMap,
-  isFunction: isFunction$1,
+  isFunction: isFunction,
   isObject: isObject,
   isReferenceType: isReferenceType,
   mapSetToArray: mapSetToArray,
