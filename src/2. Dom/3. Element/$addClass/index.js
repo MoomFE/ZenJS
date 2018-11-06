@@ -44,6 +44,11 @@ if( inBrowser ){
   });
 
   defineValue( ElementProto, '$removeClass $deleteClass', function( className ){
+    // 移除所有 class
+    if( !className && className !== '' ){
+      return ( this.className = '' ), this;
+    }
+    // 移除指定 class
     return access( this, className, 'remove' );
   });
 

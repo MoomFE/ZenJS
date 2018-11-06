@@ -27,6 +27,14 @@ describes.push({
 
         div.$removeClass('a c');
         div.className.should.equals('');
+
+        div.$addClass('a b c');
+        div.className.should.equals('a b c');
+        div.$removeClass('');
+        div.className.should.equals('a b c');
+        div.$removeClass();
+        div.className.should.equals('');
+
       }
     }, {
       name: '$hasClass',
