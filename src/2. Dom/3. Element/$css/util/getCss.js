@@ -6,8 +6,8 @@ export default function getCss( elem, name ){
   const computed = getStyles( elem );
   let result = computed.getPropertyValue( name ) || computed[ name ];
 
-  // 元素不在 DOM 树中
-  if( result === '' && elem.$parents( document.documentElement ) ){
+  // 元素不在 DOM 树中, 尝试从 style 中取值
+  if( result === '' && !elem.$parents( document.documentElement ) ){
     result = style( elem, name );
   }
 

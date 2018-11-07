@@ -2077,6 +2077,19 @@ interface Element {
   $height( value: Number ): Element;
 
   /**
+   * ( Fat ) 获取元素的样式
+   * @param name 样式名
+   */
+  $css( name: String ): String;
+
+  /**
+   * ( Fat ) 设置元素的样式
+   * @param name 样式名
+   * @param value 样式值
+   */
+  $css( name: String, value: String ): Element;
+
+  /**
    * ( Fat ) 读取时获取元素的小写 nodeName;
    * 不可写入
    */

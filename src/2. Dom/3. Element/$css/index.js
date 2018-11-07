@@ -16,7 +16,7 @@ if( inBrowser ){
   defineValue( ElementProto, '$css', function( name ){
     return access( this, name, arguments, function( name, value ){
       return value === undefined ? css( this, name )
-                                 : style( this, name, vlaue );
+                                 : style( this, name, value );
     });
   });
 

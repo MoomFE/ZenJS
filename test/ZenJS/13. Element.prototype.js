@@ -738,6 +738,55 @@ describes.push({
 
             div.$remove();
           }
+        }, {
+          name: 'Get other',
+          it: function(){
+            var div = window.div.$appendTo( document.documentElement );
+            var style = div.style;
+
+            div.$css('width').should.equals( window.innerWidth + 'px' );
+            div.$css('height').should.equals('0px');
+            style.height = style.width = '100px';
+            div.$css('width').should.equals('100px');
+            div.$css('height').should.equals('100px');
+
+            div.$css('opacity').should.equals('1');
+            style.opacity = 0.5;
+            div.$css('opacity').should.equals('0.5');
+
+            div.$remove();
+          }
+        }, {
+          name: 'Set css',
+          it: function(){
+            var div = window.div.$appendTo( document.documentElement );
+
+            div.$css( 'height', 100 );
+            div.$css( 'width', 100 );
+            div.$css( 'width' ).should.equals('100px');
+            div.$css( 'height' ).should.equals('100px');
+
+            div.$css( 'opacity', 0.5 );
+            div.$css( 'opacity' ).should.equals('0.5');
+
+            div.$remove();
+          }
+        }, {
+          name: 'Get style ( not in dom )',
+          it: function(){
+            var div = window.div;
+            var style = div.style;
+
+            div.$css('width').should.equals('');
+            div.$css('height').should.equals('');
+            style.height = style.width = '100px';
+            div.$css('width').should.equals('100px');
+            div.$css('height').should.equals('100px');
+
+            div.$css('opacity').should.equals('1');
+            style.opacity = 0.5;
+            div.$css('opacity').should.equals('0.5');
+          }
         }
       ]
     }

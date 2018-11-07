@@ -2974,22 +2974,78 @@
     return vendorPropName(name) || name;
   }
 
+  var cssNumber = {
+    "animationIterationCount": true,
+    "columnCount": true,
+    "fillOpacity": true,
+    "flexGrow": true,
+    "flexShrink": true,
+    "fontWeight": true,
+    "lineHeight": true,
+    "opacity": true,
+    "order": true,
+    "orphans": true,
+    "widows": true,
+    "zIndex": true,
+    "zoom": true
+  };
+
+  /**
+   * 判断当设置克隆元素的背景相关样式为空时, 是否会清空原元素的样式
+   */
+
+  var supportsClearCloneStyle = false;
+
+  if (inBrowser) {
+    var div$1 = document.createElement('div');
+    div$1.style.backgroundClip = 'content-box';
+    div$1.cloneNode(true).style.backgroundClip = '';
+    supportsClearCloneStyle = div$1.style.backgroundClip === "content-box";
+  }
+
+  var supportsClearCloneStyle$1 = supportsClearCloneStyle;
+
   function style(elem, name, value) {
     // 转为驼峰写法
     var origName = camelCase(name); // 是否是 css 变量
 
-    var isCustomProp = rcustomProp.test(name); // 转为浏览器兼容写法
+    var isCustomProp = rcustomProp.test(name); // 
+
+    var style = elem.style; // 转为浏览器兼容写法
 
     if (!isCustomProp) {
       name = finalPropName(origName);
     } // setter
+
+
+    if (value !== undefined) {
+      if (value == null || value !== value) {
+        return;
+      }
+
+      if (isNumber(value)) {
+        value += cssNumber[origName] ? '' : 'px';
+      }
+
+      if (supportsClearCloneStyle$1 && value === '' && name.indexOf("background") === 0) {
+        style[name] = 'inherit';
+      }
+
+      if (isCustomProp) {
+        style.setProperty(name, value);
+      } else {
+        style[name] = value;
+      }
+    } else {
+      return style[name];
+    }
   }
 
   function getCss(elem, name) {
     var computed = getStyles(elem);
-    var result = computed.getPropertyValue(name) || computed[name]; // 元素不在 DOM 树中
+    var result = computed.getPropertyValue(name) || computed[name]; // 元素不在 DOM 树中, 尝试从 style 中取值
 
-    if (result === '' && elem.$parents(document.documentElement)) {
+    if (result === '' && !elem.$parents(document.documentElement)) {
       result = style(elem, name);
     }
 
@@ -3037,7 +3093,7 @@
 
     defineValue(ElementProto, '$css', function (name) {
       return access$1(this, name, arguments, function (name, value) {
-        return value === undefined ? css(this, name) : style(this, name, vlaue);
+        return value === undefined ? css(this, name) : style(this, name, value);
       });
     });
   }

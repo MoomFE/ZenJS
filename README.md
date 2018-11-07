@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 97.53kb | 25.79kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 34.93kb | 12.64kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 91.00kb | 25.35kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 90.98kb | 25.33kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 98.76kb | 26.16kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 35.45kb | 12.87kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 92.14kb | 25.71kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 92.13kb | 25.70kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
@@ -214,8 +214,10 @@
   - $parents
   - $siblings
   - $prop
+  - $hasProp
   - $removeProp / $deleteProp
   - $attr
+  - $hasAttr
   - $removeAttr / $deleteAttr
   - $append
   - $prepend
@@ -232,6 +234,7 @@
   - $width
   - $val / $value
   - $height
+  - $css
   - _nodeName
 
 - EventTarget.prototype ( Fat )
