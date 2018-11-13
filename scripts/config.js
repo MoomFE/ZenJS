@@ -101,7 +101,7 @@ function add( input, umd, umd_min, cjs, es ){
 function addPlugin( input, name ){
   add.apply( null, [ input ].concat(
     [ '', '.min', '.common', '.esm' ].map( format => {
-      return 'dist/Plugins/cookie/zen.plugin.{}.js'.replace( '{}', name + format );
+      return 'dist/plugins/cookie/zen.plugin.{}.js'.replace( '{}', name + format );
     })
   ));
 }
@@ -112,7 +112,7 @@ add( undefined, undefined, 'dist/zen.min.js', 'dist/zen.common.js', 'dist/zen.es
 // DOM 版本, 包含核心代码及 DOM API, 没有安装插件
 add( 'src/build/fat.js', 'dist/zen.fat.js', 'dist/zen.fat.min.js', 'dist/zen.fat.common.js', 'dist/zen.fat.esm.js' );
 // 插件, 需要使用时自主引用
-addPlugin( 'src/3. Plugins/cookie/index.js', 'cookie' );
+addPlugin( 'src/3. plugins/cookie/index.js', 'cookie' );
 
 configuration.forEach(( config, index ) => {
   configuration[ index ] = extend( true, {}, defaultConfig, config );
