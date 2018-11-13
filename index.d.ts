@@ -1,3 +1,9 @@
+interface ArrayLike<T> {
+  readonly length: number;
+  readonly [n: number]: T;
+}
+
+
 interface ArrayConstructor {
 
   /**
@@ -5,29 +11,36 @@ interface ArrayConstructor {
    * @param array 需要进行分割的数组
    * @param size 分割的长度
    */
-  $chunk( array: any[], size: Number ): any[];
+  $chunk<T>( array: T[], size: Number ): T[][];
 
   /**
    * 传入一个数组, 返回一个新的数组 ( 浅拷贝 )
    * @param source 需要复制的数组
    * @param array 将需要复制的数组合并到这个数组后进行返回, 返回的依旧是一个新的数组
    */
-  $copy( source: any[], array: any[] ): any[];
+  $copy<T>( source: T[], array: any[] ): T[];
 
   /**
    * 快捷创建数组
    * @param length 需要创建的数组的长度
-   * @param insert 需要填充到数组中的内容, 若传入方法, 将会向方法内传入当前 index, 然后将方法的返回值填充到数组中
-   * @param isInsert 若值为真, 即使二个参数 insert 是方法, 都会直接进行插入
+   * @param insert 需要填充到数组中的内容
    */
-  $create( length: Number, insert: any, isInsert: Boolean ): any[];
+  $create<T>( length: Number, insert: T ): T[];
+
+  /**
+   * 快捷创建数组
+   * @param length 需要创建的数组的长度
+   * @param insert 会向方法内传入当前数组创建进度的 index， 然后将方法的返回值填充到数组中
+   * @param isInsert 若值为真, 则不执行方法, 直接将方法作为填充内容 - default: false
+   */
+  $create<T>( length: Number, insert: ( index: Number ) => T, isInsert: Boolean = false ): T[];
 
   /**
    * 调用传入方法遍历传入数组
    * @param array 需要进行遍历的数组
    * @param callback 遍历数组时调用的方法, 方法返回 false 时, 将终止后续遍历
    */
-  $each( array: any[], callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
+  $each<T>( array: T[], callback: ( value: T, index: Number, arr: T[] ) => Boolean ): T[];
 
   /**
    * 比较两个数组的内容是否相同, 与 Object.$equals 不同, 比较的两个数组可以是类数组对象
@@ -35,7 +48,7 @@ interface ArrayConstructor {
    * @param array2 进行比较的第二个数组
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $equals( array: any[], array2: any[], predicate: Function | Boolean ): Boolean;
+  $equals<T,U>( array: ArrayLike<T>, array2: ArrayLike<U>, predicate: Function | Boolean ): Boolean;
 
   /**
    * 判断传入对象是否是一个类数组对象
@@ -48,7 +61,7 @@ interface ArrayConstructor {
    * @param value 需要转为数组的对象
    * @param transKey json 对象转数组时使用, 是否将传入对象的 key 转为数组 ( 默认是 value ) - default: false
    */
-  $toArray( value: any, transKey?: false ): Array;
+  $toArray<T>( value: ArrayLike<T>, transKey?: false ): T[];
 
 }
 
@@ -58,27 +71,27 @@ interface Array<T> {
    * 创建一个新的数组, 将数组按照指定的长度进行分割, 如果数组不能均分, 则最后的数组中是数组剩余的元素
    * @param size 分割的长度
    */
-  $chunk( size: Number ): any[];
+  $chunk( size: Number ): this[];
 
   /**
    * 调用传入方法遍历当前数组
    * @param callback 遍历数组时调用的方法, 方法返回 false 时, 将终止后续遍历
    */
-  $each( callback: ( value: any, index: Number, arr: any[] ) => Boolean ): any[];
+  $each( callback: ( value: T, index: Number, arr: T[] ) => Boolean ): this;
 
   /**
    * 比较当前数组和目标数组的内容是否相同, 与 Object.$equals 不同, 比较的两个数组可以是类数组对象
    * @param array 进行比较的数组
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $equals( array: any[], predicate: Function | Boolean ): Boolean;
+  $equals( array: ArrayLike<T>, predicate: Function | Boolean ): Boolean;
 
   /**
    * 在数组指定位置插入对象
    * @param index 插入在数组中的位置, 可为负数
    * @param args 需要插入的对象, 可以是多个
    */
-  $add( index: Number, ...args: any[] ): any[];
+  $add( index: Number, ...args: any[] ): this;
 
   /**
    * 在数组指定位置删除若干对象
@@ -86,7 +99,7 @@ interface Array<T> {
    * @param num 需要从该下标开始删除几个对象 - default: 1
    * @param returnDeleted 是否返回删除的数据 - default: false
    */
-  $delete( index: Number, num: Number = 1, returnDeleted?: false ): any[];
+  $delete( index: Number, num: Number = 1, returnDeleted?: false ): this;
 
   /**
    * 在数组指定位置删除若干对象
@@ -94,46 +107,46 @@ interface Array<T> {
    * @param num 需要从该下标开始删除几个对象 - default: 1
    * @param returnDeleted 是否返回删除的数据 - default: false
    */
-  $remove( index: Number, num: Number = 1, returnDeleted?: false ): any[];
+  $remove( index: Number, num: Number = 1, returnDeleted?: false ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $deleteValue( value: any, predicate: Function | Boolean ): any[];
+  $deleteValue( value: any, predicate: ( ( value: T ) => Boolean ) | Boolean ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
-   * @param predicate 用于自定义筛选内容
+   * @param predicate 用于自定义筛选内容, 方法内返回 true 则代表删除
    */
-  $deleteValue( predicate: Function ): any[];
+  $deleteValue( predicate: ( value: T ) => Boolean ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $removeValue( value: any, predicate: Function | Boolean ): any[];
+  $removeValue( value: any, predicate: ( ( value: T ) => Boolean ) | Boolean ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
-   * @param predicate 用于自定义筛选内容
+   * @param predicate 用于自定义筛选内容, 方法内返回 true 则代表删除
    */
-  $removeValue( predicate: Function ): any[];
+  $removeValue( predicate: ( value: T ) => Boolean ): this;
 
   /**
    * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组后
    * @param args 需要添加到数组后的数据
    */
-  $concat( ...args: any[] ): any[];
+  $concat( ...args: any[] ): this;
 
   /**
    * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组指定下标位置
    * @param index 需要插入到数组位置的下标
    * @param args 需要添加的数据
    */
-  $concatTo( index: Number, ...args: any[] ): any[];
+  $concatTo( index: Number, ...args: any[] ): this;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的值
