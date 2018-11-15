@@ -110,11 +110,13 @@ each({
   const returnAll = name.indexOf('All') > -1;
 
   // Index, Not, Chunk
-  [ '', 'Index' ].forEach(( suffix, index ) => {
+  [ '', 'Index', 'Chunk' ].forEach(( suffix, index ) => {
     /** 全名 */
     const fullname = name + suffix;
     /** 是否是返回 index */
     const returnIndex = index === 1 ? 0 : 1;
+    /** 是否直接返回 chunk */
+    const returnChunk = index === 2;
 
     defineValue( ArrayProto, fullname, function( obj, predicate, fromIndex ){
       // 获取结果集
@@ -122,13 +124,19 @@ each({
 
       // 返回全部结果集
       if( returnAll ){
-        return result.map( arr => arr[ returnIndex ] );
+        return returnChunk ? result
+                           : result.map( arr => arr[ returnIndex ] );
       }
 
       // 返回单个结果集
-      return result.length ? result[ 0 ][ returnIndex ]
-                           : returnIndex ? undefined
-                                         : -1;
+      if( result.length ){
+        return returnChunk ? result[ 0 ]
+                           : result[ 0 ][ returnIndex ];
+      }else{
+        // 返回 chunk 时, 没找到结果也返回 undefined
+        return returnIndex ? undefined
+                           : -1;
+      }
     });
   });
 
