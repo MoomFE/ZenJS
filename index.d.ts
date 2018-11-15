@@ -186,33 +186,33 @@ interface Array<T> {
    * @param traversal 检测值的方法, 方法返回 Boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : T | undefined;
+  $findIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( arr: any[], fromIndex?: Number ): T | undefined;
+  $findIndex( arr: any[], fromIndex?: Number ): Number;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): T | undefined;
+  $findIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): Number;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( obj: any, fromIndex?: Number ): T | undefined;
+  $findIndex( obj: any, fromIndex?: Number ): Number;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): T | undefined;
+  $findIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): Number;
 
   /**
    * 使用传入的方法逆序遍历集合的内容, 返回首个符合传入方法检测的值
@@ -252,33 +252,33 @@ interface Array<T> {
    * @param traversal 检测值的方法, 方法返回 Boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : T | undefined;
+  $findLastIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( arr: any[], fromIndex?: Number ): T | undefined;
+  $findLastIndex( arr: any[], fromIndex?: Number ): Number;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): T | undefined;
+  $findLastIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): Number;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( obj: any, fromIndex?: Number ): T | undefined;
+  $findLastIndex( obj: any, fromIndex?: Number ): Number;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): T | undefined;
+  $findLastIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): Number;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回所有符合传入方法检测的值
@@ -312,6 +312,39 @@ interface Array<T> {
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
   $findAll( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): T[];
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回所有符合传入方法检测的下标
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number[];
+  /**
+   * 遍历集合的内容, 查找到所有符合传入筛选条件的下标
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllIndex( arr: any[], fromIndex?: Number ): Number[];
+  /**
+   * 遍历集合的内容, 查找到所有符合传入筛选条件的下标
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): Number[];
+  /**
+   * 遍历集合的内容, 查找到所有符合传入筛选条件的下标
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllIndex( obj: any, fromIndex?: Number ): Number[];
+  /**
+   * 遍历集合的内容, 查找到所有符合传入筛选条件的下标
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean,fromIndex?: Number ): Number[];
 
   /**
    * 获取指定下标的对象

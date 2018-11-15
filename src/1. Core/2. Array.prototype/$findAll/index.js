@@ -98,23 +98,28 @@ function find( self, reverse, count, /**/ obj, predicate, fromIndex /**/ ){
 };
 
 each({
-  $find: [ false, 1 ],
-  $findIndex: [ false, 1 ],
-  $findLast: [ true, 1 ],
-  $findLastIndex: [ true, 1 ],
-  $findAll: [ false, Infinity ]
+  $find: [ [ false, 1 ] ],
+  $findIndex: [ [ false, 1 ] ],
+  $findLast: [ [ true, 1 ] ],
+  $findLastIndex: [ [ true, 1 ] ],
+  $findAll: [ [ false, Infinity ], result => result.map( arr => arr[ 1 ] ) ],
+  $findAllIndex: [ [ false, Infinity ], result => result.map( arr => arr[ 0 ] ) ]
 }, ( name, args ) => {
-  const returnAll = name.indexOf('All') > -1;
+  /** 是否返回 Index */
   const returnIndex = name.indexOf('Index') > -1;
-  const reverse = args[ 0 ];
-  const count = args[ 1 ];
+  /** 是否反向查询 */
+  const reverse = args[ 0 ][ 0 ];
+  /** 保存的查找结果数量 */
+  const count = args[ 0 ][ 1 ];
+  /** 自定义回调 */
+  const callback = args[ 1 ];
 
   defineValue( ArrayProto, name, function( obj, predicate, fromIndex ){
     const result = find( this, reverse, count, obj, predicate, fromIndex );
 
-    return returnAll ? result.map( arr => arr[ 1 ] )
-                     : result.length ? result[ 0 ][ returnIndex ? 0 : 1 ]
-                                     : returnIndex ? -1
-                                                   : undefined;
+    return callback ? callback( result )
+                    : result.length ? result[ 0 ][ returnIndex ? 0 : 1 ]
+                                    : returnIndex ? -1
+                                                  : undefined;
   });
 });

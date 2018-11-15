@@ -878,21 +878,35 @@
     return result;
   }
   each({
-    $find: [false, 1],
-    $findIndex: [false, 1],
-    $findLast: [true, 1],
-    $findLastIndex: [true, 1],
-    $findAll: [false, Infinity]
+    $find: [[false, 1]],
+    $findIndex: [[false, 1]],
+    $findLast: [[true, 1]],
+    $findLastIndex: [[true, 1]],
+    $findAll: [[false, Infinity], function (result) {
+      return result.map(function (arr) {
+        return arr[1];
+      });
+    }],
+    $findAllIndex: [[false, Infinity], function (result) {
+      return result.map(function (arr) {
+        return arr[0];
+      });
+    }]
   }, function (name, args) {
-    var returnAll = name.indexOf('All') > -1;
+    /** 是否返回 Index */
     var returnIndex = name.indexOf('Index') > -1;
-    var reverse = args[0];
-    var count = args[1];
+    /** 是否反向查询 */
+
+    var reverse = args[0][0];
+    /** 保存的查找结果数量 */
+
+    var count = args[0][1];
+    /** 自定义回调 */
+
+    var callback = args[1];
     defineValue(ArrayProto, name, function (obj, predicate, fromIndex) {
       var result = find(this, reverse, count, obj, predicate, fromIndex);
-      return returnAll ? result.map(function (arr) {
-        return arr[1];
-      }) : result.length ? result[0][returnIndex ? 0 : 1] : returnIndex ? -1 : undefined;
+      return callback ? callback(result) : result.length ? result[0][returnIndex ? 0 : 1] : returnIndex ? -1 : undefined;
     });
   });
 
