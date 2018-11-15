@@ -12,6 +12,7 @@ describes.push({
             Number.$isNumber( 0 ).should.true;
             Number.$isNumber( 1 ).should.true;
             Number.$isNumber( 9007199254740991 ).should.true;
+            Number.$isNumber( Infinity ).should.false;
           }
         }, {
           name: 'Test string type',
@@ -22,12 +23,18 @@ describes.push({
             Number.$isNumber( '1' ).should.true;
             Number.$isNumber( '9007199254740991' ).should.true;
             Number.$isNumber( 'ZenJS' ).should.false;
+            Number.$isNumber( 'NaN' ).should.false;
+            Number.$isNumber( 'Infinity' ).should.false;
+            Number.$isNumber( '[]' ).should.false;
+            Number.$isNumber( '{}' ).should.false;
+            Number.$isNumber( 'true' ).should.false;
+            Number.$isNumber( 'false' ).should.false;
+            Number.$isNumber( 'function zen( a, b, c ){}' ).should.false;
           }
         }, {
           name: 'Test other types',
           it: function(){
             Number.$isNumber( NaN ).should.false;
-            Number.$isNumber( Infinity ).should.false;
             Number.$isNumber( [] ).should.false;
             Number.$isNumber( {} ).should.false;
             Number.$isNumber( true ).should.false;

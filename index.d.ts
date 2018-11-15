@@ -1259,7 +1259,7 @@ interface ZenJS {
   isArray( obj: any ): Boolean;
 
   /**
-   * 判断传入对象是否是 Number 类型, 并且不为 NaN 和 Infinity
+   * 判断传入对象是否是 Number 类型, 并且不为 NaN
    * @param obj 需要判断的对象
    */
   isNumber( obj: any ): Boolean;
