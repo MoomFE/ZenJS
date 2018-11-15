@@ -687,6 +687,15 @@ defineValue(ArrayProto, '$concatTo', function (index) {
 });
 
 /**
+ * 判断传入对象是否是 Boolean 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
+function isBoolean$1(obj) {
+  return typeof obj === 'boolean';
+}
+
+/**
  * 判断传入对象是否是空对象
  * @param {*} obj 需要判断的对象
  */
@@ -699,98 +708,15 @@ function isEmptyObject(obj) {
 }
 
 /**
- * @param {Array} self 进行遍历的数组
- * @param {Number} count 保存的查找结果数量
- * @param {Boolean} reverse 是否反向查询
- * @param {IArguments} args 来源方法的 arguments
+ * 方法返回对象的遍历方法
+ * @param {*} obj 
+ * @param {*} predicate 
  */
-
-function findIndex(self, count, reverse, args, predicate, obj, fromIndex) {
-  var length; // 传入的内容不可检索或者数组为空
-
-  if (predicate == null || !(length = self.length)) {
-    return -1;
-  }
-  /** 遍历 */
-
-
-  var traversal;
-  /** 首个参数是否是方法类型 */
-
-  var predicateIsFunction = predicate[isFunction$1]; // 首个参数是方法或布尔值
-
-  if (predicateIsFunction || predicate[isBoolean]) {
-    // $findIndex( Function, fromIndex )
-    // 传入的方法是用作数组遍历时的手动进行检测
-    if (predicateIsFunction && (args.length === 1 || isNumber(obj))) {
-      traversal = predicate;
-      fromIndex = obj || (reverse ? -1 : 0);
-    } // $findIndex( Function | Boolean, key, value, fromIndex )
-    // $findIndex( Function | Boolean, Array, fromIndex )
-    // $findIndex( Function | Boolean, Object, fromIndex )
-    // 传入的方法是用作值比对时进行检测
-    else {
-        // 正常参数校正 index 为从 1 的地方开始
-        args = parametersRest(args, 1); // 指定值比对时的方法
-
-        if (!predicateIsFunction) {
-          predicate = predicate ? congruence : equals;
-        }
-      }
-  } // $findIndex( key, value, fromIndex )
-  // $findIndex( Array, fromIndex )
-  // $findIndex( Object, fromIndex )
-  else {
-      // 首个参数不是对比的方法, 那么校正 obj 和 fromIndex 的位置
-      obj = args[0];
-      fromIndex = args[1]; // 默认使用全等的比较方法
-
-      predicate = congruence;
-    } // 指定值遍历时的检测方法
-
-
-  if (!traversal) {
-    // 第一个参数不是数组或对象, 视为传入 key, value 进行匹配
-    if (typeof obj !== 'object') {
-      obj = fromIndex === undefined ? [obj] : [obj, fromIndex];
-      fromIndex = args[2];
-    } // 将类数组类型的按照键值对进行分割
-    // $findIndex( [ 'key', 'value', 'key2', 'value2' ] ) -> [ [ 'key', 'value' ], [ 'key2', 'value2' ] ]
-
-
-    if (isArrayLike(obj)) {
-      obj = chunk(obj, 2);
-    }
-
-    traversal = getTraversal(obj, predicate);
-  }
-  /** 初始开始遍历的 index */
-
-
-  var index = isNumber(fromIndex) ? fixArrayIndex(self, fromIndex) : reverse ? length - 1 : 0;
-  /** 值, 缓存 */
-
-  var value;
-  /** 每次自增的值 */
-
-  var add = reverse ? -1 : 1;
-  /** 返回值 */
-
-  var result = []; // 遍历数组内的对象, 交给检测方法进行检测
-
-  for (; index >= 0 && index <= length - 1; index += add) {
-    if (traversal(value = self[index]) && result.$push([index, value]).length >= count) {
-      return result;
-    }
-  }
-
-  return result;
-}
 
 function getTraversal(obj, predicate) {
   var objIsArray = obj[isArray];
   return function (object) {
-    if (object == null || isEmptyObject(object)) {
+    if (obj == null || isEmptyObject(object)) {
       return false;
     }
 
@@ -801,14 +727,14 @@ function getTraversal(obj, predicate) {
 function checkArray(source, object, predicate) {
   var length = source.length;
   var index = 0,
-      chunk$$1,
+      chunk,
       key; // 遍历检测对象
 
   for (; index < length; index++) {
-    chunk$$1 = source[index];
-    key = chunk$$1[0];
+    chunk = source[index];
+    key = chunk[0];
 
-    if (!(key in object && (chunk$$1.length === 1 || predicate(chunk$$1[1], object[key])))) {
+    if (!(key in object && (chunk.length === 1 || predicate(chunk[1], object[key])))) {
       return false;
     }
   }
@@ -833,24 +759,127 @@ function checkObject(source, object, predicate) {
   return true;
 }
 
-defineValue(ArrayProto, '$find', function (predicate, obj, fromIndex) {
-  var result = findIndex(this, 1, false, arguments, predicate, obj, fromIndex);
+/**
+ * @param {Array} self 进行遍历的数组
+ * @param {Boolean} reverse 是否反向查询
+ * @param {Number} count 保存的查找结果数量
+ * @param {IArguments} args 来源方法的 arguments
+ */
+
+function find(self, reverse, count, args,
+/**/
+obj, predicate, fromIndex
+/**/
+) {
+  var length; // 传入的内容不可检索或者数组为空
+
+  if (obj == null || !(length = self.length)) {
+    return -1;
+  }
+  /** 遍历方法 */
+
+
+  var traversal; // 首个参数是方法或布尔值
+  // $findIndex( Function, fromIndex? )
+
+  if (isFunction(obj)) {
+    traversal = obj;
+    fromIndex = predicate;
+  } // $findIndex( Array | Object )
+  // $findIndex( Array | Object, fromIndex )
+  // $findIndex( Array | Object, Function | Boolean )
+  // $findIndex( Array | Object, Function | Boolean, fromIndex )
+  else {
+      // $findIndex( Array | Object, fromIndex )
+      if (isNumber(predicate)) {
+        fromIndex = predicate;
+        predicate = congruence;
+      } // $findIndex( Array | Object )
+      // $findIndex( Array | Object, Boolean )
+      // $findIndex( Array | Object, Boolean, fromIndex )
+      else if (!isFunction(predicate)) {
+          // $findIndex( Array | Object, Boolean )
+          // $findIndex( Array | Object, Boolean, fromIndex )
+          if (isBoolean$1(predicate)) {
+            predicate = predicate ? congruence : equals;
+          } // $findIndex( Array | Object )
+          else {
+              predicate = congruence;
+            }
+        }
+    } // 指定值遍历时的检测方法
+
+
+  if (!traversal) {
+    if (isArrayLike(obj)) {
+      obj = chunk(obj, 2);
+    }
+
+    traversal = getTraversal(obj, predicate);
+  } // 矫正 fromIndex
+
+
+  fromIndex = fromIndex || (reverse ? -1 : 0);
+  /** 初始开始遍历的 index */
+
+  var index = isNumber(fromIndex) ? fixArrayIndex(self, fromIndex) : reverse ? length - 1 : 0;
+  /** 值, 缓存 */
+
+  var value;
+  /** 每次自增的值 */
+
+  var add = reverse ? -1 : 1;
+  /** 返回值 */
+
+  var result = [];
+
+  for (; index >= 0 && index <= length - 1; index += add) {
+    if (!!traversal(value = self[index]) && result.$push([index, value]).length >= count) {
+      return result;
+    }
+  }
+
+  return result;
+}
+
+defineValue(ArrayProto, '$find', function (obj, predicate, fromIndex) {
+  var result = find(this, false, 1, arguments,
+  /**/
+  obj, predicate, fromIndex
+  /**/
+  );
   return (result[0] || [])[1];
 });
-defineValue(ArrayProto, '$findIndex', function (predicate, obj, fromIndex) {
-  var result = findIndex(this, 1, false, arguments, predicate, obj, fromIndex);
+defineValue(ArrayProto, '$findIndex', function (obj, predicate, fromIndex) {
+  var result = find(this, false, 1, arguments,
+  /**/
+  obj, predicate, fromIndex
+  /**/
+  );
   return result.length ? result[0][0] : -1;
 });
-defineValue(ArrayProto, '$findLast', function (predicate, obj, fromIndex) {
-  var result = findIndex(this, 1, true, arguments, predicate, obj, fromIndex);
+defineValue(ArrayProto, '$findLast', function (obj, predicate, fromIndex) {
+  var result = find(this, true, 1, arguments,
+  /**/
+  obj, predicate, fromIndex
+  /**/
+  );
   return (result[0] || [])[1];
 });
-defineValue(ArrayProto, '$findLastIndex', function (predicate, obj, fromIndex) {
-  var result = findIndex(this, 1, true, arguments, predicate, obj, fromIndex);
+defineValue(ArrayProto, '$findLastIndex', function (obj, predicate, fromIndex) {
+  var result = find(this, true, 1, arguments,
+  /**/
+  obj, predicate, fromIndex
+  /**/
+  );
   return result.length ? result[0][0] : -1;
 });
-defineValue(ArrayProto, '$findAll', function (predicate, obj, fromIndex) {
-  return findIndex(this, Infinity, false, arguments, predicate, obj, fromIndex).map(function (arr) {
+defineValue(ArrayProto, '$findAll', function (obj, predicate, fromIndex) {
+  return find(this, false, Infinity, arguments,
+  /**/
+  obj, predicate, fromIndex
+  /**/
+  ).map(function (arr) {
     return arr[1];
   });
 });
@@ -949,15 +978,6 @@ defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
     return this;
   });
 });
-
-/**
- * 判断传入对象是否是 Boolean 类型
- * @param {any} obj 需要判断的对象
- * @returns {Boolean}
- */
-function isBoolean$1(obj) {
-  return typeof obj === 'boolean';
-}
 
 defineValue(Object, '$assign', function (shallow) {
   if (isBoolean$1(shallow)) {
@@ -3424,9 +3444,9 @@ dispatch._next = ModifiersList.dispatched;
 
 add.once = add.one = function (elem, type, events, namespace) {
   events = events[type] || [];
-  return events.$findIndex(equals$1, {
+  return events.$findIndex({
     namespace: namespace
-  }) === -1;
+  }, equals$1) === -1;
 };
 /**
  * .ctrl || .shift || .alt || .meta

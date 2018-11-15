@@ -744,7 +744,7 @@ describes.push({
             var div = window.div.$appendTo( document.documentElement );
             var style = div.style;
 
-            div.$css('width').should.equals( window.innerWidth + 'px' );
+            div.$css('width').should.equals( document.body.clientWidth + 'px' );
             div.$css('height').should.equals('0px');
             style.height = style.width = '100px';
             div.$css('width').should.equals('100px');
