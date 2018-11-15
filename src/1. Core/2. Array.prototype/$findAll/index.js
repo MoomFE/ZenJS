@@ -98,28 +98,38 @@ function find( self, reverse, count, /**/ obj, predicate, fromIndex /**/ ){
 };
 
 each({
-  $find: [ [ false, 1 ] ],
-  $findIndex: [ [ false, 1 ] ],
-  $findLast: [ [ true, 1 ] ],
-  $findLastIndex: [ [ true, 1 ] ],
-  $findAll: [ [ false, Infinity ], result => result.map( arr => arr[ 1 ] ) ],
-  $findAllIndex: [ [ false, Infinity ], result => result.map( arr => arr[ 0 ] ) ]
+  $find: [ false, 1 ],
+  $findLast: [ true, 1 ],
+  $findAll: [ false, Infinity ],
 }, ( name, args ) => {
-  /** 是否返回 Index */
-  const returnIndex = name.indexOf('Index') > -1;
   /** 是否反向查询 */
-  const reverse = args[ 0 ][ 0 ];
+  const reverse = args[ 0 ];
   /** 保存的查找结果数量 */
-  const count = args[ 0 ][ 1 ];
-  /** 自定义回调 */
-  const callback = args[ 1 ];
+  const count = args[ 1 ];
+  /** 是否是返回全部结果集 */
+  const returnAll = name.indexOf('All') > -1;
 
-  defineValue( ArrayProto, name, function( obj, predicate, fromIndex ){
-    const result = find( this, reverse, count, obj, predicate, fromIndex );
+  // Index, Not, Chunk
+  [ '', 'Index' ].forEach(( suffix, index ) => {
+    /** 全名 */
+    const fullname = name + suffix;
+    /** 是否是返回 index */
+    const returnIndex = index === 1 ? 0 : 1;
 
-    return callback ? callback( result )
-                    : result.length ? result[ 0 ][ returnIndex ? 0 : 1 ]
-                                    : returnIndex ? -1
-                                                  : undefined;
+    defineValue( ArrayProto, fullname, function( obj, predicate, fromIndex ){
+      // 获取结果集
+      const result = find( this, reverse, count, obj, predicate, fromIndex );
+
+      // 返回全部结果集
+      if( returnAll ){
+        return result.map( arr => arr[ returnIndex ] );
+      }
+
+      // 返回单个结果集
+      return result.length ? result[ 0 ][ returnIndex ]
+                           : returnIndex ? undefined
+                                         : -1;
+    });
   });
+
 });
