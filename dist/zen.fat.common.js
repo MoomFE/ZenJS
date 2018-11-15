@@ -759,6 +759,33 @@ function checkObject(source, object, predicate) {
   return true;
 }
 
+function each(obj, callback) {
+  if (obj == null) {
+    return obj;
+  }
+
+  var oKeys = keys(obj),
+      length = oKeys.length;
+  var index = 0,
+      key,
+      value;
+
+  for (; index < length; index++) {
+    key = oKeys[index];
+    value = obj[key];
+
+    if (callback.call(value, key, value, obj) === false) {
+      break;
+    }
+  }
+
+  return obj;
+}
+defineValue(Object, '$each', each);
+defineValue(ObjectProto, '$each', function (callback) {
+  return each(this, callback);
+});
+
 /**
  * @param {Array} self 进行遍历的数组
  * @param {Boolean} reverse 是否反向查询
@@ -766,7 +793,7 @@ function checkObject(source, object, predicate) {
  * @param {IArguments} args 来源方法的 arguments
  */
 
-function find(self, reverse, count, args,
+function find(self, reverse, count,
 /**/
 obj, predicate, fromIndex
 /**/
@@ -841,46 +868,22 @@ obj, predicate, fromIndex
 
   return result;
 }
-
-defineValue(ArrayProto, '$find', function (obj, predicate, fromIndex) {
-  var result = find(this, false, 1, arguments,
-  /**/
-  obj, predicate, fromIndex
-  /**/
-  );
-  return (result[0] || [])[1];
-});
-defineValue(ArrayProto, '$findIndex', function (obj, predicate, fromIndex) {
-  var result = find(this, false, 1, arguments,
-  /**/
-  obj, predicate, fromIndex
-  /**/
-  );
-  return result.length ? result[0][0] : -1;
-});
-defineValue(ArrayProto, '$findLast', function (obj, predicate, fromIndex) {
-  var result = find(this, true, 1, arguments,
-  /**/
-  obj, predicate, fromIndex
-  /**/
-  );
-  return (result[0] || [])[1];
-});
-defineValue(ArrayProto, '$findLastIndex', function (obj, predicate, fromIndex) {
-  var result = find(this, true, 1, arguments,
-  /**/
-  obj, predicate, fromIndex
-  /**/
-  );
-  return result.length ? result[0][0] : -1;
-});
-defineValue(ArrayProto, '$findAll', function (obj, predicate, fromIndex) {
-  return find(this, false, Infinity, arguments,
-  /**/
-  obj, predicate, fromIndex
-  /**/
-  ).map(function (arr) {
-    return arr[1];
+each({
+  $find: [false, 1],
+  $findIndex: [false, 1],
+  $findLast: [true, 1],
+  $findLastIndex: [true, 1],
+  $findAll: [false, Infinity]
+}, function (name, args) {
+  var returnAll = name.indexOf('All') > -1;
+  var returnIndex = name.indexOf('Index') > -1;
+  var reverse = args[0];
+  var count = args[1];
+  defineValue(ArrayProto, name, function (obj, predicate, fromIndex) {
+    var result = find(this, reverse, count, obj, predicate, fromIndex);
+    return returnAll ? result.map(function (arr) {
+      return arr[1];
+    }) : result.length ? result[0][returnIndex ? 0 : 1] : returnIndex ? -1 : undefined;
   });
 });
 
@@ -1184,33 +1187,6 @@ defineValue(Object, '$equals', function (obj, obj2) {
 });
 defineValue(ObjectProto, '$equals', function (obj2) {
   return equals$2(this, obj2);
-});
-
-function each(obj, callback) {
-  if (obj == null) {
-    return obj;
-  }
-
-  var oKeys = keys(obj),
-      length = oKeys.length;
-  var index = 0,
-      key,
-      value;
-
-  for (; index < length; index++) {
-    key = oKeys[index];
-    value = obj[key];
-
-    if (callback.call(value, key, value, obj) === false) {
-      break;
-    }
-  }
-
-  return obj;
-}
-defineValue(Object, '$each', each);
-defineValue(ObjectProto, '$each', function (callback) {
-  return each(this, callback);
 });
 
 defineValue(Object, '$isEmptyObject', isEmptyObject);

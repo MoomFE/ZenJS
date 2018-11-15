@@ -9,6 +9,7 @@ import isArrayLike from "../../../shared/util/isArrayLike";
 import chunk from "../../../shared/util/chunk";
 import { getTraversal } from "./util";
 import fixArrayIndex from "../../../shared/util/fixArrayIndex";
+import each from "../../3. Object/$each/index";
 
 
 /**
@@ -17,7 +18,7 @@ import fixArrayIndex from "../../../shared/util/fixArrayIndex";
  * @param {Number} count 保存的查找结果数量
  * @param {IArguments} args 来源方法的 arguments
  */
-function find( self, reverse, count, args, /**/ obj, predicate, fromIndex /**/ ){
+function find( self, reverse, count, /**/ obj, predicate, fromIndex /**/ ){
 
   let length;
 
@@ -94,31 +95,26 @@ function find( self, reverse, count, args, /**/ obj, predicate, fromIndex /**/ )
   }
 
   return result;
-}
+};
 
+each({
+  $find: [ false, 1 ],
+  $findIndex: [ false, 1 ],
+  $findLast: [ true, 1 ],
+  $findLastIndex: [ true, 1 ],
+  $findAll: [ false, Infinity ]
+}, ( name, args ) => {
+  const returnAll = name.indexOf('All') > -1;
+  const returnIndex = name.indexOf('Index') > -1;
+  const reverse = args[ 0 ];
+  const count = args[ 1 ];
 
-defineValue( ArrayProto, '$find', function( obj, predicate, fromIndex ){
-  const result = find( this, false, 1, arguments, /**/ obj, predicate, fromIndex /**/ );
-  return ( result[ 0 ] || [] )[ 1 ];
-});
+  defineValue( ArrayProto, name, function( obj, predicate, fromIndex ){
+    const result = find( this, reverse, count, obj, predicate, fromIndex );
 
-defineValue( ArrayProto, '$findIndex', function( obj, predicate, fromIndex ){
-  const result = find( this, false, 1, arguments, /**/ obj, predicate, fromIndex /**/ );
-  return result.length ? result[ 0 ][ 0 ]
-                       : -1;
-});
-
-defineValue( ArrayProto, '$findLast', function( obj, predicate, fromIndex ){
-  const result = find( this, true, 1, arguments, /**/ obj, predicate, fromIndex /**/ );
-  return ( result[ 0 ] || [] )[ 1 ];
-});
-
-defineValue( ArrayProto, '$findLastIndex', function( obj, predicate, fromIndex ){
-  const result = find( this, true, 1, arguments, /**/ obj, predicate, fromIndex /**/ );
-  return result.length ? result[ 0 ][ 0 ]
-                       : -1;
-});
-
-defineValue( ArrayProto, '$findAll', function( obj, predicate, fromIndex ){
-  return find( this, false, Infinity, arguments, /**/ obj, predicate, fromIndex /**/ ).map( arr => arr[ 1 ] );
+    return returnAll ? result.map( arr => arr[ 1 ] )
+                     : result.length ? result[ 0 ][ returnIndex ? 0 : 1 ]
+                                     : returnIndex ? -1
+                                                   : undefined;
+  });
 });
