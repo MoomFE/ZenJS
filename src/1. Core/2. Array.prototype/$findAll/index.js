@@ -20,11 +20,14 @@ import each from "../../3. Object/$each/index";
  */
 function find( self, reverse, count, /**/ obj, predicate, fromIndex /**/ ){
 
+  /** 返回值 */
+  const result = [];
+  /** 当前数组长度 */
   let length;
 
   // 传入的内容不可检索或者数组为空
   if( obj == null || !( length = self.length ) ){
-    return -1;
+    return result;
   }
 
   /** 遍历方法 */
@@ -85,8 +88,6 @@ function find( self, reverse, count, /**/ obj, predicate, fromIndex /**/ ){
   let value;
   /** 每次自增的值 */
   const add = reverse ? -1 : 1;
-  /** 返回值 */
-  const result = [];
 
   for( ; index >= 0 && index <= length - 1; index += add ){
     if( !!traversal( value = self[ index ] ) && result.$push([ index, value ]).length >= count ){
@@ -134,8 +135,8 @@ each({
                            : result[ 0 ][ returnIndex ];
       }else{
         // 返回 chunk 时, 没找到结果也返回 undefined
-        return returnIndex ? undefined
-                           : -1;
+        return returnIndex || returnChunk ? undefined
+                                          : -1;
       }
     });
   });

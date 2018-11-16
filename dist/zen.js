@@ -807,10 +807,14 @@
   obj, predicate, fromIndex
   /**/
   ) {
+    /** 返回值 */
+    var result = [];
+    /** 当前数组长度 */
+
     var length; // 传入的内容不可检索或者数组为空
 
     if (obj == null || !(length = self.length)) {
-      return -1;
+      return result;
     }
     /** 遍历方法 */
 
@@ -865,9 +869,6 @@
     /** 每次自增的值 */
 
     var add = reverse ? -1 : 1;
-    /** 返回值 */
-
-    var result = [];
 
     for (; index >= 0 && index <= length - 1; index += add) {
       if (!!traversal(value = self[index]) && result.$push([index, value]).length >= count) {
@@ -915,7 +916,7 @@
           return returnChunk ? result[0] : result[0][returnIndex];
         } else {
           // 返回 chunk 时, 没找到结果也返回 undefined
-          return returnIndex ? undefined : -1;
+          return returnIndex || returnChunk ? undefined : -1;
         }
       });
     });
