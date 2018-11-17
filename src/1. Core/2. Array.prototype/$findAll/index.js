@@ -16,9 +16,9 @@ import each from "../../3. Object/$each/index";
  * @param {Array} self 进行遍历的数组
  * @param {Boolean} reverse 是否反向查询
  * @param {Number} count 保存的查找结果数量
- * @param {IArguments} args 来源方法的 arguments
+ * @param {Boolean} not 返回 NOT 结果集 ( 非 )
  */
-function find( self, reverse, count, /**/ obj, predicate, fromIndex /**/ ){
+function find( self, reverse, count, not, /**/ obj, predicate, fromIndex /**/ ){
 
   /** 返回值 */
   const result = [];
@@ -90,7 +90,7 @@ function find( self, reverse, count, /**/ obj, predicate, fromIndex /**/ ){
   const add = reverse ? -1 : 1;
 
   for( ; index >= 0 && index <= length - 1; index += add ){
-    if( !!traversal( value = self[ index ] ) && result.$push([ index, value ]).length >= count ){
+    if( ( !!traversal( value = self[ index ] ) ? !not : not ) && result.$push([ index, value ]).length >= count ){
       return result;
     }
   }
@@ -111,34 +111,38 @@ each({
   const returnAll = name.indexOf('All') > -1;
 
   // Index, Not, Chunk
-  [ '', 'Index', 'Chunk' ].forEach(( suffix, index ) => {
-    /** 全名 */
-    const fullname = name + suffix;
+  [ '', 'Index', 'Chunk' ].forEach(( suffix2, index ) => {
     /** 是否是返回 index */
     const returnIndex = index === 1 ? 0 : 1;
     /** 是否直接返回 chunk */
     const returnChunk = index === 2;
 
-    defineValue( ArrayProto, fullname, function( obj, predicate, fromIndex ){
-      // 获取结果集
-      const result = find( this, reverse, count, obj, predicate, fromIndex );
+    [ '', 'Not' ].forEach(( suffix, index ) => {
+      /** 全名 */
+      const fullname = name + suffix + suffix2;
+      /** 是否是返回 NOT 结果集 */
+      const not = !!index;
 
-      // 返回全部结果集
-      if( returnAll ){
-        return returnChunk ? result
-                           : result.map( arr => arr[ returnIndex ] );
-      }
+      defineValue( ArrayProto, fullname, function( obj, predicate, fromIndex ){
+        // 获取结果集
+        const result = find( this, reverse, count, not, obj, predicate, fromIndex );
 
-      // 返回单个结果集
-      if( result.length ){
-        return returnChunk ? result[ 0 ]
-                           : result[ 0 ][ returnIndex ];
-      }else{
-        // 返回 chunk 时, 没找到结果也返回 undefined
-        return returnIndex || returnChunk ? undefined
-                                          : -1;
-      }
+        // 返回全部结果集
+        if( returnAll ){
+          return returnChunk ? result
+                            : result.map( arr => arr[ returnIndex ] );
+        }
+
+        // 返回单个结果集
+        if( result.length ){
+          return returnChunk ? result[ 0 ]
+                            : result[ 0 ][ returnIndex ];
+        }else{
+          // 返回 chunk 时, 没找到结果也返回 undefined
+          return returnIndex || returnChunk ? undefined
+                                            : -1;
+        }
+      });
     });
   });
-
 });
