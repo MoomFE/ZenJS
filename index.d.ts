@@ -10,7 +10,7 @@ interface ArrayConstructor {
    * @param array 需要进行分割的数组
    * @param size 分割的长度
    */
-  $chunk<T>( array: T[], size: Number ): T[][];
+  $chunk<T>( array: T[], size: number ): T[][];
 
   /**
    * 传入一个数组, 返回一个新的数组 ( 浅拷贝 )
@@ -24,7 +24,7 @@ interface ArrayConstructor {
    * @param length 需要创建的数组的长度
    * @param insert 需要填充到数组中的内容
    */
-  $create<T>( length: Number, insert: T ): T[];
+  $create<T>( length: number, insert: T ): T[];
 
   /**
    * 快捷创建数组
@@ -32,28 +32,28 @@ interface ArrayConstructor {
    * @param insert 会向方法内传入当前数组创建进度的 index， 然后将方法的返回值填充到数组中
    * @param isInsert 若值为真, 则不执行方法, 直接将方法作为填充内容 - default: false
    */
-  $create<T>( length: Number, insert: ( index: Number ) => T, isInsert?: Boolean ): T[];
+  $create<T>( length: number, insert: ( index: number ) => T, isInsert?: boolean ): T[];
 
   /**
    * 调用传入方法遍历传入数组
    * @param array 需要进行遍历的数组
    * @param callback 遍历数组时调用的方法, 方法返回 false 时, 将终止后续遍历
    */
-  $each<T>( array: T[], callback: ( value: T, index: Number, arr: T[] ) => Boolean ): T[];
+  $each<T>( array: T[], callback: ( value: T, index: number, arr: T[] ) => boolean ): T[];
 
   /**
-   * 比较两个数组的内容是否相同, 与 Object.$equals 不同, 比较的两个数组可以是类数组对象
+   * 比较两个数组的内容是否相同, 与 boolean.$equals 不同, 比较的两个数组可以是类数组对象
    * @param array 进行比较的第一个数组
    * @param array2 进行比较的第二个数组
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $equals<T,U>( array: ArrayLike<T>, array2: ArrayLike<U>, predicate: Function | Boolean ): Boolean;
+  $equals<T,U>( array: ArrayLike<T>, array2: ArrayLike<U>, predicate: Function | boolean ): boolean;
 
   /**
    * 判断传入对象是否是一个类数组对象
    * @param value 需要判断的对象
    */
-  $isArrayLike<T>( value: ArrayLike<T> ): Boolean;
+  $isArrayLike<T>( value: ArrayLike<T> ): boolean;
 
   /**
    * 将传入参数转为数组
@@ -71,27 +71,27 @@ interface Array<T> {
    * 创建一个新的数组, 将数组按照指定的长度进行分割, 如果数组不能均分, 则最后的数组中是数组剩余的元素
    * @param size 分割的长度
    */
-  $chunk( size: Number ): this[];
+  $chunk( size: number ): this[];
 
   /**
    * 调用传入方法遍历当前数组
    * @param callback 遍历数组时调用的方法, 方法返回 false 时, 将终止后续遍历
    */
-  $each( callback: ( value: T, index: Number, arr: T[] ) => Boolean ): this;
+  $each( callback: ( value: T, index: number, arr: T[] ) => boolean ): this;
 
   /**
-   * 比较当前数组和目标数组的内容是否相同, 与 Object.$equals 不同, 比较的两个数组可以是类数组对象
+   * 比较当前数组和目标数组的内容是否相同, 与 boolean.$equals 不同, 比较的两个数组可以是类数组对象
    * @param array 进行比较的数组
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $equals( array: ArrayLike<T>, predicate: Function | Boolean ): Boolean;
+  $equals( array: ArrayLike<T>, predicate: Function | boolean ): boolean;
 
   /**
    * 在数组指定位置插入对象
    * @param index 插入在数组中的位置, 可为负数
    * @param args 需要插入的对象, 可以是多个
    */
-  $add( index: Number, ...args: any[] ): this;
+  $add( index: number, ...args: any[] ): this;
 
   /**
    * 在数组指定位置删除若干对象
@@ -99,7 +99,7 @@ interface Array<T> {
    * @param num 需要从该下标开始删除几个对象 - default: 1
    * @param returnDeleted 是否返回删除的数据 - default: false
    */
-  $delete( index: Number, num?: Number, returnDeleted?: false ): this;
+  $delete( index: number, num?: number, returnDeleted?: false ): this;
 
   /**
    * 在数组指定位置删除若干对象
@@ -107,33 +107,33 @@ interface Array<T> {
    * @param num 需要从该下标开始删除几个对象 - default: 1
    * @param returnDeleted 是否返回删除的数据 - default: false
    */
-  $remove( index: Number, num?: Number, returnDeleted?: false ): this;
+  $remove( index: number, num?: number, returnDeleted?: false ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $deleteValue( value: any, predicate: ( ( value: T ) => Boolean ) | Boolean ): this;
+  $deleteValue( value: any, predicate: ( ( value: T ) => boolean ) | boolean ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
    * @param predicate 用于自定义筛选内容, 方法内返回 true 则代表删除
    */
-  $deleteValue( predicate: ( value: T ) => Boolean ): this;
+  $deleteValue( predicate: ( value: T ) => boolean ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
    * @param value 需要从数组中删除的对象
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $removeValue( value: any, predicate: ( ( value: T ) => Boolean ) | Boolean ): this;
+  $removeValue( value: any, predicate: ( ( value: T ) => boolean ) | boolean ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
    * @param predicate 用于自定义筛选内容, 方法内返回 true 则代表删除
    */
-  $removeValue( predicate: ( value: T ) => Boolean ): this;
+  $removeValue( predicate: ( value: T ) => boolean ): this;
 
   /**
    * 行为类似于原生的 concat 方法, 但是不会创建一个新的数组, 而是将所有传入参数放到数组后
@@ -146,673 +146,673 @@ interface Array<T> {
    * @param index 需要插入到数组位置的下标
    * @param args 需要添加的数据
    */
-  $concatTo( index: Number, ...args: any[] ): this;
+  $concatTo( index: number, ...args: any[] ): this;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的值
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $find( traversal: ( value ) => Boolean, fromIndex?: Number ) : T | undefined;
+  $find( traversal: ( value ) => boolean, fromIndex?: number ) : T | undefined;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $find( arr: any[], fromIndex?: Number ): T | undefined;
+  $find( arr: any[], fromIndex?: number ): T | undefined;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $find( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  $find( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T | undefined;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $find( obj: any, fromIndex?: Number ): T | undefined;
+  $find( obj: any, fromIndex?: number ): T | undefined;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $find( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  $find( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T | undefined;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的下标
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number;
+  $findIndex( traversal: ( value ) => boolean, fromIndex?: number ) : number;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( arr: any[], fromIndex?: Number ): Number;
+  $findIndex( arr: any[], fromIndex?: number ): number;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  $findIndex( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( obj: any, fromIndex?: Number ): Number;
+  $findIndex( obj: any, fromIndex?: number ): number;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  $findIndex( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回首个符合传入方法检测的键值数组
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findChunk( traversal: ( value ) => Boolean, fromIndex?: Number ) : [ Number, T ] | undefined;
+  $findChunk( traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ] | undefined;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的键值数组
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findChunk( arr: any[], fromIndex?: Number ): [ Number, T ] | undefined;
+  $findChunk( arr: any[], fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的键值数组
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findChunk( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findChunk( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的键值数组
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findChunk( obj: any, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findChunk( obj: any, fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 遍历集合的内容, 查找到首个符合传入筛选条件的键值数组
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findChunk( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ] | undefined;
 
   /**
    * 使用传入的方法逆序遍历集合的内容, 返回首个符合传入方法检测的值
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLast( traversal: ( value ) => Boolean, fromIndex?: Number ) : T | undefined;
+  $findLast( traversal: ( value ) => boolean, fromIndex?: number ) : T | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLast( arr: any[], fromIndex?: Number ): T | undefined;
+  $findLast( arr: any[], fromIndex?: number ): T | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLast( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  $findLast( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLast( obj: any, fromIndex?: Number ): T | undefined;
+  $findLast( obj: any, fromIndex?: number ): T | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLast( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  $findLast( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T | undefined;
 
   /**
    * 使用传入的方法逆序遍历集合的内容, 返回首个符合传入方法检测的下标
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number;
+  $findLastIndex( traversal: ( value ) => boolean, fromIndex?: number ) : number;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( arr: any[], fromIndex?: Number ): Number;
+  $findLastIndex( arr: any[], fromIndex?: number ): number;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  $findLastIndex( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( obj: any, fromIndex?: Number ): Number;
+  $findLastIndex( obj: any, fromIndex?: number ): number;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  $findLastIndex( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number;
 
   /**
    * 使用传入的方法逆序遍历集合的内容, 返回首个符合传入方法检测的键值数组
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastChunk( traversal: ( value ) => Boolean, fromIndex?: Number ) : [ Number, T ] | undefined;
+  $findLastChunk( traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ] | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的键值数组
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastChunk( arr: any[], fromIndex?: Number ): [ Number, T ] | undefined;
+  $findLastChunk( arr: any[], fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的键值数组
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastChunk( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findLastChunk( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的键值数组
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastChunk( obj: any, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findLastChunk( obj: any, fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个符合传入筛选条件的键值数组
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findLastChunk( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ] | undefined;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回所有符合传入方法检测的值
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAll( traversal: ( value ) => Boolean, fromIndex?: Number ) : T[];
+  $findAll( traversal: ( value ) => boolean, fromIndex?: number ) : T[];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAll( arr: any[], fromIndex?: Number ): T[];
+  $findAll( arr: any[], fromIndex?: number ): T[];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAll( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T[];
+  $findAll( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAll( obj: any, fromIndex?: Number ): T[];
+  $findAll( obj: any, fromIndex?: number ): T[];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAll( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T[];
+  $findAll( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
 
   /**
    * 使用传入的方法遍历集合的内容, 返回所有符合传入方法检测的下标
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number[];
+  $findAllIndex( traversal: ( value ) => boolean, fromIndex?: number ) : number[];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllIndex( arr: any[], fromIndex?: Number ): Number[];
+  $findAllIndex( arr: any[], fromIndex?: number ): number[];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number[];
+  $findAllIndex( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllIndex( obj: any, fromIndex?: Number ): Number[];
+  $findAllIndex( obj: any, fromIndex?: number ): number[];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number[];
+  $findAllIndex( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
 
   /**
    * 使用传入的方法遍历集合的内容, 返回所有符合传入方法检测的键值数组集
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllChunk( traversal: ( value ) => Boolean, fromIndex?: Number ) : [ Number, T ][];
+  $findAllChunk( traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ][];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的键值数组集
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllChunk( arr: any[], fromIndex?: Number ): [ Number, T ][];
+  $findAllChunk( arr: any[], fromIndex?: number ): [ number, T ][];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的键值数组集
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllChunk( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ][];
+  $findAllChunk( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的键值数组集
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllChunk( obj: any, fromIndex?: Number ): [ Number, T ][];
+  $findAllChunk( obj: any, fromIndex?: number ): [ number, T ][];
   /**
    * 遍历集合的内容, 查找到所有符合传入筛选条件的键值数组集
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ][];
+  $findAllChunk( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
 
   /**
    * 使用传入的方法遍历集合的内容, 返回首个不符合传入方法检测的值
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNot( traversal: ( value ) => Boolean, fromIndex?: Number ) : T | undefined;
+  $findNot( traversal: ( value ) => boolean, fromIndex?: number ) : T | undefined;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNot( arr: any[], fromIndex?: Number ): T | undefined;
+  $findNot( arr: any[], fromIndex?: number ): T | undefined;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNot( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  $findNot( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T | undefined;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNot( obj: any, fromIndex?: Number ): T | undefined;
+  $findNot( obj: any, fromIndex?: number ): T | undefined;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNot( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  $findNot( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T | undefined;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回首个不符合传入方法检测的下标
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number;
+  $findNotIndex( traversal: ( value ) => boolean, fromIndex?: number ) : number;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotIndex( arr: any[], fromIndex?: Number ): Number;
+  $findNotIndex( arr: any[], fromIndex?: number ): number;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  $findNotIndex( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotIndex( obj: any, fromIndex?: Number ): Number;
+  $findNotIndex( obj: any, fromIndex?: number ): number;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  $findNotIndex( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回首个不符合传入方法检测的键值数组
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotChunk( traversal: ( value ) => Boolean, fromIndex?: Number ) : [ Number, T ] | undefined;
+  $findNotChunk( traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ] | undefined;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotChunk( arr: any[], fromIndex?: Number ): [ Number, T ] | undefined;
+  $findNotChunk( arr: any[], fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotChunk( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findNotChunk( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotChunk( obj: any, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findNotChunk( obj: any, fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findNotChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findNotChunk( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ] | undefined;
 
   /**
    * 使用传入的方法逆序遍历集合的内容, 返回首个不符合传入方法检测的值
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNot( traversal: ( value ) => Boolean, fromIndex?: Number ) : T | undefined;
+  $findLastNot( traversal: ( value ) => boolean, fromIndex?: number ) : T | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNot( arr: any[], fromIndex?: Number ): T | undefined;
+  $findLastNot( arr: any[], fromIndex?: number ): T | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNot( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  $findLastNot( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNot( obj: any, fromIndex?: Number ): T | undefined;
+  $findLastNot( obj: any, fromIndex?: number ): T | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNot( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  $findLastNot( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T | undefined;
 
   /**
    * 使用传入的方法逆序遍历集合的内容, 返回首个不符合传入方法检测的下标
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number;
+  $findLastNotIndex( traversal: ( value ) => boolean, fromIndex?: number ) : number;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotIndex( arr: any[], fromIndex?: Number ): Number;
+  $findLastNotIndex( arr: any[], fromIndex?: number ): number;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  $findLastNotIndex( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotIndex( obj: any, fromIndex?: Number ): Number;
+  $findLastNotIndex( obj: any, fromIndex?: number ): number;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  $findLastNotIndex( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number;
 
   /**
    * 使用传入的方法逆序遍历集合的内容, 返回首个不符合传入方法检测的键值数组
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotChunk( traversal: ( value ) => Boolean, fromIndex?: Number ) : [ Number, T ] | undefined;
+  $findLastNotChunk( traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ] | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotChunk( arr: any[], fromIndex?: Number ): [ Number, T ] | undefined;
+  $findLastNotChunk( arr: any[], fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotChunk( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findLastNotChunk( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotChunk( obj: any, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findLastNotChunk( obj: any, fromIndex?: number ): [ number, T ] | undefined;
   /**
    * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: -1
    */
-  $findLastNotChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  $findLastNotChunk( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ] | undefined;
 
   /**
    * 使用传入的方法遍历集合的内容, 返回所有不符合传入方法检测的值
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNot( traversal: ( value ) => Boolean, fromIndex?: Number ) : T[];
+  $findAllNot( traversal: ( value ) => boolean, fromIndex?: number ) : T[];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNot( arr: any[], fromIndex?: Number ): T[];
+  $findAllNot( arr: any[], fromIndex?: number ): T[];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的值
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNot( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T[];
+  $findAllNot( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNot( obj: any, fromIndex?: Number ): T[];
+  $findAllNot( obj: any, fromIndex?: number ): T[];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的值
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNot( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T[];
+  $findAllNot( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
 
   /**
    * 使用传入的方法遍历集合的内容, 返回所有不符合传入方法检测的下标
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number[];
+  $findAllNotIndex( traversal: ( value ) => boolean, fromIndex?: number ) : number[];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotIndex( arr: any[], fromIndex?: Number ): Number[];
+  $findAllNotIndex( arr: any[], fromIndex?: number ): number[];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的下标
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number[];
+  $findAllNotIndex( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotIndex( obj: any, fromIndex?: Number ): Number[];
+  $findAllNotIndex( obj: any, fromIndex?: number ): number[];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的下标
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number[];
+  $findAllNotIndex( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
 
   /**
    * 使用传入的方法遍历集合的内容, 返回所有不符合传入方法检测的键值数组集
-   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotChunk( traversal: ( value ) => Boolean, fromIndex?: Number ) : [ Number, T ][];
+  $findAllNotChunk( traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ][];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的键值数组集
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotChunk( arr: any[], fromIndex?: Number ): [ Number, T ][];
+  $findAllNotChunk( arr: any[], fromIndex?: number ): [ number, T ][];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的键值数组集
    * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotChunk( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ][];
+  $findAllNotChunk( arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的键值数组集
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotChunk( obj: any, fromIndex?: Number ): [ Number, T ][];
+  $findAllNotChunk( obj: any, fromIndex?: number ): [ number, T ][];
   /**
    * 遍历集合的内容, 查找到所有不符合传入筛选条件的键值数组集
    * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
-   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
-  $findAllNotChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ][];
+  $findAllNotChunk( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
 
   /**
    * 获取指定下标的对象
    * @param index 需要获取的下标, 可为负数 - default: 0
    */
-  $get( index: Number ): T | undefined;
+  $get( index: number ): T | undefined;
 
   /**
    * 获取指定下标开始的若干个对象
    * @param index 需要获取的下标, 可为负数 - default: 0
    * @param num 需要从该下标开始获取几个对象 - default: 1
    */
-  $get( index: Number, num: Number ): T[];
+  $get( index: number, num: number ): T[];
 
   /**
    * 修改数组指定下标的值
    * @param index 下标, 可为负数
    * @param value 值
    */
-  $set( index: Number, value: any ): this;
+  $set( index: number, value: any ): this;
 
   /**
    * 修改数组指定下标的值
    * @param obj 批量修改数组指定下标的值
    */
-  $set( obj: { index: Number, value: any } ): this;
+  $set( obj: { index: number, value: any } ): this;
 
   /**
    * 修改数组内指定下标的值, 修改时无论如何不会超出数组原有范围
    * @param index 下标, 可为负数
    * @param value 值
    */
-  $edit( index: Number, value: any ): this;
+  $edit( index: number, value: any ): this;
 
   /**
    * 修改数组内指定下标的值, 修改时无论如何不会超出数组原有范围
    * @param obj 批量修改数组内指定下标的值
    */
-  $edit( obj: { index: Number, value: any } ): this;
+  $edit( obj: { index: number, value: any } ): this;
 
   /**
    * 修改数组内指定下标的值
    * @param index 下标, 可为负数
    * @param value 值
    */
-  $edit( index: Number, value: any ): this;
+  $edit( index: number, value: any ): this;
 
   /**
    * 修改数组内指定下标的值
    * @param obj 批量修改数组内指定下标的值
    */
-  $edit( obj: { index: Number, value: any } ): this;
+  $edit( obj: { index: number, value: any } ): this;
 
   /**
    * 查找数组内是否有此传入值
    * @param value 需要在数组中检测的对象
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $inArray( value: any, predicate: Function | Boolean ): Boolean;
+  $inArray( value: any, predicate: Function | boolean ): boolean;
 
   /**
    * 查找数组内是否有此传入值
    * @param predicate 用于自定义筛选内容
    */
-  $inArray( predicate: Function ): Boolean;
+  $inArray( predicate: Function ): boolean;
 
   /**
    * 移动数组内的某个元素到指定的位置
    * @param from 需要移动的元素下标, 可为负数
    * @param to 需要移动到的位置下标, 可为负数
    */
-  $move( from: Number, to: Number ): this;
+  $move( from: number, to: number ): this;
 
   /**
    * 提取数组一个范围内的元素, 移动到指定下标中 ( 指定下标是按照需要移动的元素移除后的下标进行计算 )
@@ -820,7 +820,7 @@ interface Array<T> {
    * @param moveCount 从起始下标开始, 取几位进行移动
    * @param toIndex 需要移动到数组的目标下标, 可为负数
    */
-  $moveRange( start: Number, moveCount: Number, toIndex: Number ): this;
+  $moveRange( start: number, moveCount: number, toIndex: number ): this;
 
   /**
    * 将一个或多个元素添加到数组的末尾, 并返回当前数组
@@ -850,7 +850,7 @@ interface Array<T> {
    * @param deleteCount 整数, 表示要移除的数组元素的个数
    * @param args 要添加进数组的元素
    */
-  $splice( start: Number, deleteCount?: Number, ...args: any[] ): this;
+  $splice( start: number, deleteCount?: number, ...args: any[] ): this;
 
 }
 
@@ -859,11 +859,11 @@ interface ObjectConstructor {
 
   /**
    * 将多个源对象的可枚举属性合并到第一个对象中
-   * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign, 可不填 - Default: false
+   * @param shallow 是否使用浅拷贝模式, 类似于使用 boolean.assign, 可不填 - Default: false
    * @param target 要复制到的目标对象
    * @param source 需要复制属性的多个源对象
    */
-  $assign<T, U>( shallow?: Boolean, target?: T, ...source: U[] ): T & U;
+  $assign<T, U>( shallow?: boolean, target?: T, ...source: U[] ): T & U;
 
   /**
    * 将多个源对象的可枚举属性合并到第一个对象中
@@ -876,52 +876,52 @@ interface ObjectConstructor {
    * 判断传入的两个对象是否相同
    *
    * // 下面的比对结果都是 true
-   * Object.$equals( NaN, NaN );
-   * Object.$equals( 'ZenJS', 'ZenJS' );
-   * Object.$equals( { a: 1 }, { a: 1 } );
-   * Object.$equals( [ 1, 2, 3 ], [ 1, 2, 3 ] );
-   * Object.$equals( function(){ return true }, function(){ return true } );
-   * Object.$equals( new Map([ [ 1, 2 ], [ 3, 4 ] ]), new Map([ [ 1, 2 ], [ 3, 4 ] ]) );
-   * Object.$equals( new Set([ 1, 2, 3, 4 ]), new Set([ 1, 2, 3, 4 ]) );
-   * Object.$equals( document.createElement('div'), document.createElement('div') );
-   * Object.$equals( new Date('2018/7/28'), new Date('2018/7/28') );
-   * Object.$equals( /ZenJS/, /ZenJS/ );
+   * boolean.$equals( NaN, NaN );
+   * boolean.$equals( 'ZenJS', 'ZenJS' );
+   * boolean.$equals( { a: 1 }, { a: 1 } );
+   * boolean.$equals( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+   * boolean.$equals( function(){ return true }, function(){ return true } );
+   * boolean.$equals( new Map([ [ 1, 2 ], [ 3, 4 ] ]), new Map([ [ 1, 2 ], [ 3, 4 ] ]) );
+   * boolean.$equals( new Set([ 1, 2, 3, 4 ]), new Set([ 1, 2, 3, 4 ]) );
+   * boolean.$equals( document.createElement('div'), document.createElement('div') );
+   * boolean.$equals( new Date('2018/7/28'), new Date('2018/7/28') );
+   * boolean.$equals( /ZenJS/, /ZenJS/ );
    *
    * @param obj 需要判断的第一个对象
    * @param obj2 需要判断的第二个对象
    */
-  $equals( obj: any, obj2: any ): Boolean;
+  $equals( obj: any, obj2: any ): boolean;
 
   /**
    * 调用传入方法遍历传入对象
    * @param obj 需要进行遍历的对象
    * @param callback 遍历对象时调用的方法, 方法返回 false 时, 将终止后续遍历
    */
-  $each<T>( obj: T, callback: ( name: String, value: any, obj: T ) => Boolean ): T;
+  $each<T>( obj: T, callback: ( name: string, value: any, obj: T ) => boolean ): T;
 
   /**
    * 判断传入对象是否是空对象
    * @param obj 需要判断的对象
    */
-  $isEmptyObject( obj: any ): Boolean;
+  $isEmptyObject( obj: any ): boolean;
 
   /**
    * 判断传入对象是否是纯粹的对象
    * @param obj 需要判断的对象
    */
-  $isPlainObject( obj: any ): Boolean;
+  $isPlainObject( obj: any ): boolean;
 
 }
 
 
-interface Object {
+interface Boolean {
 
   /**
    * 将多个源对象的可枚举属性合并到当前对象中
-   * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign, 可不填 - Default: false
+   * @param shallow 是否使用浅拷贝模式, 类似于使用 boolean.assign, 可不填 - Default: false
    * @param source 需要复制属性的多个源对象
    */
-  $assign<T>( shallow?: Boolean, ...source: T[] ): this & T;
+  $assign<T>( shallow?: boolean, ...source: T[] ): this & T;
 
   /**
    * 将多个源对象的可枚举属性合并到当前对象中
@@ -930,10 +930,10 @@ interface Object {
   $assign<T>( ...source: T[] ): this & T;
 
   /**
-   * 判断当前对象和传入对象是否相同, 比对规则请参考 Object.$equals
+   * 判断当前对象和传入对象是否相同, 比对规则请参考 boolean.$equals
    * @param obj 需要比对的对象
    */
-  $equals( obj: any ): Boolean;
+  $equals( obj: any ): boolean;
 
   /**
    * 调用传入方法遍历当前对象
@@ -990,7 +990,7 @@ interface Object {
    * @param value 需要对象中删除的值
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $deleteValue( value: any, predicate: Function | Boolean ): any;
+  $deleteValue( value: any, predicate: Function | boolean ): any;
 
   /**
    * 从数组中删除与传入值相同的对象
@@ -1003,7 +1003,7 @@ interface Object {
    * @param value 需要对象中删除的值
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $removeValue( value: any, predicate: Function | Boolean ): any;
+  $removeValue( value: any, predicate: Function | boolean ): any;
 
   /**
    * 从数组中删除与传入值相同的对象
@@ -1025,7 +1025,7 @@ interface NumberConstructor {
    * 判断传入对象是否是数字类型或可转为数字
    * @param obj 需要判断的对象
    */
-  $isNumber( obj: any ): Boolean;
+  $isNumber( obj: any ): boolean;
 
 }
 
@@ -1037,56 +1037,56 @@ interface Number {
    * @param num1 数字1
    * @param num2 数字2
    */
-  $add( num: Number ): Number;
+  $add( num: number ): number;
 
   /**
    * 将传入数字与当前数字相加, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $jia( num: Number ): Number;
+  $jia( num: number ): number;
 
   /**
    * 将传入数字与当前数字相减, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $subtract( num: Number ): Number;
+  $subtract( num: number ): number;
 
   /**
    * 将传入数字与当前数字相减, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $jian( num: Number ): Number;
+  $jian( num: number ): number;
 
   /**
    * 将传入数字与当前数字相乘, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $multiply( num: Number ): Number;
+  $multiply( num: number ): number;
 
   /**
    * 将传入数字与当前数字相乘, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $cheng( num: Number ): Number;
+  $cheng( num: number ): number;
 
   /**
    * 将传入数字与当前数字相除, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $divide( num: Number ): Number;
+  $divide( num: number ): number;
 
   /**
    * 将传入数字与当前数字相除, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $chu( num: Number ): Number;
+  $chu( num: number ): number;
 
 }
 
@@ -1098,80 +1098,80 @@ interface Math {
    * @param from 指定一个最小数, 可为负数 - default: 0
    * @param to 指定一个最大数, 可为负数 - default: 9
    */
-  $random( from: Number, to: Number ): Number;
+  $random( from: number, to: number ): number;
 
   /**
    * 在 0 到传入值之间随机一个数字
    * @param to 指定一个数字, 可为负数
    */
-  $random( to: Number ): Number;
+  $random( to: number ): number;
 
   /**
    * 在 0 到 9 之间随机一个数字
    */
-  $random(): Number;
+  $random(): number;
 
   /**
    * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $add( num1: Number, num2: Number ): Number;
+  $add( num1: number, num2: number ): number;
 
   /**
    * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $jia( num1: Number, num2: Number ): Number;
+  $jia( num1: number, num2: number ): number;
 
   /**
    * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $subtract( num1: Number, num2: Number ): Number;
+  $subtract( num1: number, num2: number ): number;
 
   /**
    * 将传入的两个数字进行相减, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $jian( num1: Number, num2: Number ): Number;
+  $jian( num1: number, num2: number ): number;
 
   /**
    * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $multiply( num1: Number, num2: Number ): Number;
+  $multiply( num1: number, num2: number ): number;
 
   /**
    * 将传入的两个数字进行相乘, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $cheng( num1: Number, num2: Number ): Number;
+  $cheng( num1: number, num2: number ): number;
 
   /**
    * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $divide( num1: Number, num2: Number ): Number;
+  $divide( num1: number, num2: number ): number;
 
   /**
    * 将传入的两个数字进行相除, 不会发生浮点数精度不准的问题
    * @param num1 数字1
    * @param num2 数字2
    */
-  $chu( num1: Number, num2: Number ): Number;
+  $chu( num1: number, num2: number ): number;
 
   /**
    * 传入多个数字, 求出传入参数的平均值
    * @param args 任意个数数字
    */
-  $mean( ...args: Number[] ): Number;
+  $mean( ...args: number[] ): number;
 
 }
 
@@ -1182,7 +1182,7 @@ interface StringConstructor {
    * 随机26个字母中的一个
    * @param uppercase 是否大写 - default: false
    */
-  $random( uppercase?: false ): String;
+  $random( uppercase?: false ): string;
 
   /**
    * 随机指定长度的字符串
@@ -1190,7 +1190,7 @@ interface StringConstructor {
    * @param uppercase 是否随机大写字母 - default: false
    * @param number 是否随机数字 - default: false
    */
-  $someRandom( length?: Number, uppercase?: false, number?: false ): String;
+  $someRandom( length?: number, uppercase?: false, number?: false ): string;
 
 }
 
@@ -1202,13 +1202,13 @@ interface String {
    * @param searchValue 字符串或正则, 匹配字符串中被替换的部分
    * @param replaceValue 进行替换的字符串, 也可传入方法用来返回新字符串 - default: ''
    */
-  $replaceAll( searchValue: String | RegExp, replaceValue: String | Function ): String;
+  $replaceAll( searchValue: string | RegExp, replaceValue: string | Function ): string;
 
   /**
    * 将字符串首字母大写, 其他字母小写
    * @param ignoreNext 是否忽略其他字母小写的操作
    */
-  $toCapitalize( ignoreNext?: Boolean ): String;
+  $toCapitalize( ignoreNext?: boolean ): string;
 
 }
 
@@ -1222,7 +1222,7 @@ interface DateConstructor{
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
    */
-  $parse( date: String| Number | Date | Dayjs ): Date;
+  $parse( date: string| number | Date | Dayjs ): Date;
 
   /**
    * 解析传入时间及时间日期字符串并替换成相应的值
@@ -1254,7 +1254,7 @@ interface DateConstructor{
    *                  ( A: AM PM )
    *                  ( a: am pm )
    */
-  $format( date: String | Date, formatStr: String )
+  $format( date: string | Date, formatStr: string )
 
 }
 
@@ -1269,47 +1269,47 @@ interface Date {
   /**
    * 检测当前时间对象是否是一个有效的时间
    */
-  $isValid(): Boolean;
+  $isValid(): boolean;
 
   /**
    * 获取年份
    */
-  $year(): Number;
+  $year(): number;
 
   /**
    * 获取月份
    */
-  $month(): Number;
+  $month(): number;
 
   /**
    * 获取日期
    */
-  $date(): Number;
+  $date(): number;
 
   /**
    * 获取星期
    */
-  $day(): Number;
+  $day(): number;
 
   /**
    * 获取小时
    */
-  $hour(): Number;
+  $hour(): number;
 
   /**
    * 获取分钟
    */
-  $minute(): Number;
+  $minute(): number;
 
   /**
    * 获取秒
    */
-  $second(): Number;
+  $second(): number;
 
   /**
    * 获取毫秒
    */
-  $millisecond(): Number;
+  $millisecond(): number;
 
   /**
    * 设置时间
@@ -1323,7 +1323,7 @@ interface Date {
    *             [ millisecond, ms ] 毫秒
    * @param value 给传入单位设置的值
    */
-  $set( unit : String, value : Number ): Date;
+  $set( unit : string, value : number ): Date;
 
   /**
    * 增加时间
@@ -1337,7 +1337,7 @@ interface Date {
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  $add( value : Number, unit : String ): Date;
+  $add( value : number, unit : string ): Date;
 
   /**
    * 减少时间
@@ -1351,7 +1351,7 @@ interface Date {
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  $subtract( value : Number, unit : String ): Date;
+  $subtract( value : number, unit : string ): Date;
 
   /**
    * 设置当前时间为指定单位的开头时间
@@ -1364,7 +1364,7 @@ interface Date {
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  $startOf( unit : String ): Date;
+  $startOf( unit : string ): Date;
 
   /**
    * 设置当前时间为指定单位的末尾时间
@@ -1377,7 +1377,7 @@ interface Date {
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  $endOf( unit: String ): Date;
+  $endOf( unit: string ): Date;
 
   /**
    * 接收一系列的时间日期字符串并替换成相应的值
@@ -1405,7 +1405,7 @@ interface Date {
    *                  ( A: AM PM )
    *                  ( a: am pm )
    */
-  $format( formatStr: String ): String;
+  $format( formatStr: string ): string;
 
   /**
    * 获取当前时间和传入时间的时间差，默认毫秒
@@ -1420,27 +1420,27 @@ interface Date {
    *              [ millisecond, ms ] 毫秒
    * @param float
    */
-  $diff( input: String | Date, units: String, float: Boolean ): String;
+  $diff( input: string | Date, units: string, float: boolean ): string;
 
   /**
    * 返回 Unix 时间戳 ( 毫秒 )
    */
-  $valueOf(): Number;
+  $valueOf(): number;
 
   /**
    * 返回 Unix 时间戳 ( 秒 )
    */
-  $unix(): Number
+  $unix(): number
 
   /**
    * 返回月份的天数
    */
-  $daysInMonth(): Number;
+  $daysInMonth(): number;
 
   /**
    * 返回包含时间数值的数组
    */
-  $toArray(): Number[];
+  $toArray(): number[];
 
   /**
    * 返回包含时间数值的对象
@@ -1454,7 +1454,7 @@ interface Date {
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
    */
-  $isBefore( date: String| Number | Date | Dayjs ): Boolean;
+  $isBefore( date: string| number | Date | Dayjs ): boolean;
 
   /**
    * 检查当前时间是否和传入时间相同
@@ -1463,7 +1463,7 @@ interface Date {
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
    */
-  $isSame( date: String| Number | Date | Dayjs ): Boolean;
+  $isSame( date: string| number | Date | Dayjs ): boolean;
 
   /**
    * 检查当前时间是否在传入时间之后
@@ -1472,7 +1472,7 @@ interface Date {
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
    */
-  $isAfter( date: String| Number | Date | Dayjs ): Boolean;
+  $isAfter( date: string| number | Date | Dayjs ): boolean;
 
 }
 
@@ -1483,7 +1483,7 @@ interface Function {
    * 使当前方法调用次数大于传入数值时, 才会被真正调用
    * @param num 调用次数 - Default: 1
    */
-  $after( num?: Number ): Function
+  $after( num?: number ): Function
 
   /**
    * 可提前传入方法的指定下标的参数
@@ -1495,13 +1495,13 @@ interface Function {
    * 使当前方法调用过一次便失效
    * @param num 可指定在被第几次调用时是有用的, 默认第一次 - Default: 1
    */
-  $one( num?: Number ): Function;
+  $one( num?: number ): Function;
 
   /**
    * 使当前方法调用过一次便失效
    * @param num 可指定在被第几次调用时是有用的, 默认第一次 - Default: 1
    */
-  $once( num?: Number ): Function;
+  $once( num?: number ): Function;
 
 }
 
@@ -1513,7 +1513,7 @@ interface RegExpConstructor{
    * @param keyword 需要转换的字符串
    * @param flogs 交给 RegExp 解析的修饰符
    */
-  $parse( keyword: String, flogs: String ): RegExp;
+  $parse( keyword: string, flogs: string ): RegExp;
 
 }
 
@@ -1524,7 +1524,7 @@ interface Window {
    * 判断传入参数的类型
    * @param obj 需要判断类型的参数
    */
-  $typeof( obj: any ): String;
+  $typeof( obj: any ): string;
 
   /**
    * $querystring 模块提供了一些实用函数, 用于解析与格式化 URL 查询字符串
@@ -1556,7 +1556,7 @@ interface $querystring {
    * @param sep 在字符串中分隔不同键值对的字符串 - default: '&'
    * @param eq 在字符串中分隔键和值的字符串 - default: '='
    */
-  stringify( obj, sep?: String, eq?: String ): String;
+  stringify( obj, sep?: string, eq?: string ): string;
 
   /**
    * 将 URL 查询字符串反序列化为对象
@@ -1564,7 +1564,7 @@ interface $querystring {
    * @param sep 在字符串中分隔不同键值对的字符串 - default: '&'
    * @param eq 在字符串中分隔键和值的字符串 - default: '='
    */
-  parse( str, sep?: String, eq?: String ): {};
+  parse( str, sep?: string, eq?: string ): {};
 }
 
 interface ZenJS {
@@ -1572,81 +1572,81 @@ interface ZenJS {
   /**
    * GUID, 自动自增
    */
-  guid: Number;
+  guid: number;
 
   /**
    * 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象. 它将返回目标对象.
-   * Object.assign polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
+   * boolean.assign polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
    */
   assign( ...args: any[] ): any;
 
   /**
    * 方法返回一个给定对象自身可枚举属性的键值对数组.
-   * Object.entries polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
+   * boolean.entries polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
    */
   entries<T, K extends keyof T>( obj: T ): [ K, T[K] ][];
 
   /**
    * 方法返回一个给定对象自身的所有可枚举属性值的数组.
-   * Object.values polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
+   * boolean.values polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
    */
   values<T, K extends keyof T, V>( obj: T ): [ K, T[K] ][];
 
   /**
    * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
-   * 是 String.prototype.repeat 的降级方案
+   * 是 string.prototype.repeat 的降级方案
    * @param str 需要重复的字符串
    * @param count 需要重复的次数
    */
-  repeat( str: String, count: Number ): String;
+  repeat( str: string, count: number ): string;
 
   /**
    * 判断传入的两个参数是否全等 ( === )
    * @param one 需要判断的第一参数
    * @param two 需要判断的第二参数
    */
-  congruence( one: any, two: any ): Boolean;
+  congruence( one: any, two: any ): boolean;
 
   /**
    * 判断传入的两个参数是否相等 ( == )
    * @param one 需要判断的第一参数
    * @param two 需要判断的第二参数
    */
-  equals( one: any, two: any ): Boolean;
+  equals( one: any, two: any ): boolean;
 
   /**
-   * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
+   * 在一个对象上定义/修改一个新属性 ( 对 boolean.defineProperty 的封装 )
    * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
    * @param name 要定义或修改的属性的名称
    * @param options 将被定义或修改的属性描述符 ( configurable - 删除/定义 ) ( enumerable - 枚举 ) ( writable - 写入 )
    * @param options2 将被定义或修改的属性描述符, 会覆盖前一个 options ( configurable - 删除/定义 ) ( enumerable - 枚举 ) ( writable - 写入 )
    */
-  define( obj: any, name: String, options: any, options2: any );
+  define( obj: any, name: string, options: any, options2: any );
 
   /**
    * 在一个对象上定义/修改一个新属性的 value 描述符
    * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-   * @param {String} name 要定义或修改的属性的名称
+   * @param {string} name 要定义或修改的属性的名称
    * @param {Function} value 将被定义或修改的 value 描述符
    * @param {any} options 将被定义或修改的属性描述符 ( configurable - 删除/定义 ) ( enumerable - 枚举 ) ( writable - 写入 )
    */
-  defineValue( obj: any, name: String, value: Function, options: any );
+  defineValue( obj: any, name: string, value: Function, options: any );
 
   /**
    * 在一个对象上定义/修改一个新属性的 get 描述符
    * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-   * @param {String} name 要定义或修改的属性的名称
+   * @param {string} name 要定义或修改的属性的名称
    * @param {Function} get 将被定义或修改的 get 描述符
    * @param {any} options 将被定义或修改的属性描述符 ( configurable - 删除/定义 ) ( enumerable - 枚举 ) ( writable - 写入 )
    */
-  defineGet( obj: any, name: String, get: Function, options: any );
+  defineGet( obj: any, name: string, get: Function, options: any );
 
   /**
    * 在传入的两个正整数中随机一个数字
-   * @param {Number} from
-   * @param {Number} to
+   * @param {number} from
+   * @param {number} to
    */
-  intRandom( from:Number, to:Number ): Number;
+  intRandom( from:number, to:number ): number;
 
   /**
    * 返回传入的第一个参数
@@ -1675,74 +1675,74 @@ interface ZenJS {
    * @param index 需要在 argument 中取得默认值的下标
    * @param defaultValue 若未传入值时取得默认值
    */
-  parametersDefault( args: IArguments, index: Number, defaultValue: any ): any;
+  parametersDefault( args: IArguments, index: number, defaultValue: any ): any;
 
   /**
    * 获取方法从指定位开始的剩余参数
    * @param { IArguments } args arguments
-   * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
+   * @param { number } index 需要在 arguments 中开始取参数的下标 - default: 0
    */
-  parametersRest( args: IArguments, index: Number ): any[];
+  parametersRest( args: IArguments, index: number ): any[];
 
   /**
-   * 判断传入对象是否是 String 类型
+   * 判断传入对象是否是 string 类型
    * @param obj 需要判断的对象
    */
-  isString( obj: any ): Boolean;
+  isString( obj: any ): boolean;
 
   /**
-   * 判断传入对象是否是 Boolean 类型
+   * 判断传入对象是否是 boolean 类型
    * @param obj 需要判断的对象
    */
-  isBoolean( obj: any ): Boolean;
+  isBoolean( obj: any ): boolean;
 
   /**
    * 判断传入对象是否是 Array 类型
    * @param obj 需要判断的对象
    */
-  isArray( obj: any ): Boolean;
+  isArray( obj: any ): boolean;
 
   /**
-   * 判断传入对象是否是 Number 类型, 并且不为 NaN
+   * 判断传入对象是否是 number 类型, 并且不为 NaN
    * @param obj 需要判断的对象
    */
-  isNumber( obj: any ): Boolean;
+  isNumber( obj: any ): boolean;
 
   /**
    * 判断传入对象是否是 RegExp 类型
    * @param obj 需要判断的对象
    */
-  isRegExp( obj: any ): Boolean;
+  isRegExp( obj: any ): boolean;
 
   /**
    * 判断传入对象是否是 Set 对象
    * @param obj 需要判断的对象
    */
-  isSet( obj: any ): Boolean;
+  isSet( obj: any ): boolean;
 
   /**
    * 判断传入对象是否是 Map 对象
    * @param obj 需要判断的对象
    */
-  isMap( obj: any ): Boolean;
+  isMap( obj: any ): boolean;
 
   /**
    * 判断传入对象是否是 Function 类型
    * @param obj 需要判断的对象
    */
-  isFunction( obj: any ): Boolean;
+  isFunction( obj: any ): boolean;
 
   /**
-   * 判断传入对象是否是 Object 类型, 并且不为 null
+   * 判断传入对象是否是 boolean 类型, 并且不为 null
    * @param obj 需要判断的对象
    */
-  isObject( obj: any ): Boolean;
+  isObject( obj: any ): boolean;
 
   /**
    * 判断一个对象是否是引用类型
    * @param obj 需要判断的对象
    */
-  isReferenceType( obj: any ): Boolean;
+  isReferenceType( obj: any ): boolean;
 
   /**
    * 将 Map 或 Set 类型转换为数组类型,
@@ -1773,7 +1773,7 @@ interface ZenJS {
      * @param group 事件分组参数
      * @param data 传递给事件的数据
      */
-    add( elem: EventTarget, type: String, selector: String, listener: Function, options: Object, group: String, data: Object );
+    add( elem: EventTarget, type: string, selector: string, listener: Function, options: boolean, group: string, data: boolean );
 
     /**
      * 事件处理 => 触发事件
@@ -1782,7 +1782,7 @@ interface ZenJS {
      * @param oArgs 原生事件触发时方法的 arguments
      * @param handleOptions 该事件的所有详细参数
      */
-    dispatch( self: EventTarget, args: IArguments, handleOptions: Object );
+    dispatch( self: EventTarget, args: IArguments, handleOptions: boolean );
 
     /**
      * 事件处理 => 功能性命名空间
@@ -1793,7 +1793,7 @@ interface ZenJS {
      * @param type 绑定的事件
      * @param options 其他属性
      */
-    modifiers( name: String, namespace: String[], elem: EventTarget, type: String, options: Object );
+    modifiers( name: string, namespace: string[], elem: EventTarget, type: string, options: boolean );
 
     /**
      * 事件处理 => 移除事件
@@ -1803,7 +1803,7 @@ interface ZenJS {
      * @param listener 需要移除的事件回调
      * @param selector 事件委托选择器
      */
-    remove( elem: EventTarget, types: String[], listener: Function, selector: String );
+    remove( elem: EventTarget, types: string[], listener: Function, selector: string );
 
     /**
      * 事件处理 => 触发事件
@@ -1812,7 +1812,7 @@ interface ZenJS {
      * @param types 需要触发的事件集
      * @param data 需要传递到事件回调的参数
      */
-    emit( elem: EventTarget, types: String[], data: any[] );
+    emit( elem: EventTarget, types: string[], data: any[] );
 
   }
 
@@ -1822,7 +1822,7 @@ interface ZenJS {
  * 判断传入参数的类型
  * @param obj 需要判断类型的参数
  */
-declare function $typeof( obj: any ): String;
+declare function $typeof( obj: any ): string;
 
 /**
  * $querystring 模块提供了一些实用函数, 用于解析与格式化 URL 查询字符串
@@ -1858,19 +1858,19 @@ declare namespace dayjs {
    * @param preset 需要设置或切换的语言名称
    * @param object 语言包配置
    */
-  function locale( preset: String, object?: any ): String;
+  function locale( preset: string, object?: any ): string;
 
   /**
    * 验证传入值是否是一个 Dayjs 对象
    * @param data 
    */
-  function isDayjs( data: Dayjs ): Boolean;
+  function isDayjs( data: Dayjs ): boolean;
 
   /**
    * 可以解析传入的一个 Unix 秒时间戳 ( 10位数字 )
    * @param date 
    */
-  function unix( date: Number ): Dayjs;
+  function unix( date: number ): Dayjs;
 
 }
 
@@ -1886,47 +1886,47 @@ declare class Dayjs{
   /**
    * 检测当前 Dayjs 对象是否是一个有效的时间
    */
-  isValid(): Boolean;
+  isValid(): boolean;
 
   /**
    * 获取年份
    */
-  year(): Number;
+  year(): number;
 
   /**
    * 获取月份
    */
-  month(): Number;
+  month(): number;
 
   /**
    * 获取日期
    */
-  date(): Number;
+  date(): number;
 
   /**
    * 获取星期
    */
-  day(): Number;
+  day(): number;
 
   /**
    * 获取小时
    */
-  hour(): Number;
+  hour(): number;
 
   /**
    * 获取分钟
    */
-  minute(): Number;
+  minute(): number;
 
   /**
    * 获取秒
    */
-  second(): Number;
+  second(): number;
 
   /**
    * 获取毫秒
    */
-  millisecond(): Number;
+  millisecond(): number;
 
   /**
    * 设置时间
@@ -1940,7 +1940,7 @@ declare class Dayjs{
    *             [ millisecond, ms ] 毫秒
    * @param value 给传入单位设置的值
    */
-  set( unit : String, value : Number ): Dayjs;
+  set( unit : string, value : number ): Dayjs;
 
   /**
    * 增加时间
@@ -1954,7 +1954,7 @@ declare class Dayjs{
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  add( value : Number, unit : String ): Dayjs;
+  add( value : number, unit : string ): Dayjs;
 
   /**
    * 减少时间
@@ -1968,7 +1968,7 @@ declare class Dayjs{
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  subtract( value : Number, unit : String ): Dayjs;
+  subtract( value : number, unit : string ): Dayjs;
 
   /**
    * 返回当前时间的开头时间的 Dayjs 对象
@@ -1981,7 +1981,7 @@ declare class Dayjs{
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  startOf( unit : String ): Dayjs;
+  startOf( unit : string ): Dayjs;
 
   /**
    * 返回当前时间的末尾时间的 Dayjs 对象
@@ -1994,7 +1994,7 @@ declare class Dayjs{
    *             [ second, s ] 秒
    *             [ millisecond, ms ] 毫秒
    */
-  endOf( unit: String ): Dayjs;
+  endOf( unit: string ): Dayjs;
 
   /**
    * 接收一系列的时间日期字符串并替换成相应的值
@@ -2022,7 +2022,7 @@ declare class Dayjs{
    *                  ( A: AM PM )
    *                  ( a: am pm )
    */
-  format( formatStr: String ): String;
+  format( formatStr: string ): string;
 
   /**
    * 获取当前时间和传入时间的时间差，默认毫秒
@@ -2037,22 +2037,22 @@ declare class Dayjs{
    *              [ millisecond, ms ] 毫秒
    * @param float
    */
-  diff( input: String | Date, units: String, float: Boolean ): String;
+  diff( input: string | Date, units: string, float: boolean ): string;
 
   /**
    * 返回 Unix 时间戳 ( 毫秒 )
    */
-  valueOf(): Number;
+  valueOf(): number;
 
   /**
    * 返回 Unix 时间戳 ( 秒 )
    */
-  unix(): Number
+  unix(): number
 
   /**
    * 返回月份的天数
    */
-  daysInMonth(): Number;
+  daysInMonth(): number;
 
   /**
    * 返回原生的 Date 对象
@@ -2063,35 +2063,35 @@ declare class Dayjs{
    * 返回包含时间数值的数组
    * [ 2018, 8, 18, 00, 00, 00, 000 ]
    */
-  toArray(): Number[];
+  toArray(): number[];
 
   /**
    * 序列化 Dayjs 对象, 返回 ISO8601 格式的字符串
    */
-  toJSON(): String;
+  toJSON(): string;
 
   /**
    * 返回 ISO8601 格式的字符串
    */
-  toISOString(): String;
+  toISOString(): string;
 
   /**
    * 返回包含时间数值的对象
    */
   toObject(): {
-    years: Number
-    months: Number
-    date: Number
-    hours: Number
-    minutes: Number
-    seconds: Number
-    milliseconds: Number
+    years: number
+    months: number
+    date: number
+    hours: number
+    minutes: number
+    seconds: number
+    milliseconds: number
   }
 
   /**
    * 以文本方式表示当前 Dayjs 对象
    */
-  toString(): String;
+  toString(): string;
 
   /**
    * 检查当前时间是否在传入时间之前
@@ -2100,7 +2100,7 @@ declare class Dayjs{
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
    */
-  isBefore( date: String| Number | Date | Dayjs ): Boolean;
+  isBefore( date: string| number | Date | Dayjs ): boolean;
 
   /**
    * 检查当前时间是否和传入时间相同
@@ -2109,7 +2109,7 @@ declare class Dayjs{
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
    */
-  isSame( date: String| Number | Date | Dayjs ): Boolean;
+  isSame( date: string| number | Date | Dayjs ): boolean;
 
   /**
    * 检查当前时间是否在传入时间之后
@@ -2118,7 +2118,7 @@ declare class Dayjs{
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
    */
-  isAfter( date: String| Number | Date | Dayjs ): Boolean;
+  isAfter( date: string| number | Date | Dayjs ): boolean;
 
 }
 
@@ -2133,7 +2133,7 @@ interface Document {
    * ( Fat ) document.getElementById 的引用
    * @param elmentId ID
    */
-  $id( elmentId: String ): Element;
+  $id( elmentId: string ): Element;
 
   /**
    * ( Fat ) 当前页面加载完成后执行传入代码
@@ -2197,114 +2197,114 @@ interface Element {
    * ( Fat ) 向元素添加一个或多个类
    * @param className 类名
    */
-  $addClass( className: String ): Element;
+  $addClass( className: string ): Element;
 
   /**
    * ( Fat ) 向元素移除一个或多个类
    * @param className 类名
    */
-  $removeClass( className: String ): Element;
+  $removeClass( className: string ): Element;
 
   /**
    * ( Fat ) 判断元素是否有一个或多个类
    * @param className 类名
    */
-  $hasClass( className: String ): Boolean;
+  $hasClass( className: string ): boolean;
 
   /**
    * ( Fat ) 设置或移除元素的一个或多个类进行切换
    * @param className 类名
    * @param toggle 若值为 true, 则规定只添加类, 反之只移除
    */
-  $toggleClass( className: String, toggle: Boolean ): Element;
+  $toggleClass( className: string, toggle: boolean ): Element;
 
   /**
    * ( Fat ) 判断当前节点是否符合传入的要求
    * @param selector DOM 节点或 CSS 选择器或用来检测的方法
    */
-  $is( selector: Element | String | Function ): Boolean;
+  $is( selector: Element | string | Function ): boolean;
 
   /**
    * ( Fat ) 判断当前节点是否不符合传入的要求
    * @param selector DOM 节点或 CSS 选择器或用来检测的方法
    */
-  $not( selector: Element | String | Function ): Boolean;
+  $not( selector: Element | string | Function ): boolean;
 
   /**
    * ( Fat ) 获取当前节点下首个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回首个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $first( filter?: Element | String | Function ): Element | null;
+  $first( filter?: Element | string | Function ): Element | null;
 
   /**
    * ( Fat ) 获取当前节点下首个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回首个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $firstChild( filter?: Element | String | Function ): Element | null;
+  $firstChild( filter?: Element | string | Function ): Element | null;
 
   /**
    * ( Fat ) 获取当前节点下最后一个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回最后一个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $last( filter?: Element | String | Function ): Element | null;
+  $last( filter?: Element | string | Function ): Element | null;
 
   /**
    * ( Fat ) 获取当前节点下最后一个匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回最后一个子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $lastChild( filter?: Element | String | Function ): Element | null;
+  $lastChild( filter?: Element | string | Function ): Element | null;
 
   /**
    * ( Fat ) 获取当前节点的下一个匹配过滤条件的节点,
    * 若未传入过滤条件, 则直接返回当前节点的下一个节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $next( filter?: Element | String | Function ): Element | null;
+  $next( filter?: Element | string | Function ): Element | null;
 
   /**
    * ( Fat ) 获取当前节点的上一个匹配过滤条件的节点,
    * 若未传入过滤条件, 则直接返回当前节点的上一个节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $prev( filter?: Element | String | Function ): Element | null;
+  $prev( filter?: Element | string | Function ): Element | null;
 
   /**
    * ( Fat ) 获取从当前节点后面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点后面的所有兄弟节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $nextAll( filter?: Element | String | Function ): Element[];
+  $nextAll( filter?: Element | string | Function ): Element[];
 
   /**
    * ( Fat ) 获取从当前节点前面的所有匹配过滤条件的兄弟节点,
    * 若未传入过滤条件, 则直接返回当前节点前面的所有兄弟节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $prevAll( filter?: Element | String | Function ): Element[];
+  $prevAll( filter?: Element | string | Function ): Element[];
 
   /**
    * ( Fat ) 获取当前节点下的所有匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回所有子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $child( filter?: Element | String | Function ): Element[];
+  $child( filter?: Element | string | Function ): Element[];
 
   /**
    * ( Fat ) 获取当前节点下的所有匹配过滤条件的子节点,
    * 若未传入过滤条件, 则返回所有子节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $children( filter?: Element | String | Function ): Element[];
+  $children( filter?: Element | string | Function ): Element[];
 
   /**
    * ( Fat ) 获取当前节点的父节点, 可传入过滤条件对父节点进行过滤
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $parent( filter?: Element | String | Function ): Element | null;
+  $parent( filter?: Element | string | Function ): Element | null;
 
   /**
    * ( Fat ) 获取当前节点的符合过滤条件的父节点, 未查找到会一直继续向上查找,
@@ -2312,20 +2312,20 @@ interface Element {
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    * @param checkSelf 是否从当前节点开始检测, 不从当前节点的父节点开始
    */
-  $parents( filter?: Element | String | Function, checkSelf?: Boolean ): Element | null;
+  $parents( filter?: Element | string | Function, checkSelf?: boolean ): Element | null;
 
   /**
    * ( Fat ) 获取当前节点的所有符合过滤条件的兄弟节点
    * 若未传入过滤条件, 则直接返回当前节点的所有兄弟节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $siblings( filter?: String | Function ): Element | null;
+  $siblings( filter?: string | Function ): Element | null;
 
   /**
    * ( Fat ) 获取元素的属性值 ( property )
    * @param name 属性名
    */
-  $prop( name: String ): any;
+  $prop( name: string ): any;
 
   /**
    * ( Fat ) 批量设置元素的属性值 ( property )
@@ -2338,31 +2338,31 @@ interface Element {
    * @param name 属性名
    * @param value 属性值
    */
-  $prop( name: String, value: any ): Element;
+  $prop( name: string, value: any ): Element;
 
   /**
    * ( Fat ) 判断当前元素是否有传入属性值 ( property )
    * @param name 属性名
    */
-  $hasProp( name: String ): Boolean;
+  $hasProp( name: string ): boolean;
 
   /**
    * ( Fat ) 移除元素的属性值 ( property )
    * @param name 属性名
    */
-  $removeProp( name: String ): Element;
+  $removeProp( name: string ): Element;
 
   /**
    * ( Fat ) 移除元素的属性值 ( property )
    * @param name 属性名
    */
-  $deleteProp( name: String ): Element;
+  $deleteProp( name: string ): Element;
 
   /**
    * ( Fat ) 获取元素的属性值 ( attribute )
    * @param name 属性名
    */
-  $attr( name: String ): String | undefined;
+  $attr( name: string ): string | undefined;
 
   /**
    * ( Fat ) 批量设置元素的属性值 ( attribute )
@@ -2375,25 +2375,25 @@ interface Element {
    * @param name 属性名
    * @param value 属性值
    */
-  $attr( name: String, value: String ): Element;
+  $attr( name: string, value: string ): Element;
 
   /**
    * ( Fat ) 判断当前元素是否有传入属性值 ( attribute )
    * @param name 属性名
    */
-  $hasAttr( name: String ): Boolean;
+  $hasAttr( name: string ): boolean;
 
   /**
    * ( Fat ) 移除元素的属性值 ( attribute )
    * @param name 属性名
    */
-  $removeAttr( name: String ): Element;
+  $removeAttr( name: string ): Element;
 
   /**
    * ( Fat ) 移除元素的属性值 ( attribute )
    * @param name 属性名
    */
-  $deleteAttr( name: String ): Element;
+  $deleteAttr( name: string ): Element;
 
   /**
    * ( Fat ) 添加元素到当前元素内的尾部
@@ -2492,87 +2492,87 @@ interface Element {
   /**
    * ( Fat ) 获取元素在父元素的下标
    */
-  $index(): Number;
+  $index(): number;
 
   /**
    * ( Fat ) 将元素的下标设置为传入值 ( 将会移动元素 )
    * @param index 需要设置的元素下标
    */
-  $index( index: Number ): Element;
+  $index( index: number ): Element;
 
   /**
    * ( Fat ) 读取元素的 innerHTML 值
    */
-  $html(): String;
+  $html(): string;
 
   /**
    * ( Fat ) 设置元素的 innerHTML 值
    * @param value 需要设置的值
    */
-  $html( value: String ): Element;
+  $html( value: string ): Element;
 
   /**
    * ( Fat ) 返回元素的 value 值
    */
-  $val(): String;
+  $val(): string;
 
   /**
    * ( Fat ) 设置元素的 value 值
    * @param value 需要设置的值
    */
-  $val( value: String ): Element;
+  $val( value: string ): Element;
 
   /**
    * ( Fat ) 返回元素的 value 值
    */
-  $value(): String;
+  $value(): string;
 
   /**
    * ( Fat ) 设置元素的 value 值
    * @param value 需要设置的值
    */
-  $value( value: String ): Element;
+  $value( value: string ): Element;
 
   /**
    * ( Fat ) 返回元素的宽度
    */
-  $width(): Number;
+  $width(): number;
 
   /**
    * ( Fat ) 设置元素的宽度
    * @param value 需要设置的宽度
    */
-  $width( value: Number ): Element;
+  $width( value: number ): Element;
 
   /**
    * ( Fat ) 返回元素的高度
    */
-  $height(): Number;
+  $height(): number;
 
   /**
    * ( Fat ) 设置元素的高度
    * @param value 需要设置的高度
    */
-  $height( value: Number ): Element;
+  $height( value: number ): Element;
 
   /**
    * ( Fat ) 获取元素的样式
    * @param name 样式名
    */
-  $css( name: String ): String;
+  $css( name: string ): string;
 
   /**
    * ( Fat ) 设置元素的样式
    * @param name 样式名
    * @param value 样式值
    */
-  $css( name: String, value: String ): Element;
+  $css( name: string, value: string ): Element;
 
   /**
    * ( Fat ) 读取时获取元素的小写 nodeName;
    * 不可写入
    */
-  _nodeName: String;
+  _nodeName: string;
 
 }
 
@@ -2588,7 +2588,7 @@ interface EventTarget {
    * ( Fat ) 读取指定名称的数据
    * @param name 需要读取的数据名称
    */
-  $data( name: String ): any;
+  $data( name: string ): any;
 
   /**
    * ( Fat ) 将数据读取或存储
@@ -2596,18 +2596,18 @@ interface EventTarget {
    * @param value 存储的数据
    * @param weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
    */
-  $data( name: String, value: any, weakRead?: Boolean ): any;
+  $data( name: string, value: any, weakRead?: boolean ): any;
 
   /**
    * ( Fat ) 判断当前对象下是否存有数据
    */
-  $hasData(): Boolean;
+  $hasData(): boolean;
 
   /**
    * ( Fat ) 传入数据名称, 判断当前对象下是否存储了这个数据
-   * @param {String} name 需要判断的数据名称
+   * @param {string} name 需要判断的数据名称
    */
-  $hasData( name: String ): Boolean;
+  $hasData( name: string ): boolean;
 
   /**
    * ( Fat ) 删除存储在对象上的全部数据
@@ -2616,9 +2616,9 @@ interface EventTarget {
 
   /**
    * ( Fat ) 传入数据名称, 删除当前对象下存储的相应名称的数据
-   * @param {String} name 需要删除的数据名称, 多个可使用空格分隔
+   * @param {string} name 需要删除的数据名称, 多个可使用空格分隔
    */
-  $deleteData( names: String ): any;
+  $deleteData( names: string ): any;
 
   /**
    * ( Fat ) 传入键值对事件进行绑定
@@ -2626,16 +2626,16 @@ interface EventTarget {
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $on( obj: any, selector?: String, options?: any ): any;
+  $on( obj: any, selector?: string, options?: any ): any;
 
   /**
    * ( Fat ) 传入事件名和方法对事件进行绑定
    * @param types 需要绑定的事件名
-   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param listener 需要绑定到事件上的方法, 可为 boolean 值, 会自动替换为 return[ true | false ] 方法
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $on( types: String, listener: Function, selector?: String, options?: any ): any;
+  $on( types: string, listener: Function, selector?: string, options?: any ): any;
 
   /**
    * ( Fat ) 传入键值对事件进行绑定, 只会执行一次
@@ -2643,16 +2643,16 @@ interface EventTarget {
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $one( obj: any, selector?: String, options?: any ): any;
+  $one( obj: any, selector?: string, options?: any ): any;
 
   /**
    * ( Fat ) 传入事件名和方法对事件进行绑定, 只会执行一次
    * @param types 需要绑定的事件名
-   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param listener 需要绑定到事件上的方法, 可为 boolean 值, 会自动替换为 return[ true | false ] 方法
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $one( types: String, listener: Function, selector?: String, options?: any ): any;
+  $one( types: string, listener: Function, selector?: string, options?: any ): any;
 
   /**
    * ( Fat ) 传入键值对事件进行绑定, 只会执行一次
@@ -2660,16 +2660,16 @@ interface EventTarget {
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $once( obj: any, selector?: String, options?: any ): any;
+  $once( obj: any, selector?: string, options?: any ): any;
 
   /**
    * ( Fat ) 传入事件名和方法对事件进行绑定, 只会执行一次
    * @param types 需要绑定的事件名
-   * @param listener 需要绑定到事件上的方法, 可为 Boolean 值, 会自动替换为 return[ true | false ] 方法
+   * @param listener 需要绑定到事件上的方法, 可为 boolean 值, 会自动替换为 return[ true | false ] 方法
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $once( types: String, listener: Function, selector?: String, options?: any ): any;
+  $once( types: string, listener: Function, selector?: string, options?: any ): any;
 
   /**
    * ( Fat ) 传入事件名和方法进行事件移除
@@ -2681,14 +2681,14 @@ interface EventTarget {
    *                 为其他值, 则会移除匹配到的事件委托选择器的相关事件方法
    * @param listener 解绑的事件, 只会移除与传入方法匹配的相关事件方法
    */
-  $off( types: String, selector?: String, listener?: Function ): any;
+  $off( types: string, selector?: string, listener?: Function ): any;
 
   /**
    * ( Fat ) 触发绑定在元素上的事件( 只触发事件 )
    * @param types 触发的事件名
    * @param data 向方法传递的数据, 可为多个
    */
-  $emit( types: String, ...data: any[] ): any;
+  $emit( types: string, ...data: any[] ): any;
 
 }
 
@@ -2704,7 +2704,7 @@ interface Document {
    * ( Plugins ) 读取传入名称的页面 cookie
    * @param value 需要读取的 cookie 的值
    */
-  $cookie( key: String ): String | undefined;
+  $cookie( key: string ): string | undefined;
 
   /**
    * ( Plugins ) 设置页面 cookie
@@ -2712,20 +2712,20 @@ interface Document {
    * @param value 需要设置的 cookie 的值
    * @param attributes cookie 的配置
    */
-  $cookie( key: String, value: String, attributes?: any ): String;
+  $cookie( key: string, value: string, attributes?: any ): string;
 
   /**
    * ( Plugins ) 删除页面指定 cookie
    * @param key 需要删除的 cookie 名称
    * @param attributes cookie 的配置
    */
-  $deleteCookie( key: String, attributes?: any );
+  $deleteCookie( key: string, attributes?: any );
 
   /**
    * ( Plugins ) 删除页面指定 cookie
    * @param key 需要删除的 cookie 名称
    * @param attributes cookie 的配置
    */
-  $removeCookie( key: String, attributes?: any );
+  $removeCookie( key: string, attributes?: any );
 
 }
