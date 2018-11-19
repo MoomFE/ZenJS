@@ -54,7 +54,7 @@ interface ArrayConstructor {
    * 判断传入对象是否是一个类数组对象
    * @param value 需要判断的对象
    */
-  $isArrayLike( value: any ): Array;
+  $isArrayLike<T>( value: ArrayLike<T> ): Boolean;
 
   /**
    * 将传入参数转为数组
@@ -444,6 +444,303 @@ interface Array<T> {
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
   $findAllChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ][];
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回首个不符合传入方法检测的值
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNot( traversal: ( value ) => Boolean, fromIndex?: Number ) : T | undefined;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的值
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNot( arr: any[], fromIndex?: Number ): T | undefined;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的值
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNot( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的值
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNot( obj: any, fromIndex?: Number ): T | undefined;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的值
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNot( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回首个不符合传入方法检测的下标
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的下标
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotIndex( arr: any[], fromIndex?: Number ): Number;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的下标
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的下标
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotIndex( obj: any, fromIndex?: Number ): Number;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的下标
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回首个不符合传入方法检测的键值数组
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotChunk( traversal: ( value ) => Boolean, fromIndex?: Number ) : [ Number, T ] | undefined;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotChunk( arr: any[], fromIndex?: Number ): [ Number, T ] | undefined;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotChunk( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotChunk( obj: any, fromIndex?: Number ): [ Number, T ] | undefined;
+  /**
+   * 遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findNotChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回首个不符合传入方法检测的值
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNot( traversal: ( value ) => Boolean, fromIndex?: Number ) : T | undefined;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的值
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNot( arr: any[], fromIndex?: Number ): T | undefined;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的值
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNot( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的值
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNot( obj: any, fromIndex?: Number ): T | undefined;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的值
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNot( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T | undefined;
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回首个不符合传入方法检测的下标
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的下标
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotIndex( arr: any[], fromIndex?: Number ): Number;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的下标
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的下标
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotIndex( obj: any, fromIndex?: Number ): Number;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的下标
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number;
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回首个不符合传入方法检测的键值数组
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotChunk( traversal: ( value ) => Boolean, fromIndex?: Number ) : [ Number, T ] | undefined;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotChunk( arr: any[], fromIndex?: Number ): [ Number, T ] | undefined;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotChunk( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotChunk( obj: any, fromIndex?: Number ): [ Number, T ] | undefined;
+  /**
+   * 逆序遍历集合的内容, 查找到首个不符合传入筛选条件的键值数组
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: -1
+   */
+  $findLastNotChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ] | undefined;
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回所有不符合传入方法检测的值
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNot( traversal: ( value ) => Boolean, fromIndex?: Number ) : T[];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的值
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNot( arr: any[], fromIndex?: Number ): T[];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的值
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNot( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T[];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的值
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNot( obj: any, fromIndex?: Number ): T[];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的值
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNot( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): T[];
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回所有不符合传入方法检测的下标
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotIndex( traversal: ( value ) => Boolean, fromIndex?: Number ) : Number[];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的下标
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotIndex( arr: any[], fromIndex?: Number ): Number[];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的下标
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotIndex( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number[];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的下标
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotIndex( obj: any, fromIndex?: Number ): Number[];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的下标
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotIndex( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): Number[];
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回所有不符合传入方法检测的键值数组集
+   * @param traversal 检测值的方法, 方法返回 Boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotChunk( traversal: ( value ) => Boolean, fromIndex?: Number ) : [ Number, T ][];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的键值数组集
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotChunk( arr: any[], fromIndex?: Number ): [ Number, T ][];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的键值数组集
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotChunk( arr: any[], predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ][];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的键值数组集
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotChunk( obj: any, fromIndex?: Number ): [ Number, T ][];
+  /**
+   * 遍历集合的内容, 查找到所有不符合传入筛选条件的键值数组集
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 Boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findAllNotChunk( obj: any, predicate?: ( ( value1, value2 ) => Boolean ) | Boolean, fromIndex?: Number ): [ Number, T ][];
 
   /**
    * 获取指定下标的对象
