@@ -9,7 +9,7 @@ import { GROUPS, MAINGROUPS } from "./util";
  * 事件处理 => 绑定事件
  * @private
  * @param {EventTarget} elem 需要绑定事件的对象
- * @param {Array} _type 需要绑定的事件
+ * @param {String} _type 需要绑定的事件
  * @param {String} selector 事件委托的选择器
  * @param {Function} listener 绑定的事件回调
  * @param {Object} options 事件绑定参数

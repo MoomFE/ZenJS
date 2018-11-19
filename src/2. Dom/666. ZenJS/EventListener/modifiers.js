@@ -6,7 +6,7 @@ import { isArray } from "../../../shared/const/type";
  * 事件处理 => 功能性命名空间
  * @private
  * @param {String} name 需要解析哪一块的功能命名空间
- * @param {Array} namespace 元素的命名空间列表
+ * @param {String[]} namespace 元素的命名空间列表
  * @param {EventTarget} elem 绑定事件的元素
  * @param {String} type 绑定的事件
  * @param {Object} options 其他属性

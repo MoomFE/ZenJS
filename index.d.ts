@@ -3,7 +3,6 @@ interface ArrayLike<T> {
   readonly [n: number]: T;
 }
 
-
 interface ArrayConstructor {
 
   /**
@@ -33,7 +32,7 @@ interface ArrayConstructor {
    * @param insert 会向方法内传入当前数组创建进度的 index， 然后将方法的返回值填充到数组中
    * @param isInsert 若值为真, 则不执行方法, 直接将方法作为填充内容 - default: false
    */
-  $create<T>( length: Number, insert: ( index: Number ) => T, isInsert: Boolean = false ): T[];
+  $create<T>( length: Number, insert: ( index: Number ) => T, isInsert?: Boolean ): T[];
 
   /**
    * 调用传入方法遍历传入数组
@@ -64,6 +63,7 @@ interface ArrayConstructor {
   $toArray<T>( value: ArrayLike<T>, transKey?: false ): T[];
 
 }
+
 
 interface Array<T> {
 
@@ -99,7 +99,7 @@ interface Array<T> {
    * @param num 需要从该下标开始删除几个对象 - default: 1
    * @param returnDeleted 是否返回删除的数据 - default: false
    */
-  $delete( index: Number, num: Number = 1, returnDeleted?: false ): this;
+  $delete( index: Number, num?: Number, returnDeleted?: false ): this;
 
   /**
    * 在数组指定位置删除若干对象
@@ -107,7 +107,7 @@ interface Array<T> {
    * @param num 需要从该下标开始删除几个对象 - default: 1
    * @param returnDeleted 是否返回删除的数据 - default: false
    */
-  $remove( index: Number, num: Number = 1, returnDeleted?: false ): this;
+  $remove( index: Number, num?: Number, returnDeleted?: false ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
@@ -746,53 +746,53 @@ interface Array<T> {
    * 获取指定下标的对象
    * @param index 需要获取的下标, 可为负数 - default: 0
    */
-  $get( index?: 0 ): any;
+  $get( index: Number ): T | undefined;
 
   /**
    * 获取指定下标开始的若干个对象
    * @param index 需要获取的下标, 可为负数 - default: 0
    * @param num 需要从该下标开始获取几个对象 - default: 1
    */
-  $get( index?: 0, num: Number ): any[];
+  $get( index: Number, num: Number ): T[];
 
   /**
    * 修改数组指定下标的值
    * @param index 下标, 可为负数
    * @param value 值
    */
-  $set( index: Number, value: any ): any[];
+  $set( index: Number, value: any ): this;
 
   /**
    * 修改数组指定下标的值
    * @param obj 批量修改数组指定下标的值
    */
-  $set( obj: { index: Number, value: any } ): any[];
+  $set( obj: { index: Number, value: any } ): this;
 
   /**
    * 修改数组内指定下标的值, 修改时无论如何不会超出数组原有范围
    * @param index 下标, 可为负数
    * @param value 值
    */
-  $edit( index: Number, value: any ): any[];
+  $edit( index: Number, value: any ): this;
 
   /**
    * 修改数组内指定下标的值, 修改时无论如何不会超出数组原有范围
    * @param obj 批量修改数组内指定下标的值
    */
-  $edit( obj: { index: Number, value: any } ): any[];
+  $edit( obj: { index: Number, value: any } ): this;
 
   /**
    * 修改数组内指定下标的值
    * @param index 下标, 可为负数
    * @param value 值
    */
-  $edit( index: Number, value: any ): any[];
+  $edit( index: Number, value: any ): this;
 
   /**
    * 修改数组内指定下标的值
    * @param obj 批量修改数组内指定下标的值
    */
-  $edit( obj: { index: Number, value: any } ): any[];
+  $edit( obj: { index: Number, value: any } ): this;
 
   /**
    * 查找数组内是否有此传入值
@@ -812,7 +812,7 @@ interface Array<T> {
    * @param from 需要移动的元素下标, 可为负数
    * @param to 需要移动到的位置下标, 可为负数
    */
-  $move( from: Number, to: Number ): any[];
+  $move( from: Number, to: Number ): this;
 
   /**
    * 提取数组一个范围内的元素, 移动到指定下标中 ( 指定下标是按照需要移动的元素移除后的下标进行计算 )
@@ -820,29 +820,29 @@ interface Array<T> {
    * @param moveCount 从起始下标开始, 取几位进行移动
    * @param toIndex 需要移动到数组的目标下标, 可为负数
    */
-  $moveRange( start: Number, moveCount: Number, toIndex: Number ): any[];
+  $moveRange( start: Number, moveCount: Number, toIndex: Number ): this;
 
   /**
    * 将一个或多个元素添加到数组的末尾, 并返回当前数组
    * @param args 需要插入到数组末尾的对象
    */
-  $push( ...args: any[] ): any[];
+  $push( ...args: any[] ): this;
 
   /**
    * 从数组中删除最后一个元素, 并返回当前数组
    */
-  $pop(): any[];
+  $pop(): this;
 
   /**
    * 将一个或多个元素添加到数组的开头, 并返回当前数组
    * @param args 需要插入到数组开头的对象
    */
-  $unshift( ...args: any[] ): any[];
+  $unshift( ...args: any[] ): this;
 
   /**
    * 从数组中删除第一个元素, 并返回当前数组
    */
-  $shift(): any[];
+  $shift(): this;
 
   /**
    * 通过删除现有元素和 / 或添加新元素来更改一个数组的内容, 并返回当前数组
@@ -850,17 +850,27 @@ interface Array<T> {
    * @param deleteCount 整数, 表示要移除的数组元素的个数
    * @param args 要添加进数组的元素
    */
-  $splice( start: Number, deleteCount?: Number, ...args?: any ): any[];
+  $splice( start: Number, deleteCount?: Number, ...args: any[] ): this;
 
 }
+
 
 interface ObjectConstructor {
 
   /**
    * 将多个源对象的可枚举属性合并到第一个对象中
    * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign, 可不填 - Default: false
+   * @param target 要复制到的目标对象
+   * @param source 需要复制属性的多个源对象
    */
-  $assign( shallow: Boolean = false, ...args?: any[] ): any;
+  $assign<T, U>( shallow?: Boolean, target?: T, ...source: U[] ): T & U;
+
+  /**
+   * 将多个源对象的可枚举属性合并到第一个对象中
+   * @param target 要复制到的目标对象
+   * @param source 需要复制属性的多个源对象
+   */
+  $assign<T, U>( target: T, ...source: U[] ): T & U;
 
   /**
    * 判断传入的两个对象是否相同
@@ -887,7 +897,7 @@ interface ObjectConstructor {
    * @param obj 需要进行遍历的对象
    * @param callback 遍历对象时调用的方法, 方法返回 false 时, 将终止后续遍历
    */
-  $each( obj: any, callback: Function ): any;
+  $each<T>( obj: T, callback: ( name: String, value: any, obj: T ) => Boolean ): T;
 
   /**
    * 判断传入对象是否是空对象
@@ -903,13 +913,21 @@ interface ObjectConstructor {
 
 }
 
+
 interface Object {
 
   /**
    * 将多个源对象的可枚举属性合并到当前对象中
    * @param shallow 是否使用浅拷贝模式, 类似于使用 Object.assign, 可不填 - Default: false
+   * @param source 需要复制属性的多个源对象
    */
-  $assign( shallow: Boolean = false, ...args?: any[] ): any;
+  $assign<T>( shallow?: Boolean, ...source: T[] ): this & T;
+
+  /**
+   * 将多个源对象的可枚举属性合并到当前对象中
+   * @param source 需要复制属性的多个源对象
+   */
+  $assign<T>( ...source: T[] ): this & T;
 
   /**
    * 判断当前对象和传入对象是否相同, 比对规则请参考 Object.$equals
@@ -929,11 +947,6 @@ interface Object {
    */
   $get( key ): any;
 
-  /**
-   * 批量获取对象的值, 返回所有传入 key 和对应 value 的键值对
-   * @param keys 需要获取的值的 key
-   */
-  $get( ...keys: any[] ): any;
 
   /**
    * 设置或修改对象的某个值
@@ -1005,6 +1018,7 @@ interface Object {
 
 }
 
+
 interface NumberConstructor {
 
   /**
@@ -1014,6 +1028,7 @@ interface NumberConstructor {
   $isNumber( obj: any ): Boolean;
 
 }
+
 
 interface Number {
 
@@ -1074,6 +1089,7 @@ interface Number {
   $chu( num: Number ): Number;
 
 }
+
 
 interface Math {
 
@@ -1155,9 +1171,10 @@ interface Math {
    * 传入多个数字, 求出传入参数的平均值
    * @param args 任意个数数字
    */
-  $mean( ...args?: Number[] ): Number;
+  $mean( ...args: Number[] ): Number;
 
 }
+
 
 interface StringConstructor {
 
@@ -1173,9 +1190,10 @@ interface StringConstructor {
    * @param uppercase 是否随机大写字母 - default: false
    * @param number 是否随机数字 - default: false
    */
-  $someRandom( length: Number = 12, uppercase?: false, number?: false ): String;
+  $someRandom( length?: Number, uppercase?: false, number?: false ): String;
 
 }
+
 
 interface String {
 
@@ -1193,6 +1211,7 @@ interface String {
   $toCapitalize( ignoreNext?: Boolean ): String;
 
 }
+
 
 interface DateConstructor{
 
@@ -1238,6 +1257,7 @@ interface DateConstructor{
   $format( date: String | Date, formatStr: String )
 
 }
+
 
 interface Date {
 
@@ -1420,7 +1440,7 @@ interface Date {
   /**
    * 返回包含时间数值的数组
    */
-  $toArray(): Array;
+  $toArray(): Number[];
 
   /**
    * 返回包含时间数值的对象
@@ -1456,13 +1476,14 @@ interface Date {
 
 }
 
+
 interface Function {
 
   /**
    * 使当前方法调用次数大于传入数值时, 才会被真正调用
    * @param num 调用次数 - Default: 1
    */
-  $after( num: Number = 1 ): Function
+  $after( num?: Number ): Function
 
   /**
    * 可提前传入方法的指定下标的参数
@@ -1474,15 +1495,16 @@ interface Function {
    * 使当前方法调用过一次便失效
    * @param num 可指定在被第几次调用时是有用的, 默认第一次 - Default: 1
    */
-  $one( num?: Number = 1 ): Function;
+  $one( num?: Number ): Function;
 
   /**
    * 使当前方法调用过一次便失效
    * @param num 可指定在被第几次调用时是有用的, 默认第一次 - Default: 1
    */
-  $once( num?: Number = 1 ): Function;
+  $once( num?: Number ): Function;
 
 }
+
 
 interface RegExpConstructor{
 
@@ -1502,31 +1524,30 @@ interface Window {
    * 判断传入参数的类型
    * @param obj 需要判断类型的参数
    */
-  $typeof: $typeof;
+  $typeof( obj: any ): String;
 
   /**
    * $querystring 模块提供了一些实用函数, 用于解析与格式化 URL 查询字符串
    */
   $querystring: $querystring;
 
+  /**
+   * ZenJS
+   */
   ZenJS: ZenJS;
 
-  dayjs: dayjs;
+  /**
+   * 解析传入的 ( 时间字符串 | Unix 时间戳 | Date 对象 | Dayjs 对象 )
+   * @param config ( 标准的 ISO 8601 时间字符串 )
+   *               ( Unix 毫秒时间戳: 13位数字 )
+   *               ( Unix 秒时间戳: 10位数字 )
+   *               ( Javascript Date 对象 )
+   * @param options \{ locale: string }
+   */
+  dayjs( config?: string | number | Date | Dayjs, options?: any ): Dayjs;
 
 }
 
-
-/**
- * 判断传入参数的类型
- * @param obj 需要判断类型的参数
- */
-declare function $typeof( obj: any ): String;
-
-
-/**
- * $querystring 模块提供了一些实用函数, 用于解析与格式化 URL 查询字符串
- */
-declare const $querystring: $querystring;
 
 interface $querystring {
   /**
@@ -1535,7 +1556,7 @@ interface $querystring {
    * @param sep 在字符串中分隔不同键值对的字符串 - default: '&'
    * @param eq 在字符串中分隔键和值的字符串 - default: '='
    */
-  stringify( obj, sep: String = '&', eq: String = '=' ): String;
+  stringify( obj, sep?: String, eq?: String ): String;
 
   /**
    * 将 URL 查询字符串反序列化为对象
@@ -1543,14 +1564,8 @@ interface $querystring {
    * @param sep 在字符串中分隔不同键值对的字符串 - default: '&'
    * @param eq 在字符串中分隔键和值的字符串 - default: '='
    */
-  parse( str, sep: String = '&', eq: String = '=' ): any;
+  parse( str, sep?: String, eq?: String ): {};
 }
-
-
-/**
- * ZenJS
- */
-declare const ZenJS: ZenJS;
 
 interface ZenJS {
 
@@ -1569,13 +1584,13 @@ interface ZenJS {
    * 方法返回一个给定对象自身可枚举属性的键值对数组.
    * Object.entries polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
    */
-  entries( obj: any ): Array[];
+  entries<T, K extends keyof T>( obj: T ): [ K, T[K] ][];
 
   /**
    * 方法返回一个给定对象自身的所有可枚举属性值的数组.
    * Object.values polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
    */
-  values( obj: any ): Array[];
+  values<T, K extends keyof T, V>( obj: T ): [ K, T[K] ][];
 
   /**
    * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
@@ -1667,7 +1682,7 @@ interface ZenJS {
    * @param { IArguments } args arguments
    * @param { Number } index 需要在 arguments 中开始取参数的下标 - default: 0
    */
-  parametersRest( args: IArguments, index: Number ): Array[];
+  parametersRest( args: IArguments, index: Number ): any[];
 
   /**
    * 判断传入对象是否是 String 类型
@@ -1733,7 +1748,7 @@ interface ZenJS {
    * 将 Map 或 Set 类型转换为数组类型,
    * 执行到这之前必须确定传进来的是 Map 或 Set 类型
    */
-  mapSetToArray( mapOrSet: Map | Set )
+  mapSetToArray<T, K, V>( mapOrSet: Map<K, V> | Set<T> )
 
   /**
    * 创建一个可写的事件对象
@@ -1751,14 +1766,14 @@ interface ZenJS {
      * 事件处理 => 绑定事件
      * @private
      * @param elem 需要绑定事件的对象
-     * @param types 需要绑定的事件集
+     * @param type 需要绑定的事件
      * @param selector 事件委托的选择器
      * @param listener 绑定的事件回调
      * @param options 事件绑定参数
      * @param group 事件分组参数
      * @param data 传递给事件的数据
      */
-    add( elem: EventTarget, types: Array, selector: String, listener: Function, options: Object, group: String, data: Object );
+    add( elem: EventTarget, type: String, selector: String, listener: Function, options: Object, group: String, data: Object );
 
     /**
      * 事件处理 => 触发事件
@@ -1778,7 +1793,7 @@ interface ZenJS {
      * @param type 绑定的事件
      * @param options 其他属性
      */
-    modifiers( name: String, namespace: Array, elem: EventTarget, type: String, options: Object );
+    modifiers( name: String, namespace: String[], elem: EventTarget, type: String, options: Object );
 
     /**
      * 事件处理 => 移除事件
@@ -1788,7 +1803,7 @@ interface ZenJS {
      * @param listener 需要移除的事件回调
      * @param selector 事件委托选择器
      */
-    remove( elem: EventTarget, types: Array, listener: Function, selector: String );
+    remove( elem: EventTarget, types: String[], listener: Function, selector: String );
 
     /**
      * 事件处理 => 触发事件
@@ -1797,12 +1812,27 @@ interface ZenJS {
      * @param types 需要触发的事件集
      * @param data 需要传递到事件回调的参数
      */
-    emit( elem: EventTarget, types: Array, data: Array );
+    emit( elem: EventTarget, types: String[], data: any[] );
 
   }
 
 }
 
+/**
+ * 判断传入参数的类型
+ * @param obj 需要判断类型的参数
+ */
+declare function $typeof( obj: any ): String;
+
+/**
+ * $querystring 模块提供了一些实用函数, 用于解析与格式化 URL 查询字符串
+ */
+declare const $querystring: $querystring;
+
+/**
+ * ZenJS
+ */
+declare const ZenJS: ZenJS;
 
 /**
  * 解析传入的 ( 时间字符串 | Unix 时间戳 | Date 对象 | Dayjs 对象 )
@@ -1814,7 +1844,7 @@ interface ZenJS {
  */
 declare function dayjs( config?: string | number | Date | Dayjs, options?: any ): Dayjs;
 
-declare namespace dayjs{
+declare namespace dayjs {
 
   /**
    * 给 dayjs 扩展插件
@@ -1844,7 +1874,7 @@ declare namespace dayjs{
 
 }
 
-class Dayjs{
+declare class Dayjs{
 
   constructor( config?: string | number | Date | Dayjs );
 
@@ -2092,6 +2122,7 @@ class Dayjs{
 
 }
 
+
 /*
  * DOM API
  */
@@ -2138,18 +2169,6 @@ interface Document {
 
 }
 
-interface Window {
-
-  /**
-   * ( Fat ) 当前页面及页面资源载入完成后传入代码
-   *
-   * @param func 页面及页面资源载入完成后执行的方法
-   * @param data 需要传入方法的数据
-   */
-  $ready: $ready;
-
-}
-
 /**
  * ( Fat ) 当前页面及页面资源载入完成后传入代码
  *
@@ -2159,32 +2178,45 @@ interface Window {
 declare function $ready( func: () => void, data?: any ): void;
 
 
+interface Window {
+
+  /**
+   * ( Fat ) 当前页面及页面资源载入完成后传入代码
+   *
+   * @param func 页面及页面资源载入完成后执行的方法
+   * @param data 需要传入方法的数据
+   */
+  $ready( func: () => void, data?: any ): void;
+
+}
+
+
 interface Element {
 
   /**
    * ( Fat ) 向元素添加一个或多个类
    * @param className 类名
    */
-  $addClass( className: Stirng ): Element;
+  $addClass( className: String ): Element;
 
   /**
    * ( Fat ) 向元素移除一个或多个类
    * @param className 类名
    */
-  $removeClass( className: Stirng ): Element;
+  $removeClass( className: String ): Element;
 
   /**
    * ( Fat ) 判断元素是否有一个或多个类
    * @param className 类名
    */
-  $hasClass( className: Stirng ): Boolean;
+  $hasClass( className: String ): Boolean;
 
   /**
    * ( Fat ) 设置或移除元素的一个或多个类进行切换
    * @param className 类名
    * @param toggle 若值为 true, 则规定只添加类, 反之只移除
    */
-  $toggleClass( className: Stirng, toggle: Boolean ): Element;
+  $toggleClass( className: String, toggle: Boolean ): Element;
 
   /**
    * ( Fat ) 判断当前节点是否符合传入的要求
@@ -2544,6 +2576,7 @@ interface Element {
 
 }
 
+
 interface EventTarget {
 
   /**
@@ -2655,7 +2688,7 @@ interface EventTarget {
    * @param types 触发的事件名
    * @param data 向方法传递的数据, 可为多个
    */
-  $emit( types: String, ...data?: any[] ): any;
+  $emit( types: String, ...data: any[] ): any;
 
 }
 
