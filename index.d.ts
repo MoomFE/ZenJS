@@ -897,7 +897,7 @@ interface ObjectConstructor {
    * @param obj 需要进行遍历的对象
    * @param callback 遍历对象时调用的方法, 方法返回 false 时, 将终止后续遍历
    */
-  $each<T>( obj: T, callback: ( name: string, value: any, obj: T ) => boolean ): T;
+  $each<T>( obj: T, callback: ( name: string, value: any, obj: T ) => any ): T;
 
   /**
    * 判断传入对象是否是空对象
@@ -914,7 +914,7 @@ interface ObjectConstructor {
 }
 
 
-interface Boolean {
+interface Object {
 
   /**
    * 将多个源对象的可枚举属性合并到当前对象中
@@ -939,82 +939,69 @@ interface Boolean {
    * 调用传入方法遍历当前对象
    * @param callback 遍历当前对象时调用的方法, 方法返回 false 时, 将终止后续遍历
    */
-  $each( callback: Function ): any;
+  $each( callback: ( name: string, value: any, obj: this ) => any ): this;
 
   /**
    * 获取对象的某个值
    * @param key 需要获取的值的 key
    */
-  $get( key ): any;
-
+  $get<K extends keyof this>( key: K ): this[K];
 
   /**
    * 设置或修改对象的某个值
    * @param key 需要修改的值的 key
    * @param value 需要设置的值
    */
-  $set( key, value ): any;
+  $set( key: String, value: any ): this;
 
   /**
    * 批量设置或修改对象的值
    * @param obj key, value 的键值对
    */
-  $set( obj ): any;
+  $set( obj: {} ): this;
 
   /**
    * 删除对象中指定值
    * @param args 可删除多个指定值
    */
-  $delete( ...args: any[] ): any;
+  $delete( ...args: string[] ): this;
 
   /**
    * 删除对象中指定值
    * @param args 可删除多个指定值
    */
-  $delete( args: any[] ): any;
-
-  /**
-   * 删除对象中指定值
-   * @param args 可删除多个指定值
-   */
-  $remove( ...args: any[] ): any;
-
-  /**
-   * 删除对象中指定值
-   * @param args 可删除多个指定值
-   */
-  $remove( args: any[] ): any;
+  $remove( ...args: string[] ): this;
 
   /**
    * 从对象中删除与传入值相同的值
    * @param value 需要对象中删除的值
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $deleteValue( value: any, predicate: Function | boolean ): any;
+  $deleteValue( value: any, predicate: boolean | ( ( value1, value2 ) => boolean ) ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
    * @param predicate 用于自定义筛选内容
    */
-  $deleteValue( predicate: Function ): any;
+  $deleteValue( predicate: ( value ) => boolean ): this;
 
   /**
    * 从对象中删除与传入值相同的值
    * @param value 需要对象中删除的值
    * @param predicate 是否使用全等进行判断, 为 false 则使用双等进行判断, 可传入自定义方法 - default: true
    */
-  $removeValue( value: any, predicate: Function | boolean ): any;
+  $removeValue( value: any, predicate: boolean | ( ( value1, value2 ) => boolean ) ): this;
 
   /**
    * 从数组中删除与传入值相同的对象
    * @param predicate 用于自定义筛选内容
    */
-  $removeValue( predicate: Function ): any;
+  $removeValue( predicate: ( value ) => boolean ): this;
 
   /**
    * 返回当前对象
    */
-  $self(): any;
+  $self(): this;
 
 }
 
@@ -1094,11 +1081,9 @@ interface Number {
 interface Math {
 
   /**
-   * 在最小数和最大数之间随机一个数字
-   * @param from 指定一个最小数, 可为负数 - default: 0
-   * @param to 指定一个最大数, 可为负数 - default: 9
+   * 在 0 到 9 之间随机一个数字
    */
-  $random( from: number, to: number ): number;
+  $random(): number;
 
   /**
    * 在 0 到传入值之间随机一个数字
@@ -1107,9 +1092,11 @@ interface Math {
   $random( to: number ): number;
 
   /**
-   * 在 0 到 9 之间随机一个数字
+   * 在最小数和最大数之间随机一个数字
+   * @param from 指定一个最小数, 可为负数 - default: 0
+   * @param to 指定一个最大数, 可为负数 - default: 9
    */
-  $random(): number;
+  $random( from: number, to: number ): number;
 
   /**
    * 将传入的两个数字进行相加, 不会发生浮点数精度不准的问题
@@ -1483,7 +1470,7 @@ interface Function {
    * 使当前方法调用次数大于传入数值时, 才会被真正调用
    * @param num 调用次数 - Default: 1
    */
-  $after( num?: number ): Function
+  $after( num?: number ): Function;
 
   /**
    * 可提前传入方法的指定下标的参数
@@ -1550,6 +1537,7 @@ interface Window {
 
 
 interface $querystring {
+
   /**
    * 将对象进行序列化成 URL 查询字符串
    * @param obj 需要序列化的对象
@@ -1565,7 +1553,8 @@ interface $querystring {
    * @param eq 在字符串中分隔键和值的字符串 - default: '='
    */
   parse( str, sep?: string, eq?: string ): {};
-}
+
+} 
 
 interface ZenJS {
 
@@ -1578,7 +1567,7 @@ interface ZenJS {
    * 方法用于将所有可枚举属性的值从一个或多个源对象复制到目标对象. 它将返回目标对象.
    * boolean.assign polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
    */
-  assign( ...args: any[] ): any;
+  assign<T, U>( target: T, ...source: U[] ): T & U;
 
   /**
    * 方法返回一个给定对象自身可枚举属性的键值对数组.
@@ -1590,7 +1579,7 @@ interface ZenJS {
    * 方法返回一个给定对象自身的所有可枚举属性值的数组.
    * boolean.values polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
    */
-  values<T, K extends keyof T, V>( obj: T ): [ K, T[K] ][];
+  values<T, K extends keyof T>( obj: T ): T[K][];
 
   /**
    * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
@@ -1625,34 +1614,34 @@ interface ZenJS {
 
   /**
    * 在一个对象上定义/修改一个新属性的 value 描述符
-   * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-   * @param {string} name 要定义或修改的属性的名称
-   * @param {Function} value 将被定义或修改的 value 描述符
-   * @param {any} options 将被定义或修改的属性描述符 ( configurable - 删除/定义 ) ( enumerable - 枚举 ) ( writable - 写入 )
+   * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+   * @param name 要定义或修改的属性的名称
+   * @param value 将被定义或修改的 value 描述符
+   * @param options 将被定义或修改的属性描述符 ( configurable - 删除/定义 ) ( enumerable - 枚举 ) ( writable - 写入 )
    */
   defineValue( obj: any, name: string, value: Function, options: any );
 
   /**
    * 在一个对象上定义/修改一个新属性的 get 描述符
-   * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
-   * @param {string} name 要定义或修改的属性的名称
-   * @param {Function} get 将被定义或修改的 get 描述符
-   * @param {any} options 将被定义或修改的属性描述符 ( configurable - 删除/定义 ) ( enumerable - 枚举 ) ( writable - 写入 )
+   * @param obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
+   * @param name 要定义或修改的属性的名称
+   * @param get 将被定义或修改的 get 描述符
+   * @param options 将被定义或修改的属性描述符 ( configurable - 删除/定义 ) ( enumerable - 枚举 ) ( writable - 写入 )
    */
   defineGet( obj: any, name: string, get: Function, options: any );
 
   /**
    * 在传入的两个正整数中随机一个数字
-   * @param {number} from
-   * @param {number} to
+   * @param from
+   * @param to
    */
-  intRandom( from:number, to:number ): number;
+  intRandom( from: number, to: number ): number;
 
   /**
    * 返回传入的第一个参数
    * @param {any} arg
    */
-  returnArg( arg: any ): any;
+  returnArg<T>( arg: T ): T;
 
   /**
    * 始终返回 true
@@ -1667,7 +1656,7 @@ interface ZenJS {
   /**
    * 一个空方法
    */
-  noop(): false;
+  noop(): void;
 
   /**
    * 获取方法指定位参数, 若未传入参数, 则取默认值
@@ -1748,7 +1737,13 @@ interface ZenJS {
    * 将 Map 或 Set 类型转换为数组类型,
    * 执行到这之前必须确定传进来的是 Map 或 Set 类型
    */
-  mapSetToArray<T, K, V>( mapOrSet: Map<K, V> | Set<T> )
+  mapSetToArray<T, K>( mapOrSet: Map<K, V> ): [K, V][];
+
+  /**
+   * 将 Map 或 Set 类型转换为数组类型,
+   * 执行到这之前必须确定传进来的是 Map 或 Set 类型
+   */
+  mapSetToArray<T>( mapOrSet: Set<T> ): T[]
 
   /**
    * 创建一个可写的事件对象
@@ -2147,13 +2142,13 @@ interface Document {
    * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $query( selectors ): NodeListOf<Element>;
+  $query( selectors ): Element[];
 
   /**
    * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $find( selectors ): NodeListOf<Element>;
+  $find( selectors ): Element[];
 
   /**
    * ( Fat ) 调用原生  querySelector 方法
@@ -2197,13 +2192,13 @@ interface Element {
    * ( Fat ) 向元素添加一个或多个类
    * @param className 类名
    */
-  $addClass( className: string ): Element;
+  $addClass( className: string ): this;
 
   /**
    * ( Fat ) 向元素移除一个或多个类
    * @param className 类名
    */
-  $removeClass( className: string ): Element;
+  $removeClass( className: string ): this;
 
   /**
    * ( Fat ) 判断元素是否有一个或多个类
@@ -2216,7 +2211,7 @@ interface Element {
    * @param className 类名
    * @param toggle 若值为 true, 则规定只添加类, 反之只移除
    */
-  $toggleClass( className: string, toggle: boolean ): Element;
+  $toggleClass( className: string, toggle: boolean ): this;
 
   /**
    * ( Fat ) 判断当前节点是否符合传入的要求
@@ -2319,7 +2314,7 @@ interface Element {
    * 若未传入过滤条件, 则直接返回当前节点的所有兄弟节点
    * @param filter 过滤条件: 方法或者 DOM 节点或 CSS 选择器
    */
-  $siblings( filter?: string | Function ): Element | null;
+  $siblings( filter?: string | Function ): Element[];
 
   /**
    * ( Fat ) 获取元素的属性值 ( property )
@@ -2331,14 +2326,14 @@ interface Element {
    * ( Fat ) 批量设置元素的属性值 ( property )
    * @param props 属性值得键值对
    */
-  $prop( props: any ): Element;
+  $prop( props: {} ): this;
 
   /**
    * ( Fat ) 设置元素的属性值 ( property )
    * @param name 属性名
    * @param value 属性值
    */
-  $prop( name: string, value: any ): Element;
+  $prop( name: string, value: any ): this;
 
   /**
    * ( Fat ) 判断当前元素是否有传入属性值 ( property )
@@ -2350,13 +2345,13 @@ interface Element {
    * ( Fat ) 移除元素的属性值 ( property )
    * @param name 属性名
    */
-  $removeProp( name: string ): Element;
+  $removeProp( name: string ): this;
 
   /**
    * ( Fat ) 移除元素的属性值 ( property )
    * @param name 属性名
    */
-  $deleteProp( name: string ): Element;
+  $deleteProp( name: string ): this;
 
   /**
    * ( Fat ) 获取元素的属性值 ( attribute )
@@ -2368,14 +2363,14 @@ interface Element {
    * ( Fat ) 批量设置元素的属性值 ( attribute )
    * @param attrs 属性值得键值对
    */
-  $attr( attrs: any ): Element;
+  $attr( attrs: {} ): this;
 
   /**
    * ( Fat ) 设置元素的属性值 ( attribute )
    * @param name 属性名
    * @param value 属性值
    */
-  $attr( name: string, value: string ): Element;
+  $attr( name: string, value: string ): this;
 
   /**
    * ( Fat ) 判断当前元素是否有传入属性值 ( attribute )
@@ -2387,77 +2382,77 @@ interface Element {
    * ( Fat ) 移除元素的属性值 ( attribute )
    * @param name 属性名
    */
-  $removeAttr( name: string ): Element;
+  $removeAttr( name: string ): this;
 
   /**
    * ( Fat ) 移除元素的属性值 ( attribute )
    * @param name 属性名
    */
-  $deleteAttr( name: string ): Element;
+  $deleteAttr( name: string ): this;
 
   /**
    * ( Fat ) 添加元素到当前元素内的尾部
    * @param elem 需要添加的元素
    * @returns 返回当前元素
    */
-  $append( elem: Element ): Element;
+  $append( elem: Element ): this;
 
   /**
    * ( Fat ) 添加元素到当前元素内的头部
    * @param elem 需要添加的元素
    * @returns 返回当前元素
    */
-  $prepend( elem: Element ): Element;
+  $prepend( elem: Element ): this;
 
   /**
    * ( Fat ) 添加当前元素到目标元素的尾部
    * @param elem 目标元素
    * @returns 返回当前元素
    */
-  $appendTo( elem: Element ): Element;
+  $appendTo( elem: Element ): this;
 
   /**
    * ( Fat ) 添加当前元素到目标元素的元素
    * @param elem 目标元素
    * @returns 返回当前元素
    */
-  $prependTo( elem: Element ): Element;
+  $prependTo( elem: Element ): this;
 
   /**
    * ( Fat ) 将目标元素插入到当前元素前面
    * @param elem 目标元素
    * @returns 返回当前元素
    */
-  $before( elem: Element ): Element;
+  $before( elem: Element ): this;
 
   /**
    * ( Fat ) 将目标元素插入到当前元素后面
    * @param elem 目标元素
    * @returns 返回当前元素
    */
-  $after( elem: Element ): Element;
+  $after( elem: Element ): this;
 
   /**
    * ( Fat ) 移除当前节点
    */
-  $delete();
+  $delete(): void;
 
   /**
    * ( Fat ) 移除当前节点
    */
-  $remove();
+  $remove(): void;
 
   /**
    * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $query( selectors ): any[];
+  $query( selectors ): Element[];
 
   /**
    * ( Fat ) 调用原生 querySelectorAll 方法
    * @param selectors 包含一个或多个要匹配的选择器的 DOMString
    */
-  $find( selectors ): any[];
+  $find( selectors ): Element[];
 
   /**
    * ( Fat ) 调用原生  querySelector 方法
@@ -2475,19 +2470,19 @@ interface Element {
    * ( Fat ) 将当前元素替换为新的元素
    * @param elem
    */
-  $replaceWith( elem: Element );
+  $replaceWith( elem: Element ): void;
 
   /**
    * ( Fat ) 将当前元素替换为新的元素
    * @param elem
    */
-  $replace( elem: Element );
+  $replace( elem: Element ): void;
 
   /**
    * ( Fat ) 返回调用该方法的节点的一个副本
    * @param deep 是否采用深度克隆, 如果为 true, 则该节点的所有后代节点也都会被克隆, 如果为 false, 则只克隆该节点本身
    */
-  $clone( deep?: boolean ): Node;
+  $clone( deep?: boolean ): Element;
 
   /**
    * ( Fat ) 获取元素在父元素的下标
@@ -2498,7 +2493,7 @@ interface Element {
    * ( Fat ) 将元素的下标设置为传入值 ( 将会移动元素 )
    * @param index 需要设置的元素下标
    */
-  $index( index: number ): Element;
+  $index( index: number ): this;
 
   /**
    * ( Fat ) 读取元素的 innerHTML 值
@@ -2509,7 +2504,7 @@ interface Element {
    * ( Fat ) 设置元素的 innerHTML 值
    * @param value 需要设置的值
    */
-  $html( value: string ): Element;
+  $html( value: string ): this;
 
   /**
    * ( Fat ) 返回元素的 value 值
@@ -2520,7 +2515,7 @@ interface Element {
    * ( Fat ) 设置元素的 value 值
    * @param value 需要设置的值
    */
-  $val( value: string ): Element;
+  $val( value: string ): this;
 
   /**
    * ( Fat ) 返回元素的 value 值
@@ -2531,7 +2526,7 @@ interface Element {
    * ( Fat ) 设置元素的 value 值
    * @param value 需要设置的值
    */
-  $value( value: string ): Element;
+  $value( value: string ): this;
 
   /**
    * ( Fat ) 返回元素的宽度
@@ -2542,7 +2537,7 @@ interface Element {
    * ( Fat ) 设置元素的宽度
    * @param value 需要设置的宽度
    */
-  $width( value: number ): Element;
+  $width( value: number ): this;
 
   /**
    * ( Fat ) 返回元素的高度
@@ -2553,7 +2548,7 @@ interface Element {
    * ( Fat ) 设置元素的高度
    * @param value 需要设置的高度
    */
-  $height( value: number ): Element;
+  $height( value: number ): this;
 
   /**
    * ( Fat ) 获取元素的样式
@@ -2566,7 +2561,7 @@ interface Element {
    * @param name 样式名
    * @param value 样式值
    */
-  $css( name: string, value: string ): Element;
+  $css( name: string, value: string ): this;
 
   /**
    * ( Fat ) 读取时获取元素的小写 nodeName;
@@ -2582,7 +2577,7 @@ interface EventTarget {
   /**
    * ( Fat ) 返回存储在对象上的全部数据
    */
-  $data(): any;
+  $data(): {};
 
   /**
    * ( Fat ) 读取指定名称的数据
@@ -2591,10 +2586,10 @@ interface EventTarget {
   $data( name: string ): any;
 
   /**
-   * ( Fat ) 将数据读取或存储
+   * ( Fat ) 将数据进行存储
    * @param name 需要存储的数据名称
    * @param value 存储的数据
-   * @param weakRead 当前值为 true 时, 同样视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
+   * @param weakRead 当前值为 true 时, 视为读取, 当前名称下有数据返回数据, 如无数据, 将 value 赋值并返回
    */
   $data( name: string, value: any, weakRead?: boolean ): any;
 
@@ -2612,13 +2607,13 @@ interface EventTarget {
   /**
    * ( Fat ) 删除存储在对象上的全部数据
    */
-  $deleteData(): any;
+  $deleteData(): this;
 
   /**
    * ( Fat ) 传入数据名称, 删除当前对象下存储的相应名称的数据
    * @param {string} name 需要删除的数据名称, 多个可使用空格分隔
    */
-  $deleteData( names: string ): any;
+  $deleteData( names: string ): this;
 
   /**
    * ( Fat ) 传入键值对事件进行绑定
@@ -2626,7 +2621,7 @@ interface EventTarget {
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $on( obj: any, selector?: string, options?: any ): any;
+  $on( obj: any, selector?: string, options?: any ): this;
 
   /**
    * ( Fat ) 传入事件名和方法对事件进行绑定
@@ -2635,7 +2630,7 @@ interface EventTarget {
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $on( types: string, listener: Function, selector?: string, options?: any ): any;
+  $on( types: string, listener: Function, selector?: string, options?: any ): this;
 
   /**
    * ( Fat ) 传入键值对事件进行绑定, 只会执行一次
@@ -2643,7 +2638,7 @@ interface EventTarget {
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $one( obj: any, selector?: string, options?: any ): any;
+  $one( obj: any, selector?: string, options?: any ): this;
 
   /**
    * ( Fat ) 传入事件名和方法对事件进行绑定, 只会执行一次
@@ -2652,7 +2647,7 @@ interface EventTarget {
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $one( types: string, listener: Function, selector?: string, options?: any ): any;
+  $one( types: string, listener: Function, selector?: string, options?: any ): this;
 
   /**
    * ( Fat ) 传入键值对事件进行绑定, 只会执行一次
@@ -2660,7 +2655,7 @@ interface EventTarget {
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $once( obj: any, selector?: string, options?: any ): any;
+  $once( obj: any, selector?: string, options?: any ): this;
 
   /**
    * ( Fat ) 传入事件名和方法对事件进行绑定, 只会执行一次
@@ -2669,7 +2664,7 @@ interface EventTarget {
    * @param selector 事件代理选择器
    * @param options 原生事件绑定参数, useCapture || { capture, passive, once }
    */
-  $once( types: string, listener: Function, selector?: string, options?: any ): any;
+  $once( types: string, listener: Function, selector?: string, options?: any ): this;
 
   /**
    * ( Fat ) 传入事件名和方法进行事件移除
@@ -2681,14 +2676,14 @@ interface EventTarget {
    *                 为其他值, 则会移除匹配到的事件委托选择器的相关事件方法
    * @param listener 解绑的事件, 只会移除与传入方法匹配的相关事件方法
    */
-  $off( types: string, selector?: string, listener?: Function ): any;
+  $off( types: string, selector?: string, listener?: Function ): this;
 
   /**
    * ( Fat ) 触发绑定在元素上的事件( 只触发事件 )
    * @param types 触发的事件名
    * @param data 向方法传递的数据, 可为多个
    */
-  $emit( types: string, ...data: any[] ): any;
+  $emit( types: string, ...data: any[] ): this;
 
 }
 
@@ -2698,7 +2693,7 @@ interface Document {
   /**
    * ( Plugins ) 读取页面所有 cookie, 以键值对返回
    */
-  $cookie(): any;
+  $cookie(): {};
 
   /**
    * ( Plugins ) 读取传入名称的页面 cookie
@@ -2719,13 +2714,13 @@ interface Document {
    * @param key 需要删除的 cookie 名称
    * @param attributes cookie 的配置
    */
-  $deleteCookie( key: string, attributes?: any );
+  $deleteCookie( key: string, attributes?: any ): void;
 
   /**
    * ( Plugins ) 删除页面指定 cookie
    * @param key 需要删除的 cookie 名称
    * @param attributes cookie 的配置
    */
-  $removeCookie( key: string, attributes?: any );
+  $removeCookie( key: string, attributes?: any ): void;
 
 }
