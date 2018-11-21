@@ -2567,23 +2567,23 @@ describes.push({
         }
       ]
     }, {
-      name: '$findLastNotIndex ( × )',
+      name: '$findLastNotIndex',
       describe: [
         {
           name: 'Traversing the contents of the collection using a custom method',
           it: function(){
             var arr = [ 0, 1, 2, 3, 3 ];
 
-            Object.$equals( arr.$findLastIndex(function( value ){ return value === -4 }), -1 ).should.true;
-            Object.$equals( arr.$findLastIndex(function( value ){ return value === -3 }), -1 ).should.true;
-            Object.$equals( arr.$findLastIndex(function( value ){ return value === -2 }), -1 ).should.true;
-            Object.$equals( arr.$findLastIndex(function( value ){ return value === -1 }), -1 ).should.true;
-            Object.$equals( arr.$findLastIndex(function( value ){ return value }), 4 ).should.true;
-            Object.$equals( arr.$findLastIndex(function( value ){ return value === 0 }), 0 ).should.true;
-            Object.$equals( arr.$findLastIndex(function( value ){ return value === 1 }), 1 ).should.true;
-            Object.$equals( arr.$findLastIndex(function( value ){ return value === 2 }), 2 ).should.true;
-            Object.$equals( arr.$findLastIndex(function( value ){ return value === 3 }), 4 ).should.true;
-            Object.$equals( arr.$findLastIndex(function( value ){ return value === 4 }), -1 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value === -4 }), 4 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value === -3 }), 4 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value === -2 }), 4 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value === -1 }), 4 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value }), 0 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value === 0 }), 4 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value === 1 }), 4 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value === 2 }), 4 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value === 3 }), 2 ).should.true;
+            Object.$equals( arr.$findLastNotIndex(function( value ){ return value === 4 }), 4 ).should.true;
 
             var arr = [
               { name: 'zen' },
@@ -2593,13 +2593,13 @@ describes.push({
               { name: 'zenui', type: 'ui' }
             ];
 
-            arr.$findLastIndex(function( obj ){ return obj.name }).should.equals( 4 );
-            arr.$findLastIndex(function( obj ){ return obj.type }).should.equals( 4 );
-            arr.$findLastIndex(function( obj ){ return obj.name && obj.type }).should.equals( 4 );
-            arr.$findLastIndex(function( obj ){ return obj.name == 'zenjs' }).should.equals( 3 );
-            arr.$findLastIndex(function( obj ){ return obj.name == 'zenui' }).should.equals( 4 );
-            arr.$findLastIndex(function( obj ){ return obj.type == 'js' }).should.equals( 3 );
-            arr.$findLastIndex(function( obj ){ return obj.type == 'ui' }).should.equals( 4 );
+            arr.$findLastNotIndex(function( obj ){ return obj.name }).should.equals( -1 );
+            arr.$findLastNotIndex(function( obj ){ return obj.type }).should.equals( 2 );
+            arr.$findLastNotIndex(function( obj ){ return obj.name && obj.type }).should.equals( 2 );
+            arr.$findLastNotIndex(function( obj ){ return obj.name == 'zenjs' }).should.equals( 4 );
+            arr.$findLastNotIndex(function( obj ){ return obj.name == 'zenui' }).should.equals( 3 );
+            arr.$findLastNotIndex(function( obj ){ return obj.type == 'js' }).should.equals( 4 );
+            arr.$findLastNotIndex(function( obj ){ return obj.type == 'ui' }).should.equals( 3 );
           }
         }, {
           name: 'Incoming object for lookup',
@@ -2612,14 +2612,14 @@ describes.push({
               { name: 'zenui', type: 'ui' }
             ];
 
-            arr.$findLastIndex({ name: 'xxx' }).should.equals( -1 );
-            arr.$findLastIndex({ name: 'zen' }).should.equals( 0 );
-            arr.$findLastIndex({ name: 'zenjs' }).should.equals( 3 );
-            arr.$findLastIndex({ name: 'zenui' }).should.equals( 4 );
-            arr.$findLastIndex({ type: 'js' }).should.equals( 3 );
-            arr.$findLastIndex({ type: 'ui' }).should.equals( 4 );
-            arr.$findLastIndex({ name: 'zenjs', type: 'js' }).should.equals( 3 );
-            arr.$findLastIndex({ name: 'zenui', type: 'ui' }).should.equals( 4 );
+            arr.$findLastNotIndex({ name: 'xxx' }).should.equals( 4 );
+            arr.$findLastNotIndex({ name: 'zen' }).should.equals( 4 );
+            arr.$findLastNotIndex({ name: 'zenjs' }).should.equals( 4 );
+            arr.$findLastNotIndex({ name: 'zenui' }).should.equals( 3 );
+            arr.$findLastNotIndex({ type: 'js' }).should.equals( 4 );
+            arr.$findLastNotIndex({ type: 'ui' }).should.equals( 3 );
+            arr.$findLastNotIndex({ name: 'zenjs', type: 'js' }).should.equals( 4 );
+            arr.$findLastNotIndex({ name: 'zenui', type: 'ui' }).should.equals( 3 );
           }
         }, {
           name: 'Pass in an array for lookup',
@@ -2632,14 +2632,14 @@ describes.push({
               { name: 'zenui', type: 'ui' }
             ];
 
-            arr.$findLastIndex([ 'name', 'xxx' ]).should.equals( -1 );
-            arr.$findLastIndex([ 'name', 'zen' ]).should.equals( 0 );
-            arr.$findLastIndex([ 'name', 'zenjs' ]).should.equals( 3 );
-            arr.$findLastIndex([ 'name', 'zenui' ]).should.equals( 4 );
-            arr.$findLastIndex([ 'type', 'js' ]).should.equals( 3 );
-            arr.$findLastIndex([ 'type', 'ui' ]).should.equals( 4 );
-            arr.$findLastIndex([ 'name', 'zenjs', 'type', 'js' ]).should.equals( 3 );
-            arr.$findLastIndex([ 'name', 'zenui', 'type', 'ui' ]).should.equals( 4 );
+            arr.$findLastNotIndex([ 'name', 'xxx' ]).should.equals( 4 );
+            arr.$findLastNotIndex([ 'name', 'zen' ]).should.equals( 4 );
+            arr.$findLastNotIndex([ 'name', 'zenjs' ]).should.equals( 4 );
+            arr.$findLastNotIndex([ 'name', 'zenui' ]).should.equals( 3 );
+            arr.$findLastNotIndex([ 'type', 'js' ]).should.equals( 4 );
+            arr.$findLastNotIndex([ 'type', 'ui' ]).should.equals( 3 );
+            arr.$findLastNotIndex([ 'name', 'zenjs', 'type', 'js' ]).should.equals( 4 );
+            arr.$findLastNotIndex([ 'name', 'zenui', 'type', 'ui' ]).should.equals( 3 );
           }
         }, {
           name: 'Test the predicate parameter',
@@ -2650,16 +2650,16 @@ describes.push({
             ];
 
             // Incoming object for lookup
-            arr.$findLastIndex( { arr: 0 } ).should.equals( 1 );
-            arr.$findLastIndex( { arr: 0 }, true ).should.equals( 1 );
-            arr.$findLastIndex( { arr: 0 }, false ).should.equals( 1 );
-            arr.$findLastIndex( { arr: 0 }, Object.$equals ).should.equals( 1 );
+            arr.$findLastNotIndex( { arr: 0 } ).should.equals( 0 );
+            arr.$findLastNotIndex( { arr: 0 }, true ).should.equals( 0 );
+            arr.$findLastNotIndex( { arr: 0 }, false ).should.equals( -1 );
+            arr.$findLastNotIndex( { arr: 0 }, Object.$equals ).should.equals( 0 );
 
             // Pass in an array for lookup
-            arr.$findLastIndex( [ 'arr', 0 ] ).should.equals( 1 );
-            arr.$findLastIndex( [ 'arr', 0 ], true ).should.equals( 1 );
-            arr.$findLastIndex( [ 'arr', 0 ], false ).should.equals( 1 );
-            arr.$findLastIndex( [ 'arr', 0 ], Object.$equals ).should.equals( 1 );
+            arr.$findLastNotIndex( [ 'arr', 0 ] ).should.equals( 0 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], true ).should.equals( 0 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], false ).should.equals( -1 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], Object.$equals ).should.equals( 0 );
           }
         }, {
           name: 'Test the fromIndex parameter',
@@ -2673,19 +2673,19 @@ describes.push({
             ];
 
             // Traversing the contents of the collection using a custom method
-            arr.$findLastIndex( function( obj ){ return obj.name }, 1 ).should.equals( 1 );
-            arr.$findLastIndex( function( obj ){ return obj.name == 'zenjs' }, 2 ).should.equals( 1 );
-            arr.$findLastIndex( function( obj ){ return obj.name == 'zenui' }, 3 ).should.equals( 2 );
+            arr.$findLastNotIndex( function( obj ){ return obj.name }, 1 ).should.equals( -1 );
+            arr.$findLastNotIndex( function( obj ){ return obj.name == 'zenjs' }, 2 ).should.equals( 2 );
+            arr.$findLastNotIndex( function( obj ){ return obj.name == 'zenui' }, 3 ).should.equals( 3 );
 
             // Incoming object for lookup
-            arr.$findLastIndex( { name: 'zen' }, 1 ).should.equals( 0 );
-            arr.$findLastIndex( { name: 'zenjs' }, 2 ).should.equals( 1 );
-            arr.$findLastIndex( { name: 'zenui' }, 3 ).should.equals( 2 );
+            arr.$findLastNotIndex( { name: 'zen' }, 1 ).should.equals( 1 );
+            arr.$findLastNotIndex( { name: 'zenjs' }, 2 ).should.equals( 2 );
+            arr.$findLastNotIndex( { name: 'zenui' }, 3 ).should.equals( 3 );
 
             // Pass in an array for lookup
-            arr.$findLastIndex( [ 'name', 'zen' ], 1 ).should.equals( 0 );
-            arr.$findLastIndex( [ 'name', 'zenjs' ], 2 ).should.equals( 1 );
-            arr.$findLastIndex( [ 'name', 'zenui' ], 3 ).should.equals( 2 );
+            arr.$findLastNotIndex( [ 'name', 'zen' ], 1 ).should.equals( 1 );
+            arr.$findLastNotIndex( [ 'name', 'zenjs' ], 2 ).should.equals( 2 );
+            arr.$findLastNotIndex( [ 'name', 'zenui' ], 3 ).should.equals( 3 );
           }
         }, {
           name: 'Test the predicate parameter and fromIndex parameter',
@@ -2698,27 +2698,27 @@ describes.push({
             ];
 
             // Incoming object for lookup
-            arr.$findLastIndex( { arr: 0 } ).should.equals( 3 );
-            arr.$findLastIndex( { arr: 0 }, true ).should.equals( 3 );
-            arr.$findLastIndex( { arr: 0 }, false ).should.equals( 3 );
-            arr.$findLastIndex( { arr: 0 }, Object.$equals ).should.equals( 3 );
+            arr.$findLastNotIndex( { arr: 0 } ).should.equals( 2 );
+            arr.$findLastNotIndex( { arr: 0 }, true ).should.equals( 2 );
+            arr.$findLastNotIndex( { arr: 0 }, false ).should.equals( -1 );
+            arr.$findLastNotIndex( { arr: 0 }, Object.$equals ).should.equals( 2 );
             // Pass in an array for lookup
-            arr.$findLastIndex( [ 'arr', 0 ] ).should.equals( 3 );
-            arr.$findLastIndex( [ 'arr', 0 ], true ).should.equals( 3 );
-            arr.$findLastIndex( [ 'arr', 0 ], false ).should.equals( 3 );
-            arr.$findLastIndex( [ 'arr', 0 ], Object.$equals ).should.equals( 3 );
+            arr.$findLastNotIndex( [ 'arr', 0 ] ).should.equals( 2 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], true ).should.equals( 2 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], false ).should.equals( -1 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], Object.$equals ).should.equals( 2 );
 
 
             // Incoming object for lookup
-            arr.$findLastIndex( { arr: 0 }, 2 ).should.equals( 1 );
-            arr.$findLastIndex( { arr: 0 }, true, 2 ).should.equals( 1 );
-            arr.$findLastIndex( { arr: 0 }, false, 2 ).should.equals( 2 );
-            arr.$findLastIndex( { arr: 0 }, Object.$equals, 2 ).should.equals( 1 );
+            arr.$findLastNotIndex( { arr: 0 }, 2 ).should.equals( 2 );
+            arr.$findLastNotIndex( { arr: 0 }, true, 2 ).should.equals( 2 );
+            arr.$findLastNotIndex( { arr: 0 }, false, 2 ).should.equals( -1 );
+            arr.$findLastNotIndex( { arr: 0 }, Object.$equals, 2 ).should.equals( 2 );
             // Pass in an array for lookup
-            arr.$findLastIndex( [ 'arr', 0 ], 2 ).should.equals( 1 );
-            arr.$findLastIndex( [ 'arr', 0 ], true, 2 ).should.equals( 1 );
-            arr.$findLastIndex( [ 'arr', 0 ], false, 2 ).should.equals( 2 );
-            arr.$findLastIndex( [ 'arr', 0 ], Object.$equals, 2 ).should.equals( 1 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], 2 ).should.equals( 2 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], true, 2 ).should.equals( 2 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], false, 2 ).should.equals( -1 );
+            arr.$findLastNotIndex( [ 'arr', 0 ], Object.$equals, 2 ).should.equals( 2 );
           }
         }, {
           name: 'Find non-pure objects in an array',
@@ -2731,19 +2731,19 @@ describes.push({
             var span5 = window.span.$appendTo( div ).$html( '2' );
             var span6 = window.span.$appendTo( div ).$html( '1' );
 
-            div.$find('span').$findLastIndex([ 'innerHTML', '1' ]).should.equals( 5 );
-            div.$find('span').$findLastIndex([ 'innerHTML', '2' ]).should.equals( 4 );
-            div.$find('span').$findLastIndex([ 'innerHTML', '3' ]).should.equals( 3 );
-            div.$find('span').$findLastIndex({ innerHTML: '1' }).should.equals( 5 );
-            div.$find('span').$findLastIndex({ innerHTML: '2' }).should.equals( 4 );
-            div.$find('span').$findLastIndex({ innerHTML: '3' }).should.equals( 3 );
+            div.$find('span').$findLastNotIndex([ 'innerHTML', '1' ]).should.equals( 4 );
+            div.$find('span').$findLastNotIndex([ 'innerHTML', '2' ]).should.equals( 5 );
+            div.$find('span').$findLastNotIndex([ 'innerHTML', '3' ]).should.equals( 5 );
+            div.$find('span').$findLastNotIndex({ innerHTML: '1' }).should.equals( 4 );
+            div.$find('span').$findLastNotIndex({ innerHTML: '2' }).should.equals( 5 );
+            div.$find('span').$findLastNotIndex({ innerHTML: '3' }).should.equals( 5 );
 
-            div.$find('span').$findLastIndex( [ 'innerHTML', '3' ], 3 ).should.equals( 3 );
-            div.$find('span').$findLastIndex( [ 'innerHTML', '2' ], 3 ).should.equals( 1 );
-            div.$find('span').$findLastIndex( [ 'innerHTML', '1' ], 3 ).should.equals( 0 );
-            div.$find('span').$findLastIndex( { innerHTML: '3' }, 3 ).should.equals( 3 );
-            div.$find('span').$findLastIndex( { innerHTML: '2' }, 3 ).should.equals( 1 );
-            div.$find('span').$findLastIndex( { innerHTML: '1' }, 3 ).should.equals( 0 );
+            div.$find('span').$findLastNotIndex( [ 'innerHTML', '3' ], 3 ).should.equals( 1 );
+            div.$find('span').$findLastNotIndex( [ 'innerHTML', '2' ], 3 ).should.equals( 3 );
+            div.$find('span').$findLastNotIndex( [ 'innerHTML', '1' ], 3 ).should.equals( 3 );
+            div.$find('span').$findLastNotIndex( { innerHTML: '3' }, 3 ).should.equals( 1 );
+            div.$find('span').$findLastNotIndex( { innerHTML: '2' }, 3 ).should.equals( 3 );
+            div.$find('span').$findLastNotIndex( { innerHTML: '1' }, 3 ).should.equals( 3 );
           }
         }
       ]
@@ -2755,16 +2755,16 @@ describes.push({
           it: function(){
             var arr = [ 0, 1, 2, 3, 3 ];
 
-            Object.$equals( arr.$findLastChunk(function( value ){ return value === -4 }), undefined ).should.true;
-            Object.$equals( arr.$findLastChunk(function( value ){ return value === -3 }), undefined ).should.true;
-            Object.$equals( arr.$findLastChunk(function( value ){ return value === -2 }), undefined ).should.true;
-            Object.$equals( arr.$findLastChunk(function( value ){ return value === -1 }), undefined ).should.true;
-            Object.$equals( arr.$findLastChunk(function( value ){ return value }), [ 4, 3 ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( value ){ return value === 0 }), [ 0, 0 ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( value ){ return value === 1 }), [ 1, 1 ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( value ){ return value === 2 }), [ 2, 2 ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( value ){ return value === 3 }), [ 4, 3 ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( value ){ return value === 4 }), undefined ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value === -4 }), [ 4, 3 ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value === -3 }), [ 4, 3 ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value === -2 }), [ 4, 3 ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value === -1 }), [ 4, 3 ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value }), [ 0, 0 ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value === 0 }), [ 4, 3 ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value === 1 }), [ 4, 3 ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value === 2 }), [ 4, 3 ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value === 3 }), [ 2, 2 ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( value ){ return value === 4 }), [ 4, 3 ] ).should.true;
 
             var arr = [
               { name: 'zen' },
@@ -2774,13 +2774,13 @@ describes.push({
               { name: 'zenui', type: 'ui' }
             ];
 
-            Object.$equals( arr.$findLastChunk(function( obj ){ return obj.name }), [ 4, arr[4] ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( obj ){ return obj.type }), [ 4, arr[4] ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( obj ){ return obj.name && obj.type }), [ 4, arr[4] ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( obj ){ return obj.name == 'zenjs' }), [ 3, arr[3] ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( obj ){ return obj.name == 'zenui' }), [ 4, arr[4] ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( obj ){ return obj.type == 'js' }), [ 3, arr[3] ] ).should.true;
-            Object.$equals( arr.$findLastChunk(function( obj ){ return obj.type == 'ui' }), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( obj ){ return obj.name }), undefined ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( obj ){ return obj.type }), [ 2, arr[2] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( obj ){ return obj.name && obj.type }), [ 2, arr[2] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( obj ){ return obj.name == 'zenjs' }), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( obj ){ return obj.name == 'zenui' }), [ 3, arr[3] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( obj ){ return obj.type == 'js' }), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk(function( obj ){ return obj.type == 'ui' }), [ 3, arr[3] ] ).should.true;
           }
         }, {
           name: 'Incoming object for lookup',
@@ -2793,14 +2793,14 @@ describes.push({
               { name: 'zenui', type: 'ui' }
             ];
 
-            Object.$equals( arr.$findLastChunk({ name: 'xxx' }), undefined ).should.true;
-            Object.$equals( arr.$findLastChunk({ name: 'zen' }), [ 0, arr[0] ] ).should.true;
-            Object.$equals( arr.$findLastChunk({ name: 'zenjs' }), [ 3, arr[3] ] ).should.true;
-            Object.$equals( arr.$findLastChunk({ name: 'zenui' }), [ 4, arr[4] ] ).should.true;
-            Object.$equals( arr.$findLastChunk({ type: 'js' }), [ 3, arr[3] ] ).should.true;
-            Object.$equals( arr.$findLastChunk({ type: 'ui' }), [ 4, arr[4] ] ).should.true;
-            Object.$equals( arr.$findLastChunk({ name: 'zenjs', type: 'js' }), [ 3, arr[3] ] ).should.true;
-            Object.$equals( arr.$findLastChunk({ name: 'zenui', type: 'ui' }), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk({ name: 'xxx' }), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk({ name: 'zen' }), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk({ name: 'zenjs' }), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk({ name: 'zenui' }), [ 3, arr[3] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk({ type: 'js' }), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk({ type: 'ui' }), [ 3, arr[3] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk({ name: 'zenjs', type: 'js' }), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk({ name: 'zenui', type: 'ui' }), [ 3, arr[3] ] ).should.true;
           }
         }, {
           name: 'Pass in an array for lookup',
@@ -2813,14 +2813,14 @@ describes.push({
               { name: 'zenui', type: 'ui' }
             ];
 
-            Object.$equals( arr.$findLastChunk([ 'name', 'xxx' ]), undefined ).should.true;
-            Object.$equals( arr.$findLastChunk([ 'name', 'zen' ]), [ 0, arr[0] ] ).should.true;
-            Object.$equals( arr.$findLastChunk([ 'name', 'zenjs' ]), [ 3, arr[3] ] ).should.true;
-            Object.$equals( arr.$findLastChunk([ 'name', 'zenui' ]), [ 4, arr[4] ] ).should.true;
-            Object.$equals( arr.$findLastChunk([ 'type', 'js' ]), [ 3, arr[3] ] ).should.true;
-            Object.$equals( arr.$findLastChunk([ 'type', 'ui' ]), [ 4, arr[4] ] ).should.true;
-            Object.$equals( arr.$findLastChunk([ 'name', 'zenjs', 'type', 'js' ]), [ 3, arr[3] ] ).should.true;
-            Object.$equals( arr.$findLastChunk([ 'name', 'zenui', 'type', 'ui' ]), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk([ 'name', 'xxx' ]), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk([ 'name', 'zen' ]), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk([ 'name', 'zenjs' ]), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk([ 'name', 'zenui' ]), [ 3, arr[3] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk([ 'type', 'js' ]), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk([ 'type', 'ui' ]), [ 3, arr[3] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk([ 'name', 'zenjs', 'type', 'js' ]), [ 4, arr[4] ] ).should.true;
+            Object.$equals( arr.$findLastNotChunk([ 'name', 'zenui', 'type', 'ui' ]), [ 3, arr[3] ] ).should.true;
           }
         }, {
           name: 'Test the predicate parameter',

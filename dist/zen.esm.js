@@ -2303,20 +2303,21 @@ function stringify(obj) {
 }
 
 function parse(str) {
-  var args = arguments;
-  var sep = parametersDefault(args, 1, '&');
-  var eq = parametersDefault(args, 2, '=');
   var result = {};
 
-  if (isString$1(str) === false) {
+  if (!str || !isString$1(str)) {
     return result;
   }
 
+  var args = arguments;
+  var sep = parametersDefault(args, 1, '&');
+  var eq = parametersDefault(args, 2, '=');
   str.split(sep).forEach(function (_value) {
     var cache = _value.replace(rBackSlant, '%20');
 
     var index = cache.indexOf(eq);
-    var key, value;
+    var key,
+        value = '';
 
     if (index > -1) {
       key = cache.substr(0, index);

@@ -34,19 +34,21 @@ function stringify( obj ){
 }
 
 function parse( str ){
+
+  const result = {};
+
+  if( !str || !isString( str ) ){
+    return result;
+  }
+
   const args = arguments;
   const sep = parametersDefault( args, 1, '&' );
   const eq = parametersDefault( args, 2, '=' );
-  const result = {};
-
-  if( isString( str ) === false ){
-    return result;
-  }
 
   str.split( sep ).forEach( _value => {
     const cache = _value.replace( rBackSlant, '%20' );
     const index = cache.indexOf( eq );
-    let key, value;
+    let key, value = '';
 
     if( index > -1 ){
       key = cache.substr( 0, index );

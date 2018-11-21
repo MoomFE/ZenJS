@@ -2185,6 +2185,40 @@ interface Window {
 
 }
 
+interface Location {
+
+  /**
+   * 获取当前页面 search 的指定参数值
+   * @param name 需要获取的参数名
+   * @returns 参数值
+   */
+  $search( name: string ): string;
+
+  /**
+   * 设置当前页面 search 的指定参数值
+   * @param name 需要设置的参数名
+   * @param value 需要设置的参数值
+   */
+  $search( name: string, value: string ): void;
+
+  /**
+   * 获取传入 url 的 search 的指定参数值
+   * @param url url
+   * @param name 需要获取的参数名
+   * @returns 参数值
+   */
+  $urlSearch( url: string, name: string ): string;
+
+  /**
+   * 设置传入 url 的 search 的指定参数值
+   * @param url url
+   * @param name 需要设置的参数名
+   * @param value 需要设置的参数值
+   * @returns 修改后的 url
+   */
+  $urlSearch( url: string, name: string, value: string ): string;
+
+}
 
 interface Element {
 

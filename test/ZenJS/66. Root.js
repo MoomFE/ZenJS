@@ -32,6 +32,8 @@ describes.push({
         }, {
           name: 'parse',
           it: function(){
+            Object.$equals( $querystring.parse(''), {} ).should.true
+            Object.$equals( $querystring.parse('asd'), { asd: '' } ).should.true
             Object.$equals( $querystring.parse('asd=123'), { asd: '123' } ).should.true
             Object.$equals( $querystring.parse('asd=123&sdf=234&dfg=345'), { asd: '123', sdf: '234', dfg: '345' } ).should.true
             Object.$equals( $querystring.parse('asd=123|sdf=234|dfg=345','|'), { asd: '123', sdf: '234', dfg: '345' } ).should.true

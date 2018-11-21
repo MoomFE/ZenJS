@@ -2309,20 +2309,21 @@
   }
 
   function parse(str) {
-    var args = arguments;
-    var sep = parametersDefault(args, 1, '&');
-    var eq = parametersDefault(args, 2, '=');
     var result = {};
 
-    if (isString$1(str) === false) {
+    if (!str || !isString$1(str)) {
       return result;
     }
 
+    var args = arguments;
+    var sep = parametersDefault(args, 1, '&');
+    var eq = parametersDefault(args, 2, '=');
     str.split(sep).forEach(function (_value) {
       var cache = _value.replace(rBackSlant, '%20');
 
       var index = cache.indexOf(eq);
-      var key, value;
+      var key,
+          value = '';
 
       if (index > -1) {
         key = cache.substr(0, index);
@@ -3378,7 +3379,7 @@
    * 事件处理 => 功能性命名空间
    * @private
    * @param {String} name 需要解析哪一块的功能命名空间
-   * @param {Array} namespace 元素的命名空间列表
+   * @param {String[]} namespace 元素的命名空间列表
    * @param {EventTarget} elem 绑定事件的元素
    * @param {String} type 绑定的事件
    * @param {Object} options 其他属性
@@ -3569,7 +3570,7 @@
    * 事件处理 => 绑定事件
    * @private
    * @param {EventTarget} elem 需要绑定事件的对象
-   * @param {Array} _type 需要绑定的事件
+   * @param {String} _type 需要绑定的事件
    * @param {String} selector 事件委托的选择器
    * @param {Function} listener 绑定的事件回调
    * @param {Object} options 事件绑定参数
@@ -4030,6 +4031,46 @@
     defineValue(DomEventTarget, '$emit', function (types) {
       var elem = this || window;
       return emit$1(elem, types, arguments);
+    });
+  }
+
+  var rSearch = /\?.*?(?=#|$)/;
+
+  if (inBrowser) {
+    var Search = function (search, isSet, name, value) {
+      var oSearch = $querystring.parse(search); // setter
+
+      if (isSet) {
+        // remove
+        if (value == null) delete oSearch[name];else oSearch[name] = value;
+        return $querystring.stringify(oSearch);
+      } // getter
+
+
+      return oSearch[name];
+    };
+
+    defineValue(location, '$search', function (name, value) {
+      var isSet = arguments.length > 1;
+      var newSearch = Search(location.search.substr(1), isSet, name, value);
+      if (isSet) location.search = newSearch;else return newSearch;
+    });
+    defineValue(location, '$urlSearch', function (url, name, value) {
+      if (isString$1(url)) {
+        var search = ((url.match(rSearch) || [])[0] || '').substr(1);
+        var isSet = arguments.length > 2;
+
+        if (!isSet) {
+          return search ? Search(search, isSet, name, value) : '';
+        }
+
+        var newSearch = '?' + Search(search, isSet, name, value); // http://www.zenjs.net/?asd=123#xxx
+
+        if (search || url.indexOf('?') > -1) url = url.replace(rSearch, newSearch); // http://www.zenjs.net/#xxx
+        else if (url.indexOf('#') > -1) url = url.replace('#', newSearch + '#'); // http://www.zenjs.net/
+          else url = url + newSearch;
+        return url;
+      }
     });
   }
 
