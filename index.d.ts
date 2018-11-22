@@ -1599,7 +1599,7 @@ interface ZenJS {
    * 传入一个键值对的列表, 并返回一个带有这些键值对的新对象 ( 是 Object.entries 的反转 )
    * Object.fromEntries polyfill
    */
-  fromEntries<K, V>( map: [ string, any ][] | Map<K, V> ): {};
+  fromEntries<K, V>( iterable: [ string, any ][] | Map<K, V> ): {};
 
   /**
    * 判断传入的两个参数是否全等 ( === )
