@@ -1590,6 +1590,24 @@ interface ZenJS {
   repeat( str: string, count: number ): string;
 
   /**
+   * 方法返回一个由一个给定对象的自身可枚举属性组成的数组.
+   * Object.keys
+   */
+  keys<T, k extends keyof T>( obj: T ): K[];
+
+  /**
+   * 方法返回一个由一个给定对象自身可枚举属性的键值对数组.
+   * Object.entries polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
+   */
+  entries<T, K extends keyof T>( obj: T ): [ K, T[K] ][];
+
+  /**
+   * 方法返回一个由一个给定对象自身的所有可枚举属性值的数组.
+   * Object.values polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
+   */
+  values<T, K extends keyof T>( obj: T ): T[K][];
+
+  /**
    * 判断传入的两个参数是否全等 ( === )
    * @param one 需要判断的第一参数
    * @param two 需要判断的第二参数

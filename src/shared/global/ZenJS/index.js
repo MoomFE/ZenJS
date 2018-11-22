@@ -27,14 +27,16 @@ import isMap from "../../util/isMap";
 import mapSetToArray from "../../util/mapSetToArray";
 import isReferenceType from "../../util/isReferenceType";
 import root from "../../const/root";
+import keys from "../Object/keys";
 
 
-const ZenJS =  root.ZenJS = _assign( false, [ null, {
+const ZenJS =  root.ZenJS = _assign( false, [ null, {// fromEntries
 
     assign: assign,
+    repeat: repeat,
+    keys: keys,
     entries: entries,
     values: values,
-    repeat: repeat,
 
     congruence: congruence,
     equals: equals,
