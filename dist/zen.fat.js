@@ -21,7 +21,7 @@
    * Object.entries polyfill
    */
 
-  var entries = Object.entries || function (obj) {
+  function entries (obj) {
     var index, key;
     var ownKeys = keys(obj);
     var result = Array(index = ownKeys.length);
@@ -31,7 +31,7 @@
     }
 
     return result;
-  };
+  }
 
   var ObjectProto = Object.prototype;
 
@@ -541,11 +541,11 @@
    * Object.values polyfill
    */
 
-  var values = Object.values || function (obj) {
+  function values (obj) {
     return keys(obj).map(function (key) {
       return obj[key];
     });
-  };
+  }
 
   function $toArray(value, transKey) {
     // 不可转为数组的, 直接返回空数组
@@ -2343,6 +2343,28 @@
   }]));
 
   /**
+   * 传入一个键值对的列表, 并返回一个带有这些键值对的新对象 ( 是 Object.entries 的反转 )
+   * Object.fromEntries polyfill
+   */
+
+  function fromEntries (iterable) {
+    var result = {};
+    var newIterable = $toArray(iterable);
+    var item;
+    var index = newIterable.length;
+
+    while (index--) {
+      item = newIterable[index];
+
+      if (item && item.length) {
+        result[item[0]] = item[1];
+      }
+    }
+
+    return result;
+  }
+
+  /**
    * 返回传入的第一个参数
    * @param {any} arg 
    * @returns {any} arg
@@ -2374,9 +2396,11 @@
 
   var ZenJS$1 = root.ZenJS = assign(false, [null, {
     assign: assign$1,
-    entries: entries,
-    values: values,
     repeat: repeat,
+    keys: keys,
+    values: values,
+    entries: entries,
+    fromEntries: fromEntries,
     congruence: congruence,
     equals: equals,
     define: define,

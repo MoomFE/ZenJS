@@ -1570,18 +1570,6 @@ interface ZenJS {
   assign<T, U>( target: T, ...source: U[] ): T & U;
 
   /**
-   * 方法返回一个给定对象自身可枚举属性的键值对数组.
-   * boolean.entries polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
-   */
-  entries<T, K extends keyof T>( obj: T ): [ K, T[K] ][];
-
-  /**
-   * 方法返回一个给定对象自身的所有可枚举属性值的数组.
-   * boolean.values polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
-   */
-  values<T, K extends keyof T>( obj: T ): T[K][];
-
-  /**
    * 构造并返回一个新字符串, 该字符串包含被连接在一起的指定数量的字符串的副本.
    * 是 string.prototype.repeat 的降级方案
    * @param str 需要重复的字符串
@@ -1591,21 +1579,27 @@ interface ZenJS {
 
   /**
    * 方法返回一个由一个给定对象的自身可枚举属性组成的数组.
-   * Object.keys
+   * Object.keys 的引用
    */
-  keys<T, k extends keyof T>( obj: T ): K[];
+  keys<T, K extends keyof T>( obj: T ): K[];
 
   /**
    * 方法返回一个由一个给定对象自身可枚举属性的键值对数组.
-   * Object.entries polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
+   * Object.entries polyfill
    */
   entries<T, K extends keyof T>( obj: T ): [ K, T[K] ][];
 
   /**
    * 方法返回一个由一个给定对象自身的所有可枚举属性值的数组.
-   * Object.values polyfill ( 如果浏览器支持此方法, 则会直接返回浏览器原生方法 )
+   * Object.values polyfill
    */
   values<T, K extends keyof T>( obj: T ): T[K][];
+
+  /**
+   * 传入一个键值对的列表, 并返回一个带有这些键值对的新对象 ( 是 Object.entries 的反转 )
+   * Object.fromEntries polyfill
+   */
+  fromEntries<K, V>( map: [ string, any ][] | Map<K, V> ): {};
 
   /**
    * 判断传入的两个参数是否全等 ( === )
@@ -1755,7 +1749,7 @@ interface ZenJS {
    * 将 Map 或 Set 类型转换为数组类型,
    * 执行到这之前必须确定传进来的是 Map 或 Set 类型
    */
-  mapSetToArray<T, K>( mapOrSet: Map<K, V> ): [K, V][];
+  mapSetToArray<K, V>( mapOrSet: Map<K, V> ): [K, V][];
 
   /**
    * 将 Map 或 Set 类型转换为数组类型,
@@ -1864,7 +1858,7 @@ declare namespace dayjs {
    * @param plugin 传入方法编写一个 dayjs 插件
    * @param options 传递给前面方法的 options 参数
    */
-  function extend( plugin: ( options: string | number | Date | Dayjs, dayjsClass: Dayjs, dayjsFactory: dayjs ) => void, options: string | number | Date | Dayjs ): Dayjs;
+  function extend( plugin: ( options: string | number | Date | Dayjs, dayjsClass: Dayjs, dayjsFactory: 'dayjs' ) => void, options: string | number | Date | Dayjs ): Dayjs;
 
   /**
    * 改变全局语言, 返回使用语言的字符串

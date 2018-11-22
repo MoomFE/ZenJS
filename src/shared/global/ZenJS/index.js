@@ -1,8 +1,10 @@
 import _assign from "../../util/assign";
 import assign from "../Object/assign";
-import entries from "../Object/entries";
-import values from "../Object/values";
 import repeat from "../../util/repeat";
+import keys from "../Object/keys";
+import values from "../Object/values";
+import entries from "../Object/entries";
+import fromEntries from "../Object/fromEntries";
 import congruence from "../../util/congruence";
 import equals from "../../util/equals";
 import define from "../../util/define";
@@ -27,16 +29,16 @@ import isMap from "../../util/isMap";
 import mapSetToArray from "../../util/mapSetToArray";
 import isReferenceType from "../../util/isReferenceType";
 import root from "../../const/root";
-import keys from "../Object/keys";
 
 
-const ZenJS =  root.ZenJS = _assign( false, [ null, {// fromEntries
+const ZenJS =  root.ZenJS = _assign( false, [ null, {
 
     assign: assign,
     repeat: repeat,
     keys: keys,
-    entries: entries,
     values: values,
+    entries: entries,
+    fromEntries: fromEntries,
 
     congruence: congruence,
     equals: equals,
