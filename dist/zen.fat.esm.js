@@ -1,5 +1,5 @@
 /*!
- * Zen.js v5.0.0-beta.1
+ * Zen.js v5.0.0-beta.2
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -1543,8 +1543,13 @@ defineValue(StringProto, '$replaceAll', function (searchValue, replaceValue) {
   return this.replace(new RegExp(searchValue, flags), replaceValue || '');
 });
 
-defineValue(StringProto, '$toCapitalize', function (ignoreNext) {
-  return this.substr(0, 1).toUpperCase() + this.substr(1)[ignoreNext ? '$self' : 'toLowerCase']();
+['$toCapitalize', ''].forEach(function (name, index) {
+  var fn = ['toUpperCase', 'toLowerCase'][index ? 'reverse' : '$self']();
+  var toUpperCase = fn[0];
+  var toLowerCase = fn[1];
+  defineValue(StringProto, name + " $" + toUpperCase.replace('C', 'FirstC'), function (ignoreNext) {
+    return this.substr(0, 1)[toUpperCase]() + this.substr(1)[ignoreNext ? '$self' : toLowerCase]();
+  });
 });
 
 var SECONDS_A_MINUTE = 60;

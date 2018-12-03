@@ -44,7 +44,7 @@ describes.push({
         }
       ]
     }, {
-      name: '$toCapitalize',
+      name: '$toCapitalize / $toUpperFirstCase',
       describe: [
         {
           name: 'Capitalization, other lowercase',
@@ -52,6 +52,10 @@ describes.push({
             '123'.$toCapitalize().should.equals( '123' );
             'zen'.$toCapitalize().should.equals( 'Zen' );
             'zEN'.$toCapitalize().should.equals( 'Zen' );
+            
+            '123'.$toUpperFirstCase().should.equals( '123' );
+            'zen'.$toUpperFirstCase().should.equals( 'Zen' );
+            'zEN'.$toUpperFirstCase().should.equals( 'Zen' );
           }
         }, {
           name: 'Just capitalize the first letter',
@@ -59,6 +63,29 @@ describes.push({
             '123'.$toCapitalize( true ).should.equals( '123' );
             'zen'.$toCapitalize( true ).should.equals( 'Zen' );
             'zEN'.$toCapitalize( true ).should.equals( 'ZEN' );
+            
+            '123'.$toUpperFirstCase( true ).should.equals( '123' );
+            'zen'.$toUpperFirstCase( true ).should.equals( 'Zen' );
+            'zEN'.$toUpperFirstCase( true ).should.equals( 'ZEN' );
+          }
+        }
+      ]
+    }, {
+      name: '$toLowerFirstCase',
+      describe: [
+        {
+          name: 'Capitalization, other lowercase',
+          it: function(){
+            '123'.$toLowerFirstCase().should.equals( '123' );
+            'Zen'.$toLowerFirstCase().should.equals( 'zEN' );
+            'ZEN'.$toLowerFirstCase().should.equals( 'zEN' );
+          }
+        }, {
+          name: 'Just capitalize the first letter',
+          it: function(){
+            '123'.$toLowerFirstCase( true ).should.equals( '123' );
+            'Zen'.$toLowerFirstCase( true ).should.equals( 'zen' );
+            'ZEN'.$toLowerFirstCase( true ).should.equals( 'zEN' );
           }
         }
       ]

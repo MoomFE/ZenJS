@@ -1197,6 +1197,18 @@ interface String {
    */
   $toCapitalize( ignoreNext?: boolean ): string;
 
+  /**
+   * 将字符串首字母大写, 其他字母小写
+   * @param ignoreNext 是否忽略其他字母小写的操作
+   */
+  $toUpperFirstCase( ignoreNext?: boolean ): string;
+
+  /**
+   * 将字符串首字母小写, 其他字母大写
+   * @param ignoreNext 是否忽略其他字母大写的操作
+   */
+  $toLowerFirstCase( ignoreNext?: boolean ): string;
+
 }
 
 

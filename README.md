@@ -48,18 +48,18 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 56.26kb | 15.45kb | \|  | UMD       | Browser |
-| zen.min.js         | 20.15kb | 7.44kb | \|  | UMD       | Browser |
-| zen.common.js      | 52.29kb | 15.16kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 52.28kb | 15.15kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.js             | 56.49kb | 15.51kb | \|  | UMD       | Browser |
+| zen.min.js         | 20.26kb | 7.48kb | \|  | UMD       | Browser |
+| zen.common.js      | 52.51kb | 15.23kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 52.50kb | 15.21kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 100.64kb | 26.74kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 35.94kb | 13.12kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 93.88kb | 26.29kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 93.86kb | 26.27kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 100.87kb | 26.81kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 36.05kb | 13.17kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 94.09kb | 26.35kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 94.08kb | 26.34kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
