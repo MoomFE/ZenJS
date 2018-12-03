@@ -28,11 +28,11 @@
 
 > jsdelivr
 > <br>
-> https://cdn.jsdelivr.net/npm/@moomfe/zenjs@5.0.0-beta.1/dist/
+> https://cdn.jsdelivr.net/npm/@moomfe/zenjs@5.0.0-beta.2/dist/
 
 > unpkg
 > <br>
-> https://unpkg.com/@moomfe/zenjs@5.0.0-beta.1/dist/
+> https://unpkg.com/@moomfe/zenjs@5.0.0-beta.2/dist/
 
 
 <br>
@@ -142,7 +142,8 @@
 
 - String.prototype
   - $replaceAll
-  - $toCapitalize
+  - $toCapitalize / $toUpperFirstCase
+  - $toLowerFirstCase
 
 - Date
   - $parse

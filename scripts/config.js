@@ -123,7 +123,7 @@ configuration.forEach(( config, index ) => {
 fs.writeFileSync(
   readmePath,
   fs.readFileSync( readmePath, 'utf-8' )
-    .replace( /(@moomfe\/zenjs@)([0-9\.]+?)\//g, `$1${ version }/` ),
+    .replace( /(@moomfe\/zenjs@)([0-9\.]+?)(-beta([0-9\.]+?))?\//g, `$1${ version }/` ),
   'utf-8'
 );
 
