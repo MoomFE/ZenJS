@@ -28,11 +28,11 @@
 
 > jsdelivr
 > <br>
-> https://cdn.jsdelivr.net/npm/@moomfe/zenjs@5.0.0-beta.2/dist/
+> https://cdn.jsdelivr.net/npm/@moomfe/zenjs@5.0.0-beta.3/dist/
 
 > unpkg
 > <br>
-> https://unpkg.com/@moomfe/zenjs@5.0.0-beta.2/dist/
+> https://unpkg.com/@moomfe/zenjs@5.0.0-beta.3/dist/
 
 
 <br>
@@ -48,7 +48,7 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 56.49kb | 15.51kb | \|  | UMD       | Browser |
+| zen.js             | 56.49kb | 15.52kb | \|  | UMD       | Browser |
 | zen.min.js         | 20.26kb | 7.48kb | \|  | UMD       | Browser |
 | zen.common.js      | 52.51kb | 15.23kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
 | zen.esm.js         | 52.50kb | 15.21kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
