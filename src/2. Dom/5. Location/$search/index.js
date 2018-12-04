@@ -1,5 +1,4 @@
 import inBrowser from "../../../shared/const/inBrowser";
-import defineValue from "../../../shared/util/defineValue";
 import rSearch from "../../../shared/const/rSearch";
 import isString from "../../../shared/util/isString";
 
@@ -21,15 +20,15 @@ if( inBrowser ){
     return oSearch[ name ];
   }
 
-  defineValue( location, '$search', function( name, value ){
+  location.$search = function( name, value ){
     const isSet = arguments.length > 1;
     const newSearch = Search( location.search.substr(1), isSet, name, value );
 
     if( isSet ) location.search = newSearch;
     else return newSearch;
-  });
+  };
 
-  defineValue( location, '$urlSearch', function( url, name, value ){
+  location.$urlSearch = function( url, name, value ){
 
     if( isString( url ) ){
       const search = ( ( url.match( rSearch ) || [] )[0] || '' ).substr(1);
@@ -51,6 +50,6 @@ if( inBrowser ){
       return url;
     }
 
-  });
+  };
 
 }

@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 100.90kb | 26.82kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 36.06kb | 13.18kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 94.12kb | 26.36kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 94.10kb | 26.35kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 100.90kb | 26.83kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 36.08kb | 13.19kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 94.12kb | 26.38kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 94.10kb | 26.36kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 

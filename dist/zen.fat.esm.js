@@ -4073,12 +4073,13 @@ if (inBrowser) {
     return oSearch[name];
   };
 
-  defineValue(location, '$search', function (name, value) {
+  location.$search = function (name, value) {
     var isSet = arguments.length > 1;
     var newSearch = Search(location.search.substr(1), isSet, name, value);
     if (isSet) location.search = newSearch;else return newSearch;
-  });
-  defineValue(location, '$urlSearch', function (url, name, value) {
+  };
+
+  location.$urlSearch = function (url, name, value) {
     if (isString$1(url)) {
       var search = ((url.match(rSearch) || [])[0] || '').substr(1);
       var isSet = arguments.length > 2;
@@ -4094,7 +4095,9 @@ if (inBrowser) {
         else url = url + newSearch;
       return url;
     }
-  });
+  };
+
+  console.log('123', location);
 }
 
 /*
