@@ -1,5 +1,5 @@
 /*!
- * Zen.js v5.0.0-beta.3
+ * Zen.js v5.0.0-beta.4
  * https://github.com/MoomFE/ZenJS
  * 
  * (c) 2018 Wei Zhang
@@ -4098,8 +4098,6 @@ if (inBrowser) {
       return url;
     }
   };
-
-  console.log('123', location);
 }
 
 /*

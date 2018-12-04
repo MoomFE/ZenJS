@@ -28,11 +28,11 @@
 
 > jsdelivr
 > <br>
-> https://cdn.jsdelivr.net/npm/@moomfe/zenjs@5.0.0-beta.3/dist/
+> https://cdn.jsdelivr.net/npm/@moomfe/zenjs@5.0.0-beta.4/dist/
 
 > unpkg
 > <br>
-> https://unpkg.com/@moomfe/zenjs@5.0.0-beta.3/dist/
+> https://unpkg.com/@moomfe/zenjs@5.0.0-beta.4/dist/
 
 
 <br>
@@ -48,7 +48,7 @@
 ### Default
 |                    | Default | Gzip    |  -  | Module    | Use in  |
 | :-                 | :-      | :-      | :-: | :-        | :-      |
-| zen.js             | 56.49kb | 15.52kb | \|  | UMD       | Browser |
+| zen.js             | 56.49kb | 15.51kb | \|  | UMD       | Browser |
 | zen.min.js         | 20.26kb | 7.48kb | \|  | UMD       | Browser |
 | zen.common.js      | 52.51kb | 15.23kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
 | zen.esm.js         | 52.50kb | 15.21kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
@@ -56,10 +56,10 @@
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 100.90kb | 26.83kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 36.08kb | 13.19kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 94.12kb | 26.38kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 94.10kb | 26.36kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 100.87kb | 26.81kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 36.05kb | 13.18kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 94.09kb | 26.36kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 94.07kb | 26.34kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
