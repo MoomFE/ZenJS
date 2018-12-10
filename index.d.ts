@@ -446,6 +446,234 @@ interface Array<T> {
   $findAllChunk( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
 
   /**
+   * 使用传入的方法遍历集合的内容, 返回指定数量的符合传入方法检测的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSome( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : T[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSome( count?: number, arr: any[], fromIndex?: number ): T[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSome( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSome( count?: number, obj: any, fromIndex?: number ): T[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSome( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回指定数量的符合传入方法检测的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeIndex( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : number[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeIndex( count?: number, arr: any[], fromIndex?: number ): number[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeIndex( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeIndex( count?: number, obj: any, fromIndex?: number ): number[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeIndex( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回指定数量的符合传入方法检测的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeChunk( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ][];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeChunk( count?: number, arr: any[], fromIndex?: number ): [ number, T ][];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeChunk( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeChunk( count?: number, obj: any, fromIndex?: number ): [ number, T ][];
+  /**
+   * 遍历集合的内容, 查找到指定数量的符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeChunk( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回指定数量的符合传入方法检测的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSome( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : T[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSome( count?: number, arr: any[], fromIndex?: number ): T[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSome( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSome( count?: number, obj: any, fromIndex?: number ): T[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSome( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回指定数量的符合传入方法检测的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeIndex( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : number[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeIndex( count?: number, arr: any[], fromIndex?: number ): number[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeIndex( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeIndex( count?: number, obj: any, fromIndex?: number ): number[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeIndex( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回指定数量的符合传入方法检测的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeChunk( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ][];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeChunk( count?: number, arr: any[], fromIndex?: number ): [ number, T ][];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeChunk( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeChunk( count?: number, obj: any, fromIndex?: number ): [ number, T ][];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeChunk( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
+
+  /**
    * 使用传入的方法遍历集合的内容, 返回首个不符合传入方法检测的值
    * @param traversal 检测值的方法, 方法返回 boolean 值
    * @param fromIndex 从指定的索引开始搜索 - default: 0
@@ -741,6 +969,234 @@ interface Array<T> {
    * @param fromIndex 从指定的索引开始搜索 - default: 0
    */
   $findAllNotChunk( obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回指定数量的不符合传入方法检测的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNot( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : T[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNot( count?: number, arr: any[], fromIndex?: number ): T[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNot( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNot( count?: number, obj: any, fromIndex?: number ): T[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNot( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回指定数量的不符合传入方法检测的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotIndex( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : number[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotIndex( count?: number, arr: any[], fromIndex?: number ): number[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotIndex( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotIndex( count?: number, obj: any, fromIndex?: number ): number[];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotIndex( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
+
+  /**
+   * 使用传入的方法遍历集合的内容, 返回指定数量的不符合传入方法检测的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotChunk( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ][];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotChunk( count?: number, arr: any[], fromIndex?: number ): [ number, T ][];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotChunk( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotChunk( count?: number, obj: any, fromIndex?: number ): [ number, T ][];
+  /**
+   * 遍历集合的内容, 查找到指定数量的不符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findSomeNotChunk( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回指定数量的不符合传入方法检测的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNot( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : T[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNot( count?: number, arr: any[], fromIndex?: number ): T[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNot( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNot( count?: number, obj: any, fromIndex?: number ): T[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的值
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNot( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): T[];
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回指定数量的不符合传入方法检测的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotIndex( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : number[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotIndex( count?: number, arr: any[], fromIndex?: number ): number[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotIndex( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotIndex( count?: number, obj: any, fromIndex?: number ): number[];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的下标
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotIndex( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): number[];
+
+  /**
+   * 使用传入的方法逆序遍历集合的内容, 返回指定数量的不符合传入方法检测的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param traversal 检测值的方法, 方法返回 boolean 值
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotChunk( count?: number, traversal: ( value ) => boolean, fromIndex?: number ) : [ number, T ][];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotChunk( count?: number, arr: any[], fromIndex?: number ): [ number, T ][];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param arr 用于筛选的一组 [ key, value, key2, value2, ... ] 键值集
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotChunk( count?: number, arr: any[], predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotChunk( count?: number, obj: any, fromIndex?: number ): [ number, T ][];
+  /**
+   * 逆序遍历集合的内容, 查找到指定数量的不符合传入筛选条件的键值数组集
+   * @param count 指定查找的结果最大数量 - default: Infinity
+   * @param obj 用于筛选的 { key: value, key2: value2 ... } 键值对
+   * @param predicate 可指定比对键值时所调用的方法. 也可为 boolean 值, 值为真, 使用全等进行比较, 值为假, 使用双等进行比较 - default: true
+   * @param fromIndex 从指定的索引开始搜索 - default: 0
+   */
+  $findLastSomeNotChunk( count?: number, obj: any, predicate?: ( ( value1, value2 ) => boolean ) | boolean, fromIndex?: number ): [ number, T ][];
 
   /**
    * 获取指定下标的对象
