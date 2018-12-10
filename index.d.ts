@@ -1417,6 +1417,19 @@ interface Object {
   $set( obj: {} ): this;
 
   /**
+   * 设置或修改对象的某个值
+   * @param key 需要修改的值的 key
+   * @param value 需要设置的值
+   */
+  $edit( key: String, value: any ): this;
+
+  /**
+   * 批量设置或修改对象的值
+   * @param obj key, value 的键值对
+   */
+  $edit( obj: {} ): this;
+
+  /**
    * 删除对象中指定值
    * @param args 可删除多个指定值
    */
@@ -2715,6 +2728,12 @@ interface Element {
   $removeClass( className: string ): this;
 
   /**
+   * ( Fat ) 向元素移除一个或多个类
+   * @param className 类名
+   */
+  $deleteClass( className: string ): this;
+
+  /**
    * ( Fat ) 判断元素是否有一个或多个类
    * @param className 类名
    */
@@ -3128,6 +3147,17 @@ interface EventTarget {
    * @param {string} name 需要删除的数据名称, 多个可使用空格分隔
    */
   $deleteData( names: string ): this;
+
+  /**
+   * ( Fat ) 删除存储在对象上的全部数据
+   */
+  $removeData(): this;
+
+  /**
+   * ( Fat ) 传入数据名称, 删除当前对象下存储的相应名称的数据
+   * @param {string} name 需要删除的数据名称, 多个可使用空格分隔
+   */
+  $removeData( names: string ): this;
 
   /**
    * ( Fat ) 传入键值对事件进行绑定

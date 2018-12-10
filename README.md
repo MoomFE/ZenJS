@@ -71,6 +71,7 @@
   - $chunk
   - $copy
   - $create
+  - $create
   - $each
   - $equals
   - $isArrayLike
@@ -87,9 +88,34 @@
   - $concatTo
   - $find
   - $findIndex
+  - $findChunk
   - $findLast
   - $findLastIndex
+  - $findLastChunk
   - $findAll
+  - $findAllIndex
+  - $findAllChunk
+  - $findSome
+  - $findSomeIndex
+  - $findSomeChunk
+  - $findLastSome
+  - $findLastSomeIndex
+  - $findLastSomeChunk
+  - $findNot
+  - $findNotIndex
+  - $findNotChunk
+  - $findLastNot
+  - $findLastNotIndex
+  - $findLastNotChunk
+  - $findAllNot
+  - $findAllNotIndex
+  - $findAllNotChunk
+  - $findSomeNot
+  - $findSomeNotIndex
+  - $findSomeNotChunk
+  - $findLastSomeNot
+  - $findLastSomeNotIndex
+  - $findLastSomeNotChunk
   - $get
   - $set
   - $edit
@@ -189,10 +215,44 @@
   - $querystring
     - stringify
     - parse
+  - ZenJS
+    - guid
+    - assign
+    - repeat
+    - keys
+    - entries
+    - values
+    - fromEntries
+    - congruence
+    - equals
+    - define
+    - defineValue
+    - defineGet
+    - intRandom
+    - returnArg
+    - returnTrue
+    - returnFalse
+    - noop
+    - parametersDefault
+    - parametersRest
+    - isString
+    - isBoolean
+    - isArray
+    - isNumber
+    - isRegExp
+    - isSet
+    - isMap
+    - isFunction
+    - isObject
+    - isReferenceType
+    - mapSetToArray
+  - dayjs
 
 - Document ( Fat )
   - $id
   - $ready
+  - $query / $find
+  - $queryFirst / $findFirst
 
 - Window ( Fat )
   - $ready
@@ -234,10 +294,11 @@
   - $query / $find
   - $queryFirst / $findFirst
   - $replaceWith / $replace
+  - $clone
   - $index
   - $html
-  - $width
   - $val / $value
+  - $width
   - $height
   - $css
   - _nodeName
@@ -245,7 +306,7 @@
 - EventTarget.prototype ( Fat )
   - $data
   - $hasData
-  - $deleteData / $removeData
+  - $removeData/ $deleteData
   - $on
   - $one / $once
   - $off
@@ -253,7 +314,7 @@
 
 - document ( Plugins )
   - $cookie
-  - $deleteCookie / $removeCookie
+  - $removeCookie / $deleteCookie
 
 <br>
 
