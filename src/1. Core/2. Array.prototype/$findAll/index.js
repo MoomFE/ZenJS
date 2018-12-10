@@ -25,8 +25,10 @@ function find( self, reverse, count, not, /**/ obj, predicate, fromIndex /**/ ){
   /** 当前数组长度 */
   let length;
 
-  // 传入的内容不可检索或者数组为空
-  if( obj == null || !( length = self.length ) ){
+  // 1. 传入的内容不可检索
+  // 2. 数组为空
+  // 3. 结果集过小
+  if( obj == null || !( length = self.length ) || count < 1 ){
     return result;
   }
 
@@ -102,13 +104,15 @@ each({
   $find: [ false, 1 ],
   $findLast: [ true, 1 ],
   $findAll: [ false, Infinity ],
+  $findSome: [ false ],
+  $findLastSome: [ true ]
 }, ( name, args ) => {
   /** 是否反向查询 */
   const reverse = args[ 0 ];
   /** 保存的查找结果数量 */
   const count = args[ 1 ];
   /** 是否是返回全部结果集 */
-  const returnAll = name.indexOf('All') > -1;
+  const returnAll = name.indexOf('All') > -1 || !count;
 
   // Index, Not, Chunk
   [ '', 'Index', 'Chunk' ].forEach(( suffix2, index ) => {
@@ -124,19 +128,32 @@ each({
       const not = !!index;
 
       defineValue( ArrayProto, fullname, function( obj, predicate, fromIndex ){
+        let some;
+
+        if( !count ){
+          if( isNumber( obj ) ){
+            some = obj;
+            obj = predicate;
+            predicate = fromIndex;
+            fromIndex = arguments[ 3 ];
+          }else{
+            some = Infinity;
+          }
+        }
+
         // 获取结果集
-        const result = find( this, reverse, count, not, obj, predicate, fromIndex );
+        const result = find( this, reverse, count || some, not, obj, predicate, fromIndex );
 
         // 返回全部结果集
         if( returnAll ){
           return returnChunk ? result
-                            : result.map( arr => arr[ returnIndex ] );
+                             : result.map( arr => arr[ returnIndex ] );
         }
 
         // 返回单个结果集
         if( result.length ){
           return returnChunk ? result[ 0 ]
-                            : result[ 0 ][ returnIndex ];
+                             : result[ 0 ][ returnIndex ];
         }else{
           // 返回 chunk 时, 没找到结果也返回 undefined
           return returnIndex || returnChunk ? undefined

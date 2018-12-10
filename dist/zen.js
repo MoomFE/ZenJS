@@ -811,9 +811,11 @@
     var result = [];
     /** 当前数组长度 */
 
-    var length; // 传入的内容不可检索或者数组为空
+    var length; // 1. 传入的内容不可检索
+    // 2. 数组为空
+    // 3. 结果集过小
 
-    if (obj == null || !(length = self.length)) {
+    if (obj == null || !(length = self.length) || count < 1) {
       return result;
     }
     /** 遍历方法 */
@@ -881,7 +883,9 @@
   each({
     $find: [false, 1],
     $findLast: [true, 1],
-    $findAll: [false, Infinity]
+    $findAll: [false, Infinity],
+    $findSome: [false],
+    $findLastSome: [true]
   }, function (name, args) {
     /** 是否反向查询 */
     var reverse = args[0];
@@ -890,7 +894,7 @@
     var count = args[1];
     /** 是否是返回全部结果集 */
 
-    var returnAll = name.indexOf('All') > -1; // Index, Not, Chunk
+    var returnAll = name.indexOf('All') > -1 || !count; // Index, Not, Chunk
 
     ['', 'Index', 'Chunk'].forEach(function (suffix2, index) {
       /** 是否是返回 index */
@@ -905,8 +909,21 @@
 
         var not = !!index;
         defineValue(ArrayProto, fullname, function (obj, predicate, fromIndex) {
-          // 获取结果集
-          var result = find(this, reverse, count, not, obj, predicate, fromIndex); // 返回全部结果集
+          var some;
+
+          if (!count) {
+            if (isNumber(obj)) {
+              some = obj;
+              obj = predicate;
+              predicate = fromIndex;
+              fromIndex = arguments[3];
+            } else {
+              some = Infinity;
+            }
+          } // 获取结果集
+
+
+          var result = find(this, reverse, count || some, not, obj, predicate, fromIndex); // 返回全部结果集
 
           if (returnAll) {
             return returnChunk ? result : result.map(function (arr) {
