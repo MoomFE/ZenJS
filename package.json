@@ -6,7 +6,7 @@
   "module": "dist/zen.esm.js",
   "unpkg": "dist/zen.js",
   "jsdelivr": "dist/zen.js",
-  "typings": "index.d.ts",
+  "typings": "./index.d.ts",
   "devDependencies": {
     "@babel/core": "^7.1.0",
     "@babel/plugin-transform-arrow-functions": "^7.0.0",
