@@ -4079,12 +4079,24 @@ if (inBrowser) {
 var rSearch = /\?.*?(?=#|$)/;
 
 if (inBrowser) {
-  var Search = function (search, isSet, name, value) {
+  var SetSearch = function (oSearch, name, value) {
+    // remove
+    if (value == null) delete oSearch[name]; // setter
+    else oSearch[name] = value;
+  };
+
+  var Search = function (search, isSet, isObj, name, value) {
     var oSearch = $querystring.parse(search); // setter
 
     if (isSet) {
-      // remove
-      if (value == null) delete oSearch[name];else oSearch[name] = value;
+      if (isObj) {
+        each(name, function (name, value) {
+          SetSearch(oSearch, name, value);
+        });
+      } else {
+        SetSearch(oSearch, name, value);
+      }
+
       return $querystring.stringify(oSearch);
     } // getter
 
@@ -4093,21 +4105,23 @@ if (inBrowser) {
   };
 
   location.$search = function (name, value) {
-    var isSet = arguments.length > 1;
-    var newSearch = Search(location.search.substr(1), isSet, name, value);
+    var isObj = false;
+    var isSet = arguments.length > 1 || (isObj = isObject(name));
+    var newSearch = Search(location.search.substr(1), isSet, isObj, name, value);
     if (isSet) location.search = newSearch;else return newSearch;
   };
 
   location.$urlSearch = function (url, name, value) {
     if (isString$1(url)) {
+      var isObj = false;
       var search = ((url.match(rSearch) || [])[0] || '').substr(1);
-      var isSet = arguments.length > 2;
+      var isSet = arguments.length > 2 || (isObj = isObject(name));
 
       if (!isSet) {
-        return search ? Search(search, isSet, name, value) : '';
+        return search ? Search(search, isSet, isObj, name, value) : '';
       }
 
-      var newSearch = '?' + Search(search, isSet, name, value); // http://www.zenjs.net/?asd=123#xxx
+      var newSearch = '?' + Search(search, isSet, isObj, name, value); // http://www.zenjs.net/?asd=123#xxx
 
       if (search || url.indexOf('?') > -1) url = url.replace(rSearch, newSearch); // http://www.zenjs.net/#xxx
       else if (url.indexOf('#') > -1) url = url.replace('#', newSearch + '#'); // http://www.zenjs.net/
