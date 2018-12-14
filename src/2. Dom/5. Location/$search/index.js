@@ -3,6 +3,7 @@ import rSearch from "../../../shared/const/rSearch";
 import isString from "../../../shared/util/isString";
 import isObject from "../../../shared/util/isObject";
 import each from "../../../1. Core/3. Object/$each/index";
+import { parse, stringify } from "../../../1. Core/66. Root/$querystring/index";
 
 
 if( inBrowser ){
@@ -14,11 +15,12 @@ if( inBrowser ){
     else oSearch[ name ] = value;
   }
 
-  function Search( search, isSet, isObj, name, value ){
-    const oSearch = $querystring.parse( search );
+  function Search( search, name, value, isSet, isObj, isGetAll ){
+    const oSearch = parse( search );
 
+    if( isGetAll ) return oSearch;
     // setter
-    if( isSet ){
+    else if( isSet ){
       if( isObj ){
         each( name, ( name, value ) => {
           SetSearch( oSearch, name, value );
@@ -27,18 +29,22 @@ if( inBrowser ){
         SetSearch( oSearch, name, value );
       }
 
-      return $querystring.stringify( oSearch );
+      return stringify( oSearch );
     }
     // getter
     return oSearch[ name ];
   }
 
   location.$search = function( name, value ){
-    let isObj = false;
-    const isSet = arguments.length > 1 || (
-      isObj = isObject( name )
-    );
-    const newSearch = Search( location.search.substr(1), isSet, isObj, name, value );
+    let isObj, isSet, isGetAll;
+    
+    if( !( isGetAll = arguments.length < 1 ) ){
+      isSet = arguments.length > 1 || (
+        isObj = isObject( name )
+      );
+    }
+
+    const newSearch = Search( location.search.substr(1), name, value, isSet, isObj, isGetAll );
 
     if( isSet ) location.search = newSearch;
     else return newSearch;
@@ -47,17 +53,20 @@ if( inBrowser ){
   location.$urlSearch = function( url, name, value ){
 
     if( isString( url ) ){
-      let isObj = false;
+      let isObj, isSet, isGetAll;
       const search = ( ( url.match( rSearch ) || [] )[0] || '' ).substr(1);
-      const isSet = arguments.length > 2 || (
-        isObj = isObject( name )
-      );
 
-      if( !isSet ){
-        return search ? Search( search, isSet, isObj, name, value ) : '';
+      if( !( isGetAll = arguments.length < 2 ) ){
+        isSet = arguments.length > 2 || (
+          isObj = isObject( name )
+        );
       }
 
-      let newSearch = '?' + Search( search, isSet, isObj, name, value );
+      if( !isSet ){
+        return search ? Search( search, name, value, isSet, isObj, isGetAll ) : isGetAll ? {} : '';
+      }
+
+      let newSearch = '?' + Search( search, name, value, isSet, isObj );
 
       // http://www.zenjs.net/?asd=123#xxx
       if( search || url.indexOf('?') > -1 ) url = url.replace( rSearch, newSearch );

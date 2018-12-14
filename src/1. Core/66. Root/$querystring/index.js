@@ -18,7 +18,7 @@ function toString( obj ){
   }
 }
 
-function stringify( obj ){
+export function stringify( obj ){
   const args = arguments;
   const sep = parametersDefault( args, 1, '&' );
   const eq = parametersDefault( args, 2, '=' );
@@ -33,7 +33,7 @@ function stringify( obj ){
   return '';
 }
 
-function parse( str ){
+export function parse( str ){
 
   const result = {};
 
