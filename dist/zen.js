@@ -2329,7 +2329,6 @@
 
     return '';
   }
-
   function parse(str) {
     var result = {};
 
@@ -2358,7 +2357,6 @@
     });
     return result;
   }
-
   defineValue(root, '$querystring', assign(false, [null, {
     stringify: stringify,
     parse: parse

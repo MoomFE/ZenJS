@@ -2323,7 +2323,6 @@ function stringify(obj) {
 
   return '';
 }
-
 function parse(str) {
   var result = {};
 
@@ -2352,7 +2351,6 @@ function parse(str) {
   });
   return result;
 }
-
 defineValue(root, '$querystring', assign(false, [null, {
   stringify: stringify,
   parse: parse
@@ -4083,43 +4081,49 @@ if (inBrowser) {
     else oSearch[name] = value;
   };
 
-  var Search = function (search, isSet, isObj, name, value) {
-    var oSearch = $querystring.parse(search); // setter
-
-    if (isSet) {
-      if (isObj) {
-        each(name, function (name, value) {
+  var Search = function (search, name, value, isSet, isObj, isGetAll) {
+    var oSearch = parse(search);
+    if (isGetAll) return oSearch; // setter
+    else if (isSet) {
+        if (isObj) {
+          each(name, function (name, value) {
+            SetSearch(oSearch, name, value);
+          });
+        } else {
           SetSearch(oSearch, name, value);
-        });
-      } else {
-        SetSearch(oSearch, name, value);
-      }
+        }
 
-      return $querystring.stringify(oSearch);
-    } // getter
-
+        return stringify(oSearch);
+      } // getter
 
     return oSearch[name];
   };
 
   location.$search = function (name, value) {
-    var isObj = false;
-    var isSet = arguments.length > 1 || (isObj = isObject(name));
-    var newSearch = Search(location.search.substr(1), isSet, isObj, name, value);
+    var isObj, isSet, isGetAll;
+
+    if (!(isGetAll = arguments.length < 1)) {
+      isSet = arguments.length > 1 || (isObj = isObject(name));
+    }
+
+    var newSearch = Search(location.search.substr(1), name, value, isSet, isObj, isGetAll);
     if (isSet) location.search = newSearch;else return newSearch;
   };
 
   location.$urlSearch = function (url, name, value) {
     if (isString$1(url)) {
-      var isObj = false;
+      var isObj, isSet, isGetAll;
       var search = ((url.match(rSearch) || [])[0] || '').substr(1);
-      var isSet = arguments.length > 2 || (isObj = isObject(name));
 
-      if (!isSet) {
-        return search ? Search(search, isSet, isObj, name, value) : '';
+      if (!(isGetAll = arguments.length < 2)) {
+        isSet = arguments.length > 2 || (isObj = isObject(name));
       }
 
-      var newSearch = '?' + Search(search, isSet, isObj, name, value); // http://www.zenjs.net/?asd=123#xxx
+      if (!isSet) {
+        return search ? Search(search, name, value, isSet, isObj, isGetAll) : isGetAll ? {} : '';
+      }
+
+      var newSearch = '?' + Search(search, name, value, isSet, isObj); // http://www.zenjs.net/?asd=123#xxx
 
       if (search || url.indexOf('?') > -1) url = url.replace(rSearch, newSearch); // http://www.zenjs.net/#xxx
       else if (url.indexOf('#') > -1) url = url.replace('#', newSearch + '#'); // http://www.zenjs.net/
