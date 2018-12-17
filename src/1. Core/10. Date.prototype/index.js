@@ -10,6 +10,17 @@ import keys from "../../shared/global/Object/keys";
 import defineValue from "../../shared/util/defineValue";
 import DateProto from "../../shared/global/Date/prototype/index";
 import DAYJS from './$dayjs/index';
+import isBetween from '../../shared/dependencies/dayjs/plugin/isBetween';
+import isSameOrBefore from '../../shared/dependencies/dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from '../../shared/dependencies/dayjs/plugin/isSameOrAfter';
+import isLeapYear from '../../shared/dependencies/dayjs/plugin/isLeapYear';
+
+[
+  isBetween,
+  isSameOrBefore,
+  isSameOrAfter,
+  isLeapYear
+].forEach( dayjs.extend );
 
 
 const ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString_locale'.split('_');

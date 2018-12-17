@@ -2096,6 +2096,35 @@
 
   defineValue(root, 'dayjs', dayjs);
 
+  var index = function (o, c, d) {
+    c.prototype.isBetween = function (a, b, u) {
+      var dA = d(a);
+      var dB = d(b);
+      return this.isAfter(dA, u) && this.isBefore(dB, u) || this.isBefore(dA, u) && this.isAfter(dB, u);
+    };
+  };
+
+  var index$1 = function (o, c) {
+    c.prototype.isSameOrBefore = function (that, units) {
+      return this.isSame(that, units) || this.isBefore(that, units);
+    };
+  };
+
+  var index$2 = function (o, c) {
+    c.prototype.isSameOrAfter = function (that, units) {
+      return this.isSame(that, units) || this.isAfter(that, units);
+    };
+  };
+
+  var index$3 = function (o, c) {
+    var proto = c.prototype;
+
+    proto.isLeapYear = function () {
+      return this.$y % 4 === 0 && this.$y % 100 !== 0 || this.$y % 400 === 0;
+    };
+  };
+
+  [index, index$1, index$2, index$3].forEach(dayjs.extend);
   var ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString_locale'.split('_');
   var isDayjs$1 = dayjs.isDayjs;
   dayjs.extend(function (option, Dayjs) {

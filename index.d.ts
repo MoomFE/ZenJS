@@ -1966,6 +1966,66 @@ interface Date {
    */
   $isAfter( date: string| number | Date | Dayjs, units: string ): boolean;
 
+  /**
+   * 检查当前时间是否在介于传入的两个时间之间
+   * @param date1 ( 标准的 ISO 8601 时间字符串 )
+   *              ( Unix 毫秒时间戳: 13位数字 )
+   *              ( Unix 秒时间戳: 10位数字 )
+   *              ( Javascript Date 对象 )
+   * @param date2 ( 标准的 ISO 8601 时间字符串 )
+   *              ( Unix 毫秒时间戳: 13位数字 )
+   *              ( Unix 秒时间戳: 10位数字 )
+   *              ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $isBetween( date1: string| number | Date | Dayjs, date2: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查当前时间是否在传入时间相同或在传入时间之前
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $isSameOrBefore( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查当前时间是否在传入时间相同或在传入时间之后
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $isSameOrAfter( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查当前年份是否是闰年
+   */
+  $isLeapYear(): boolean;
+
 }
 
 
@@ -2059,7 +2119,7 @@ interface $querystring {
    */
   parse( str, sep?: string, eq?: string ): {};
 
-} 
+}
 
 interface ZenJS {
 
@@ -2374,13 +2434,13 @@ declare namespace dayjs {
 
   /**
    * 验证传入值是否是一个 Dayjs 对象
-   * @param data 
+   * @param data
    */
   function isDayjs( data: Dayjs ): boolean;
 
   /**
    * 可以解析传入的一个 Unix 秒时间戳 ( 10位数字 )
-   * @param date 
+   * @param date
    */
   function unix( date: number ): Dayjs;
 
@@ -2655,6 +2715,66 @@ declare class Dayjs{
    *             [ millisecond, ms ] 毫秒
    */
   isAfter( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查当前时间是否在介于传入的两个时间之间
+   * @param date1 ( 标准的 ISO 8601 时间字符串 )
+   *              ( Unix 毫秒时间戳: 13位数字 )
+   *              ( Unix 秒时间戳: 10位数字 )
+   *              ( Javascript Date 对象 )
+   * @param date2 ( 标准的 ISO 8601 时间字符串 )
+   *              ( Unix 毫秒时间戳: 13位数字 )
+   *              ( Unix 秒时间戳: 10位数字 )
+   *              ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  isBetween( date1: string| number | Date | Dayjs, date2: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查当前时间是否在传入时间相同或在传入时间之前
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  isSameOrBefore( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查当前时间是否在传入时间相同或在传入时间之后
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  isSameOrAfter( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查当前年份是否是闰年
+   */
+  isLeapYear(): boolean;
 
 }
 
