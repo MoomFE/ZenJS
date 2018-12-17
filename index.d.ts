@@ -1722,7 +1722,266 @@ interface DateConstructor{
    *                  ( A: AM PM )
    *                  ( a: am pm )
    */
-  $format( date: string | Date, formatStr: string )
+  $format( date: string | Date, formatStr: string ): string;
+
+  /**
+   * 获取实时年份
+   */
+  $year(): number;
+
+  /**
+   * 获取实时月份
+   */
+  $month(): number;
+
+  /**
+   * 获取实时日期
+   */
+  $date(): number;
+
+  /**
+   * 获取实时星期
+   */
+  $day(): number;
+
+  /**
+   * 获取实时小时
+   */
+  $hour(): number;
+
+  /**
+   * 获取实时分钟
+   */
+  $minute(): number;
+
+  /**
+   * 获取实时秒
+   */
+  $second(): number;
+
+  /**
+   * 获取实时毫秒
+   */
+  $millisecond(): number;
+
+  /**
+   * 基于实时时间设置时间, 返回处理后的时间
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   * @param value 给传入单位设置的值
+   */
+  $set( unit : string, value : number ): Date;
+
+  /**
+   * 基于实时时间增加时间, 返回处理后的时间
+   * @param value 给当前时间对象增加的时间值
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $add( value : number, unit : string ): Date;
+
+  /**
+   * 基于实时时间减少时间, 返回处理后的时间
+   * @param value 给当前时间的指定单位增加的时间值
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $subtract( value : number, unit : string ): Date;
+
+  /**
+   * 基于实时时间设置时间为指定单位的开头时间, 返回处理后的时间
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $startOf( unit : string ): Date;
+
+  /**
+   * 基于实时时间设置时间为指定单位的末尾时间, 返回处理后的时间
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $endOf( unit: string ): Date;
+
+  /**
+   * 获取实时时间和传入时间的时间差，默认毫秒
+   * @param input 需要和实时时间比较的时间
+   * @param units 单位,
+   *              [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *              [ month, M ] 月
+   *              [ year, y ] 年
+   *              [ hour, h ] 时
+   *              [ minute, m ] 分
+   *              [ second, s ] 秒
+   *              [ millisecond, ms ] 毫秒
+   * @param float
+   */
+  $diff( input: string | Date, units: string, float: boolean ): string;
+
+  /**
+   * 返回实时时间 Unix 时间戳 ( 毫秒 )
+   */
+  $valueOf(): number;
+
+  /**
+   * 返回实时时间 Unix 时间戳 ( 秒 )
+   */
+  $unix(): number
+
+  /**
+   * 返回实时月份的天数
+   */
+  $daysInMonth(): number;
+
+  /**
+   * 返回实时时间的包含时间数值的数组
+   */
+  $toArray(): number[];
+
+  /**
+   * 返回实时时间的包含时间数值的对象
+   */
+  $toObject(): any;
+
+  /**
+   * 检查实时时间是否在传入时间之前
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $isBefore( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查实时时间是否和传入时间相同
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $isSame( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查实时时间是否在传入时间之后
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $isAfter( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查实时时间是否在介于传入的两个时间之间
+   * @param date1 ( 标准的 ISO 8601 时间字符串 )
+   *              ( Unix 毫秒时间戳: 13位数字 )
+   *              ( Unix 秒时间戳: 10位数字 )
+   *              ( Javascript Date 对象 )
+   * @param date2 ( 标准的 ISO 8601 时间字符串 )
+   *              ( Unix 毫秒时间戳: 13位数字 )
+   *              ( Unix 秒时间戳: 10位数字 )
+   *              ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $isBetween( date1: string| number | Date | Dayjs, date2: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查实时时间是否在传入时间相同或在传入时间之前
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $isSameOrBefore( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查实时时间是否在传入时间相同或在传入时间之后
+   * @param date ( 标准的 ISO 8601 时间字符串 )
+   *             ( Unix 毫秒时间戳: 13位数字 )
+   *             ( Unix 秒时间戳: 10位数字 )
+   *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
+   */
+  $isSameOrAfter( date: string| number | Date | Dayjs, units: string ): boolean;
+
+  /**
+   * 检查实时年份是否是闰年
+   */
+  $isLeapYear(): boolean;
 
 }
 

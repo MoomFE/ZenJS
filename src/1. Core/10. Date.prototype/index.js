@@ -5,8 +5,9 @@ import './$dayjs/index';
 
 
 
+import Date from '../../shared/global/Date/index';
 import dayjs from "../../shared/dependencies/dayjs/dayjs";
-import keys from "../../shared/global/Object/keys";
+import entries from '../../shared/global/Object/entries';
 import defineValue from "../../shared/util/defineValue";
 import DateProto from "../../shared/global/Date/prototype/index";
 import DAYJS from './$dayjs/index';
@@ -27,15 +28,15 @@ const ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString_locale'.spli
 const isDayjs = dayjs.isDayjs;
 
 dayjs.extend(( option, Dayjs ) => {
-  keys( Dayjs.prototype ).forEach( key => {
-    ( key.indexOf('$') === 0 || ignore.indexOf( key ) > -1 ) || install( key );
+  entries( Dayjs.prototype ).forEach( obj => {
+    ( obj[0].indexOf('$') === 0 || ignore.indexOf( obj[0] ) > -1 ) || install( obj[0], obj[1] );
   });
 });
 
-function install( name ){
+function install( name, fn ){
+
   defineValue( DateProto, '$' + name, function(){
-    let $dayjs = this.$dayjs();
-    let result = $dayjs[ name ].apply( $dayjs, arguments );
+    const result = fn.apply( this.$dayjs(), arguments );
 
     if( isDayjs( result ) ){
       this.setTime( result.valueOf() );
@@ -44,4 +45,12 @@ function install( name ){
     }
     return result;
   });
+
+  [ 'isValid', 'format' ].$inArray( name ) || defineValue( Date, '$' + name, function(){
+    const result = fn.apply( dayjs(), arguments );
+
+    return isDayjs( result ) ? result.$d.$set( DAYJS, result )
+                             : result;
+  });
+
 }

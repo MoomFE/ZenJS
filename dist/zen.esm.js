@@ -2122,15 +2122,14 @@ var index$3 = function (o, c) {
 var ignore = 'clone_init_parse_toDate_toISOString_toJSON_toString_locale'.split('_');
 var isDayjs$1 = dayjs.isDayjs;
 dayjs.extend(function (option, Dayjs) {
-  keys(Dayjs.prototype).forEach(function (key) {
-    key.indexOf('$') === 0 || ignore.indexOf(key) > -1 || install(key);
+  entries(Dayjs.prototype).forEach(function (obj) {
+    obj[0].indexOf('$') === 0 || ignore.indexOf(obj[0]) > -1 || install(obj[0], obj[1]);
   });
 });
 
-function install(name) {
+function install(name, fn) {
   defineValue(DateProto, '$' + name, function () {
-    var $dayjs = this.$dayjs();
-    var result = $dayjs[name].apply($dayjs, arguments);
+    var result = fn.apply(this.$dayjs(), arguments);
 
     if (isDayjs$1(result)) {
       this.setTime(result.valueOf());
@@ -2139,6 +2138,10 @@ function install(name) {
     }
 
     return result;
+  });
+  ['isValid', 'format'].$inArray(name) || defineValue(Date, '$' + name, function () {
+    var result = fn.apply(dayjs(), arguments);
+    return isDayjs$1(result) ? result.$d.$set(DAYJS, result) : result;
   });
 }
 
