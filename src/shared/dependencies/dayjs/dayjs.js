@@ -168,17 +168,18 @@ function () {
   };
 
   _proto.init = function init(cfg) {
-    this.$y = this.$d.getFullYear();
-    this.$M = this.$d.getMonth();
-    this.$D = this.$d.getDate();
-    this.$W = this.$d.getDay();
-    this.$H = this.$d.getHours();
-    this.$m = this.$d.getMinutes();
-    this.$s = this.$d.getSeconds();
-    this.$ms = this.$d.getMilliseconds();
+    var $d = this.$d;
+    this.$y = $d.getFullYear();
+    this.$M = $d.getMonth();
+    this.$D = $d.getDate();
+    this.$W = $d.getDay();
+    this.$H = $d.getHours();
+    this.$m = $d.getMinutes();
+    this.$s = $d.getSeconds();
+    this.$ms = $d.getMilliseconds();
     this.$L = this.$L || parseLocale(cfg.locale, null, true) || L;
-  }; // eslint-disable-next-line class-methods-use-this
-
+  } // eslint-disable-next-line class-methods-use-this
+  ;
 
   _proto.$utils = function $utils() {
     return Utils;
@@ -188,20 +189,17 @@ function () {
     return !(this.$d.toString() === 'Invalid Date');
   };
 
-  _proto.$compare = function $compare(that) {
-    return this.valueOf() - dayjs(that).valueOf();
+  _proto.isSame = function isSame(that, units) {
+    var other = dayjs(that);
+    return this.startOf(units) <= other && other <= this.endOf(units);
   };
 
-  _proto.isSame = function isSame(that) {
-    return this.$compare(that) === 0;
+  _proto.isAfter = function isAfter(that, units) {
+    return dayjs(that) < this.startOf(units);
   };
 
-  _proto.isBefore = function isBefore(that) {
-    return this.$compare(that) < 0;
-  };
-
-  _proto.isAfter = function isAfter(that) {
-    return this.$compare(that) > 0;
+  _proto.isBefore = function isBefore(that, units) {
+    return this.endOf(units) < dayjs(that);
   };
 
   _proto.year = function year() {
@@ -261,7 +259,7 @@ function () {
       var argumentStart = [0, 0, 0, 0];
       var argumentEnd = [23, 59, 59, 999];
       return wrapper(_this.toDate()[method].apply( // eslint-disable-line prefer-spread
-      _this.toDate(), isStartOf ? argumentStart.slice(slice) : argumentEnd.slice(slice)), _this);
+      _this.toDate(), (isStartOf ? argumentStart : argumentEnd).slice(slice)), _this);
     };
 
     switch (unit) {
@@ -297,46 +295,13 @@ function () {
   };
 
   _proto.$set = function $set(units, int) {
+    var _C$D$C$DATE$C$M$C$Y$C;
+
     // private set
     var unit = Utils.prettyUnit(units);
-
-    switch (unit) {
-      case D:
-        this.$d.setDate(this.$D + (int - this.$W));
-        break;
-
-      case DATE:
-        this.$d.setDate(int);
-        break;
-
-      case M:
-        this.$d.setMonth(int);
-        break;
-
-      case Y:
-        this.$d.setFullYear(int);
-        break;
-
-      case H:
-        this.$d.setHours(int);
-        break;
-
-      case MIN:
-        this.$d.setMinutes(int);
-        break;
-
-      case S:
-        this.$d.setSeconds(int);
-        break;
-
-      case MS:
-        this.$d.setMilliseconds(int);
-        break;
-
-      default:
-        break;
-    }
-
+    var name = (_C$D$C$DATE$C$M$C$Y$C = {}, _C$D$C$DATE$C$M$C$Y$C[D] = 'setDate', _C$D$C$DATE$C$M$C$Y$C[DATE] = 'setDate', _C$D$C$DATE$C$M$C$Y$C[M] = 'setMonth', _C$D$C$DATE$C$M$C$Y$C[Y] = 'setFullYear', _C$D$C$DATE$C$M$C$Y$C[H] = 'setHours', _C$D$C$DATE$C$M$C$Y$C[MIN] = 'setMinutes', _C$D$C$DATE$C$M$C$Y$C[S] = 'setSeconds', _C$D$C$DATE$C$M$C$Y$C[MS] = 'setMilliseconds', _C$D$C$DATE$C$M$C$Y$C)[unit];
+    var arg = unit === D ? this.$D + (int - this.$W) : int;
+    if (this.$d[name]) this.$d[name](arg);
     this.init();
     return this;
   };
@@ -346,7 +311,8 @@ function () {
   };
 
   _proto.add = function add(number, units) {
-    var _this2 = this;
+    var _this2 = this,
+        _C$MIN$C$H$C$S$unit;
 
     number = Number(number); // eslint-disable-line no-param-reassign
 
@@ -380,25 +346,7 @@ function () {
       return instanceFactorySet(7);
     }
 
-    var step;
-
-    switch (unit) {
-      case MIN:
-        step = MILLISECONDS_A_MINUTE;
-        break;
-
-      case H:
-        step = MILLISECONDS_A_HOUR;
-        break;
-
-      case S:
-        step = MILLISECONDS_A_SECOND;
-        break;
-
-      default:
-        // ms
-        step = 1;
-    }
+    var step = (_C$MIN$C$H$C$S$unit = {}, _C$MIN$C$H$C$S$unit[MIN] = MILLISECONDS_A_MINUTE, _C$MIN$C$H$C$S$unit[H] = MILLISECONDS_A_HOUR, _C$MIN$C$H$C$S$unit[S] = MILLISECONDS_A_SECOND, _C$MIN$C$H$C$S$unit)[unit] || 1; // ms
 
     var nextTimeStamp = this.valueOf() + number * step;
     return wrapper(nextTimeStamp, this);
@@ -421,130 +369,50 @@ function () {
       return arr && arr[index] || full[index].substr(0, length);
     };
 
+    var get$H = function get$H(match) {
+      if (_this3.$H === 0) return 12;
+      return Utils.padStart(_this3.$H < 13 ? _this3.$H : _this3.$H - 12, match === 'hh' ? 2 : 1, '0');
+    };
+
     return str.replace(REGEX_FORMAT, function (match) {
       if (match.indexOf('[') > -1) return match.replace(/\[|\]/g, '');
-
-      switch (match) {
-        case 'YY':
-          return String(_this3.$y).slice(-2);
-
-        case 'YYYY':
-          return String(_this3.$y);
-
-        case 'M':
-          return String(_this3.$M + 1);
-
-        case 'MM':
-          return Utils.padStart(_this3.$M + 1, 2, '0');
-
-        case 'MMM':
-          return getShort(locale.monthsShort, _this3.$M, months, 3);
-
-        case 'MMMM':
-          return months[_this3.$M];
-
-        case 'D':
-          return String(_this3.$D);
-
-        case 'DD':
-          return Utils.padStart(_this3.$D, 2, '0');
-
-        case 'd':
-          return String(_this3.$W);
-
-        case 'dd':
-          return getShort(locale.weekdaysMin, _this3.$W, weekdays, 2);
-
-        case 'ddd':
-          return getShort(locale.weekdaysShort, _this3.$W, weekdays, 3);
-
-        case 'dddd':
-          return weekdays[_this3.$W];
-
-        case 'H':
-          return String(_this3.$H);
-
-        case 'HH':
-          return Utils.padStart(_this3.$H, 2, '0');
-
-        case 'h':
-        case 'hh':
-          if (_this3.$H === 0) return 12;
-          return Utils.padStart(_this3.$H < 13 ? _this3.$H : _this3.$H - 12, match === 'hh' ? 2 : 1, '0');
-
-        case 'a':
-          return _this3.$H < 12 ? 'am' : 'pm';
-
-        case 'A':
-          return _this3.$H < 12 ? 'AM' : 'PM';
-
-        case 'm':
-          return String(_this3.$m);
-
-        case 'mm':
-          return Utils.padStart(_this3.$m, 2, '0');
-
-        case 's':
-          return String(_this3.$s);
-
-        case 'ss':
-          return Utils.padStart(_this3.$s, 2, '0');
-
-        case 'SSS':
-          return Utils.padStart(_this3.$ms, 3, '0');
-
-        case 'Z':
-          return zoneStr;
-
-        default:
-          // 'ZZ'
-          return zoneStr.replace(':', '');
-      }
+      return {
+        YY: String(_this3.$y).slice(-2),
+        YYYY: String(_this3.$y),
+        M: String(_this3.$M + 1),
+        MM: Utils.padStart(_this3.$M + 1, 2, '0'),
+        MMM: getShort(locale.monthsShort, _this3.$M, months, 3),
+        MMMM: months[_this3.$M],
+        D: String(_this3.$D),
+        DD: Utils.padStart(_this3.$D, 2, '0'),
+        d: String(_this3.$W),
+        dd: getShort(locale.weekdaysMin, _this3.$W, weekdays, 2),
+        ddd: getShort(locale.weekdaysShort, _this3.$W, weekdays, 3),
+        dddd: weekdays[_this3.$W],
+        H: String(_this3.$H),
+        HH: Utils.padStart(_this3.$H, 2, '0'),
+        h: get$H(match),
+        hh: get$H(match),
+        a: _this3.$H < 12 ? 'am' : 'pm',
+        A: _this3.$H < 12 ? 'AM' : 'PM',
+        m: String(_this3.$m),
+        mm: Utils.padStart(_this3.$m, 2, '0'),
+        s: String(_this3.$s),
+        ss: Utils.padStart(_this3.$s, 2, '0'),
+        SSS: Utils.padStart(_this3.$ms, 3, '0'),
+        Z: zoneStr
+      }[match] || zoneStr.replace(':', ''); // 'ZZ'
     });
   };
 
   _proto.diff = function diff(input, units, float) {
+    var _C$Y$C$M$C$Q$C$W$C$D$;
+
     var unit = Utils.prettyUnit(units);
     var that = dayjs(input);
     var diff = this - that;
     var result = Utils.monthDiff(this, that);
-
-    switch (unit) {
-      case Y:
-        result /= 12;
-        break;
-
-      case M:
-        break;
-
-      case Q:
-        result /= 3;
-        break;
-
-      case W:
-        result = diff / MILLISECONDS_A_WEEK;
-        break;
-
-      case D:
-        result = diff / MILLISECONDS_A_DAY;
-        break;
-
-      case H:
-        result = diff / MILLISECONDS_A_HOUR;
-        break;
-
-      case MIN:
-        result = diff / MILLISECONDS_A_MINUTE;
-        break;
-
-      case S:
-        result = diff / MILLISECONDS_A_SECOND;
-        break;
-
-      default:
-        // milliseconds
-        result = diff;
-    }
+    result = (_C$Y$C$M$C$Q$C$W$C$D$ = {}, _C$Y$C$M$C$Q$C$W$C$D$[Y] = result / 12, _C$Y$C$M$C$Q$C$W$C$D$[M] = result, _C$Y$C$M$C$Q$C$W$C$D$[Q] = result / 3, _C$Y$C$M$C$Q$C$W$C$D$[W] = diff / MILLISECONDS_A_WEEK, _C$Y$C$M$C$Q$C$W$C$D$[D] = diff / MILLISECONDS_A_DAY, _C$Y$C$M$C$Q$C$W$C$D$[H] = diff / MILLISECONDS_A_HOUR, _C$Y$C$M$C$Q$C$W$C$D$[MIN] = diff / MILLISECONDS_A_MINUTE, _C$Y$C$M$C$Q$C$W$C$D$[S] = diff / MILLISECONDS_A_SECOND, _C$Y$C$M$C$Q$C$W$C$D$)[unit] || diff; // milliseconds
 
     return float ? result : Utils.absFloor(result);
   };

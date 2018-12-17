@@ -1921,8 +1921,16 @@ interface Date {
    *             ( Unix 毫秒时间戳: 13位数字 )
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
    */
-  $isBefore( date: string| number | Date | Dayjs ): boolean;
+  $isBefore( date: string| number | Date | Dayjs, units: string ): boolean;
 
   /**
    * 检查当前时间是否和传入时间相同
@@ -1930,8 +1938,16 @@ interface Date {
    *             ( Unix 毫秒时间戳: 13位数字 )
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
    */
-  $isSame( date: string| number | Date | Dayjs ): boolean;
+  $isSame( date: string| number | Date | Dayjs, units: string ): boolean;
 
   /**
    * 检查当前时间是否在传入时间之后
@@ -1939,8 +1955,16 @@ interface Date {
    *             ( Unix 毫秒时间戳: 13位数字 )
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
    */
-  $isAfter( date: string| number | Date | Dayjs ): boolean;
+  $isAfter( date: string| number | Date | Dayjs, units: string ): boolean;
 
 }
 
@@ -2587,8 +2611,16 @@ declare class Dayjs{
    *             ( Unix 毫秒时间戳: 13位数字 )
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
    */
-  isBefore( date: string| number | Date | Dayjs ): boolean;
+  isBefore( date: string| number | Date | Dayjs, units: string ): boolean;
 
   /**
    * 检查当前时间是否和传入时间相同
@@ -2596,8 +2628,16 @@ declare class Dayjs{
    *             ( Unix 毫秒时间戳: 13位数字 )
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
    */
-  isSame( date: string| number | Date | Dayjs ): boolean;
+  isSame( date: string| number | Date | Dayjs, units: string ): boolean;
 
   /**
    * 检查当前时间是否在传入时间之后
@@ -2605,8 +2645,16 @@ declare class Dayjs{
    *             ( Unix 毫秒时间戳: 13位数字 )
    *             ( Unix 秒时间戳: 10位数字 )
    *             ( Javascript Date 对象 )
+   * @param unit 单位,
+   *             [ day, d ] 星期几 ( 星期天 0, 星期六 6 ),
+   *             [ month, M ] 月
+   *             [ year, y ] 年
+   *             [ hour, h ] 时
+   *             [ minute, m ] 分
+   *             [ second, s ] 秒
+   *             [ millisecond, ms ] 毫秒
    */
-  isAfter( date: string| number | Date | Dayjs ): boolean;
+  isAfter( date: string| number | Date | Dayjs, units: string ): boolean;
 
 }
 

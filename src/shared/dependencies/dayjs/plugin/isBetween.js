@@ -1,10 +1,8 @@
 var index = (function (o, c, d) {
-  var proto = c.prototype;
-
-  proto.isBetween = function (a, b) {
+  c.prototype.isBetween = function (a, b, u) {
     var dA = d(a);
     var dB = d(b);
-    return this.isAfter(dA) && this.isBefore(dB) || this.isBefore(dA) && this.isAfter(dB);
+    return this.isAfter(dA, u) && this.isBefore(dB, u) || this.isBefore(dA, u) && this.isAfter(dB, u);
   };
 });
 
