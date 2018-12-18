@@ -5,6 +5,7 @@ import max from "../../../shared/global/Math/max";
 import pow from "../../../shared/global/Math/pow";
 import repeat from "../../../shared/util/repeat";
 import NumberProto from "../../../shared/global/Number/prototype/index";
+import returnArg from "../../../shared/util/returnArg";
 
 
 function defineOperation( name, handlerFn ){
@@ -84,6 +85,6 @@ export function $divide( num1, num2 ){
   return handler(
     num1, num2,
     ( num1, num2 ) => num1 / num2,
-    ( result ) => result
+    returnArg
   );
 }

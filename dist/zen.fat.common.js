@@ -1381,6 +1381,15 @@ function repeat(str, count) {
 
 var NumberProto = Number.prototype;
 
+/**
+ * 返回传入的第一个参数
+ * @param {any} arg 
+ * @returns {any} arg
+ */
+function returnArg(arg) {
+  return arg;
+}
+
 function defineOperation(name, handlerFn) {
   defineValue(Math, name, handlerFn);
   defineValue(NumberProto, name, function (num) {
@@ -1459,9 +1468,7 @@ defineOperation('$chu $divide', $divide);
 function $divide(num1, num2) {
   return handler(num1, num2, function (num1, num2) {
     return num1 / num2;
-  }, function (result) {
-    return result;
-  });
+  }, returnArg);
 }
 
 defineValue(Math, '$mean', function () {
@@ -2278,15 +2285,6 @@ function fromEntries (iterable) {
   }
 
   return result;
-}
-
-/**
- * 返回传入的第一个参数
- * @param {any} arg 
- * @returns {any} arg
- */
-function returnArg(arg) {
-  return arg;
 }
 
 /**
