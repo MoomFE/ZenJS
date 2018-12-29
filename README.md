@@ -370,8 +370,8 @@ npm run watch
 <br>
 
 ## Include
-  - [DAY.JS](https://github.com/iamkun/dayjs)
-  - [JavaScript Cookie](https://github.com/js-cookie/js-cookie)
+  - [DAY.JS](https://github.com/iamkun/dayjs) \- [LICENSE](https://github.com/iamkun/dayjs/blob/master/LICENSE)
+  - [JavaScript Cookie](https://github.com/js-cookie/js-cookie) \- [LICENSE](https://github.com/js-cookie/js-cookie/blob/master/LICENSE)
 
 <br>
 
