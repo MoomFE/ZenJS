@@ -2,7 +2,7 @@
  * Zen.js v5.0.0-beta.5
  * https://github.com/MoomFE/ZenJS
  * 
- * (c) 2018 Wei Zhang
+ * (c) 2018-present Wei Zhang
  * Released under the MIT License.
  */
 

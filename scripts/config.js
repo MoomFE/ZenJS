@@ -15,7 +15,7 @@ const banner =
  * ${ title } v${ version }
  * https://github.com/MoomFE/ZenJS
  * 
- * (c) 2018 ${ author }
+ * (c) 2018-present ${ author }
  * Released under the MIT License.
  */
 `;

@@ -50,16 +50,16 @@
 | :-                 | :-      | :-      | :-: | :-        | :-      |
 | zen.js             | 56.98kb | 16.04kb | \|  | UMD       | Browser |
 | zen.min.js         | 20.41kb | 7.69kb | \|  | UMD       | Browser |
-| zen.common.js      | 53.09kb | 15.64kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.esm.js         | 53.07kb | 15.63kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.common.js      | 53.10kb | 15.65kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.esm.js         | 53.08kb | 15.63kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 ### Fat : Default And DOM API
 |                        | Default | Gzip    |  -  | Module    | Use in  |
 | :-                     | :-      | :-      | :-: | :-        | :-      |
-| zen.fat.js             | 101.95kb | 27.45kb | \|  | UMD       | Browser |
-| zen.fat.min.js         | 36.34kb | 13.44kb | \|  | UMD       | Browser |
-| zen.fat.common.js      | 95.24kb | 26.89kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
-| zen.fat.esm.js         | 95.22kb | 26.88kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
+| zen.fat.js             | 101.96kb | 27.45kb | \|  | UMD       | Browser |
+| zen.fat.min.js         | 36.35kb | 13.45kb | \|  | UMD       | Browser |
+| zen.fat.common.js      | 95.24kb | 26.90kb | \|  | CommonJS  | [NodeJS](https://nodejs.org) or [browserify](http://browserify.org) or [webpack 1](https://webpack.github.io) |
+| zen.fat.esm.js         | 95.23kb | 26.88kb | \|  | ES Module | [webpack 2](https://webpack.js.org) or [rollup](http://rollupjs.org) |
 
 <br>
 
