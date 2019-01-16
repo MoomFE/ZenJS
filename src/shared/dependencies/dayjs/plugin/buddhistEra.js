@@ -1,4 +1,4 @@
-var FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'; // regex
+var FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ';
 
 var index = (function (o, c) {
   // locale needed later

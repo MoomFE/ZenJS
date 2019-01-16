@@ -1602,7 +1602,8 @@
   var Q = 'quarter';
   var Y = 'year';
   var DATE = 'date';
-  var FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ'; // regex
+  var FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ';
+  var INVALID_DATE_STRING = 'Invalid Date'; // regex
 
   var REGEX_PARSE = /^(\d{4})-?(\d{1,2})-?(\d{0,2})(.*?(\d{1,2}):(\d{1,2}):(\d{1,2}))?.?(\d{1,3})?$/;
   var REGEX_FORMAT = /\[.*?\]|Y{2,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g;
@@ -1631,7 +1632,7 @@
     var anchor = a.clone().add(wholeMonthDiff, 'months');
     var c = b - anchor < 0;
     var anchor2 = a.clone().add(wholeMonthDiff + (c ? -1 : 1), 'months');
-    return Number(-(wholeMonthDiff + (b - anchor) / (c ? anchor - anchor2 : anchor2 - anchor)));
+    return Number(-(wholeMonthDiff + (b - anchor) / (c ? anchor - anchor2 : anchor2 - anchor)) || 0);
   };
 
   var absFloor = function absFloor(n) {
@@ -1701,9 +1702,12 @@
   var dayjs = function dayjs(date, c) {
     if (isDayjs(date)) {
       return date.clone();
-    }
+    } // eslint-disable-next-line no-nested-ternary
 
-    var cfg = c || {};
+
+    var cfg = c ? typeof c === 'string' ? {
+      format: c
+    } : c : {};
     cfg.date = date;
     return new Dayjs(cfg); // eslint-disable-line no-use-before-define
   };
@@ -1769,7 +1773,7 @@
     };
 
     _proto.isValid = function isValid() {
-      return !(this.$d.toString() === 'Invalid Date');
+      return !(this.$d.toString() === INVALID_DATE_STRING);
     };
 
     _proto.isSame = function isSame(that, units) {
@@ -1942,6 +1946,7 @@
     _proto.format = function format(formatStr) {
       var _this3 = this;
 
+      if (!this.isValid()) return INVALID_DATE_STRING;
       var str = formatStr || FORMAT_DEFAULT;
       var zoneStr = Utils.padZoneStr(this.$d.getTimezoneOffset());
       var locale = this.$locale();
@@ -2056,6 +2061,8 @@
 
     return Dayjs;
   }();
+
+  dayjs.prototype = Dayjs.prototype;
 
   dayjs.extend = function (plugin, option) {
     plugin(option, Dayjs, dayjs);

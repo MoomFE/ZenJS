@@ -31,7 +31,8 @@ const dayjs = (date, c) => {
   if (isDayjs(date)) {
     return date.clone()
   }
-  const cfg = c || {}
+  // eslint-disable-next-line no-nested-ternary
+  const cfg = c ? (typeof c === 'string' ? { format: c } : c) : {}
   cfg.date = date
   return new Dayjs(cfg) // eslint-disable-line no-use-before-define
 }
@@ -90,7 +91,7 @@ class Dayjs {
   }
 
   isValid() {
-    return !(this.$d.toString() === 'Invalid Date')
+    return !(this.$d.toString() === C.INVALID_DATE_STRING)
   }
 
   isSame(that, units) {
@@ -255,6 +256,8 @@ class Dayjs {
   }
 
   format(formatStr) {
+    if (!this.isValid()) return C.INVALID_DATE_STRING
+
     const str = formatStr || C.FORMAT_DEFAULT
     const zoneStr = Utils.padZoneStr(this.$d.getTimezoneOffset())
     const locale = this.$locale()
@@ -381,6 +384,8 @@ class Dayjs {
     return this.$d.toUTCString()
   }
 }
+
+dayjs.prototype = Dayjs.prototype
 
 dayjs.extend = (plugin, option) => {
   plugin(option, Dayjs, dayjs)

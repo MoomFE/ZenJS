@@ -11,6 +11,7 @@ The `Dayjs` object is immutable, that is, all API operations that change the `Da
       - [Native Javascript Date object](#native-javascript-date-object)
       - [Unix Timestamp (milliseconds)](#unix-timestamp-milliseconds)
     - [Unix Timestamp (seconds)](#unix-timestamp-seconds-unixvalue-number)
+    - [Custom Parse Format](#custom-parse-format)
     - [Clone `.clone() | dayjs(original: Dayjs)`](#clone-clone--dayjsoriginal-dayjs)
     - [Validation `.isValid()`](#validation-isvalid)
   - [Get and Set](#get-and-set)
@@ -54,6 +55,7 @@ The `Dayjs` object is immutable, that is, all API operations that change the `Da
     - [IsSameOrAfter](#issameorafter)
     - [IsSameOrBefore](#issameorbefore)
     - [IsBetween](#isbetween)
+    - [QuarterOfYear](#quarterofyear)
 
 ## Parsing
 
@@ -95,6 +97,9 @@ Returns a `Dayjs` from a Unix timestamp (seconds since the Unix Epoch)
 dayjs.unix(1318781876);
 dayjs.unix(1318781876.721);
 ```
+
+### Custom Parse Format
+* parse custom formats `dayjs("12-25-1995", "MM-DD-YYYY")` in plugin [`CustomParseFormat`](./Plugin.md#customparseformat)
 
 ### Clone `.clone() | dayjs(original: Dayjs)`
 
@@ -249,7 +254,7 @@ dayjs().endOf('month');
 ### Format `.format(stringWithTokens: string)`
 
 Returns a `string` with the `Dayjs`'s formatted date.
-To escape characters, wrap them in square or culy brackets (e.g. `[G] {um}`).
+To escape characters, wrap them in square or curly brackets (e.g. `[G] {um}`).
 
 ```js
 dayjs().format(); // current date in ISO6801, without fraction seconds e.g. '2020-04-02T08:02:17-05:00'
@@ -421,6 +426,12 @@ dayjs.isDayjs(dayjs()); // true
 dayjs.isDayjs(new Date()); // false
 ```
 
+The operator `instanceof` works equally well:
+
+```js
+dayjs() instanceof dayjs // true
+```
+
 ## Plugin APIs
 
 ### RelativeTime
@@ -458,3 +469,9 @@ plugin [`IsSameOrBefore`](./Plugin.md#issameorbefore)
 `.isBetween` to check if a date is between two other dates
 
 plugin [`IsBetween`](./Plugin.md#isbetween)
+
+### QuarterOfYear
+
+`.quarter` to get quarter of the year
+
+plugin [`QuarterOfYear`](./Plugin.md#quarterofyear)
