@@ -2,10 +2,10 @@ import inBrowser from "../../../shared/const/inBrowser";
 import defineValue from "../../../shared/util/defineValue";
 import ElementProto from "../../../shared/global/DomElement/prototype/index";
 import { isNumber } from "../../../shared/util/isNumber";
-import { isArray } from "../../../shared/const/type";
 import valHooks from "./const/valHooks";
 import rreturn from "../../../shared/const/rreturn";
 import isString from "../../../shared/util/isString";
+import isArray from "../../../shared/global/Array/isArray";
 
 
 if( inBrowser ){
@@ -20,7 +20,7 @@ if( inBrowser ){
       else if( isNumber( value ) ){
         value += '';
       }
-      else if( value[ isArray ] ){
+      else if( isArray( value ) ){
         value = value.map( val => val == null ? '' : val + '' );
       }
 

@@ -9,7 +9,7 @@ import defineValue from "../../../shared/util/defineValue";
 import DomEventTarget from "../../../shared/global/DomEventTarget/index";
 import rnothtmlwhite from "../../../shared/const/rnothtmlwhite";
 import { GROUPS, MAINGROUPS } from "../../666. ZenJS/EventListener/util";
-import { isArray } from "../../../shared/const/type";
+import isArray from "../../../shared/global/Array/isArray";
 
 /**
  * 移除事件 => 参数处理
@@ -35,7 +35,7 @@ function off( elem, types, selector, listener ){
       let groups;
 
       // 移除时传入主分组或主分组与副分组时, 始终认为移除所有主分组下的内容
-      if( group[ isArray ] ){
+      if( isArray( group ) ){
         let mainGroup = group[ 0 ];
 
         if( mainGroup && ( mainGroup = MAINGROUPS[ mainGroup ] ) ){

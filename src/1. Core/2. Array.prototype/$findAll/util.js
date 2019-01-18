@@ -1,6 +1,6 @@
-import { isArray } from "../../../shared/const/type";
 import isEmptyObject from "../../../shared/util/isEmptyObject";
 import keys from "../../../shared/global/Object/keys";
+import isArray from "../../../shared/global/Array/isArray";
 
 
 /**
@@ -9,7 +9,7 @@ import keys from "../../../shared/global/Object/keys";
  * @param {*} predicate 
  */
 export function getTraversal( obj, predicate ){
-  const objIsArray = obj[ isArray ];
+  const objIsArray = isArray( obj );
 
   return object => {
     if( obj == null || isEmptyObject( object ) ){

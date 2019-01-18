@@ -1,4 +1,4 @@
-import { isFunction } from "../../../shared/const/type";
+import isFunction from "../../../shared/util/isFunction";
 
 /**
  * 
@@ -24,7 +24,7 @@ export function Filter( node, filter, handler, checkSelf ){
   // 传入的 filter 是否是方法
   // 传入了方法则使用传入的方法进行过滤
   // 否则使用 $is 来进行过滤
-  const filterIsFunction = filter[ isFunction ];
+  const filterIsFunction = isFunction( filter );
 
   // Node
   if( node.nodeType ){

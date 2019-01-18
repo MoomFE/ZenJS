@@ -1,5 +1,6 @@
-import { isFunction, isArray } from "../const/type";
 import { isNumber } from "./isNumber";
+import isFunction from "./isFunction";
+import isArray from "../global/Array/isArray";
 
 
 const MAX_SAFE_INTEGER = 9007199254740991;
@@ -10,11 +11,11 @@ const MAX_SAFE_INTEGER = 9007199254740991;
  */
 export default function isArrayLike( value ){ 
 
-  if( value == null || value[ isFunction ] ){
+  if( value == null || isFunction( value ) ){
     return false;
   }
 
-  if( value[ isArray ] ){
+  if( isArray( value ) ){
     return true;
   }
 

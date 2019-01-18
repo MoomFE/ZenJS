@@ -76,31 +76,7 @@ function isPlainObject(obj) {
 
 var create = Object.create;
 
-var StringProto = String.prototype;
-
-var BooleanProto = Boolean.prototype;
-
-var ArrayProto = Array.prototype;
-
-var FunctionProto = Function.prototype;
-
-[['String', StringProto], ['Boolean', BooleanProto], ['Array', ArrayProto], ['Function', FunctionProto]].forEach(function (obj) {
-  defineProperty(obj[1], "__is" + obj[0] + "__", {
-    value: true,
-    configurable: false,
-    // 删除/定义
-    enumerable: false,
-    // 枚举
-    writable: false // 写入
-
-  });
-});
-var isString = '__isString__';
-var isBoolean = '__isBoolean__';
-var isArray = '__isArray__';
-var isFunction$1 = '__isFunction__';
-
-var slice = ArrayProto.slice;
+var isArray = Array.isArray;
 
 /**
  * 将多个源对象的可枚举属性合并到第一个对象中
@@ -139,7 +115,7 @@ function assign(shallow, args, parent, noProto) {
       ownEntrieName = ownEntrie[0];
       ownValue = ownEntrie[1]; // 非浅拷贝模式下, 当前值是原生对象或数组, 则进行深拷贝
 
-      if (!shallow && ownValue && (isPlainObject(ownValue) || ownValue[isArray])) {
+      if (!shallow && ownValue && (isPlainObject(ownValue) || isArray(ownValue))) {
         // 防御下面这种无限引用
         // var target = {};
         // var source = { infiniteLoop: target };
@@ -158,7 +134,7 @@ function assign(shallow, args, parent, noProto) {
           }
         targetValue = target[ownEntrieName];
 
-        if (ownValue[isArray]) {
+        if (isArray(ownValue)) {
           cloneValue = [];
         } else {
           cloneValue = targetValue && isPlainObject(targetValue) ? targetValue : noProto ? create(null) : {};
@@ -185,8 +161,6 @@ var assign$1 = Object.assign || function () {
   return assign(true, arguments);
 };
 
-var isArray$1 = Array.isArray;
-
 /**
  * 在一个对象上定义/修改一个新属性 ( 对 Object.defineProperty 的封装 )
  * @param {any} obj 要在其上定义属性的对象, 为数组时将对数组内对象都进行属性定义
@@ -201,7 +175,7 @@ function define(obj, name, options, options2) {
   } // define( [ window, document ], name, options )
 
 
-  if (isArray$1(obj) && obj instanceof Array) {
+  if (isArray(obj) && obj instanceof Array) {
     obj.forEach(function (obj) {
       return define(obj, name, options, options2);
     });
@@ -243,12 +217,14 @@ function defineValue(obj, name, value, options) {
   return value;
 }
 
+var ArrayProto = Array.prototype;
+
 /**
  * 判断传入对象是否是 String 类型
  * @param {any} obj 需要判断的对象
  * @returns {Boolean}
  */
-function isString$1(obj) {
+function isString(obj) {
   return typeof obj === 'string';
 }
 
@@ -270,7 +246,7 @@ function isNumber(obj) {
 function $isNumber(obj) {
   var num = obj;
 
-  if ((isNumber(obj) || isString$1(obj) && !isNaN(obj - (num = parseFloat(obj)))) && isFinite(num)) {
+  if ((isNumber(obj) || isString(obj) && !isNaN(obj - (num = parseFloat(obj)))) && isFinite(num)) {
     return true;
   }
 
@@ -331,12 +307,14 @@ defineValue(ArrayProto, '$chunk', function (size) {
   return chunk(this, size);
 });
 
+var slice = ArrayProto.slice;
+
 defineValue(Array, '$copy', function (source, array) {
   if (!source || !source.length) {
     return [];
   }
 
-  if (isArray$1(array)) {
+  if (isArray(array)) {
     return array.concat(source);
   }
 
@@ -376,11 +354,11 @@ var MAX_SAFE_INTEGER = 9007199254740991;
  */
 
 function isArrayLike(value) {
-  if (value == null || value[isFunction$1]) {
+  if (value == null || isFunction(value)) {
     return false;
   }
 
-  if (value[isArray]) {
+  if (isArray(value)) {
     return true;
   }
 
@@ -543,14 +521,23 @@ function values (obj) {
   });
 }
 
+/**
+ * 判断传入对象是否是 Boolean 类型
+ * @param {any} obj 需要判断的对象
+ * @returns {Boolean}
+ */
+function isBoolean(obj) {
+  return typeof obj === 'boolean';
+}
+
 function $toArray(value, transKey) {
   // 不可转为数组的, 直接返回空数组
-  if (!value || value[isBoolean]) {
+  if (!value || isBoolean(value)) {
     return [];
   } // 是字符串类型
 
 
-  if (value[isString]) {
+  if (isString(value)) {
     if (reHasUnicode.test(value)) {
       return value.match(reUnicode) || [];
     } else {
@@ -667,7 +654,7 @@ defineValue(ArrayProto, '$concat', function () {
   var _this = this;
 
   slice.call(arguments).forEach(function (arg) {
-    $add(_this, -1, isArray$1(arg) ? arg : [arg]);
+    $add(_this, -1, isArray(arg) ? arg : [arg]);
   });
   return this;
 });
@@ -684,21 +671,12 @@ defineValue(ArrayProto, '$concatTo', function (index) {
   var increasedLength = 0;
   index = fixArrayIndex(this, index, 1);
   args.forEach(function (arg) {
-    $add(_this2, increasedLength + index, isArray$1(arg) ? arg : [arg]); // 用于修正 index, 后续的 arg 需要插入到前面的 arg 后面
+    $add(_this2, increasedLength + index, isArray(arg) ? arg : [arg]); // 用于修正 index, 后续的 arg 需要插入到前面的 arg 后面
 
     increasedLength = _this2.length - originLength;
   });
   return this;
 });
-
-/**
- * 判断传入对象是否是 Boolean 类型
- * @param {any} obj 需要判断的对象
- * @returns {Boolean}
- */
-function isBoolean$1(obj) {
-  return typeof obj === 'boolean';
-}
 
 /**
  * 判断传入对象是否是空对象
@@ -719,7 +697,7 @@ function isEmptyObject(obj) {
  */
 
 function getTraversal(obj, predicate) {
-  var objIsArray = obj[isArray];
+  var objIsArray = isArray(obj);
   return function (object) {
     if (obj == null || isEmptyObject(object)) {
       return false;
@@ -838,7 +816,7 @@ obj, predicate, fromIndex
       else if (!isFunction(predicate)) {
           // $findIndex( Array | Object, Boolean )
           // $findIndex( Array | Object, Boolean, fromIndex )
-          if (isBoolean$1(predicate)) {
+          if (isBoolean(predicate)) {
             predicate = predicate ? congruence : equals;
           } // $findIndex( Array | Object )
           else {
@@ -1035,14 +1013,14 @@ defineValue(ArrayProto, '$moveRange', function (start, moveCount, toIndex) {
 });
 
 defineValue(Object, '$assign', function (shallow) {
-  if (isBoolean$1(shallow)) {
+  if (isBoolean(shallow)) {
     return assign(shallow, parametersRest(arguments, 1));
   }
 
   return assign(false, arguments);
 });
 defineValue(ObjectProto, '$assign', function (shallow) {
-  if (isBoolean$1(shallow)) {
+  if (isBoolean(shallow)) {
     return assign(shallow, [this].concat(parametersRest(arguments, 1)));
   }
 
@@ -1511,6 +1489,8 @@ defineValue(String, '$someRandom', function ()
   return result;
 });
 
+var StringProto = String.prototype;
+
 var rkeyword = /([\.\*\+\?\|\(\)\[\]\{\}\^\$\\])/g;
 
 /**
@@ -1555,7 +1535,7 @@ defineValue(StringProto, '$replaceAll', function (searchValue, replaceValue) {
     return this;
   }
 
-  if (searchValue[isString]) {
+  if (isString(searchValue)) {
     searchValue = searchValue.replace(rkeyword, '\\$1');
   } else if (isRegExp(searchValue)) {
     if (searchValue.global) {
@@ -2161,6 +2141,8 @@ function install(name, fn) {
   });
 }
 
+var FunctionProto = Function.prototype;
+
 defineValue(FunctionProto, '$after', function () {
   var func = this;
   var num = parametersDefault(arguments, 0, 1);
@@ -2205,7 +2187,7 @@ defineValue(RegExp, '$parse', function (keyword, flags) {
 
 defineValue(root, '$typeof', function (obj) {
   if (obj == null) return obj + '';
-  return obj[isArray] ? 'array' : typeof obj;
+  return isArray(obj) ? 'array' : typeof obj;
 });
 
 var rBackSlant = /\+/g;
@@ -2242,7 +2224,7 @@ function stringify(obj) {
 function parse(str) {
   var result = {};
 
-  if (!str || !isString$1(str)) {
+  if (!str || !isString(str)) {
     return result;
   }
 
@@ -2334,9 +2316,9 @@ var ZenJS$1 = root.ZenJS = assign(false, [null, {
   noop: noop,
   parametersDefault: parametersDefault,
   parametersRest: parametersRest,
-  isString: isString$1,
-  isBoolean: isBoolean$1,
-  isArray: isArray$1,
+  isString: isString,
+  isBoolean: isBoolean,
+  isArray: isArray,
   isNumber: isNumber,
   isRegExp: isRegExp,
   isSet: isSet,
@@ -2470,7 +2452,7 @@ if (inBrowser && !ElementProto.matches) {
 
 if (inBrowser) {
   defineValue(ElementProto, '$is', function (selector) {
-    if (selector.nodeType) return this === selector;else if (isString$1(selector)) return this.matches(selector);else if (isFunction(selector)) return !!selector(this);
+    if (selector.nodeType) return this === selector;else if (isString(selector)) return this.matches(selector);else if (isFunction(selector)) return !!selector(this);
     return false;
   });
   defineValue(ElementProto, '$not', function (selector) {
@@ -2501,7 +2483,7 @@ function Filter(node, filter, handler, checkSelf) {
   // 否则使用 $is 来进行过滤
 
 
-  var filterIsFunction = filter[isFunction$1]; // Node
+  var filterIsFunction = isFunction(filter); // Node
 
   if (node.nodeType) {
     // 首先检测当前 DOM 元素, 检测通过就直接返回
@@ -3178,7 +3160,7 @@ if (inBrowser) {
         value = '';
       } else if (isNumber(value)) {
         value += '';
-      } else if (value[isArray]) {
+      } else if (isArray(value)) {
         value = value.map(function (val) {
           return val == null ? '' : val + '';
         });
@@ -3199,7 +3181,7 @@ if (inBrowser) {
       return result;
     }
 
-    if (isString$1(result = this.value)) {
+    if (isString(result = this.value)) {
       return result.replace(rreturn, '');
     }
 
@@ -3446,7 +3428,7 @@ each({
   keyDelete: [8, 46]
 }, function (key, keyCode) {
   dispatch[key] = function (elem, type, event) {
-    if (keyCode[isArray]) {
+    if (isArray(keyCode)) {
       return keyCode.indexOf(event.keyCode) === -1;
     }
 
@@ -3747,7 +3729,7 @@ function on(elem, types, selector, listener, options, once) {
   if (isObject(types)) {
     events = types;
 
-    if (isString$1(selector)) {
+    if (isString(selector)) {
       // 4, 5
       options = listener;
     } else {
@@ -3781,21 +3763,21 @@ function on(elem, types, selector, listener, options, once) {
   // on( elem, types, listener || Boolean, selector )
   // on( elem, types, listener || Boolean, selector, options )
 
-  if (!isString$1(selector)) {
+  if (!isString(selector)) {
     var _ref = [listener, selector];
     selector = _ref[0];
     listener = _ref[1];
 
     // on( elem, types, listener || Boolean, options )
     // on( elem, types, listener || Boolean, options, selector )
-    if (!isString$1(selector) && (options === undefined || isString$1(options))) {
+    if (!isString(selector) && (options === undefined || isString(options))) {
       var _ref2 = [selector, options];
       options = _ref2[0];
       selector = _ref2[1];
     }
   }
 
-  if (isBoolean$1(listener)) {
+  if (isBoolean(listener)) {
     listener = listener ? returnTrue : returnFalse;
   }
 
@@ -3804,7 +3786,7 @@ function on(elem, types, selector, listener, options, once) {
   } // useCapture
 
 
-  if (isBoolean$1(options)) {
+  if (isBoolean(options)) {
     options = {
       capture: options
     };
@@ -3818,7 +3800,7 @@ function on(elem, types, selector, listener, options, once) {
   if ('group' in options) {
     group = options.group;
 
-    if (group[isArray]) {
+    if (isArray(group)) {
       mainGroup = group[0];
       group = group[1];
     }
@@ -3891,7 +3873,7 @@ function off(elem, types, selector, listener) {
       var group = types.group;
       var groups; // 移除时传入主分组或主分组与副分组时, 始终认为移除所有主分组下的内容
 
-      if (group[isArray]) {
+      if (isArray(group)) {
         var mainGroup = group[0];
 
         if (mainGroup && (mainGroup = MAINGROUPS[mainGroup])) {
@@ -3926,14 +3908,14 @@ function off(elem, types, selector, listener) {
   } // $off( types, listener )
   // $off( types, listener, selector )
 
-  if (selector !== undefined && !isString$1(selector)) {
+  if (selector !== undefined && !isString(selector)) {
     var _ref = [listener, selector];
     selector = _ref[0];
     listener = _ref[1];
   } // $off( types, true || false )
 
 
-  if (isBoolean$1(listener)) {
+  if (isBoolean(listener)) {
     listener = listener ? returnTrue : returnFalse;
   }
 
@@ -4018,7 +4000,7 @@ if (inBrowser) {
   };
 
   location.$urlSearch = function (url, name, value) {
-    if (isString$1(url)) {
+    if (isString(url)) {
       var isObj, isSet, isGetAll;
       var search = ((url.match(rSearch) || [])[0] || '').substr(1);
 

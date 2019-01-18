@@ -1,6 +1,6 @@
 import equals from "../../../1. Core/1. Array/$equals/index";
 import each from "../../../1. Core/3. Object/$each/index";
-import { isArray } from "../../../shared/const/type";
+import isArray from "../../../shared/global/Array/isArray";
 
 /**
  * 事件处理 => 功能性命名空间
@@ -131,7 +131,7 @@ each({
   keyDelete: [ 8, 46 ]
 }, ( key, keyCode ) => {
   dispatch[ key ] = function( elem, type, event ){
-    if( keyCode[ isArray ] ){
+    if( isArray( keyCode ) ){
       return keyCode.indexOf( event.keyCode ) === -1;
     }
     return event.keyCode === keyCode;

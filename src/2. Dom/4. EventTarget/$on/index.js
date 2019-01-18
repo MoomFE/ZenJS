@@ -12,7 +12,7 @@ import defineValue from "../../../shared/util/defineValue";
 import DomEventTarget from "../../../shared/global/DomEventTarget/index";
 import EventListener from "../../666. ZenJS/EventListener/index";
 import assign from "../../../shared/global/Object/assign";
-import { isArray } from "../../../shared/const/type";
+import isArray from "../../../shared/global/Array/isArray";
 
 
 /**
@@ -102,7 +102,7 @@ function on( elem, types, selector, listener, options, once ){
   if( 'group' in options ){
     group = options.group;
 
-    if( group[ isArray ] ){
+    if( isArray( group ) ){
       mainGroup = group[0];
       group = group[1];
     }

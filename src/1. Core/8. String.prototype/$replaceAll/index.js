@@ -1,10 +1,10 @@
 import defineValue from "../../../shared/util/defineValue";
 import StringProto from "../../../shared/global/String/prototype/index";
-import { isString } from "../../../shared/const/type";
 import rkeyword from "../../../shared/const/rkeyword";
 import isRegExp from "../../../shared/util/isRegExp";
 import RegExp from "../../../shared/global/RegExp/index";
 import "../../../shared/polyfill/RegExp.prototype.flags";
+import isString from "../../../shared/util/isString";
 
 
 defineValue( StringProto, '$replaceAll', function( searchValue, replaceValue ){
@@ -14,7 +14,7 @@ defineValue( StringProto, '$replaceAll', function( searchValue, replaceValue ){
     return this;
   }
 
-  if( searchValue[ isString ] ){
+  if( isString( searchValue ) ){
     searchValue = searchValue.replace( rkeyword, '\\$1' );
   }
   else if( isRegExp( searchValue ) ){
